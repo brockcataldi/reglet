@@ -1,11 +1,17 @@
 <script lang="ts">
-	type MeasureLineProps = {
+	type Props = {
 		label: string;
 		position: number;
 		align: 'left' | 'right';
+		color: string;
 	};
 
-	let { label, position = $bindable(0), align = 'right' }: MeasureLineProps = $props();
+	let {
+		label,
+		position = $bindable(0),
+		align = 'right',
+		color
+	}: Props = $props();
 
 	let pressed = $state(false);
 	let y = $state(0);
@@ -44,7 +50,11 @@
 	}
 </script>
 
-<div class="measure-line" style={`transform: translateY(${position}px);`}>
+<div
+	class="measure-line"
+	style={`transform: translateY(${position}px);`}
+	style:--color={color}
+>
 	<div
 		class={`measure-line__label measure-line__label--${align}`}
 		role="slider"
@@ -59,6 +69,7 @@
 
 <style>
 	.measure-line {
+		--color: red;
 		width: 100%;
 		position: absolute;
 		height: 28px;
@@ -71,7 +82,7 @@
 		content: '';
 		width: 100%;
 		height: 1px;
-		background-color: red;
+		background-color: var(--color);
 		top: 13.5px;
 		z-index: 0;
 	}
@@ -79,7 +90,7 @@
 	.measure-line__label {
 		width: fit-content;
 		padding: 5px 10px;
-		border: 1px solid red;
+		border: 1px solid var(--color);
 		margin: 0;
 		display: block;
 		font-size: 14px;
