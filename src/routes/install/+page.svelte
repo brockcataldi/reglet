@@ -1,36 +1,30 @@
 <script lang="ts">
-	import { extractFontFaces, type FontFamilies } from '$lib/font/font-face';
-	import {
-		isFontFaceAxis,
-		isFontFaceValue
-	} from '$lib/font/font-face-properties';
-	import { extractStylesheetUrls } from '$lib/font/stylesheet';
-	import FontFaceProperty from './_compontents/font-face-property.svelte';
+	import { extractFontFaces } from '$lib/functions/font';
+	import { extractStylesheetUrls } from '$lib/functions/stylesheet';
+	import type { Family } from '$lib/types';
+
+	import Button from '$lib/components/button.svelte';
+	import FontFamily from './_components/font-family.svelte';
 
 	let rawInstallText = $state('');
 	let stylesheetUrls = $derived(extractStylesheetUrls(rawInstallText));
-	let fontFamilies = $state<FontFamilies>({});
+	let families = $state<Family[]>([]);
 
 	async function handleInstallClick() {
 		const stylesheetFontFaces = await Promise.all(
 			stylesheetUrls.map((url) => extractFontFaces(url.url))
 		);
 
-		const fontFaces = stylesheetFontFaces.reduce((acc, curr: FontFamilies) => {
-			for (const [fontFamily, fontStyles] of Object.entries(curr)) {
-				if (!acc[fontFamily]) {
-					acc[fontFamily] = fontStyles;
-				}
-			}
+		const fontFaces = stylesheetFontFaces.reduce((acc, curr: Family[]) => {
+			acc.push(...curr);
 			return acc;
-		}, {} as FontFamilies);
+		}, [] as Family[]);
 
-		fontFamilies = fontFaces;
+		families = fontFaces;
 	}
 
 	function handleDebugClick() {
-		rawInstallText = `
-		<link rel="preconnect" href="https://fonts.googleapis.com">
+		rawInstallText = `<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Kablammo:MORF@0..60&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&display=swap" rel="stylesheet">
 
@@ -47,50 +41,34 @@
 	{/each}
 </svelte:head>
 <main>
-	<h1>Install</h1>
-	<h2>Add your fonts</h2>
-	<p>Paste your font URLs here. Google Fonts and TypeKit are supported.</p>
-	<textarea bind:value={rawInstallText}></textarea>
-	<button onclick={handleInstallClick}>Install</button>
-	<button onclick={handleDebugClick}>Debug</button>
-	<h2>Double Check the Install</h2>
-	<p>Make sure the fonts are installed correctly.</p>
+	<header>
+		<h1>Install</h1>
+		<p>
+			This system requires measuring the fonts you plan to use. So to start
+			you'll need to install them.
+		</p>
+	</header>
 
-	<ul>
-		{#each Object.entries(fontFamilies) as [fontFamily, fontStyles] (fontFamily)}
-			<li>
-				<h3>{fontFamily}</h3>
-				<ul>
-					{#each Object.entries(fontStyles).reverse() as [fontStyle, fontFaces] (`${fontFamily}-${fontStyle}`)}
-						{#each fontFaces as fontFace}
-							<li>
-								<h4>Font Weight</h4>
-								<FontFaceProperty
-									property={fontFace.fontWeight}
-									options={['normal', 'bold']}
-								/>
-								<h4>Font Stretch</h4>
-								<FontFaceProperty
-									property={fontFace.fontStretch}
-									options={[
-										'normal',
-										'ultra-condensed',
-										'extra-condensed',
-										'condensed',
-										'semi-condensed',
-										'semi-expanded',
-										'expanded',
-										'extra-expanded',
-										'ultra-expanded'
-									]}
-								/>
-							</li>
-						{/each}
-					{/each}
-				</ul>
-			</li>
-		{/each}
-	</ul>
+	<section>
+		<h2>Add your fonts</h2>
+		<p>
+			Paste your font URLs here, this supports raw URLs or exported link tags.
+		</p>
+		<textarea bind:value={rawInstallText}></textarea>
+
+		<Button onclick={handleInstallClick}>Install</Button>
+		<Button onclick={handleDebugClick}>Debug</Button>
+	</section>
+
+	<section>
+		<h2>Double Check the Install</h2>
+		<p>Make sure the fonts are installed correctly.</p>
+		<div>
+			{#each families as _, index (index)}
+				<FontFamily bind:family={families[index]} familyIndex={index} />
+			{/each}
+		</div>
+	</section>
 </main>
 
 <style>
@@ -98,50 +76,44 @@
 		max-width: 750px;
 		width: 100%;
 		margin: 0 auto;
-		padding: 4rem 1rem;
+		padding: 1rem;
+		box-sizing: border-box;
+	}
+
+	header {
+		padding: 2rem 0;
+		width: 100%;
+		box-sizing: border-box;
 	}
 
 	h1 {
-		font-family: var(--font-family);
+		font-family: var(--ff-ss);
 		font-size: 3rem;
+		margin: 0;
 	}
 
 	h2 {
-		font-family: var(--font-family);
+		font-family: var(--ff-ss);
 		font-size: 2rem;
-	}
-
-	h3 {
-		font-family: var(--font-family);
-		font-size: 1.5rem;
-	}
-
-	h4 {
-		font-family: var(--font-family);
-		font-size: 1.25rem;
-	}
-
-	h5 {
-		font-family: var(--font-family);
-		font-size: 1rem;
+		margin: 0;
 	}
 
 	p {
-		font-family: var(--font-family);
+		font-family: var(--ff-ss);
 		font-size: 1rem;
+		margin: 0;
 	}
 
 	textarea {
-		font-family: var(--font-family);
-		font-size: 1rem;
+		font-family: var(--ff-m);
+		font-size: 0.875rem;
 		margin: 0;
 		width: 100%;
 		height: 200px;
-	}
-
-	ul {
-		margin: 0;
-		padding: 0;
-		list-style-type: none;
+		padding: 1rem;
+		box-sizing: border-box;
+		border: 1px solid #aaaaaa;
+		border-radius: 0.25rem;
+		resize: none;
 	}
 </style>
