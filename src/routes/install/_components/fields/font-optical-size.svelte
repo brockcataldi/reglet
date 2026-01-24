@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Select from '$lib/components/select.svelte';
 	import type { OpticalSize } from '$lib/types';
 
 	type Props = {
@@ -12,18 +13,29 @@
 
 <fieldset>
 	<legend>Optical Size</legend>
-	<section>
-		<div>
-			<label for={`${familyIndex}-${faceIndex}-optical-size`}
-				>Optical Size</label
-			>
-			<select
-				bind:value={opticalSize}
-				id={`${familyIndex}-${faceIndex}-optical-size`}
-			>
-				<option value="none">none</option>
-				<option value="auto">auto</option>
-			</select>
-		</div>
-	</section>
+
+	<Select
+		id={`${familyIndex}-${faceIndex}-optical-size`}
+		label="Optical Size"
+		bind:value={opticalSize}
+	>
+		<option value="none">none</option>
+		<option value="auto">auto</option>
+	</Select>
 </fieldset>
+
+<style>
+	fieldset {
+		border: none;
+		padding: 0;
+		margin: 0;
+		width: 100%;
+	}
+
+	legend {
+		font-family: var(--ff-ss);
+		font-size: 1.125rem;
+		font-weight: 700;
+		margin-bottom: 0.5rem;
+	}
+</style>

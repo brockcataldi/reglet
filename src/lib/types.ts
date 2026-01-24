@@ -1,9 +1,18 @@
+export interface StylesheetUrl {
+	hash: string;
+	url: string;
+}
+
 export interface Axis {
 	min: number;
 	max: number;
 }
 
-export function isAxis(value: any): value is Axis {
+export function isAxis(value: unknown): value is Axis {
+	if (value === null || value === undefined) {
+		return false;
+	}
+
 	return typeof value === 'object' && 'min' in value && 'max' in value;
 }
 
@@ -19,7 +28,11 @@ export type VariationAxis = {
 	name: string;
 } & Axis;
 
-export function isVariationAxis(value: any): value is VariationAxis {
+export function isVariationAxis(value: unknown): value is VariationAxis {
+	if (value === null || value === undefined) {
+		return false;
+	}
+
 	return (
 		typeof value === 'object' &&
 		'name' in value &&
@@ -40,7 +53,13 @@ export interface VariationAxisValue {
 	value: number;
 }
 
-export function isVariationAxisValue(value: any): value is VariationAxisValue {
+export function isVariationAxisValue(
+	value: unknown
+): value is VariationAxisValue {
+	if (value === null || value === undefined) {
+		return false;
+	}
+
 	return typeof value === 'object' && 'name' in value && 'value' in value;
 }
 
@@ -53,7 +72,11 @@ export function compareVariationAxisValue(
 
 export type VariationSetting = VariationAxisValue | VariationAxis;
 
-export function isVariationSetting(value: any): value is VariationSetting {
+export function isVariationSetting(value: unknown): value is VariationSetting {
+	if (value === null || value === undefined) {
+		return false;
+	}
+
 	return isVariationAxisValue(value) || isVariationAxis(value);
 }
 
@@ -76,8 +99,12 @@ export const WEIGHT_VALUES = ['normal', 'bold'] as const;
 
 export type Weight = number | 'normal' | 'bold' | Axis;
 
-export function isWeightString(value: any): value is 'normal' | 'bold' {
-	return WEIGHT_VALUES.includes(value);
+export function isWeightString(value: unknown): value is 'normal' | 'bold' {
+	if (value === null || value === undefined) {
+		return false;
+	}
+
+	return WEIGHT_VALUES.includes(value as 'normal' | 'bold');
 }
 
 export function compareWeight(weight1: Weight, weight2: Weight): boolean {
@@ -113,8 +140,12 @@ export function toStringWeight(weight: Weight): string {
 
 export const STYLE_VALUES = ['normal', 'italic', 'oblique'] as const;
 export type Style = 'normal' | 'italic' | 'oblique';
-export function isStyleString(value: any): value is Style {
-	return STYLE_VALUES.includes(value);
+export function isStyleString(value: unknown): value is Style {
+	if (value === null || value === undefined) {
+		return false;
+	}
+
+	return STYLE_VALUES.includes(value as Style);
 }
 
 export type OpticalSize = 'none' | 'auto';
@@ -142,8 +173,23 @@ export type Stretch =
 	| 'ultra-expanded'
 	| number;
 
-export function isStretchString(value: any): value is Stretch {
-	return STRETCH_VALUES.includes(value);
+export function isStretchString(value: unknown): value is Stretch {
+	if (value === null || value === undefined) {
+		return false;
+	}
+
+	return STRETCH_VALUES.includes(
+		value as
+			| 'normal'
+			| 'ultra-condensed'
+			| 'extra-condensed'
+			| 'condensed'
+			| 'semi-condensed'
+			| 'semi-expanded'
+			| 'expanded'
+			| 'extra-expanded'
+			| 'ultra-expanded'
+	);
 }
 
 export function compareStretch(stretch1: Stretch, stretch2: Stretch): boolean {

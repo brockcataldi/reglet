@@ -1,45 +1,20 @@
 <script lang="ts">
-	import { extractFontFaces } from '$lib/functions/font';
-	import { extractStylesheetUrls } from '$lib/functions/stylesheet';
-	import type { Family } from '$lib/types';
-
 	import Button from '$lib/components/button.svelte';
 	import FontFamily from './_components/font-family.svelte';
 
-	let rawInstallText = $state('');
-	let stylesheetUrls = $derived(extractStylesheetUrls(rawInstallText));
-	let families = $state<Family[]>([]);
-
-	async function handleInstallClick() {
-		const stylesheetFontFaces = await Promise.all(
-			stylesheetUrls.map((url) => extractFontFaces(url.url))
-		);
-
-		const fontFaces = stylesheetFontFaces.reduce((acc, curr: Family[]) => {
-			acc.push(...curr);
-			return acc;
-		}, [] as Family[]);
-
-		families = fontFaces;
-	}
+	import fonts from '$lib/fonts.svelte';
 
 	function handleDebugClick() {
-		rawInstallText = `<link rel="preconnect" href="https://fonts.googleapis.com">
+		fonts.rawText = `<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Kablammo:MORF@0..60&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" id="typekit-css" href="https://use.typekit.net/kvs7ptj.css" type="text/css" media="all">
-		`;
+<link rel="stylesheet" id="typekit-css" href="https://use.typekit.net/kvs7ptj.css" type="text/css" media="all">`;
 
-		handleInstallClick();
+		fonts.install();
 	}
 </script>
 
-<svelte:head>
-	{#each stylesheetUrls as url (url.hash)}
-		<link rel="stylesheet" href={url.url} id={url.hash} />
-	{/each}
-</svelte:head>
 <main>
 	<header>
 		<h1>Install</h1>
@@ -48,26 +23,34 @@
 			you'll need to install them.
 		</p>
 	</header>
-
 	<section>
 		<h2>Add your fonts</h2>
 		<p>
 			Paste your font URLs here, this supports raw URLs or exported link tags.
 		</p>
-		<textarea bind:value={rawInstallText}></textarea>
 
-		<Button onclick={handleInstallClick}>Install</Button>
+		<label for="font-providers">Font Providers</label>
+		<textarea id="font-providers" bind:value={fonts.rawText}></textarea>
+
+		<Button onclick={fonts.install}>Install</Button>
 		<Button onclick={handleDebugClick}>Debug</Button>
 	</section>
 
 	<section>
-		<h2>Double Check the Install</h2>
-		<p>Make sure the fonts are installed correctly.</p>
-		<div>
-			{#each families as _, index (index)}
-				<FontFamily bind:family={families[index]} familyIndex={index} />
-			{/each}
-		</div>
+		<h2>Fonts</h2>
+		
+		{#if fonts.families.length > 0}
+			<ul>
+				{#each fonts.families as _, index (index)}
+					<li>
+						<FontFamily
+							bind:family={fonts.families[index]}
+							familyIndex={index}
+						/>
+					</li>
+				{/each}
+			</ul>
+		{/if}
 	</section>
 </main>
 
@@ -86,6 +69,11 @@
 		box-sizing: border-box;
 	}
 
+	section {
+		padding: 2rem 0;
+		width: 100%;
+	}
+
 	h1 {
 		font-family: var(--ff-ss);
 		font-size: 3rem;
@@ -95,25 +83,40 @@
 	h2 {
 		font-family: var(--ff-ss);
 		font-size: 2rem;
-		margin: 0;
+		margin: 0 0 0.5rem;
 	}
 
 	p {
 		font-family: var(--ff-ss);
 		font-size: 1rem;
-		margin: 0;
+		margin: 0 0 1rem;
+	}
+
+	label {
+		font-family: var(--ff-ss);
+		font-size: 0.875rem;
+		margin: 0 0 0.5rem;
 	}
 
 	textarea {
 		font-family: var(--ff-m);
 		font-size: 0.875rem;
-		margin: 0;
+		margin: 0 0 1rem;
 		width: 100%;
-		height: 200px;
-		padding: 1rem;
+		height: 195px;
+		padding: 0.75rem;
 		box-sizing: border-box;
-		border: 1px solid #aaaaaa;
+		border: 1px solid black;
 		border-radius: 0.25rem;
 		resize: none;
+	}
+
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
 	}
 </style>

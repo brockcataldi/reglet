@@ -5,6 +5,9 @@
 		type VariationSetting
 	} from '$lib/types';
 
+	import Button from '$lib/components/button.svelte';
+	import Input from '$lib/components/input.svelte';
+
 	type Props = {
 		variationSetting: VariationSetting;
 		variationIndex: number;
@@ -45,69 +48,79 @@
 </script>
 
 <fieldset>
-	<legend>Variation Setting</legend>
-	<section>
+	<legend class="sr-only">Variation Setting</legend>
+	{#if isVariationAxis(variationSetting)}
+		<div>
+			<Input
+				type="text"
+				bind:value={variationSetting.name}
+				id={`${familyIndex}-${faceIndex}-variation-setting-${variationIndex}-name`}
+				label="Name"
+			/>
+			<Input
+				type="number"
+				bind:value={variationSetting.min}
+				id={`${familyIndex}-${faceIndex}-variation-setting-${variationIndex}-min`}
+				label="Minimum"
+			/>
+			<Input
+				type="number"
+				bind:value={variationSetting.max}
+				id={`${familyIndex}-${faceIndex}-variation-setting-${variationIndex}-max`}
+				label="Maximum"
+			/>
+		</div>
+	{:else}
+		<div>
+			<Input
+				type="number"
+				bind:value={variationSetting.value}
+				id={`${familyIndex}-${faceIndex}-variation-setting-${variationIndex}-value`}
+				label="Value"
+			/>
+			<Input
+				type="text"
+				bind:value={variationSetting.name}
+				id={`${familyIndex}-${faceIndex}-variation-setting-${variationIndex}-name`}
+				label="Name"
+			/>
+		</div>
+	{/if}
+	<div>
 		{#if isVariationAxis(variationSetting)}
-			<div>
-				<label
-					for={`${familyIndex}-${faceIndex}-variation-setting-${variationIndex}-name`}
-					>Name</label
-				>
-				<input
-					type="text"
-					bind:value={variationSetting.name}
-					id={`${familyIndex}-${faceIndex}-variation-setting-${variationIndex}-name`}
-				/>
-			</div>
-			<div>
-				<label
-					for={`${familyIndex}-${faceIndex}-variation-setting-${variationIndex}-min`}
-					>Minimum</label
-				>
-				<input
-					type="number"
-					bind:value={variationSetting.min}
-					id={`${familyIndex}-${faceIndex}-variation-setting-${variationIndex}-min`}
-				/>
-			</div>
-			<div>
-				<label
-					for={`${familyIndex}-${faceIndex}-variation-setting-${variationIndex}-max`}
-					>Maximum</label
-				>
-				<input
-					type="number"
-					bind:value={variationSetting.max}
-					id={`${familyIndex}-${faceIndex}-variation-setting-${variationIndex}-max`}
-				/>
-			</div>
-			<button onclick={handleChangeToValue}>Change to Value</button>
+			<Button size="small" width="full" onclick={handleChangeToValue}
+				>Change to Value</Button
+			>
 		{:else}
-			<div>
-				<label
-					for={`${familyIndex}-${faceIndex}-variation-setting-${variationIndex}-value`}
-					>Value</label
-				>
-				<input
-					type="number"
-					bind:value={variationSetting.value}
-					id={`${familyIndex}-${faceIndex}-variation-setting-${variationIndex}-value`}
-				/>
-			</div>
-			<div>
-				<label
-					for={`${familyIndex}-${faceIndex}-variation-setting-${variationIndex}-name`}
-					>Name</label
-				>
-				<input
-					type="text"
-					bind:value={variationSetting.name}
-					id={`${familyIndex}-${faceIndex}-variation-setting-${variationIndex}-name`}
-				/>
-			</div>
-
-			<button onclick={handleChangeToAxis}>Change to Axis</button>
+			<Button size="small" width="full" onclick={handleChangeToAxis}
+				>Change to Axis</Button
+			>
 		{/if}
-		<button onclick={() => onRemove(variationIndex)}>Remove</button>
-	</section>
+
+		<Button size="small" width="full" onclick={() => onRemove(variationIndex)}
+			>Remove</Button
+		>
+	</div>
 </fieldset>
+
+<style>
+	fieldset {
+		border: none;
+		padding: 0;
+		margin: 0;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		width: 100%;
+	}
+
+	div {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem;
+		width: 100%;
+	}
+</style>

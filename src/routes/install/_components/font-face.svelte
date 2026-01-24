@@ -6,6 +6,7 @@
 	import FontOpticalSize from './fields/font-optical-size.svelte';
 	import FontStretch from './fields/font-stretch.svelte';
 	import FontVariationSettings from './fields/font-variation-settings.svelte';
+	import Accordion from '$lib/components/accordion.svelte';
 
 	type Props = {
 		face: Face;
@@ -16,18 +17,19 @@
 	let { face = $bindable(), familyIndex, faceIndex }: Props = $props();
 </script>
 
-<div>
-	<details>
-		<summary>
-			<span>
-				Weight
-				<strong>{toStringWeight(face.weight)}</strong>
-			</span>
-			<span>
-				Style
-				<strong>{face.style}</strong>
-			</span>
-		</summary>
+<Accordion justify="start">
+	{#snippet header()}
+		<span>
+			Weight
+			<code>{toStringWeight(face.weight)}</code>
+		</span>
+		<span>
+			Style
+			<code>{face.style}</code>
+		</span>
+	{/snippet}
+
+	<div>
 		<FontWeight bind:weight={face.weight} {familyIndex} {faceIndex} />
 		<FontStyle
 			bind:style={face.style}
@@ -46,11 +48,33 @@
 			{familyIndex}
 			{faceIndex}
 		/>
-	</details>
-</div>
+	</div>
+</Accordion>
 
 <style>
+	span {
+		font-family: var(--ff-ss);
+		font-size: 0.875rem;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		justify-content: space-between;
+		padding: 0.25rem 0.5rem;
+		border: 1px solid white;
+		border-radius: 0.25rem;
+	}
+
+	code {
+		font-family: var(--ff-m);
+		font-size: 0.875rem;
+	}
+
 	div {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
 		width: 100%;
+		align-items: flex-start;
+		justify-content: flex-start;
 	}
 </style>

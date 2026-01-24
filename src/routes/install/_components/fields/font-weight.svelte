@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { isAxis, type Axis, type Weight } from '$lib/types';
 
+	import Button from '$lib/components/button.svelte';
+	import Input from '$lib/components/input.svelte';
+	import Select from '$lib/components/select.svelte';
+
 	type Props = {
 		weight: Weight;
 		familyIndex: number;
@@ -62,58 +66,88 @@
 
 <fieldset>
 	<legend>Weight</legend>
-	<section>
-		{#if isAxis(weight)}
-			<div>
-				<label for={`${familyIndex}-${faceIndex}-weight-min`}
-					>Axis Minimum</label
-				>
-				<input
-					type="number"
-					bind:value={weight.min}
-					id={`${familyIndex}-${faceIndex}-weight-min`}
-				/>
-			</div>
-			<div>
-				<label for={`${familyIndex}-${faceIndex}-weight-max`}
-					>Axis Maximum</label
-				>
-				<input
-					type="number"
-					bind:value={weight.max}
-					id={`${familyIndex}-${faceIndex}-weight-max`}
-				/>
-			</div>
-			<button onclick={handleChangeToString}>Change to String</button>
-			<button onclick={handleChangeToNumeric}>Change to Numeric</button>
-		{:else if weight === 'normal' || weight === 'bold'}
-			<div>
-				<label for={`${familyIndex}-${faceIndex}-weight-string`}
-					>Weight String</label
-				>
-				<select
-					bind:value={weight}
-					id={`${familyIndex}-${faceIndex}-weight-string`}
-				>
-					<option value="normal">normal</option>
-					<option value="bold">bold</option>
-				</select>
-			</div>
-			<button onclick={handleChangeToAxis}>Change to Axis</button>
-			<button onclick={handleChangeToNumeric}>Change to Numeric</button>
-		{:else}
-			<div>
-				<label for={`${familyIndex}-${faceIndex}-weight-numeric`}
-					>Weight Value</label
-				>
-				<input
-					type="number"
-					bind:value={weight}
-					id={`${familyIndex}-${faceIndex}-weight-numeric`}
-				/>
-			</div>
-			<button onclick={handleChangeToAxis}>Change to Axis</button>
-			<button onclick={handleChangeToString}>Change to String</button>
-		{/if}
-	</section>
+	{#if isAxis(weight)}
+		<div>
+			<Input
+				id={`${familyIndex}-${faceIndex}-weight-min`}
+				label="Axis Minimum"
+				bind:value={weight.min}
+			/>
+			<Input
+				id={`${familyIndex}-${faceIndex}-weight-max`}
+				label="Axis Maximum"
+				bind:value={weight.max}
+			/>
+		</div>
+		<div>
+			<Button size="small" width="full" onclick={handleChangeToString}
+				>Change to String</Button
+			>
+			<Button size="small" width="full" onclick={handleChangeToNumeric}
+				>Change to Numeric</Button
+			>
+		</div>
+	{:else if weight === 'normal' || weight === 'bold'}
+		<div>
+			<Select
+				id={`${familyIndex}-${faceIndex}-weight-string`}
+				label="Weight String"
+				bind:value={weight}
+			>
+				<option value="normal">normal</option>
+				<option value="bold">bold</option>
+			</Select>
+		</div>
+		<div>
+			<Button size="small" width="full" onclick={handleChangeToAxis}
+				>Change to Axis</Button
+			>
+			<Button size="small" width="full" onclick={handleChangeToNumeric}
+				>Change to Numeric</Button
+			>
+		</div>
+	{:else}
+		<div>
+			<Input
+				id={`${familyIndex}-${faceIndex}-weight-numeric`}
+				label="Weight Value"
+				bind:value={weight}
+				type="number"
+			/>
+		</div>
+		<div>
+			<Button size="small" width="full" onclick={handleChangeToAxis}
+				>Change to Axis</Button
+			>
+			<Button size="small" width="full" onclick={handleChangeToString}
+				>Change to String</Button
+			>
+		</div>
+	{/if}
 </fieldset>
+
+<style>
+	fieldset {
+		border: none;
+		padding: 0;
+		margin: 0;
+		width: 100%;
+	}
+
+	legend {
+		font-family: var(--ff-ss);
+		font-size: 1.125rem;
+		font-weight: 700;
+		margin-bottom: 0.5rem;
+	}
+
+	div {
+		display: flex;
+		flex-direction: row;
+		gap: 1rem;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		margin-bottom: 0.5rem;
+	}
+</style>
