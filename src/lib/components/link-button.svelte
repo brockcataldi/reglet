@@ -20,9 +20,9 @@
 		margin: 0;
 		font-weight: 700;
 		padding: 0.5rem 1rem;
-		background-color: black;
+		background-color: var(--c-bla);
 		text-decoration: none;
-		color: white;
+		color: var(--c-whi);
 		display: inline-block;
 		border-radius: 0.25rem;
 	}

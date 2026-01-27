@@ -82,8 +82,8 @@
 		font-size: 96px;
 		line-height: 1;
 		margin: 0;
-		border-top: 1px dotted black;
-		border-bottom: 1px dotted black;
+		border-top: 1px dotted var(--c-bla);
+		border-bottom: 1px dotted var(--c-bla);
 		text-align: center;
 		pointer-events: none;
 		user-select: none;

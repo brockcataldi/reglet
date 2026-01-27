@@ -1,7 +1,10 @@
 <script lang="ts">
-	import Button from '$lib/components/button.svelte';
 	import type { VariationSetting } from '$lib/types';
+
+	import Button from '$lib/components/button.svelte';
 	import FontVariationSetting from './font-variation-setting.svelte';
+
+	import fonts from '$lib/stores/fonts.svelte';
 
 	type Props = {
 		variationSettings: VariationSetting[];
@@ -16,15 +19,11 @@
 	}: Props = $props();
 
 	const handleAddVariationSetting = () => {
-		variationSettings.push({
+		fonts.createVariationSetting(familyIndex, faceIndex, {
 			name: '',
 			min: 0,
 			max: 100
 		});
-	};
-
-	const handleRemoveVariationSetting = (index: number) => {
-		variationSettings = variationSettings.filter((_, i) => i !== index);
 	};
 </script>
 
@@ -39,7 +38,6 @@
 						variationIndex={index}
 						{familyIndex}
 						{faceIndex}
-						onRemove={handleRemoveVariationSetting}
 					/>
 				</li>
 			{/each}
@@ -54,7 +52,6 @@
 	fieldset {
 		border: none;
 		padding: 0;
-		margin: 0;
 		width: 100%;
 	}
 

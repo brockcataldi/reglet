@@ -1,12 +1,16 @@
 <script lang="ts">
 	import { toStringWeight, type Face } from '$lib/types';
 
+	import Accordion from '$lib/components/accordion.svelte';
+	import Button from '$lib/components/button.svelte';
+
 	import FontStyle from './fields/font-style.svelte';
 	import FontWeight from './fields/font-weight.svelte';
 	import FontOpticalSize from './fields/font-optical-size.svelte';
 	import FontStretch from './fields/font-stretch.svelte';
 	import FontVariationSettings from './fields/font-variation-settings.svelte';
-	import Accordion from '$lib/components/accordion.svelte';
+
+	import fonts from '$lib/stores/fonts.svelte';
 
 	type Props = {
 		face: Face;
@@ -15,6 +19,10 @@
 	};
 
 	let { face = $bindable(), familyIndex, faceIndex }: Props = $props();
+
+	const handleDeleteFace = () => {
+		fonts.deleteFace(familyIndex, faceIndex);
+	};
 </script>
 
 <Accordion justify="start">
@@ -48,6 +56,10 @@
 			{familyIndex}
 			{faceIndex}
 		/>
+
+		<Button size="small" width="full" color="error" onclick={handleDeleteFace}
+			>Delete Face</Button
+		>
 	</div>
 </Accordion>
 
@@ -60,7 +72,7 @@
 		gap: 0.5rem;
 		justify-content: space-between;
 		padding: 0.25rem 0.5rem;
-		border: 1px solid white;
+		border: 1px solid var(--c-whi);
 		border-radius: 0.25rem;
 	}
 

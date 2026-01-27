@@ -8,20 +8,20 @@
 	import Button from '$lib/components/button.svelte';
 	import Input from '$lib/components/input.svelte';
 
+	import fonts from '$lib/stores/fonts.svelte';
+
 	type Props = {
 		variationSetting: VariationSetting;
 		variationIndex: number;
 		familyIndex: number;
 		faceIndex: number;
-		onRemove: (index: number) => void;
 	};
 
 	let {
 		variationSetting = $bindable(),
 		variationIndex,
 		familyIndex,
-		faceIndex,
-		onRemove
+		faceIndex
 	}: Props = $props();
 
 	const handleChangeToAxis = () => {
@@ -44,6 +44,10 @@
 			name: variationSetting.name,
 			value: variationSetting.min
 		};
+	};
+
+	const handleDeleteVariationSetting = () => {
+		fonts.deleteVariationSetting(familyIndex, faceIndex, variationIndex);
 	};
 </script>
 
@@ -97,8 +101,11 @@
 			>
 		{/if}
 
-		<Button size="small" width="full" onclick={() => onRemove(variationIndex)}
-			>Remove</Button
+		<Button
+			size="small"
+			width="full"
+			color="error"
+			onclick={handleDeleteVariationSetting}>Delete Setting</Button
 		>
 	</div>
 </fieldset>

@@ -268,6 +268,7 @@ export function compareFaceRule(
 }
 
 export interface Family {
+	id: string;
 	family: string;
 	stack: string;
 	faces: Face[];

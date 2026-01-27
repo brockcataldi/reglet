@@ -95,7 +95,7 @@
 		display: block;
 		font-size: 14px;
 		border-radius: 20px;
-		background-color: white;
+		background-color: var(--c-whi);
 		z-index: 1;
 		position: absolute;
 		font-family: var(--font-family);

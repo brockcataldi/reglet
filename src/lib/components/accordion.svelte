@@ -21,7 +21,7 @@
 
 <style>
 	details {
-		border: 1px solid black;
+		border: 1px solid var(--c-bla);
 		border-radius: 0.25rem;
 		padding: 0.5rem 0.5rem 0;
 	}
@@ -35,9 +35,10 @@
 		justify-content: space-between;
 		gap: 0.5rem;
 		cursor: pointer;
-        background-color: black;
-        color: white;
-    }
+		background-color: var(--c-bla);
+		color: var(--c-whi);
+		border-radius: 0.25rem;
+	}
 
 	summary::-webkit-details-marker {
 		display: none;

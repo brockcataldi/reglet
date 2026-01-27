@@ -1,8 +1,14 @@
 <script lang="ts">
+	import type { Family } from '$lib/types';
+
 	import Accordion from '$lib/components/accordion.svelte';
 	import Input from '$lib/components/input.svelte';
-	import type { Family } from '$lib/types';
+	import Text from '$lib/components/text.svelte';
+
 	import FontFace from './font-face.svelte';
+	import Button from '$lib/components/button.svelte';
+
+	import fonts from '$lib/stores/fonts.svelte';
 
 	type Props = {
 		family: Family;
@@ -10,55 +16,77 @@
 	};
 
 	let { family = $bindable(), familyIndex }: Props = $props();
+
+	const handleDeleteFamily = () => {
+		fonts.deleteFamily(familyIndex);
+	};
+
+	const handleAddFace = () => {
+		fonts.createFace(familyIndex, {
+			weight: 400,
+			style: 'normal',
+			stretch: 'normal',
+			opticalSize: 'auto',
+			variationSettings: []
+		});
+	};
 </script>
 
 <Accordion justify="between">
 	{#snippet header()}
 		<h3>
-			<code class="summary__family">
+			<code>
 				font-family: "{family.family}", {family.stack};
 			</code>
 		</h3>
 
-		<span class="summary__faces">
+		<span>
 			{family.faces.length} faces
 		</span>
 	{/snippet}
-	<div>
-		<fieldset>
-			<legend class="sr-only">Family & Stack</legend>
-			<Input
-				id={`family-${familyIndex}`}
-				label="Family"
-				bind:value={family.family}
-			/>
-			<Input
-				id={`stack-${familyIndex}`}
-				label="Stack"
-				bind:value={family.stack}
-			/>
-		</fieldset>
+	<fieldset>
+		<legend class="sr-only">Family & Stack</legend>
+		<Input
+			id={`family-${familyIndex}`}
+			label="Family"
+			bind:value={family.family}
+		/>
+		<Input
+			id={`stack-${familyIndex}`}
+			label="Stack"
+			bind:value={family.stack}
+		/>
+	</fieldset>
 
-		<h4>Faces</h4>
-		<ul>
-			{#each family.faces as _, faceIndex (`${familyIndex}-${faceIndex}`)}
-				<li>
-					<FontFace
-						bind:face={family.faces[faceIndex]}
-						{familyIndex}
-						{faceIndex}
-					/>
-				</li>
-			{/each}
-		</ul>
+	<div>
+		<Text tag="h4">Faces</Text>
+		<Button size="small" width="fit" color="primary" onclick={handleAddFace}
+			>Add Face</Button
+		>
 	</div>
+
+	<ul>
+		{#each family.faces as _, faceIndex (`${familyIndex}-${faceIndex}`)}
+			<li>
+				<FontFace
+					bind:face={family.faces[faceIndex]}
+					{familyIndex}
+					{faceIndex}
+				/>
+			</li>
+		{/each}
+	</ul>
+
+	<Button size="small" width="full" color="error" onclick={handleDeleteFamily}
+		>Delete Family</Button
+	>
 </Accordion>
 
 <style>
 	ul {
 		list-style: none;
 		padding: 0;
-		margin: 0;
+		margin: 0 0 1rem;
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
@@ -77,7 +105,7 @@
 		font-family: var(--ff-ss);
 		font-size: 0.875rem;
 		padding: 0.25rem 0.5rem;
-		border: 1px solid white;
+		border: 1px solid var(--c-whi);
 		border-radius: 0.25rem;
 	}
 
@@ -96,9 +124,12 @@
 		border: none;
 	}
 
-	h4 {
+	div {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
 		margin: 1rem 0;
-		font-family: var(--ff-ss);
-		font-size: 1.25rem;
 	}
 </style>
