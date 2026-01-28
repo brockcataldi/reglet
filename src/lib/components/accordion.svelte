@@ -8,62 +8,33 @@
 	};
 
 	let { header, children, justify = 'start' }: Props = $props();
+
+	const justifyClass = $derived(
+		justify === 'between'
+			? 'justify-between'
+			: justify === 'start'
+				? 'justify-start'
+				: 'justify-end'
+	);
 </script>
 
-<details>
-	<summary>
-		<span data-justify={justify}>
+<details class="group w-full rounded-md border border-black px-2 pt-2 pb-0">
+	<summary
+		class="-webkit-details-marker:hidden m-0 -mx-2 -mt-2 flex items-center justify-between gap-2 rounded-md bg-black p-2 text-white"
+	>
+		<span
+			class="align-items-center flex w-[calc(100%-1rem)] flex-row gap-1 {justifyClass}"
+		>
 			{@render header()}
 		</span>
 	</summary>
-	{@render children()}
+
+	<div class="px-2 py-4">
+		{@render children()}
+	</div>
 </details>
 
 <style>
-	details {
-		border: 1px solid var(--c-bla);
-		border-radius: 0.25rem;
-		padding: 0.5rem 0.5rem 0;
-	}
-
-	summary {
-		margin: -0.5rem -0.5rem 0;
-		padding: 0.5rem;
-		list-style: none;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 0.5rem;
-		cursor: pointer;
-		background-color: var(--c-bla);
-		color: var(--c-whi);
-		border-radius: 0.25rem;
-	}
-
-	summary::-webkit-details-marker {
-		display: none;
-	}
-
-	span {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		width: calc(100% - 1rem);
-		gap: 1rem;
-	}
-
-	span[data-justify='between'] {
-		justify-content: space-between;
-	}
-
-	span[data-justify='start'] {
-		justify-content: flex-start;
-	}
-
-	span[data-justify='end'] {
-		justify-content: flex-end;
-	}
-
 	details > summary::after {
 		content: '▶';
 		display: grid;
@@ -71,14 +42,6 @@
 		height: 1.75rem;
 		place-items: center;
 		border-radius: 0.25rem;
-	}
-
-	details[open] {
-		padding: 0.5rem;
-	}
-
-	details[open] > summary {
-		margin-bottom: 0.5rem;
 	}
 
 	details[open] > summary::after {

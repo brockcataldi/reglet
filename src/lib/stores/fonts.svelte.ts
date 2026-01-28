@@ -1,4 +1,9 @@
 import {
+	FAMILIES_LOCAL_STORAGE_KEY,
+	STYLESHEETS_LOCAL_STORAGE_KEY
+} from '$lib/constants';
+
+import {
 	type Face,
 	type Family,
 	type StylesheetUrl,
@@ -7,39 +12,44 @@ import {
 
 import { extractStylesheets } from '$lib/functions/stylesheets';
 import { extractFontFaces } from '$lib/functions/fonts';
+import { readLocalStorage, writeLocalStorage } from '$lib/functions/utilities';
 
 export class Fonts {
-	private _rawText: string = $state('');
-
-	private _stylesheets: StylesheetUrl[] = $derived(
-		extractStylesheets(this.rawText)
+	#stylesheets: StylesheetUrl[] = $state(
+		readLocalStorage<StylesheetUrl[]>(STYLESHEETS_LOCAL_STORAGE_KEY) || []
+	);
+	#families: Family[] = $state(
+		readLocalStorage<Family[]>(FAMILIES_LOCAL_STORAGE_KEY) || []
 	);
 
-	private _families: Family[] = $state([]);
-
-	constructor() {}
-
-	get rawText() {
-		return this._rawText;
-	}
-
-	set rawText(value: string) {
-		this._rawText = value;
+	constructor() {
+		$effect.root(() => {
+			$effect(() => {
+				writeLocalStorage(STYLESHEETS_LOCAL_STORAGE_KEY, this.stylesheets);
+				writeLocalStorage(FAMILIES_LOCAL_STORAGE_KEY, this.families);
+			});
+		});
 	}
 
 	get stylesheets() {
-		return this._stylesheets;
+		return this.#stylesheets;
+	}
+
+	set stylesheets(value: StylesheetUrl[]) {
+		this.#stylesheets = value;
 	}
 
 	get families() {
-		return this._families;
+		return this.#families;
 	}
 
 	set families(value: Family[]) {
-		this._families = value;
+		this.#families = value;
 	}
 
-	public async install() {
+	public async install(rawText: string) {
+		this.stylesheets = extractStylesheets(rawText);
+
 		const fontFaces = await Promise.all(
 			this.stylesheets.map((stylesheet) => extractFontFaces(stylesheet.url))
 		);
@@ -73,7 +83,9 @@ export class Fonts {
 		faceIndex: number,
 		variationSetting: VariationSetting
 	) {
-		this.families[familyIndex].faces[faceIndex].variationSettings.push(variationSetting);
+		this.families[familyIndex].faces[faceIndex].variationSettings.push(
+			variationSetting
+		);
 	}
 
 	public deleteVariationSetting(
@@ -85,6 +97,19 @@ export class Fonts {
 			variationIndex,
 			1
 		);
+	}
+
+	public clear() {
+		this.stylesheets = [];
+		this.families = [];
+	}
+
+	public clearFamilies() {
+		this.families = [];
+	}
+
+	public clearStylesheets() {
+		this.stylesheets = [];
 	}
 }
 

@@ -1,46 +1,28 @@
 <script lang="ts">
-	import Text from '$lib/components/text.svelte';
+	import { resolve } from '$app/paths';
+
+	import LinkButton from '$lib/components/link-button.svelte';
+
 	import Providers from './_components/providers.svelte';
 	import Installed from './_components/installed.svelte';
 </script>
 
-<main>
+<main class="mx-auto max-w-xl pt-16">
 	<header>
-		<Text tag="h1">Step #1</Text>
-		<Text tag="p">
+		<h1 class="mb-2 text-5xl font-bold">Step #1</h1>
+		<p class="text-base">
 			This system requires measuring the fonts you plan to use. So to start
 			you'll need to install them, or in the case of System fonts configure the
 			available settings.
-		</Text>
+		</p>
 	</header>
-
-	<div>
+	<hr class="my-8" />
+	<section>
 		<Providers />
 		<Installed />
-	</div>
+	</section>
+
+	<footer>
+		<LinkButton href={resolve('/define')}>Next</LinkButton>
+	</footer>
 </main>
-
-<style>
-	main {
-		width: 100%;
-		margin: 0 auto;
-		padding: 1rem;
-		box-sizing: border-box;
-	}
-
-	header {
-		padding: 2rem 0;
-		width: 100%;
-		box-sizing: border-box;
-	}
-
-	div {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 2rem;
-		width: 100%;
-		box-sizing: border-box;
-		align-items: flex-start;
-		justify-content: flex-start;
-	}
-</style>

@@ -16,57 +16,21 @@
 		color = 'primary',
 		...props
 	}: Props = $props();
+
+	const sizeClass = $derived(size === 'small' ? 'text-sm' : 'text-base');
+	const widthClass = $derived(width === 'full' ? 'w-full' : 'w-fit');
+	const colorClass = $derived(
+		color === 'primary'
+			? 'bg-black text-white'
+			: color === 'disabled'
+				? 'bg-gray-300 text-gray-500'
+				: 'bg-red-700 text-white'
+	);
 </script>
 
-<button data-size={size} data-width={width} data-color={color} {...props}>
+<button
+	class="inline-block cursor-pointer rounded-md border-none px-4 py-2 font-bold {sizeClass} {widthClass} {colorClass} disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
+	{...props}
+>
 	{@render children()}
 </button>
-
-<style>
-	button {
-		appearance: none;
-		border: none;
-		cursor: pointer;
-		font-family: var(--ff-ss);
-		margin: 0;
-		font-weight: 700;
-		background-color: var(--c-bla);
-		color: var(--c-whi);
-		display: inline-block;
-		border-radius: 0.25rem;
-		padding: 0.5rem 1rem;
-		width: 100%;
-	}
-
-	button[data-color='primary'] {
-		background-color: var(--c-bla);
-		color: var(--c-whi);
-	}
-
-	button[data-color='error'] {
-		background-color: var(--c-red);
-		color: var(--c-whi);
-	}
-
-	button[disabled],
-	button[data-color='disabled'] {
-		cursor: not-allowed;
-		background-color: var(--c-gra);
-	}
-
-	button[data-size='small'] {
-		font-size: 0.875rem;
-	}
-
-	button[data-size='medium'] {
-		font-size: 1rem;
-	}
-
-	button[data-width='full'] {
-		width: 100%;
-	}
-
-	button[data-width='fit'] {
-		width: fit-content;
-	}
-</style>

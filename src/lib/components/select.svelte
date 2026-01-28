@@ -11,33 +11,14 @@
 	let { id, label, value = $bindable(), children, ...props }: Props = $props();
 </script>
 
-<div>
-	<label for={id}>{label}</label>
-	<select {id} bind:value {...props}>
+<div class="flex w-full flex-col gap-1">
+	<label class="text-sm" for={id}>{label}</label>
+	<select
+		class="m-0 inline-block rounded-md bg-white px-4 py-2 text-base text-black"
+		{id}
+		bind:value
+		{...props}
+	>
 		{@render children()}
 	</select>
 </div>
-
-<style>
-	div {
-		display: flex;
-		flex-direction: column;
-		gap: 0.25rem;
-		width: 100%;
-	}
-
-	label {
-		font-family: var(--ff-ss);
-		font-size: 0.875rem;
-	}
-
-	select {
-		font-family: var(--ff-ss);
-		font-size: 1rem;
-		box-sizing: border-box;
-		width: 100%;
-		padding: 0.25rem 0.75rem;
-		border: 1px solid var(--c-bla);
-		border-radius: 0.25rem;
-	}
-</style>

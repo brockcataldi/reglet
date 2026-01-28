@@ -1,8 +1,8 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
 	import fonts from '$lib/stores/fonts.svelte';
-
 	import '$lib/style.css';
+
 	let { children } = $props();
 </script>
 

@@ -1,9 +1,8 @@
 <script lang="ts">
-	import FontFamily from './font-family.svelte';
-	import Text from '$lib/components/text.svelte';
-
 	import fonts from '$lib/stores/fonts.svelte';
+
 	import Button from '$lib/components/button.svelte';
+	import FontFamily from './font-family.svelte';
 
 	const handleAddFamily = () => {
 		fonts.createFamily({
@@ -21,41 +20,35 @@
 			]
 		});
 	};
+
+	function handleClearFamilies() {
+		fonts.clearFamilies();
+	}
 </script>
 
-<section>
-	<header>
+<section class="mb-8">
+	<header class="mb-4 flex items-center justify-between gap-2">
 		<div>
-			<Text tag="h2">Fonts</Text>
-			<Text tag="p">The following fonts have been recognized by Reglet.</Text>
+			<h2 class="mb-2 text-3xl font-bold">Fonts</h2>
+			<p class="mb-4 text-base">
+				The following fonts have been recognized by Reglet.
+			</p>
 		</div>
 		<Button width="fit" onclick={handleAddFamily}>Add Font</Button>
 	</header>
-	<ul>
+	<ul class="mb-4">
 		{#each fonts.families as family, index (family.id)}
-			<li>
+			<li class="mb-2">
 				<FontFamily bind:family={fonts.families[index]} familyIndex={index} />
 			</li>
 		{/each}
 	</ul>
+	<div>
+		<Button
+			width="fit"
+			disabled={fonts.families.length === 0}
+			color="error"
+			onclick={handleClearFamilies}>Clear Fonts</Button
+		>
+	</div>
 </section>
-
-<style>
-	ul {
-		list-style: none;
-		padding: 0;
-		margin: 0 0 1rem;
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-	}
-
-	header {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-between;
-		gap: 1rem;
-		margin-bottom: 1rem;
-	}
-</style>

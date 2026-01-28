@@ -4,15 +4,19 @@
 	import LinkButton from '$lib/components/link-button.svelte';
 </script>
 
-<header>
-	<div>
-		<h1>reglet</h1>
-		<p>reg&middot;let</p>
+<header class="flex h-dvh w-full items-center justify-center p-4">
+	<div class="w-full max-w-xl">
+		<h1 class="text-5xl font-bold">reglet</h1>
+		<p class="mb-4 text-2xl">reg&middot;let</p>
 
-		<ol>
-			<li>a flat narrow architectural molding</li>
-			<li>a strip of wood used like a lead between lines of type</li>
-			<li><strong>a typography sizing and spacing system</strong></li>
+		<ol class="mb-4 list-inside list-decimal">
+			<li class="text-md mb-1">a flat narrow architectural molding</li>
+			<li class="text-md mb-1">
+				a strip of wood used like a lead between lines of type
+			</li>
+			<li class="text-md mb-1">
+				<strong>a typography sizing and spacing system</strong>
+			</li>
 		</ol>
 
 		<menu>
@@ -20,50 +24,3 @@
 		</menu>
 	</div>
 </header>
-
-<style>
-	header {
-		width: 100%;
-		display: grid;
-		place-items: center;
-		box-sizing: border-box;
-		padding: 4rem 1rem;
-		height: 100dvh;
-	}
-
-	div {
-		max-width: 750px;
-		width: 100%;
-	}
-
-	h1 {
-		font-family: var(--ff-ss);
-		font-size: 3rem;
-		margin: 0;
-	}
-
-	p {
-		font-family: var(--ff-ss);
-		font-size: 1.5rem;
-		margin: 0 0 1rem 0;
-	}
-
-	ol {
-		margin: 0 0 1rem 0;
-	}
-
-	li {
-		font-family: var(--ff-ss);
-		font-size: 1rem;
-	}
-
-	menu {
-		width: 100%;
-		display: flex;
-		justify-content: flex-start;
-		align-items: center;
-		gap: 1rem;
-		padding: 0;
-		margin: 0;
-	}
-</style>

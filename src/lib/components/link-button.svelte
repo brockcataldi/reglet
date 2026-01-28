@@ -9,21 +9,9 @@
 	let { children, ...props }: Props = $props();
 </script>
 
-<a {...props}>
+<a
+	class="m-0 inline-block rounded-md bg-black px-4 py-2 text-base font-bold text-white"
+	{...props}
+>
 	{@render children()}
 </a>
-
-<style>
-	a {
-		font-family: var(--ff-ss);
-		font-size: 1rem;
-		margin: 0;
-		font-weight: 700;
-		padding: 0.5rem 1rem;
-		background-color: var(--c-bla);
-		text-decoration: none;
-		color: var(--c-whi);
-		display: inline-block;
-		border-radius: 0.25rem;
-	}
-</style>

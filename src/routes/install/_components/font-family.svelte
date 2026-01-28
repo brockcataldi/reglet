@@ -3,7 +3,6 @@
 
 	import Accordion from '$lib/components/accordion.svelte';
 	import Input from '$lib/components/input.svelte';
-	import Text from '$lib/components/text.svelte';
 
 	import FontFace from './font-face.svelte';
 	import Button from '$lib/components/button.svelte';
@@ -34,17 +33,18 @@
 
 <Accordion justify="between">
 	{#snippet header()}
-		<h3>
-			<code>
+		<h3 class="align-start flex flex-col justify-center text-sm font-normal">
+			<code class="font-mono">
 				font-family: "{family.family}", {family.stack};
 			</code>
 		</h3>
 
-		<span>
+		<span class="text-base">
 			{family.faces.length} faces
 		</span>
 	{/snippet}
-	<fieldset>
+
+	<fieldset class="mb-4 flex gap-2">
 		<legend class="sr-only">Family & Stack</legend>
 		<Input
 			id={`family-${familyIndex}`}
@@ -58,8 +58,8 @@
 		/>
 	</fieldset>
 
-	<div>
-		<Text tag="h4">Faces</Text>
+	<div class="mb-4 flex items-center justify-between gap-2">
+		<h4 class="mb-2 text-xl font-bold">Faces</h4>
 		<Button size="small" width="fit" color="primary" onclick={handleAddFace}
 			>Add Face</Button
 		>
@@ -81,55 +81,3 @@
 		>Delete Family</Button
 	>
 </Accordion>
-
-<style>
-	ul {
-		list-style: none;
-		padding: 0;
-		margin: 0 0 1rem;
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-	}
-
-	li {
-		width: 100%;
-	}
-
-	code {
-		font-family: var(--ff-m);
-		font-size: 0.875rem;
-	}
-
-	span {
-		font-family: var(--ff-ss);
-		font-size: 0.875rem;
-		padding: 0.25rem 0.5rem;
-		border: 1px solid var(--c-whi);
-		border-radius: 0.25rem;
-	}
-
-	h3 {
-		font-weight: 400;
-		font-size: 0.875rem;
-		margin: 0;
-	}
-
-	fieldset {
-		display: flex;
-		flex-direction: row;
-		gap: 1rem;
-		padding: 0;
-		margin: 0;
-		border: none;
-	}
-
-	div {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-between;
-		gap: 1rem;
-		margin: 1rem 0;
-	}
-</style>
