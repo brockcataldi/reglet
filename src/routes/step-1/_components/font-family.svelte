@@ -3,9 +3,9 @@
 
 	import Accordion from '$lib/components/accordion.svelte';
 	import Input from '$lib/components/input.svelte';
+	import Button from '$lib/components/button.svelte';
 
 	import FontFace from './font-face.svelte';
-	import Button from '$lib/components/button.svelte';
 
 	import fonts from '$lib/stores/fonts.svelte';
 
@@ -35,7 +35,7 @@
 	{#snippet header()}
 		<h3 class="align-start flex flex-col justify-center text-sm font-normal">
 			<code class="font-mono">
-				font-family: "{family.family}", {family.stack};
+				font-family: "{family.family}";
 			</code>
 		</h3>
 
@@ -45,16 +45,11 @@
 	{/snippet}
 
 	<fieldset class="mb-4 flex gap-2">
-		<legend class="sr-only">Family & Stack</legend>
+		<legend class="sr-only">Family</legend>
 		<Input
 			id={`family-${familyIndex}`}
 			label="Family"
 			bind:value={family.family}
-		/>
-		<Input
-			id={`stack-${familyIndex}`}
-			label="Stack"
-			bind:value={family.stack}
 		/>
 	</fieldset>
 
@@ -65,9 +60,9 @@
 		>
 	</div>
 
-	<ul>
+	<ul class="mb-4">
 		{#each family.faces as _, faceIndex (`${familyIndex}-${faceIndex}`)}
-			<li>
+			<li class="mb-2">
 				<FontFace
 					bind:face={family.faces[faceIndex]}
 					{familyIndex}

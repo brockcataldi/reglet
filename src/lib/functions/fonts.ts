@@ -4,11 +4,14 @@ import {
 	type FaceRule,
 	type Style,
 	type Weight,
-	type VariationSetting,
+	type VariationSetting
+} from '$lib/types';
+
+import {
 	compareFace,
 	isStyleString,
 	isWeightString
-} from '$lib/types';
+} from '$lib/functions/types';
 
 export function extractStyle(value: string): Style {
 	return isStyleString(value) ? value : 'normal';
@@ -104,7 +107,6 @@ export async function extractFontFaces(url: string) {
 				acc.push({
 					id: crypto.randomUUID(),
 					family: curr.family,
-					stack: 'sans-serif',
 					faces: [curr]
 				});
 			} else {

@@ -1,8 +1,9 @@
 <script lang="ts">
+	import type { Stretch } from '$lib/types';
+
 	import Button from '$lib/components/button.svelte';
 	import Input from '$lib/components/input.svelte';
 	import Select from '$lib/components/select.svelte';
-	import type { Stretch } from '$lib/types';
 
 	type Props = {
 		stretch: Stretch;

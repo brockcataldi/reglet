@@ -1,9 +1,7 @@
 <script lang="ts">
-	import {
-		isVariationAxis,
-		isVariationAxisValue,
-		type VariationSetting
-	} from '$lib/types';
+	import { type VariationSetting } from '$lib/types';
+
+	import { isVariationAxis, isVariationAxisValue } from '$lib/functions/types';
 
 	import Button from '$lib/components/button.svelte';
 	import Input from '$lib/components/input.svelte';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { rawInstallTextFromLocalStorage } from '$lib/functions/utilities';
+	import { rawInstallTextFromLocalStorage } from '$lib/functions/stylesheets';
 
 	import fonts from '$lib/stores/fonts.svelte';
 
@@ -23,9 +23,7 @@
 </script>
 
 <section class="mb-8">
-	<h2 class="mb-2 text-3xl font-bold">
-		Install <span class="text-gray-600">(optional)</span>
-	</h2>
+	<h2 class="mb-2 text-3xl font-bold">Install</h2>
 	<p class="mb-4 text-base">
 		Paste your font URLs here, this supports raw URLs or exported link tags.
 	</p>

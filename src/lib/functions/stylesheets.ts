@@ -1,8 +1,11 @@
-import { SUPPORTED_FONT_PROVIDERS } from '$lib/constants';
+import {
+	SUPPORTED_FONT_PROVIDERS,
+	STYLESHEETS_LOCAL_STORAGE_KEY
+} from '$lib/constants';
 
 import type { StylesheetUrl } from '$lib/types';
 
-import { hash } from '$lib/functions/utilities';
+import { hash, readLocalStorage } from '$lib/functions/utilities';
 
 export function extractStylesheets(text: string): StylesheetUrl[] {
 	if (!text.includes('<')) {
@@ -37,4 +40,15 @@ export function extractStylesheets(text: string): StylesheetUrl[] {
 	});
 
 	return urls;
+}
+
+export function rawInstallTextFromLocalStorage(): string {
+	const stylesheets = readLocalStorage<StylesheetUrl[]>(
+		STYLESHEETS_LOCAL_STORAGE_KEY
+	);
+
+	if (!stylesheets) {
+		return '';
+	}
+	return stylesheets.map((stylesheet) => stylesheet.url).join('\n');
 }

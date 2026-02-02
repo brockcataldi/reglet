@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { toStringWeight, type Face } from '$lib/types';
+	import { type Face } from '$lib/types';
+	import { toStringWeight } from '$lib/functions/types';
 
 	import Accordion from '$lib/components/accordion.svelte';
 	import Button from '$lib/components/button.svelte';
@@ -41,7 +42,6 @@
 		<FontWeight bind:weight={face.weight} {familyIndex} {faceIndex} />
 		<FontStyle
 			bind:style={face.style}
-			bind:obliqueAngle={face.obliqueAngle}
 			{familyIndex}
 			{faceIndex}
 		/>

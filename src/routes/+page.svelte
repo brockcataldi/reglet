@@ -20,7 +20,7 @@
 		</ol>
 
 		<menu>
-			<LinkButton href={resolve('/install')}>Get Started</LinkButton>
+			<LinkButton href={resolve('/step-1')}>Get Started</LinkButton>
 		</menu>
 	</div>
 </header>

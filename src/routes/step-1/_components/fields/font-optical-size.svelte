@@ -1,6 +1,7 @@
 <script lang="ts">
-	import Select from '$lib/components/select.svelte';
 	import type { OpticalSize } from '$lib/types';
+
+	import Select from '$lib/components/select.svelte';
 
 	type Props = {
 		opticalSize: OpticalSize;
