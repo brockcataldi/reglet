@@ -9,11 +9,7 @@
 		faceIndex: number;
 	};
 
-	let {
-		style = $bindable(),
-		familyIndex,
-		faceIndex
-	}: Props = $props();
+	let { style = $bindable(), familyIndex, faceIndex }: Props = $props();
 
 	const onChangeStyle = (event: Event) => {
 		const target = event.target as HTMLSelectElement;

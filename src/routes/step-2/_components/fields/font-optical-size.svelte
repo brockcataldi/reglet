@@ -2,23 +2,23 @@
 	import type { OpticalSize } from '$lib/types';
 
 	import Select from '$lib/components/select.svelte';
-	import Input from '$lib/components/input.svelte';
 
 	type Props = {
+		id: string;
 		opticalSize: OpticalSize;
-		selectedOpticalSizes: OpticalSize | OpticalSize[];
+		opticalSizes: OpticalSize[];
 	};
 
-	let { opticalSize = $bindable(), selectedOpticalSizes }: Props = $props();
+	let { id, opticalSize = $bindable(), opticalSizes }: Props = $props();
 </script>
 
-{#if selectedOpticalSizes instanceof Array}
-    <Select id="optical-size" label="Optical Size" bind:value={opticalSize}>
-        <option value="" disabled>Select a style</option>
-        {#each selectedOpticalSizes as selectedOpticalSize (selectedOpticalSize)}
-            <option value={selectedOpticalSize}>{selectedOpticalSize}</option>
-        {/each}
-    </Select>
-{:else}
-	<Input id="optical-size" label="Optical Size" bind:value={opticalSize} type="text" disabled />
-{/if}
+<Select
+	id={`${id}-optical-size`}
+	label="Optical Sizing"
+	bind:value={opticalSize}
+>
+	<option value="" disabled>Select a style</option>
+	{#each opticalSizes as selectedOpticalSize (`${id}-optical-size-${selectedOpticalSize}`)}
+		<option value={selectedOpticalSize}>{selectedOpticalSize}</option>
+	{/each}
+</Select>

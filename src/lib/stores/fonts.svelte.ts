@@ -6,17 +6,17 @@ import {
 import {
 	type Face,
 	type Family,
-	type StylesheetUrl,
-	type VariationSetting
+	type Stylesheet,
+	type VariationSetting,
+	extractFamilies
 } from '$lib/types';
 
-import { extractStylesheets } from '$lib/functions/stylesheets';
-import { extractFontFaces } from '$lib/functions/fonts';
+import { extractStylesheets } from '$lib/functions/types/stylesheet';
 import { readLocalStorage, writeLocalStorage } from '$lib/functions/utilities';
 
 export class Fonts {
-	#stylesheets: StylesheetUrl[] = $state(
-		readLocalStorage<StylesheetUrl[]>(STYLESHEETS_LOCAL_STORAGE_KEY) || []
+	#stylesheets: Stylesheet[] = $state(
+		readLocalStorage<Stylesheet[]>(STYLESHEETS_LOCAL_STORAGE_KEY) || []
 	);
 	#families: Family[] = $state(
 		readLocalStorage<Family[]>(FAMILIES_LOCAL_STORAGE_KEY) || []
@@ -35,7 +35,7 @@ export class Fonts {
 		return this.#stylesheets;
 	}
 
-	set stylesheets(value: StylesheetUrl[]) {
+	set stylesheets(value: Stylesheet[]) {
 		this.#stylesheets = value;
 	}
 
@@ -51,7 +51,7 @@ export class Fonts {
 		this.stylesheets = extractStylesheets(rawText);
 
 		const fontFaces = await Promise.all(
-			this.stylesheets.map((stylesheet) => extractFontFaces(stylesheet.url))
+			this.stylesheets.map((stylesheet) => extractFamilies(stylesheet.url))
 		);
 
 		const families = fontFaces.reduce((acc: Family[], curr: Family[]) => {

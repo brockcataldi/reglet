@@ -2,28 +2,18 @@
 	import type { Stretch } from '$lib/types';
 
 	import Select from '$lib/components/select.svelte';
-	import Input from '$lib/components/input.svelte';
 
 	type Props = {
+		id: string;
 		stretch: Stretch;
-		selectedStretches: Stretch | Stretch[];
+		stretches: Stretch[];
 	};
 
-	let { stretch = $bindable(), selectedStretches }: Props = $props();
+	let { id, stretch = $bindable(), stretches }: Props = $props();
 </script>
 
-{#if selectedStretches instanceof Array}
-	<Select id="stretch" label="Stretch" bind:value={stretch}>
-		{#each selectedStretches as stretch}
-			<option value={stretch}>{stretch}</option>
-		{/each}
-	</Select>
-{:else}
-	<Input
-		id="stretch"
-		label="Stretch"
-		bind:value={stretch}
-		type={typeof selectedStretches === 'string' ? 'text' : 'number'}
-		disabled
-	/>
-{/if}
+<Select id={`${id}-stretch`} label="Stretch" bind:value={stretch}>
+	{#each stretches as stretch (`${id}-stretch-${stretch}`)}
+		<option value={stretch}>{stretch}</option>
+	{/each}
+</Select>

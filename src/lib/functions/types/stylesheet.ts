@@ -3,11 +3,11 @@ import {
 	STYLESHEETS_LOCAL_STORAGE_KEY
 } from '$lib/constants';
 
-import type { StylesheetUrl } from '$lib/types';
+import type { Stylesheet } from '$lib/types';
 
 import { hash, readLocalStorage } from '$lib/functions/utilities';
 
-export function extractStylesheets(text: string): StylesheetUrl[] {
+export function extractStylesheets(text: string): Stylesheet[] {
 	if (!text.includes('<')) {
 		return text
 			.split('\n')
@@ -23,7 +23,7 @@ export function extractStylesheets(text: string): StylesheetUrl[] {
 			});
 	}
 
-	const urls: StylesheetUrl[] = [];
+	const urls: Stylesheet[] = [];
 	const parser = new DOMParser();
 	const dom = parser.parseFromString(text, 'text/html');
 
@@ -42,8 +42,8 @@ export function extractStylesheets(text: string): StylesheetUrl[] {
 	return urls;
 }
 
-export function rawInstallTextFromLocalStorage(): string {
-	const stylesheets = readLocalStorage<StylesheetUrl[]>(
+export function getStylesheetFromLocalStorage(): string {
+	const stylesheets = readLocalStorage<Stylesheet[]>(
 		STYLESHEETS_LOCAL_STORAGE_KEY
 	);
 

@@ -20,7 +20,7 @@
 
 <details class="group w-full rounded-md border border-black px-2 pt-2 pb-0">
 	<summary
-		class="-webkit-details-marker:hidden m-0 -mx-2 -mt-2 flex cursor-pointer items-center justify-between gap-2 rounded-md bg-black p-2 text-white"
+		class="-webkit-details-marker:hidden m-0 -mx-2 -mt-2 flex cursor-pointer items-center justify-between gap-2 rounded-md p-2"
 	>
 		<span
 			class="align-items-center flex w-[calc(100%-1rem)] flex-row gap-1 {justifyClass}"

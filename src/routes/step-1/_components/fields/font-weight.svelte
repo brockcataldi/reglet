@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { type Axis, type Weight } from '$lib/types';
-	import { isAxis } from '$lib/functions/types';
+	import { type Axis, type Weight, isAxis } from '$lib/types';
 
 	import Button from '$lib/components/button.svelte';
 	import Input from '$lib/components/input.svelte';

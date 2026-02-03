@@ -1,78 +1,32 @@
 import {
 	type Family,
-	type Face,
 	type FaceRule,
-	type Style,
-	type Weight,
-	type VariationSetting
+	type Face,
+	compareFace,
+	extractWeight,
+	extractWDTH,
+	extractStyle
 } from '$lib/types';
 
-import {
-	compareFace,
-	isStyleString,
-	isWeightString
-} from '$lib/functions/types';
+export function compareFamily(family1: Family, family2: Family): boolean {
+	if (family1.family !== family2.family) {
+		return false;
+	}
 
-export function extractStyle(value: string): Style {
-	return isStyleString(value) ? value : 'normal';
-}
+	if (family1.faces.length !== family2.faces.length) {
+		return false;
+	}
 
-export function extractWeight(value: string): Weight {
-	const space = value.includes(' ');
-
-	if (!space) {
-		const possibleValue = Number(value);
-
-		if (isNaN(possibleValue)) {
-			return isWeightString(value) ? value : 'normal';
+	for (let i = 0; i < family1.faces.length; i++) {
+		if (!compareFace(family1.faces[i], family2.faces[i])) {
+			return false;
 		}
-
-		return possibleValue;
 	}
 
-	const [min, max] = value.split(' ').map(Number);
-
-	return {
-		min,
-		max
-	};
+	return true;
 }
 
-export function extractWDTH(value: string): VariationSetting | null {
-	if (value === '') {
-		return null;
-	}
-
-	const space = value.includes(' ');
-	const percentage = value.includes('%');
-
-	if (percentage) {
-		value = value.replaceAll('%', '');
-	}
-
-	if (!space) {
-		const possibleValue = Number(value);
-
-		if (isNaN(possibleValue)) {
-			return null;
-		}
-
-		return {
-			name: 'wdth',
-			value: possibleValue
-		};
-	}
-
-	const [min, max] = value.split(' ').map(Number);
-
-	return {
-		name: 'wdth',
-		min,
-		max
-	};
-}
-
-export async function extractFontFaces(url: string) {
+export async function extractFamilies(url: string) {
 	const res = await fetch(url, { mode: 'cors' });
 	const cssText = await res.text();
 

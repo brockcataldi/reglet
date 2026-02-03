@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { rawInstallTextFromLocalStorage } from '$lib/functions/stylesheets';
+	import { getStylesheetFromLocalStorage } from '$lib/types';
 
 	import fonts from '$lib/stores/fonts.svelte';
 
 	import Button from '$lib/components/button.svelte';
 
-	let rawText = $state(rawInstallTextFromLocalStorage());
+	let rawText = $state(getStylesheetFromLocalStorage());
 
 	function handleInstallClick() {
 		fonts.install(rawText);

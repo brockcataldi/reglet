@@ -23,7 +23,7 @@
 		<header>
 			<h2 class="mb-2 text-3xl font-bold">Host Style</h2>
 		</header>
-		<TextStyle bind:style={styles.host} />
+		<TextStyle id="host" bind:style={styles.host} />
 	</section>
 
 	<hr class="my-8" />

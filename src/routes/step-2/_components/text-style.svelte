@@ -6,7 +6,12 @@
 		type Stretch,
 		type Style,
 		type TextStyle,
-		type Weight
+		type VariationSetting,
+		type Weight,
+		uniqueOpticalSizes,
+		uniqueStretches,
+		uniqueVariationSettings,
+		uniqueWeights
 	} from '$lib/types';
 
 	import fonts from '$lib/stores/fonts.svelte';
@@ -20,13 +25,17 @@
 	import FontOpticalSize from './fields/font-optical-size.svelte';
 
 	type Props = {
+		id: string;
 		style: TextStyle;
 	};
 
-	let { style = $bindable() }: Props = $props();
+	let { id, style = $bindable() }: Props = $props();
 
-	let id = $state<string>(style.family);
-	let selectedFamily = $derived<Family | null>(fonts.families.find((f) => f.id === id) ?? null);
+	let selectedId = $state<string>(style.family);
+
+	let selectedFamily = $derived<Family | null>(
+		fonts.families.find((f) => f.id === selectedId) ?? null
+	);
 
 	let selectedStyles = $derived(
 		selectedFamily?.faces
@@ -36,82 +45,61 @@
 	);
 
 	let selectedFaces = $derived(
-		selectedFamily?.faces.filter((f) => f.style === style.style) ?? ([] as Face[])
+		selectedFamily?.faces.filter((f) => f.style === style.style) ??
+			([] as Face[])
 	);
 
-	type SelectedAggregate = {
+	type Selected = {
 		weight: Weight[];
 		stretch: Stretch[];
 		opticalSize: OpticalSize[];
-	}
+		variationSettings: VariationSetting[];
+	};
 
-	type Selected = {
-		weight: Weight | Weight[];
-		stretch: Stretch | Stretch[];
-		opticalSize: OpticalSize | OpticalSize[];
-	}
+	let selected = $derived.by(() => {
+		const aggregated = selectedFaces.reduce(
+			(acc: Selected, face: Face) => {
+				acc.weight.push(face.weight);
+				acc.stretch.push(face.stretch);
+				acc.opticalSize.push(face.opticalSize);
+				acc.variationSettings.push(...face.variationSettings);
+				return acc;
+			},
+			{
+				weight: [],
+				stretch: [],
+				opticalSize: [],
+				variationSettings: []
+			}
+		);
 
-	let selectedWeights = $derived.by<Weight | Weight[]>(() => {
-		const weights = selectedFaces
-			.map((f) => f.weight)
-			.filter((weight, index, self) => self.indexOf(weight) === index);
-
-		if (weights.length === 1) {
-			return weights[0];
-		}
-
-		return weights;
-	});
-
-	let selectedStretches = $derived.by<Stretch | Stretch[]>(() => {
-		const stretches = selectedFaces
-			.map((f) => f.stretch)
-			.filter((stretch, index, self) => self.indexOf(stretch) === index);
-
-		if (stretches.length === 1) {
-			return stretches[0];
-		}
-
-		return stretches;
-	});
-
-	let selectedOpticalSizes = $derived.by<OpticalSize | OpticalSize[]>(() => {
-		const opticalSizes = selectedFaces
-			.map((f) => f.opticalSize)
-			.filter((opticalSize, index, self) => self.indexOf(opticalSize) === index);
-
-		if (opticalSizes.length === 1) {
-			return opticalSizes[0];
-		}
-
-		return opticalSizes;
+		return {
+			weight: uniqueWeights(aggregated.weight),
+			stretch: uniqueStretches(aggregated.stretch),
+			opticalSize: uniqueOpticalSizes(aggregated.opticalSize),
+			variationSettings: uniqueVariationSettings(aggregated.variationSettings)
+		};
 	});
 
 	function handleFamilyChange(event: Event) {
 		const target = event.target as HTMLSelectElement;
 		const value = target.value;
 
-		id = value;
+		selectedId = value;
 		style.family = value;
 
-		if(selectedStyles instanceof Array) {
-			if (selectedStyles.length > 0 && !selectedStyles.includes(style.style)) {
-				style.style = selectedStyles[0];
-			}
-		} else {
-				style.style = selectedStyles;
+		if (selectedStyles.length > 0 && !selectedStyles.includes(style.style)) {
+			style.style = selectedStyles[0];
 		}
 
-		style.weight = swapWeight(style.weight, selectedWeights);
+		style.weight = swapWeight(style.weight, selected.weight);
 
-		if(selectedOpticalSizes instanceof Array) {
-			if (selectedOpticalSizes.length > 0 && !selectedOpticalSizes.includes(style.opticalSize)) {
-				style.opticalSize = selectedOpticalSizes[0];
-			}
-		} else {
-				style.opticalSize = selectedOpticalSizes;
+		if (
+			selected.opticalSize.length > 0 &&
+			!selected.opticalSize.includes(style.opticalSize)
+		) {
+			style.opticalSize = selected.opticalSize[0];
 		}
-
 	}
 </script>
 
@@ -125,11 +113,11 @@
 		Lorem Ipsum dolor
 	</p>
 	<div>
-		<div class="grid grid-cols-2 gap-4">
+		<div class="grid grid-cols-3 gap-4">
 			<Select
 				id="family"
 				label="Family"
-				bind:value={id}
+				bind:value={selectedId}
 				onchange={handleFamilyChange}
 			>
 				<option value="" disabled>Select a family</option>
@@ -137,14 +125,29 @@
 					<option value={family.id}>{family.family}</option>
 				{/each}
 			</Select>
-			{#if id !== ''}
-				<FontStyle bind:style={style.style} {selectedStyles} />
-				<FontWeight bind:weight={style.weight} {selectedWeights} />
-				<FontStretch bind:stretch={style.stretch} {selectedStretches} />
-				<FontOpticalSize bind:opticalSize={style.opticalSize} {selectedOpticalSizes} />
+
+			{#if selectedId !== ''}
+				<FontStyle {id} bind:style={style.style} {selectedStyles} />
+				<FontWeight {id} bind:weight={style.weight} weights={selected.weight} />
+
+				{#if selected.stretch.length > 1}
+					<FontStretch
+						{id}
+						bind:stretch={style.stretch}
+						stretches={selected.stretch}
+					/>
+				{/if}
+
+				{#if selected.opticalSize.length > 1}
+					<FontOpticalSize
+						{id}
+						bind:opticalSize={style.opticalSize}
+						opticalSizes={selected.opticalSize}
+					/>
+				{/if}
 			{/if}
 		</div>
 	</div>
 </div>
 <pre>{JSON.stringify(style, null, 2)}</pre>
-<pre>{JSON.stringify(selectedFaces, null, 2)}</pre>
+<pre>{JSON.stringify(selected, null, 2)}</pre>

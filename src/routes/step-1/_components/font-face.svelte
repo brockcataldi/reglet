@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { type Face } from '$lib/types';
-	import { toStringWeight } from '$lib/functions/types';
+	import { type Face, toStringWeight } from '$lib/types';
 
 	import Accordion from '$lib/components/accordion.svelte';
 	import Button from '$lib/components/button.svelte';
@@ -40,11 +39,7 @@
 
 	<div>
 		<FontWeight bind:weight={face.weight} {familyIndex} {faceIndex} />
-		<FontStyle
-			bind:style={face.style}
-			{familyIndex}
-			{faceIndex}
-		/>
+		<FontStyle bind:style={face.style} {familyIndex} {faceIndex} />
 		<FontOpticalSize
 			bind:opticalSize={face.opticalSize}
 			{familyIndex}
