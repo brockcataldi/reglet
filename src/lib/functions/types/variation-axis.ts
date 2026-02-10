@@ -11,6 +11,7 @@ export function isVariationAxis(value: unknown): value is VariationAxis {
 
 	return (
 		typeof value === 'object' &&
+		'id' in value &&
 		'name' in value &&
 		'min' in value &&
 		'max' in value
@@ -31,7 +32,12 @@ export function isVariationAxisValue(
 		return false;
 	}
 
-	return typeof value === 'object' && 'name' in value && 'value' in value;
+	return (
+		typeof value === 'object' &&
+		'id' in value &&
+		'name' in value &&
+		'value' in value
+	);
 }
 
 export function compareVariationAxisValue(

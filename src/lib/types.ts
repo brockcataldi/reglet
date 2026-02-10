@@ -1,5 +1,5 @@
 export interface Stylesheet {
-	hash: string;
+	id: string;
 	url: string;
 }
 
@@ -13,10 +13,12 @@ export interface Axis {
 export * from '$lib/functions/types/axis';
 
 export type VariationAxis = {
+	id: string;
 	name: string;
 } & Axis;
 
 export interface VariationAxisValue {
+	id: string;
 	name: string;
 	value: number;
 }
@@ -37,7 +39,7 @@ export type Style = 'normal' | 'italic';
 
 export * from '$lib/functions/types/style';
 
-export type OpticalSize = 'none' | 'auto';
+export type OpticalSizing = 'none' | 'auto';
 
 export * from '$lib/functions/types/optical-size';
 
@@ -57,9 +59,10 @@ export type Stretch = StretchString | number;
 export * from '$lib/functions/types/stretch';
 
 export interface Face {
+	id: string;
 	weight: Weight;
 	style: Style;
-	opticalSize: OpticalSize;
+	opticalSizing: OpticalSizing;
 	stretch: Stretch;
 	variationSettings: VariationSetting[];
 }
@@ -74,6 +77,7 @@ export * from '$lib/functions/types/face-rule';
 
 export interface Family {
 	id: string;
+	from: string;
 	family: string;
 	faces: Face[];
 }
@@ -85,6 +89,6 @@ export interface TextStyle {
 	weight: WeightValue;
 	style: Style;
 	stretch: Stretch;
-	opticalSize: OpticalSize;
+	opticalSize: OpticalSizing;
 	variationSettings: VariationAxisValue[];
 }

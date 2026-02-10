@@ -14,7 +14,7 @@ export function compareFace(face1: Face, face2: Face): boolean {
 		return false;
 	}
 
-	if (face1.opticalSize !== face2.opticalSize) {
+	if (face1.opticalSizing !== face2.opticalSizing) {
 		return false;
 	}
 

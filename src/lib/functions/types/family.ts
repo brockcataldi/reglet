@@ -38,6 +38,7 @@ export async function extractFamilies(url: string) {
 		.map((rule: CSSFontFaceRule) => {
 			const style = (rule as CSSFontFaceRule).style;
 			const results: FaceRule = {
+				id: crypto.randomUUID(),
 				family: style
 					.getPropertyValue('font-family')
 					.trim()
@@ -45,11 +46,12 @@ export async function extractFamilies(url: string) {
 				weight: extractWeight(style.getPropertyValue('font-weight').trim()),
 				style: extractStyle(style.getPropertyValue('font-style').trim()),
 				stretch: 'normal',
-				opticalSize: 'auto',
+				opticalSizing: 'auto',
 				variationSettings: []
 			};
 
 			const wdth = extractWDTH(style.getPropertyValue('font-stretch').trim());
+
 			if (wdth) {
 				results.variationSettings.push(wdth);
 			}
@@ -60,6 +62,7 @@ export async function extractFamilies(url: string) {
 			if (!acc.find((family) => family.family === curr.family)) {
 				acc.push({
 					id: crypto.randomUUID(),
+					from: url,
 					family: curr.family,
 					faces: [curr]
 				});

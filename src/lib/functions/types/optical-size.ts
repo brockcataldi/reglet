@@ -1,18 +1,18 @@
-import type { OpticalSize } from '$lib/types';
+import type { OpticalSizing } from '$lib/types';
 
-export function isOpticalSize(value: unknown): value is OpticalSize {
+export function isOpticalSizing(value: unknown): value is OpticalSizing {
 	return value === 'none' || value === 'auto';
 }
 
-export function uniqueOpticalSizes(styles: OpticalSize[]): OpticalSize[] {
-	const seenStyles = new Set<OpticalSize>();
-	for (const style of styles) {
-		if (isOpticalSize(style)) {
-			if (seenStyles.has(style)) {
+export function uniqueOpticalSizes(sizings: OpticalSizing[]): OpticalSizing[] {
+	const seenSizing = new Set<OpticalSizing>();
+	for (const sizing of sizings) {
+		if (isOpticalSizing(sizing)) {
+			if (seenSizing.has(sizing)) {
 				continue;
 			}
-			seenStyles.add(style);
+			seenSizing.add(sizing);
 		}
 	}
-	return [...seenStyles];
+	return [...seenSizing];
 }

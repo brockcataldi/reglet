@@ -1,11 +1,8 @@
-import {
-	SUPPORTED_FONT_PROVIDERS,
-	STYLESHEETS_LOCAL_STORAGE_KEY
-} from '$lib/constants';
+import { STYLESHEETS_LOCAL_STORAGE_KEY } from '$lib/constants';
 
 import type { Stylesheet } from '$lib/types';
 
-import { hash, readLocalStorage } from '$lib/functions/utilities';
+import { readLocalStorage } from '$lib/functions/utilities';
 
 export function extractStylesheets(text: string): Stylesheet[] {
 	if (!text.includes('<')) {
@@ -13,13 +10,10 @@ export function extractStylesheets(text: string): Stylesheet[] {
 			.split('\n')
 			.filter((url) => {
 				const raw = url.trim();
-				return (
-					raw.startsWith('http') &&
-					SUPPORTED_FONT_PROVIDERS.some((provider) => raw.includes(provider))
-				);
+				return raw.startsWith('https');
 			})
 			.map((url) => {
-				return { hash: hash(url), url };
+				return { id: crypto.randomUUID(), url };
 			});
 	}
 
@@ -31,18 +25,14 @@ export function extractStylesheets(text: string): Stylesheet[] {
 		'link[rel="stylesheet"]'
 	) as NodeListOf<HTMLLinkElement>;
 
-	links.forEach((link) => {
-		if (
-			SUPPORTED_FONT_PROVIDERS.some((provider) => link.href.includes(provider))
-		) {
-			urls.push({ hash: hash(link.href), url: link.href });
-		}
-	});
+	links.forEach((link) =>
+		urls.push({ id: crypto.randomUUID(), url: link.href })
+	);
 
 	return urls;
 }
 
-export function getStylesheetFromLocalStorage(): string {
+export function getStylesheetsFromLocalStorage(): string {
 	const stylesheets = readLocalStorage<Stylesheet[]>(
 		STYLESHEETS_LOCAL_STORAGE_KEY
 	);

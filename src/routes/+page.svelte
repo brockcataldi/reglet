@@ -4,7 +4,7 @@
 	import LinkButton from '$lib/components/link-button.svelte';
 </script>
 
-<header class="flex h-dvh w-full items-center justify-center p-4">
+<main class="flex h-dvh w-full items-center justify-center p-4">
 	<div class="w-full max-w-xl">
 		<h1 class="text-5xl font-bold">reglet</h1>
 		<p class="mb-4 text-2xl">reg&middot;let</p>
@@ -20,7 +20,7 @@
 		</ol>
 
 		<menu>
-			<LinkButton href={resolve('/step-1')}>Get Started</LinkButton>
+			<LinkButton href={resolve('/project')}>New Project</LinkButton>
 		</menu>
 	</div>
-</header>
+</main>

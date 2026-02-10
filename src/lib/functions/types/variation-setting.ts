@@ -64,6 +64,7 @@ export function extractWDTH(value: string): VariationSetting | null {
 		}
 
 		return {
+			id: crypto.randomUUID(),
 			name: 'wdth',
 			value: possibleValue
 		};
@@ -72,6 +73,7 @@ export function extractWDTH(value: string): VariationSetting | null {
 	const [min, max] = value.split(' ').map(Number);
 
 	return {
+		id: crypto.randomUUID(),
 		name: 'wdth',
 		min,
 		max
