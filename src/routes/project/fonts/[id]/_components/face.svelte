@@ -44,7 +44,7 @@
 	<Stretch {familyId} {faceId} />
 	<VariationSettings {familyId} {faceId} />
 
-	<Button color="error" width="fit" onclick={handleClickDelete}>
+	<Button color="destructive" width="fit" onclick={handleClickDelete}>
 		Delete Face
 	</Button>
 {/if}

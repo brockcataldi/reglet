@@ -15,3 +15,7 @@
 </svelte:head>
 
 {@render children()}
+
+<footer class="box-border w-full py-4">
+	<p class="mx-auto my-0 text-center">Experiment by Brock Cataldi</p>
+</footer>

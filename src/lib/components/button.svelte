@@ -5,7 +5,7 @@
 
 	type Props = {
 		width?: 'full' | 'fit';
-		color?: 'primary' | 'disabled' | 'error';
+		color?: 'primary' | 'disabled' | 'destructive';
 		children: Snippet;
 	} & HTMLButtonAttributes;
 
@@ -24,7 +24,7 @@
 			width === 'full' && 'w-full',
 			width === 'fit' && 'w-fit',
 			color === 'primary' && 'border-black text-black bg-white',
-			color === 'error' && 'border-red-900 text-red-900 bg-red-100',
+			color === 'destructive' && 'border-red-900 text-red-900 bg-red-100',
 			color === 'disabled' && 'bg-gray-300 text-gray-500'
 		])
 	);

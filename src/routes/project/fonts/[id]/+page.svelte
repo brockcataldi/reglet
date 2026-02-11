@@ -53,7 +53,7 @@
 				oninput={oninputFamily}
 			/>
 
-			<Button color="error" width="fit" onclick={onclickDelete}>
+			<Button color="destructive" width="fit" onclick={onclickDelete}>
 				Delete Family
 			</Button>
 		</header>

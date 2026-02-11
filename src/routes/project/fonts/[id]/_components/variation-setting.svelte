@@ -146,7 +146,7 @@
 					<ArrowLeftRight />
 				</Button>
 			{/if}
-			<Button color="error" onclick={onclickDelete}>
+			<Button color="destructive" onclick={onclickDelete}>
 				<Trash />
 			</Button>
 		</div>

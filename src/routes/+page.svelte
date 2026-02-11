@@ -4,7 +4,7 @@
 	import LinkButton from '$lib/components/link-button.svelte';
 </script>
 
-<main class="flex h-dvh w-full items-center justify-center p-4">
+<main class="flex h-[90dvh] w-full items-center justify-center p-4">
 	<div class="w-full max-w-xl">
 		<h1 class="text-5xl font-bold">reglet</h1>
 		<p class="mb-4 text-2xl">reg&middot;let</p>
