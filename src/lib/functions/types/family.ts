@@ -4,8 +4,7 @@ import {
 	type Face,
 	compareFace,
 	extractWeight,
-	extractWDTH,
-	extractStyle
+	extractWDTH
 } from '$lib/types';
 
 export function compareFamily(family1: Family, family2: Family): boolean {
@@ -44,7 +43,7 @@ export async function extractFamilies(url: string) {
 					.trim()
 					.replace(/^"|"$/g, ''),
 				weight: extractWeight(style.getPropertyValue('font-weight').trim()),
-				style: extractStyle(style.getPropertyValue('font-style').trim()),
+				style: style.getPropertyValue('font-style').trim(),
 				stretch: 'normal',
 				opticalSizing: 'auto',
 				variationSettings: []

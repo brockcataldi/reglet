@@ -102,7 +102,7 @@
 </script>
 
 {#if value}
-	<div class="grid grid-cols-[repeat(4,180px)] items-end gap-2">
+	<div class="mb-2 grid grid-cols-5 items-end gap-2">
 		<Input
 			id={`${variationId}-name`}
 			label="Name"
@@ -136,19 +136,19 @@
 			/>
 		{/if}
 
-		<div>
+		<div class="flex w-full flex-col items-start justify-start gap-1">
+			<p class="text-sm">Change to</p>
 			{#if isVariationAxis(value)}
-				<Button onclick={onclickValue}>
-					<Hashtag />
-				</Button>
+				<Button icon={Hashtag} onclick={onclickValue} width="full">Value</Button
+				>
 			{:else}
-				<Button onclick={onclickAxis}>
-					<ArrowLeftRight />
-				</Button>
+				<Button icon={ArrowLeftRight} onclick={onclickAxis} width="full"
+					>Axis</Button
+				>
 			{/if}
-			<Button color="destructive" onclick={onclickDelete}>
-				<Trash />
-			</Button>
 		</div>
+		<Button icon={Trash} color="destructive" onclick={onclickDelete}>
+			Delete
+		</Button>
 	</div>
 {/if}

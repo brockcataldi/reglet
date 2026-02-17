@@ -3,10 +3,7 @@ import { FAMILIES_LOCAL_STORAGE_KEY } from '$lib/constants';
 import {
 	type Face,
 	type Family,
-	type Style,
 	type VariationSetting,
-	type OpticalSizing,
-	type Stretch,
 	type Weight
 } from '$lib/types';
 
@@ -53,7 +50,7 @@ export class Fonts {
 	}
 
 	public createFamily(family: Family) {
-		this.families.push(family);
+		this.families.unshift(family);
 	}
 
 	public deleteFamily(familyId: string) {
@@ -74,14 +71,21 @@ export class Fonts {
 		}
 
 		family.family = value;
+
 	}
 
 	public getFace(familyId: string, faceId: string): Face | undefined {
 		return this.getFamily(familyId)?.faces.find((f) => f.id === faceId);
 	}
 
-	public createFace(familyIndex: number, face: Face) {
-		this.families[familyIndex].faces.push(face);
+	public createFace(familyId: string, face: Face) {
+		const family = this.getFamily(familyId);
+
+		if (!family) {
+			return;
+		}
+
+		family.faces.unshift(face);
 	}
 
 	public deleteFace(familyId: string, faceId: string) {
@@ -110,7 +114,7 @@ export class Fonts {
 		face.weight = value;
 	}
 
-	public updateStyle(familyId: string, faceId: string, value: Style) {
+	public updateStyle(familyId: string, faceId: string, value: string) {
 		const face = this.getFace(familyId, faceId);
 
 		if (!face) {
@@ -120,11 +124,7 @@ export class Fonts {
 		face.style = value;
 	}
 
-	public updateOpticalSizing(
-		familyId: string,
-		faceId: string,
-		value: OpticalSizing
-	) {
+	public updateOpticalSizing(familyId: string, faceId: string, value: string) {
 		const face = this.getFace(familyId, faceId);
 
 		if (!face) {
@@ -134,7 +134,7 @@ export class Fonts {
 		face.opticalSizing = value;
 	}
 
-	public updateStretch(familyId: string, faceId: string, value: Stretch) {
+	public updateStretch(familyId: string, faceId: string, value: string) {
 		const face = this.getFace(familyId, faceId);
 
 		if (!face) {

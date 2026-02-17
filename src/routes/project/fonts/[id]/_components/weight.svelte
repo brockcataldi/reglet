@@ -1,14 +1,12 @@
 <script lang="ts">
-	import { isAxis, type Weight } from '$lib/types';
+	import { isAxis } from '$lib/types';
 	import fonts from '$lib/stores/fonts.svelte';
 
-	import Select from '$lib/components/select.svelte';
 	import Input from '$lib/components/input.svelte';
 	import Button from '$lib/components/button.svelte';
 
 	import ArrowLeftRight from '$lib/icons/arrow-left-right.svelte';
 	import Hashtag from '$lib/icons/hashtag.svelte';
-	import Bold from '$lib/icons/bold.svelte';
 
 	type Props = {
 		familyId: string;
@@ -18,11 +16,6 @@
 	let { familyId, faceId }: Props = $props();
 
 	let value = $derived(fonts.getFace(familyId, faceId)?.weight);
-
-	const onchangeSelect = (event: Event) => {
-		const target = event.target as HTMLSelectElement;
-		fonts.updateWeight(familyId, faceId, target.value as Weight);
-	};
 
 	const onchangeMin = (event: Event) => {
 		const target = event.target as HTMLInputElement;
@@ -50,26 +43,19 @@
 		});
 	};
 
-	const onchangeNumber = (event: Event) => {
+	const onchange = (event: Event) => {
 		const target = event.target as HTMLInputElement;
-		fonts.updateWeight(familyId, faceId, Number(target.value));
+		fonts.updateWeight(familyId, faceId, target.value);
 	};
 
-	const onclickString = () => {
-		if (typeof value === 'string') {
-			return;
-		}
-
-		fonts.updateWeight(familyId, faceId, 'normal');
-	};
-
-	const onclickNumber = () => {
+	const onclickValue = () => {
 		if (typeof value === 'number') {
 			return;
 		}
 
-		fonts.updateWeight(familyId, faceId, 400);
+		fonts.updateWeight(familyId, faceId, '400');
 	};
+
 	const onclickAxis = () => {
 		if (isAxis(value)) {
 			return;
@@ -80,18 +66,8 @@
 </script>
 
 {#if value}
-	<div class="grid grid-cols-[repeat(3,180px)] items-end gap-2">
-		{#if typeof value === 'string'}
-			<Select
-				label="Font Weight"
-				id={`${faceId}-weight`}
-				{value}
-				onchange={onchangeSelect}
-			>
-				<option value="normal">normal</option>
-				<option value="bold">bold</option>
-			</Select>
-		{:else if isAxis(value)}
+	<div class="grid grid-cols-3 gap-2">
+		{#if isAxis(value)}
 			<Input
 				id={`${faceId}-weight-min`}
 				type="number"
@@ -109,30 +85,19 @@
 		{:else}
 			<Input
 				id={`${faceId}-weight`}
-				type="number"
+				type="text"
 				label="Font Weight"
 				{value}
-				onchange={onchangeNumber}
+				{onchange}
 			/>
 		{/if}
 
-		<div>
+		<div class="flex w-full flex-col items-start justify-start gap-1">
+			<p class="text-sm">Change to</p>
 			{#if !isAxis(value)}
-				<Button onclick={onclickAxis}>
-					<ArrowLeftRight />
-				</Button>
-			{/if}
-
-			{#if typeof value !== 'number'}
-				<Button onclick={onclickNumber}>
-					<Hashtag />
-				</Button>
-			{/if}
-
-			{#if typeof value !== 'string'}
-				<Button onclick={onclickString}>
-					<Bold />
-				</Button>
+				<Button icon={ArrowLeftRight} onclick={onclickAxis}>Axis</Button>
+			{:else}
+				<Button icon={Hashtag} onclick={onclickValue}>Value</Button>
 			{/if}
 		</div>
 	</div>

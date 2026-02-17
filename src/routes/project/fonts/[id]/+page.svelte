@@ -4,9 +4,13 @@
 	import type { Family } from '$lib/types';
 
 	import fonts from '$lib/stores/fonts.svelte';
+
 	import Input from '$lib/components/input.svelte';
 	import Button from '$lib/components/button.svelte';
+	import LinkButton from '$lib/components/link-button.svelte';
 	import Face from './_components/face.svelte';
+	import ArrowLeft from '$lib/icons/arrow-left.svelte';
+	import Plus from '$lib/icons/plus.svelte';
 
 	let { data } = $props();
 
@@ -41,11 +45,30 @@
 			fonts.deleteFamily(family.id);
 		}
 	};
+
+	const onclickAdd = () => {
+		if(family){
+			fonts.createFace(family.id, {
+				id: crypto.randomUUID(),
+				weight: '400',
+				style: 'normal',
+				stretch: 'normal',
+				opticalSizing: 'auto',
+				variationSettings: []
+			})
+		}
+	}
 </script>
 
 {#if family}
-	<main class="p-4">
-		<header class="mb-4 grid grid-cols-[1fr_150px] items-end gap-4">
+	<main class="mx-auto my-0 max-w-2xl">
+		<header class="py-4">
+			<LinkButton icon={ArrowLeft} href={resolve('/project/fonts/')}
+				>Back to Fonts</LinkButton
+			>
+		</header>
+
+		<div class="mb-4 grid grid-cols-[1fr_150px] items-end gap-4">
 			<Input
 				id={`${data.id}-family-`}
 				label="Family"
@@ -56,11 +79,15 @@
 			<Button color="destructive" width="fit" onclick={onclickDelete}>
 				Delete Family
 			</Button>
-		</header>
+		</div>
 
-		<ul class="flex flex-col items-start justify-start gap-4">
+		<div class="mb-4">
+			<Button icon={Plus} onclick={onclickAdd}>Add Face</Button>
+		</div>
+
+		<ul class="flex w-full flex-col items-start justify-start gap-4">
 			{#each family.faces as face (face.id)}
-				<li>
+				<li class="w-full">
 					<Face familyId={family.id} faceId={face.id} />
 				</li>
 			{/each}

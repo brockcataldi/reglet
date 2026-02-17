@@ -24,7 +24,7 @@
 
 {#if value}
 	<div>
-		<ul>
+		<ul class="mb-4">
 			<li>
 				{#each value as variationSetting (variationSetting.id)}
 					<VariationSetting
@@ -35,7 +35,6 @@
 				{/each}
 			</li>
 		</ul>
-
 		<Button {onclick}>Add Variation Setting</Button>
 	</div>
 {/if}

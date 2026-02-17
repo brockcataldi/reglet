@@ -29,41 +29,16 @@ export type VariationSetting = VariationAxisValue | VariationAxis;
 
 export * from '$lib/functions/types/variation-setting';
 
-export type WeightValue = number | 'normal' | 'bold';
-
-export type Weight = WeightValue | Axis;
+export type Weight = string | Axis;
 
 export * from '$lib/functions/types/weight';
-
-export type Style = 'normal' | 'italic';
-
-export * from '$lib/functions/types/style';
-
-export type OpticalSizing = 'none' | 'auto';
-
-export * from '$lib/functions/types/optical-size';
-
-export type StretchString =
-	| 'ultra-condensed'
-	| 'extra-condensed'
-	| 'condensed'
-	| 'semi-condensed'
-	| 'normal'
-	| 'semi-expanded'
-	| 'expanded'
-	| 'extra-expanded'
-	| 'ultra-expanded';
-
-export type Stretch = StretchString | number;
-
-export * from '$lib/functions/types/stretch';
 
 export interface Face {
 	id: string;
 	weight: Weight;
-	style: Style;
-	opticalSizing: OpticalSizing;
-	stretch: Stretch;
+	style: string;
+	opticalSizing: string;
+	stretch: string;
 	variationSettings: VariationSetting[];
 }
 
@@ -86,9 +61,9 @@ export * from '$lib/functions/types/family';
 
 export interface TextStyle {
 	family: string;
-	weight: WeightValue;
-	style: Style;
-	stretch: Stretch;
-	opticalSize: OpticalSizing;
+	weight: string;
+	style: string;
+	stretch: string;
+	opticalSize: string;
 	variationSettings: VariationAxisValue[];
 }

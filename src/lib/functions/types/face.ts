@@ -1,9 +1,4 @@
-import {
-	type Face,
-	compareWeight,
-	compareStretch,
-	compareVariationSetting
-} from '$lib/types';
+import { type Face, compareWeight, compareVariationSetting } from '$lib/types';
 
 export function compareFace(face1: Face, face2: Face): boolean {
 	if (!compareWeight(face1.weight, face2.weight)) {
@@ -18,7 +13,7 @@ export function compareFace(face1: Face, face2: Face): boolean {
 		return false;
 	}
 
-	if (!compareStretch(face1.stretch, face2.stretch)) {
+	if (face1.stretch !== face2.stretch) {
 		return false;
 	}
 

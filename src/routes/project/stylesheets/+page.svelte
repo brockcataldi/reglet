@@ -45,7 +45,7 @@
 			class="mb-4 rounded-md border border-yellow-900 bg-yellow-100 p-2 text-yellow-900"
 		>
 			Keep in mind, since you've already installed fonts, you'll be overwriting
-			what you previously worked on.
+			what you previously installed and worked on.
 			<strong>
 				You have {fonts.families.length} font{fonts.families.length === 1
 					? ''

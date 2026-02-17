@@ -2,6 +2,7 @@
 	import fonts from '$lib/stores/fonts.svelte';
 
 	import Button from '$lib/components/button.svelte';
+	import FontDemo from '$lib/components/font-demo.svelte';
 
 	import FaceStyle from './style.svelte';
 	import OpticalSizing from './optical-sizing.svelte';
@@ -25,26 +26,31 @@
 </script>
 
 {#if face && family}
-	<div>
-		<p
-			class="text-5xl"
-			style:font-family={family.family}
-			style:font-style={face.style}
-			style:font-optical-sizing={face.opticalSizing}
-		>
-			Lorem Ipsum
-		</p>
-	</div>
+	<div class="rounded-md border border-neutral-300 p-4">
+		<div class="mb-4">
+			<FontDemo {familyId} {faceId} showSliders={true} showValues={false} />
+		</div>
 
-	<div class="grid grid-cols-[repeat(2,180px)] gap-2">
-		<FaceStyle {familyId} {faceId} />
-		<OpticalSizing {familyId} {faceId} />
-	</div>
-	<Weight {familyId} {faceId} />
-	<Stretch {familyId} {faceId} />
-	<VariationSettings {familyId} {faceId} />
+		<hr class="my-4" />
 
-	<Button color="destructive" width="fit" onclick={handleClickDelete}>
-		Delete Face
-	</Button>
+		<div class="grid grid-cols-3 gap-2">
+			<FaceStyle {familyId} {faceId} />
+			<OpticalSizing {familyId} {faceId} />
+			<Stretch {familyId} {faceId} />
+		</div>
+
+		<hr class="my-4" />
+
+		<Weight {familyId} {faceId} />
+
+		<hr class="my-4" />
+
+		<VariationSettings {familyId} {faceId} />
+
+		<hr class="my-4" />
+
+		<Button color="destructive" width="fit" onclick={handleClickDelete}>
+			Delete Face
+		</Button>
+	</div>
 {/if}

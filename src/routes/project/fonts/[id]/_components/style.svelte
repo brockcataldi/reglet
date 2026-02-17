@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { Style } from '$lib/types';
 	import fonts from '$lib/stores/fonts.svelte';
 	import Select from '$lib/components/select.svelte';
 
@@ -14,7 +13,7 @@
 
 	const onchange = (event: Event) => {
 		const target = event.target as HTMLSelectElement;
-		fonts.updateStyle(familyId, faceId, target.value as Style);
+		fonts.updateStyle(familyId, faceId, target.value);
 	};
 </script>
 
