@@ -1,7 +1,8 @@
 <script lang="ts">
-	import Button from '$lib/components/button.svelte';
 	import fonts from '$lib/stores/fonts.svelte';
-	import VariationSetting from './variation-setting.svelte';
+
+	import Button from '$lib/components/button.svelte';
+	import FaceVariationSetting from './face-variation-setting.svelte';
 
 	type Props = {
 		familyId: string;
@@ -27,7 +28,7 @@
 		<ul class="mb-4">
 			<li>
 				{#each value as variationSetting (variationSetting.id)}
-					<VariationSetting
+					<FaceVariationSetting
 						{familyId}
 						{faceId}
 						variationId={variationSetting.id}

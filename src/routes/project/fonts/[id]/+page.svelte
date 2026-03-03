@@ -5,12 +5,15 @@
 
 	import fonts from '$lib/stores/fonts.svelte';
 
+	import ArrowLeft from '$lib/icons/arrow-left.svelte';
+	import Plus from '$lib/icons/plus.svelte';
+
 	import Input from '$lib/components/input.svelte';
 	import Button from '$lib/components/button.svelte';
 	import LinkButton from '$lib/components/link-button.svelte';
+
 	import Face from './_components/face.svelte';
-	import ArrowLeft from '$lib/icons/arrow-left.svelte';
-	import Plus from '$lib/icons/plus.svelte';
+	import Trash from '$lib/icons/trash.svelte';
 
 	let { data } = $props();
 
@@ -47,7 +50,7 @@
 	};
 
 	const onclickAdd = () => {
-		if(family){
+		if (family) {
 			fonts.createFace(family.id, {
 				id: crypto.randomUUID(),
 				weight: '400',
@@ -55,9 +58,9 @@
 				stretch: 'normal',
 				opticalSizing: 'auto',
 				variationSettings: []
-			})
+			});
 		}
-	}
+	};
 </script>
 
 {#if family}
@@ -68,7 +71,7 @@
 			>
 		</header>
 
-		<div class="mb-4 grid grid-cols-[1fr_150px] items-end gap-4">
+		<div class="mb-4 grid grid-cols-[1fr_175px] items-end gap-4">
 			<Input
 				id={`${data.id}-family-`}
 				label="Family"
@@ -76,7 +79,12 @@
 				oninput={oninputFamily}
 			/>
 
-			<Button color="destructive" width="fit" onclick={onclickDelete}>
+			<Button
+				icon={Trash}
+				color="destructive"
+				width="fit"
+				onclick={onclickDelete}
+			>
 				Delete Family
 			</Button>
 		</div>

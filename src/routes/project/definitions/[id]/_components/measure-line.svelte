@@ -1,17 +1,15 @@
 <script lang="ts">
+	import { cn } from '$lib/functions/utilities';
+
 	type Props = {
 		label: string;
 		position: number;
 		align: 'left' | 'right';
 		color: string;
+		onchange: (newPosition: number) => void;
 	};
 
-	let {
-		label,
-		position = $bindable(0),
-		align = 'right',
-		color
-	}: Props = $props();
+	let { label, position, align = 'right', color, onchange }: Props = $props();
 
 	let pressed = $state(false);
 	let y = $state(0);
@@ -30,7 +28,7 @@
 		if (pressed) {
 			const delta = event.clientY - y;
 			y = event.clientY;
-			position = position + delta;
+			onchange(position + delta);
 		}
 	}
 
@@ -45,18 +43,44 @@
 	function handleKeyDown(event: KeyboardEvent) {
 		if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
 			event.preventDefault();
-			position = position + (event.key === 'ArrowUp' ? 1 : -1);
+			onchange(position + (event.key === 'ArrowUp' ? 1 : -1));
 		}
 	}
+
+	const lineClasses = $derived(
+		cn(
+			'absolute top-0 w-full h-[28px] pointer-events-none',
+			"after:content-[''] after:absolute after:w-full",
+			'after:h-[1px] after:bg-red-500',
+			'after:top-[13.5px] after:z-0'
+		)
+	);
+
+	const labelClasses = $derived(
+		cn(
+			'absolute z-10 block w-fit',
+			'px-2 py-1',
+			'm-0',
+			'text-[14px]',
+			'rounded-[20px]',
+			'border border-red-500',
+			'bg-white',
+			'pointer-events-auto',
+			'cursor-ns-resize',
+			'select-none',
+			align === 'right' && 'right-0',
+			align === 'left' && 'left-0'
+		)
+	);
 </script>
 
 <div
-	class="measure-line"
+	class={lineClasses}
 	style={`transform: translateY(${position}px);`}
 	style:--color={color}
 >
 	<div
-		class={`measure-line__label measure-line__label--${align}`}
+		class={labelClasses}
 		role="slider"
 		aria-valuenow={position}
 		tabindex="0"
@@ -66,49 +90,3 @@
 		{label}
 	</div>
 </div>
-
-<style>
-	.measure-line {
-		--color: red;
-		width: 100%;
-		position: absolute;
-		height: 28px;
-		top: 0;
-		pointer-events: none;
-	}
-
-	.measure-line::after {
-		position: absolute;
-		content: '';
-		width: 100%;
-		height: 1px;
-		background-color: var(--color);
-		top: 13.5px;
-		z-index: 0;
-	}
-
-	.measure-line__label {
-		width: fit-content;
-		padding: 5px 10px;
-		border: 1px solid var(--color);
-		margin: 0;
-		display: block;
-		font-size: 14px;
-		border-radius: 20px;
-		background-color: var(--c-whi);
-		z-index: 1;
-		position: absolute;
-		font-family: var(--font-family);
-		pointer-events: auto;
-		cursor: ns-resize;
-		user-select: none;
-	}
-
-	.measure-line__label--left {
-		left: 0;
-	}
-
-	.measure-line__label--right {
-		right: 0;
-	}
-</style>
