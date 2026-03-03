@@ -30,21 +30,6 @@ export class Fonts {
 		this.#families = value;
 	}
 
-	// public async install(rawText: string) {
-	// 	this.stylesheets = extractStylesheets(rawText);
-
-	// 	const fontFaces = await Promise.all(
-	// 		this.stylesheets.map((stylesheet) => extractFamilies(stylesheet.url))
-	// 	);
-
-	// 	const families = fontFaces.reduce((acc: Family[], curr: Family[]) => {
-	// 		acc.push(...curr);
-	// 		return acc;
-	// 	}, [] as Family[]);
-
-	// 	this.families.push(...families);
-	// }
-
 	public getFamily(familyId: string): Family | undefined {
 		return this.families.find((f) => f.id === familyId);
 	}
@@ -71,7 +56,6 @@ export class Fonts {
 		}
 
 		family.family = value;
-
 	}
 
 	public getFace(familyId: string, faceId: string): Face | undefined {

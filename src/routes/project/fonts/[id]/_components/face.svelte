@@ -4,11 +4,12 @@
 	import Button from '$lib/components/button.svelte';
 	import FontDemo from '$lib/components/font-demo.svelte';
 
-	import FaceStyle from './style.svelte';
-	import OpticalSizing from './optical-sizing.svelte';
-	import Stretch from './stretch.svelte';
-	import Weight from './weight.svelte';
-	import VariationSettings from './variation-settings.svelte';
+	import FaceStyle from './face-style.svelte';
+	import FaceOpticalSizing from './face-optical-sizing.svelte';
+	import FaceStretch from './face-stretch.svelte';
+	import FaceWeight from './face-weight.svelte';
+	import FaceVariationSettings from './face-variation-settings.svelte';
+	import Trash from '$lib/icons/trash.svelte';
 
 	type Props = {
 		familyId: string;
@@ -31,25 +32,30 @@
 			<FontDemo {familyId} {faceId} showSliders={true} showValues={false} />
 		</div>
 
-		<hr class="my-4" />
+		<hr class="my-4 border-neutral-300" />
 
 		<div class="grid grid-cols-3 gap-2">
 			<FaceStyle {familyId} {faceId} />
-			<OpticalSizing {familyId} {faceId} />
-			<Stretch {familyId} {faceId} />
+			<FaceOpticalSizing {familyId} {faceId} />
+			<FaceStretch {familyId} {faceId} />
 		</div>
 
-		<hr class="my-4" />
+		<hr class="my-4 border-neutral-300" />
 
-		<Weight {familyId} {faceId} />
+		<FaceWeight {familyId} {faceId} />
 
-		<hr class="my-4" />
+		<hr class="my-4 border-neutral-300" />
 
-		<VariationSettings {familyId} {faceId} />
+		<FaceVariationSettings {familyId} {faceId} />
 
-		<hr class="my-4" />
+		<hr class="my-4 border-neutral-300" />
 
-		<Button color="destructive" width="fit" onclick={handleClickDelete}>
+		<Button
+			icon={Trash}
+			color="destructive"
+			width="fit"
+			onclick={handleClickDelete}
+		>
 			Delete Face
 		</Button>
 	</div>

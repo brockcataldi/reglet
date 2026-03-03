@@ -18,3 +18,24 @@ export function readLocalStorage<T>(key: string): T | null {
 export function writeLocalStorage<T>(key: string, value: T) {
 	localStorage.setItem(key, JSON.stringify(value));
 }
+
+export const isStringArray = (raw: unknown): raw is string[] => {
+	if (!Array.isArray(raw)) {
+		return false;
+	}
+
+	for (const value of raw) {
+		if (typeof value !== 'string') {
+			return false;
+		}
+	}
+
+	return true;
+};
+
+export const uniques = <T, K>(
+	items: T[] | undefined,
+	key: (item: T) => K
+): K[] | undefined => {
+	return items ? [...new Set(items.map(key))] : undefined;
+};

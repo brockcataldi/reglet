@@ -19,6 +19,7 @@
 		containerClass,
 		inputClass,
 		children,
+		disabled,
 		...props
 	}: Props = $props();
 
@@ -29,14 +30,15 @@
 	const inputClasses = $derived(
 		cn(
 			'm-0 inline-block rounded-md bg-white px-4 py-2 text-base text-black',
-			inputClass
+			disabled === true && 'opacity-50',
+			`${inputClass}`
 		)
 	);
 </script>
 
 <div class={containerClasses}>
 	<label class="text-sm" for={id}>{label}</label>
-	<select class={inputClasses} {id} bind:value {...props}>
+	<select class={inputClasses} {id} {disabled} bind:value {...props}>
 		{@render children()}
 	</select>
 </div>

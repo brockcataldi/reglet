@@ -23,6 +23,12 @@ export interface VariationAxisValue {
 	value: number;
 }
 
+export interface VariationAxisValues {
+	id: string;
+	name: string;
+	values: number[];
+}
+
 export * from '$lib/functions/types/variation-axis';
 
 export type VariationSetting = VariationAxisValue | VariationAxis;
@@ -59,11 +65,27 @@ export interface Family {
 
 export * from '$lib/functions/types/family';
 
-export interface TextStyle {
+export interface TextProfileMeasurements {
+	capHeight: number;
+	ascender: number;
+	xHeight: number;
+	baseline: number;
+	descender: number;
+}
+
+export interface TextProfileStyle {
 	family: string;
 	weight: string;
 	style: string;
 	stretch: string;
-	opticalSize: string;
+	opticalSizing: string;
 	variationSettings: VariationAxisValue[];
+}
+
+export interface TextProfile {
+	id: string;
+	ref: string;
+	grammar: 'lowercase-dominant' | 'two-height';
+	styles: TextProfileStyle;
+	measurements: TextProfileMeasurements;
 }

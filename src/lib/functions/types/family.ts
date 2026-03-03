@@ -25,6 +25,9 @@ export function compareFamily(family1: Family, family2: Family): boolean {
 	return true;
 }
 
+// TODO: Cleanup this function because holy crap it's ugly
+// TODO: Add a check for Google Fonts to extract variation axes from URL.
+
 export async function extractFamilies(url: string) {
 	const res = await fetch(url, { mode: 'cors' });
 	const cssText = await res.text();
@@ -75,5 +78,27 @@ export async function extractFamilies(url: string) {
 				}
 			}
 			return acc;
-		}, [] as Family[]);
+		}, [] as Family[])
+		.map((f) => {
+			f.faces = f.faces.sort((a, b) => {
+				const aN = a.style === 'normal';
+				const bN = b.style === 'normal';
+
+				if (aN === bN) {
+					return 0;
+				}
+
+				if (aN === true) {
+					return -1;
+				}
+
+				if (aN === false) {
+					return 1;
+				}
+
+				return 0;
+			});
+
+			return f;
+		});
 }

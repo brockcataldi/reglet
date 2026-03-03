@@ -15,3 +15,33 @@ export function compareAxis(axis1: Axis, axis2: Axis): boolean {
 export function toStringAxis(axis: Axis): string {
 	return `${axis.min}..${axis.max}`;
 }
+
+export const isAxisArray = (raw: unknown): raw is Axis[] => {
+	if (!Array.isArray(raw)) {
+		return false;
+	}
+
+	for (const value of raw) {
+		if (!isAxis(value)) {
+			return false;
+		}
+	}
+
+	return true;
+};
+
+export const consolidateAxes = (axes: Axis[]): Axis => {
+	let { min, max } = axes[0];
+
+	for (const axis of axes.slice(1)) {
+		if (axis.min < min) {
+			min = axis.min;
+		}
+
+		if (axis.max > max) {
+			max = axis.max;
+		}
+	}
+
+	return { min, max };
+};

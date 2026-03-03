@@ -1,6 +1,7 @@
 import {
 	type VariationAxis,
 	type VariationAxisValue,
+	type VariationAxisValues,
 	compareAxis
 } from '$lib/types';
 
@@ -36,7 +37,8 @@ export function isVariationAxisValue(
 		typeof value === 'object' &&
 		'id' in value &&
 		'name' in value &&
-		'value' in value
+		'value' in value &&
+		typeof value.value === 'number'
 	);
 }
 
@@ -45,4 +47,20 @@ export function compareVariationAxisValue(
 	value2: VariationAxisValue
 ): boolean {
 	return value1.name === value2.name && value1.value === value2.value;
+}
+
+export function isVariationAxisValues(
+	value: unknown
+): value is VariationAxisValues {
+	if (value === null || value === undefined) {
+		return false;
+	}
+
+	return (
+		typeof value === 'object' &&
+		'id' in value &&
+		'name' in value &&
+		'value' in value &&
+		Array.isArray(value.value)
+	);
 }
