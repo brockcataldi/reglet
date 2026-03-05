@@ -1,6 +1,17 @@
 import { type Face, compareWeight, compareVariationSetting } from '$lib/types';
 
-export function compareFace(face1: Face, face2: Face): boolean {
+export const createDefaultFace = () => {
+	return {
+		id: crypto.randomUUID(),
+		weight: '400',
+		style: 'normal',
+		stretch: 'normal',
+		opticalSizing: 'auto',
+		variationSettings: []
+	}
+}
+
+export const compareFace = (face1: Face, face2: Face): boolean => {
 	if (!compareWeight(face1.weight, face2.weight)) {
 		return false;
 	}
@@ -34,3 +45,4 @@ export function compareFace(face1: Face, face2: Face): boolean {
 
 	return true;
 }
+

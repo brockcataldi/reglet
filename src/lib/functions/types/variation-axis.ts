@@ -5,7 +5,7 @@ import {
 	compareAxis
 } from '$lib/types';
 
-export function isVariationAxis(value: unknown): value is VariationAxis {
+export const isVariationAxis = (value: unknown): value is VariationAxis => {
 	if (value === null || value === undefined) {
 		return false;
 	}
@@ -19,16 +19,16 @@ export function isVariationAxis(value: unknown): value is VariationAxis {
 	);
 }
 
-export function compareVariationAxis(
+export const compareVariationAxis = (
 	axis1: VariationAxis,
 	axis2: VariationAxis
-): boolean {
+): boolean => {
 	return axis1.name === axis2.name && compareAxis(axis1, axis2);
 }
 
-export function isVariationAxisValue(
+export const isVariationAxisValue = (
 	value: unknown
-): value is VariationAxisValue {
+): value is VariationAxisValue => {
 	if (value === null || value === undefined) {
 		return false;
 	}
@@ -42,16 +42,16 @@ export function isVariationAxisValue(
 	);
 }
 
-export function compareVariationAxisValue(
+export const compareVariationAxisValue = (
 	value1: VariationAxisValue,
 	value2: VariationAxisValue
-): boolean {
+): boolean => {
 	return value1.name === value2.name && value1.value === value2.value;
 }
 
-export function isVariationAxisValues(
+export const isVariationAxisValues = (
 	value: unknown
-): value is VariationAxisValues {
+): value is VariationAxisValues => {
 	if (value === null || value === undefined) {
 		return false;
 	}

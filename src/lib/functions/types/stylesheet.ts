@@ -4,7 +4,7 @@ import type { Stylesheet } from '$lib/types';
 
 import { readLocalStorage } from '$lib/functions/utilities';
 
-export function extractStylesheets(text: string): Stylesheet[] {
+export const extractStylesheets = (text: string): Stylesheet[] => {
 	if (!text.includes('<')) {
 		return text
 			.split('\n')
@@ -32,7 +32,7 @@ export function extractStylesheets(text: string): Stylesheet[] {
 	return urls;
 }
 
-export function getStylesheetsFromLocalStorage(): string {
+export const getStylesheetsFromLocalStorage = (): string => {
 	const stylesheets = readLocalStorage<Stylesheet[]>(
 		STYLESHEETS_LOCAL_STORAGE_KEY
 	);

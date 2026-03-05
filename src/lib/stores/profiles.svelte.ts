@@ -2,40 +2,30 @@ import {
 	PROFILES_GUESTS_LOCAL_STORAGE_KEY,
 	PROFILES_HOST_LOCAL_STORAGE_KEY
 } from '$lib/constants';
-import type {
-	TextProfile,
-	TextProfileStyle,
-	TextProfileMeasurements,
-	VariationAxisValue
+import {
+	type Profile,
+	type ProfileStyles,
+	type ProfileMeasurements,
+	type VariationAxisValue,
+	createProfile
 } from '$lib/types';
 import { readLocalStorage, writeLocalStorage } from '$lib/functions/utilities';
 
 class Profiles {
-	#host: TextProfile = $state<TextProfile>(
-		readLocalStorage<TextProfile>(PROFILES_HOST_LOCAL_STORAGE_KEY) || {
-			id: crypto.randomUUID(),
-			ref: '',
-			grammar: 'lowercase-dominant',
-			styles: {
-				family: '',
-				weight: '400',
-				style: 'normal',
-				stretch: 'normal',
-				opticalSizing: 'auto',
-				variationSettings: []
-			},
-			measurements: {
-				ascender: 0,
-				capHeight: 50,
-				xHeight: 100,
-				baseline: 150,
-				descender: 200
-			}
-		}
+	#host: Profile = $state<Profile>(
+		readLocalStorage<Profile>(PROFILES_HOST_LOCAL_STORAGE_KEY) ||
+			createProfile()
 	);
 
-	#guests: TextProfile[] = $state<TextProfile[]>(
-		readLocalStorage<TextProfile[]>(PROFILES_GUESTS_LOCAL_STORAGE_KEY) || []
+	// let metrics = $derived({
+	// 	ascender: (baseline - ascender) / 200,
+	// 	capHeight: (baseline - capHeight) / 200,
+	// 	xHeight: (baseline - xHeight) / 200,
+	// 	descender: (descender - baseline) / 200
+	// });
+
+	#guests: Profile[] = $state<Profile[]>(
+		readLocalStorage<Profile[]>(PROFILES_GUESTS_LOCAL_STORAGE_KEY) || []
 	);
 
 	constructor() {
@@ -49,23 +39,23 @@ class Profiles {
 		});
 	}
 
-	get host(): TextProfile {
+	get host(): Profile {
 		return this.#host;
 	}
 
-	set host(profile: TextProfile) {
+	set host(profile: Profile) {
 		this.#host = profile;
 	}
 
-	get guests(): TextProfile[] {
+	get guests(): Profile[] {
 		return this.#guests;
 	}
 
-	set guests(profiles: TextProfile[]) {
+	set guests(profiles: Profile[]) {
 		this.#guests = profiles;
 	}
 
-	public createGuest(profile: TextProfile) {
+	public createGuest(profile: Profile) {
 		this.#guests.unshift(profile);
 	}
 
@@ -105,7 +95,17 @@ class Profiles {
 		profile.ref = value;
 	}
 
-	updateStyles(id: string, value: Partial<TextProfileStyle>) {
+	updateCasing(id: string, value: string) {
+		const profile = this.getProfile(id);
+
+		if (!profile) {
+			return;
+		}
+
+		profile.casing = value as 'lowercase-dominant' | 'uppercase-dominant';
+	}
+
+	updateStyles(id: string, value: Partial<ProfileStyles>) {
 		const profile = this.getProfile(id);
 
 		if (!profile) {
@@ -115,7 +115,7 @@ class Profiles {
 		profile.styles = { ...profile.styles, ...value };
 	}
 
-	updateMeasurement(id: string, value: Partial<TextProfileMeasurements>) {
+	updateMeasurement(id: string, value: Partial<ProfileMeasurements>) {
 		const profile = this.getProfile(id);
 
 		if (!profile) {

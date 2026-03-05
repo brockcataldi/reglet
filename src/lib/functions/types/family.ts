@@ -7,7 +7,25 @@ import {
 	extractWDTH
 } from '$lib/types';
 
-export function compareFamily(family1: Family, family2: Family): boolean {
+export const createDefaultFamily = () => {
+	return {
+			id: crypto.randomUUID(),
+			family: 'Arial',
+			from: 'local',
+			faces: [
+				{
+					id: crypto.randomUUID(),
+					weight: '400',
+					style: 'normal',
+					stretch: 'normal',
+					opticalSizing: 'auto',
+					variationSettings: []
+				}
+			]
+		}
+}
+
+export const compareFamily = (family1: Family, family2: Family): boolean => {
 	if (family1.family !== family2.family) {
 		return false;
 	}
@@ -28,7 +46,7 @@ export function compareFamily(family1: Family, family2: Family): boolean {
 // TODO: Cleanup this function because holy crap it's ugly
 // TODO: Add a check for Google Fonts to extract variation axes from URL.
 
-export async function extractFamilies(url: string) {
+export const extractFamilies = async (url: string) => {
 	const res = await fetch(url, { mode: 'cors' });
 	const cssText = await res.text();
 

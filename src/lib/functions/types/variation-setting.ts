@@ -9,7 +9,16 @@ import {
 	type VariationAxisValues
 } from '$lib/types';
 
-export function isVariationSetting(value: unknown): value is VariationSetting {
+export const createDefaultVariationSetting = () => {
+	return {
+		id: crypto.randomUUID(),
+		name: '',
+		min: 100,
+		max: 900
+	}
+}
+
+export const isVariationSetting = (value: unknown): value is VariationSetting => {
 	if (value === null || value === undefined) {
 		return false;
 	}
@@ -17,10 +26,10 @@ export function isVariationSetting(value: unknown): value is VariationSetting {
 	return isVariationAxisValue(value) || isVariationAxis(value);
 }
 
-export function compareVariationSetting(
+export const compareVariationSetting = (
 	setting1: VariationSetting,
 	setting2: VariationSetting
-): boolean {
+): boolean => {
 	if (isVariationAxisValue(setting1) && isVariationAxisValue(setting2)) {
 		return compareVariationAxisValue(setting1, setting2);
 	}
@@ -32,7 +41,7 @@ export function compareVariationSetting(
 	return false;
 }
 
-export function extractWDTH(value: string): VariationSetting | null {
+export const extractWDTH = (value: string): VariationSetting | null  =>{
 	if (value === '') {
 		return null;
 	}
@@ -68,10 +77,10 @@ export function extractWDTH(value: string): VariationSetting | null {
 	};
 }
 
-export function consolidateVariationSetting(
+export const consolidateVariationSetting = (
 	current: VariationAxis | VariationAxisValues | undefined,
 	setting: VariationSetting
-): VariationAxis | VariationAxisValues {
+): VariationAxis | VariationAxisValues => {
 	if (!current) {
 		return isVariationAxis(setting)
 			? { ...setting }
@@ -112,9 +121,9 @@ export function consolidateVariationSetting(
 			};
 }
 
-export function consolidateVariationSettings(
+export const consolidateVariationSettings = (
 	faces: Face[] | undefined
-): (VariationAxis | VariationAxisValues)[] {
+): (VariationAxis | VariationAxisValues)[] => {
 	if (faces === undefined) {
 		return [];
 	}

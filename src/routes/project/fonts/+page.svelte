@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	
+	import { createDefaultFamily } from '$lib/types';
 
 	import fonts from '$lib/stores/fonts.svelte';
 
@@ -17,21 +19,7 @@
 	let showValues = $state<boolean>(true);
 
 	const onclickAdd = async () => {
-		fonts.createFamily({
-			id: crypto.randomUUID(),
-			family: 'Arial',
-			from: 'local',
-			faces: [
-				{
-					id: crypto.randomUUID(),
-					weight: '400',
-					style: 'normal',
-					stretch: 'normal',
-					opticalSizing: 'auto',
-					variationSettings: []
-				}
-			]
-		});
+		fonts.createFamily(createDefaultFamily());
 	};
 </script>
 

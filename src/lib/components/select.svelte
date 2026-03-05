@@ -8,6 +8,7 @@
 		id: string;
 		label: string;
 		children: Snippet;
+		description?: string;
 		containerClass?: string;
 		inputClass?: string;
 	} & HTMLSelectAttributes;
@@ -19,6 +20,7 @@
 		containerClass,
 		inputClass,
 		children,
+		description,
 		disabled,
 		...props
 	}: Props = $props();
@@ -41,4 +43,7 @@
 	<select class={inputClasses} {id} {disabled} bind:value {...props}>
 		{@render children()}
 	</select>
+	{#if description}
+		<p class="text-sm text-gray-500">{description}</p>
+	{/if}
 </div>

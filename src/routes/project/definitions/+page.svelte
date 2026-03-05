@@ -1,32 +1,14 @@
 <script lang="ts">
 	import styles from '$lib/stores/profiles.svelte';
+	import { createDefaultProfile } from '$lib/types';
 
 	import Button from '$lib/components/button.svelte';
 	import Plus from '$lib/icons/plus.svelte';
 
-	import TextStyle from './_components/text-style.svelte';
+	import ProfileStyle from './_components/profile-style.svelte';
 
 	const onclickAdd = () => {
-		styles.createGuest({
-			id: crypto.randomUUID(),
-			ref: '',
-			grammar: 'lowercase-dominant',
-			styles: {
-				family: '',
-				weight: '400',
-				style: 'normal',
-				stretch: 'normal',
-				opticalSizing: 'auto',
-				variationSettings: []
-			},
-			measurements: {
-				ascender: 0,
-				capHeight: 50,
-				xHeight: 100,
-				baseline: 150,
-				descender: 200
-			}
-		});
+		styles.createGuest(createDefaultProfile());
 	};
 </script>
 
@@ -42,7 +24,7 @@
 
 	<div class="py-4">
 		<h2 class="mb-2 text-3xl font-bold">Host Style</h2>
-		<TextStyle id={styles.host.id} deletable={false} />
+		<ProfileStyle id={styles.host.id} deletable={false} />
 	</div>
 	<div>
 		<header class="flex items-center justify-between py-4">
@@ -52,7 +34,7 @@
 		<ul class="flex flex-col items-start justify-start gap-2">
 			{#each styles.guests as guest (guest.id)}
 				<li class="w-full">
-					<TextStyle id={guest.id} deletable={true} />
+					<ProfileStyle id={guest.id} deletable={true} />
 				</li>
 			{/each}
 		</ul>

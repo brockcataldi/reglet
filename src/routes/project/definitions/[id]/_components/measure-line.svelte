@@ -47,18 +47,17 @@
 		}
 	}
 
+	const containerClasses = $derived(
+		cn('absolute top-0 w-full h-[28px] pointer-events-none z-0')
+	);
+
 	const lineClasses = $derived(
-		cn(
-			'absolute top-0 w-full h-[28px] pointer-events-none',
-			"after:content-[''] after:absolute after:w-full",
-			'after:h-[1px] after:bg-red-500',
-			'after:top-[13.5px] after:z-0'
-		)
+		cn('absolute w-full', 'h-[1px] bg-red-500', 'top-[13.5px] z-[-1]')
 	);
 
 	const labelClasses = $derived(
 		cn(
-			'absolute z-10 block w-fit',
+			'absolute z-100 block w-fit',
 			'px-2 py-1',
 			'm-0',
 			'text-[14px]',
@@ -75,10 +74,12 @@
 </script>
 
 <div
-	class={lineClasses}
+	class={containerClasses}
 	style={`transform: translateY(${position}px);`}
 	style:--color={color}
 >
+	<div class={lineClasses}></div>
+
 	<div
 		class={labelClasses}
 		role="slider"

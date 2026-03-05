@@ -1,6 +1,6 @@
 import { type Weight, isAxis, compareAxis, toStringAxis } from '$lib/types';
 
-export function compareWeight(weight1: Weight, weight2: Weight): boolean {
+export const compareWeight = (weight1: Weight, weight2: Weight): boolean => {
 	if (typeof weight1 === 'string' && typeof weight2 === 'string') {
 		return weight1 === weight2;
 	}
@@ -11,7 +11,7 @@ export function compareWeight(weight1: Weight, weight2: Weight): boolean {
 	return false;
 }
 
-export function toStringWeight(weight: Weight): string {
+export const toStringWeight = (weight: Weight): string => {
 	if (typeof weight === 'string') {
 		return weight;
 	}
@@ -23,7 +23,7 @@ export function toStringWeight(weight: Weight): string {
 	return '';
 }
 
-export function extractWeight(value: string): Weight {
+export const extractWeight = (value: string): Weight => {
 	const space = value.includes(' ');
 
 	if (!space) {

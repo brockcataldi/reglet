@@ -65,7 +65,7 @@ export interface Family {
 
 export * from '$lib/functions/types/family';
 
-export interface TextProfileMeasurements {
+export interface ProfileMeasurements {
 	capHeight: number;
 	ascender: number;
 	xHeight: number;
@@ -73,19 +73,30 @@ export interface TextProfileMeasurements {
 	descender: number;
 }
 
-export interface TextProfileStyle {
+export interface ProfileMetrics {
+	capHeight: number;
+	ascender: number;
+	xHeight: number;
+	descender: number;
+}
+
+export interface ProfileStyles {
 	family: string;
 	weight: string;
 	style: string;
 	stretch: string;
 	opticalSizing: string;
+	transform: string;
 	variationSettings: VariationAxisValue[];
 }
 
-export interface TextProfile {
+export interface Profile {
 	id: string;
 	ref: string;
-	grammar: 'lowercase-dominant' | 'two-height';
-	styles: TextProfileStyle;
-	measurements: TextProfileMeasurements;
+	casing: 'lowercase-dominant' | 'uppercase-dominant';
+	styles: ProfileStyles;
+	measurements: ProfileMeasurements;
+	metrics: ProfileMetrics;
 }
+
+export * from '$lib/functions/types/profile';

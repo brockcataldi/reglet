@@ -22,8 +22,8 @@
 	import LinkButton from '$lib/components/link-button.svelte';
 	import AdjustmentsVertical from '$lib/icons/adjustments-vertical.svelte';
 	import Trash from '$lib/icons/trash.svelte';
-	import TextStyleWeight from './text-style-weight.svelte';
-	import TextStyleVariationSetting from './text-style-variation-setting.svelte';
+	import TextStyleWeight from './profile-style-weight.svelte';
+	import TextStyleVariationSetting from './profile-style-variation-setting.svelte';
 
 	type Props = {
 		id: string;
@@ -128,6 +128,22 @@
 		profiles.updateStyles(id, { opticalSizing: target.value });
 	};
 
+	const onchangeTransform = (event: Event) => {
+		const target = event.target as HTMLSelectElement;
+		const transform = target.value;
+		profiles.updateStyles(id, { transform });
+
+		if (transform === 'uppercase') {
+			profiles.updateCasing(id, 'uppercase-dominant');
+			return;
+		}
+
+		if (transform === 'lowercase' || transform === 'capitalize') {
+			profiles.updateCasing(id, 'lowercase-dominant');
+			return;
+		}
+	};
+
 	const onclickDelete = () => {
 		profiles.deleteGuest(id);
 	};
@@ -143,6 +159,7 @@
 				style:font-stretch={profile.styles.stretch}
 				style:font-optical-sizing={profile.styles.opticalSizing}
 				style:font-weight={profile.styles.weight}
+				style:text-transform={profile.styles.transform}
 				style:font-variation-settings={fontVariationSettings}
 			>
 				Lorem Ipsum sit Dolor
@@ -179,6 +196,24 @@
 				{/if}
 			</Select>
 
+			<TextStyleWeight
+				{id}
+				value={profile.styles.weight}
+				options={selected.weights}
+			/>
+
+			<Select
+				id={`${id}-transform`}
+				label="Transform"
+				value={profile.styles.transform}
+				onchange={onchangeTransform}
+			>
+				<option value="none">None</option>
+				<option value="capitalize">Capitalize</option>
+				<option value="uppercase">Uppercase</option>
+				<option value="lowercase">Lowercase</option>
+			</Select>
+
 			<Select
 				id={`${id}-stretch`}
 				label="Stretch"
@@ -212,12 +247,6 @@
 				{/if}
 			</Select>
 
-			<TextStyleWeight
-				{id}
-				value={profile.styles.weight}
-				options={selected.weights}
-			/>
-
 			{#if variationValues !== undefined}
 				{#each selected.variationSettings as variationSetting (`${id}-variation-setting-${variationSetting.id}`)}
 					<TextStyleVariationSetting
@@ -232,16 +261,24 @@
 		{#if deletable || profile.styles.family !== ''}
 			<hr class="my-4 border-neutral-300" />
 
-			<div class="flex items-center justify-between">
-				{#if profile.styles.family !== ''}
-					<LinkButton
-						icon={AdjustmentsVertical}
-						href={resolve(`/project/definitions/${id}`)}>Measure</LinkButton
-					>
-				{:else}
-					<div></div>
-				{/if}
+			<div class="flex items-end justify-between">
+				<div class="grid grid-cols-2 items-end gap-2">
+					{#if profile.styles.family !== ''}
+						<Select
+							label="Dominant Casing"
+							id={`${id}-casing`}
+							value={profile.casing}
+						>
+							<option value="lowercase-dominant">Lowercase</option>
+							<option value="uppercase-dominant">Uppercase</option>
+						</Select>
 
+						<LinkButton
+							icon={AdjustmentsVertical}
+							href={resolve(`/project/definitions/${id}`)}>Measure</LinkButton
+						>
+					{/if}
+				</div>
 				{#if deletable}
 					<Button icon={Trash} color="destructive" onclick={onclickDelete}>
 						Delete
@@ -250,5 +287,4 @@
 			</div>
 		{/if}
 	</div>
-	<pre>{JSON.stringify(profile, null, 4)}</pre>
 {/if}

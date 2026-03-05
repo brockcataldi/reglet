@@ -1,11 +1,11 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-export function cn(...inputs: ClassValue[]) {
+export const cn = (...inputs: ClassValue[]) => {
 	return twMerge(clsx(inputs));
 }
 
-export function readLocalStorage<T>(key: string): T | null {
+export const readLocalStorage = <T>(key: string): T | null => {
 	const value = localStorage.getItem(key);
 
 	try {
@@ -15,7 +15,7 @@ export function readLocalStorage<T>(key: string): T | null {
 	}
 }
 
-export function writeLocalStorage<T>(key: string, value: T) {
+export const writeLocalStorage = <T>(key: string, value: T) => {
 	localStorage.setItem(key, JSON.stringify(value));
 }
 
