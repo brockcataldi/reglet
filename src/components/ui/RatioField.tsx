@@ -1,5 +1,5 @@
 import { Text, Select, TextField, Button, Flex } from '@radix-ui/themes';
-import { useEffect, useState, type ChangeEvent } from 'react';
+import { useState, type ChangeEvent } from 'react';
 
 const RATIOS: [number, string][] = [
 	[1.067, 'Minor Second'],
@@ -17,74 +17,77 @@ const RATIOS: [number, string][] = [
 ];
 
 type RatioFieldProps = {
+	id: string;
 	label: string;
 	value: number;
 	onChange: (newValue: number) => void;
 };
 
-const RatioField = ({ label, value, onChange }: RatioFieldProps) => {
-	const [internalValue, setInternalValue] = useState<string>(
-		RATIOS.some(([ratio]) => Math.abs(ratio - value) < 1e-6)
-			? value.toString()
-			: 'custom'
+const RatioField = ({ id, label, value, onChange }: RatioFieldProps) => {
+	const [isManual, setIsManual] = useState(false);
+
+	const matchedRatio = RATIOS.find(
+		([ratio]) => Math.abs(ratio - value) < 1e-6
 	);
 
-	useEffect(() => {
-		const asString = value.toString();
-		setInternalValue(
-			RATIOS.some(([ratio]) => Math.abs(ratio - value) < 1e-6)
-				? asString
-				: 'custom'
-		);
-	}, [value]);
+	const showCustomInput = isManual || !matchedRatio;
+	const selectValue =
+		matchedRatio && !isManual ? matchedRatio[0].toString() : 'custom';
 
 	return (
 		<Flex direction={'column'} gapY={'1'}>
-			<Text>{label}</Text>
+			<Text size={'2'} as={'label'} htmlFor={id}>
+				{label}
+			</Text>
 
-			{internalValue === 'custom' ? (
+			{showCustomInput ? (
 				<Flex direction={'row'} gap="1">
 					<TextField.Root
+						id={id}
 						type="number"
 						min={1}
 						step={0.01}
 						value={value}
 						onChange={(event: ChangeEvent<HTMLInputElement>) => {
-							onChange(parseFloat(event.target.value));
+							const val = parseFloat(event.target.value);
+							if (!isNaN(val)) {
+								onChange(val);
+							}
 						}}
 					></TextField.Root>
 					<Button
 						onClick={() => {
+							setIsManual(false);
 							onChange(1.2);
-							setInternalValue('1.2');
 						}}
 					>
-						Reset Ratio
+						Back to Presets
 					</Button>
 				</Flex>
 			) : (
 				<Select.Root
-					value={internalValue}
+					value={selectValue}
 					onValueChange={(newValue) => {
-						if (newValue !== 'custom') {
+						if (newValue === 'custom') {
+							setIsManual(true);
+						} else {
+							setIsManual(false);
 							onChange(parseFloat(newValue));
 						}
-						setInternalValue(newValue);
 					}}
 				>
-					<Select.Trigger />
+					<Select.Trigger id={id} />
 					<Select.Content>
 						<Select.Item value={'custom'}>Custom</Select.Item>
-						{RATIOS.map(([ratioValue, ratioLabel]) => {
-							return (
-								<Select.Item
-									value={ratioValue.toString()}
-									key={`ratio-${ratioValue}`}
-								>
-									{ratioValue} - {ratioLabel}
-								</Select.Item>
-							);
-						})}
+						<Select.Separator />
+						{RATIOS.map(([ratioValue, ratioLabel]) => (
+							<Select.Item
+								value={ratioValue.toString()}
+								key={`ratio-${ratioValue}`}
+							>
+								{ratioValue} - {ratioLabel}
+							</Select.Item>
+						))}
 					</Select.Content>
 				</Select.Root>
 			)}
