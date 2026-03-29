@@ -1,5 +1,5 @@
 export type Unit = 'px' | 'rem' | 'em';
-export type ProjectType = 'breakpoint' | 'fluid';
+export type ProjectType = 'traditional' | 'fluid';
 
 export type Bounds = {
 	min: number;
@@ -25,7 +25,8 @@ export type Cell = {
 	fontSize: number;
 };
 
-export type Breakpoint = {
+export type BreakpointSettings = {
+	id: string;
 	base: number;
 	ratio: number;
 	bounds: Bounds;
@@ -33,7 +34,30 @@ export type Breakpoint = {
 	textStyles: TextStyle[];
 };
 
-export type Project = {
+export type Settings = {
 	unit: Unit;
 	precision: number;
+	type: ProjectType;
+};
+
+export type TraditionalBreakpoint = BreakpointSettings & {
+	minWidth: number;
+};
+export type TraditionalBreakpoints = TraditionalBreakpoint[];
+
+export type FluidBreakpoint = BreakpointSettings;
+export type FluidBreakpoints = { min: FluidBreakpoint; max: FluidBreakpoint };
+
+export const isFluidBreakpointsKey = (
+	value: unknown
+): value is keyof FluidBreakpoints => {
+	return value === 'min' || value === 'max';
+};
+
+export type BreakpointId = string | keyof FluidBreakpoints;
+
+export type Project = {
+	settings: Settings;
+	traditional: TraditionalBreakpoints;
+	fluid: FluidBreakpoints;
 };

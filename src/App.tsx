@@ -1,11 +1,21 @@
-import Breakpoint from './components/Breakpoint';
-import { ProjectProvider } from './hooks/ProjectProvider';
+import { BrowserRouter, Route, Routes } from 'react-router';
+
+import IndexRoute from './routes/IndexRoute';
+import TraditionalIndexRoute from './routes/TraditionalIndexRoute';
+import TraditionalRoute from './routes/TraditionalRoute';
 
 const App = () => {
 	return (
-		<ProjectProvider>
-			<Breakpoint />
-		</ProjectProvider>
+		<BrowserRouter>
+			<Routes>
+				<Route index path="/" element={<IndexRoute />} />
+
+				<Route path="traditional">
+					<Route index element={<TraditionalIndexRoute />} />
+					<Route path=":id" element={<TraditionalRoute />} />
+				</Route>
+			</Routes>
+		</BrowserRouter>
 	);
 };
 

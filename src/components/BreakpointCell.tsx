@@ -7,36 +7,27 @@ import {
 	Text,
 	TextField,
 } from '@radix-ui/themes';
-
 import { Link1Icon, LinkBreak1Icon } from '@radix-ui/react-icons';
-import type { Cell, Override, Unit } from '../types';
-import type { ChangeEvent } from 'react';
 
-type BreakpointVisualizeItem = {
-	unit: Unit;
+import type { Cell } from '../types';
+import { useOverride, useSettingsUnit } from '../hooks/useProjectStore';
+
+type BreakpointCellProps = {
 	cell: Cell;
-	override: Override | undefined;
+	id: string;
 	rowIndex: number;
 	columnIndex: number;
-	onUnlink: (cell: Cell, rowIndex: number, columnIndex: number) => void;
-	onLink: (rowIndex: number, columnIndex: number) => void;
-	onOverrideChange: (
-		update: Partial<Override>,
-		rowIndex: number,
-		columnIndex: number
-	) => void;
 };
 
-const BreakpointVisualizeItem = ({
-	unit,
+const BreakpointCell = ({
 	cell,
-	override,
+	id,
 	rowIndex,
 	columnIndex,
-	onLink,
-	onUnlink,
-	onOverrideChange,
-}: BreakpointVisualizeItem) => {
+}: BreakpointCellProps) => {
+	const unit = useSettingsUnit();
+	const override = useOverride(id, rowIndex, columnIndex);
+
 	return (
 		<Box width={'500px'}>
 			<Card>
@@ -48,20 +39,13 @@ const BreakpointVisualizeItem = ({
 						justify={'between'}
 					>
 						<Badge size={'2'}>Demo</Badge>
+
 						{override === undefined ? (
-							<Button
-								onClick={() => {
-									onUnlink(cell, rowIndex, columnIndex);
-								}}
-							>
+							<Button>
 								<LinkBreak1Icon /> Unlink
 							</Button>
 						) : (
-							<Button
-								onClick={() => {
-									onLink(rowIndex, columnIndex);
-								}}
-							>
+							<Button>
 								<Link1Icon /> Link
 							</Button>
 						)}
@@ -105,19 +89,6 @@ const BreakpointVisualizeItem = ({
 									type="number"
 									min={1}
 									step={unit === 'px' ? 0.05 : 0.005}
-									onChange={(
-										event: ChangeEvent<HTMLInputElement>
-									) => {
-										onOverrideChange(
-											{
-												fontSize: parseFloat(
-													event.target.value
-												),
-											},
-											rowIndex,
-											columnIndex
-										);
-									}}
 								/>
 								<Text>{unit}</Text>
 							</Flex>
@@ -134,19 +105,6 @@ const BreakpointVisualizeItem = ({
 									type="number"
 									min={1}
 									step={0.005}
-									onChange={(
-										event: ChangeEvent<HTMLInputElement>
-									) => {
-										onOverrideChange(
-											{
-												lineHeight: parseFloat(
-													event.target.value
-												),
-											},
-											rowIndex,
-											columnIndex
-										);
-									}}
 								/>
 							</Flex>
 						</Flex>
@@ -157,4 +115,4 @@ const BreakpointVisualizeItem = ({
 	);
 };
 
-export default BreakpointVisualizeItem;
+export default BreakpointCell;
