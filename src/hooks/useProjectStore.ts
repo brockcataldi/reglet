@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { create } from 'zustand';
+import { immer } from 'zustand/middleware/immer';
 
 import {
 	isFluidBreakpointsKey,
@@ -14,124 +15,71 @@ import {
 
 import { scale, toPrecise } from '../functions';
 
-export const createInitialProject = () => ({
-	settings: {
-		unit: 'rem',
-		precision: 3,
-		type: 'traditional',
-	},
-	traditional: [
-		{
-			id: crypto.randomUUID(),
-			minWidth: 0,
-			base: 1,
-			ratio: 1.2,
-			bounds: { min: -1, max: 5 },
-			overrides: {},
-			textStyles: [
-				{
-					fontFamily: 'Arial',
-					fontWeight: '400',
-					fontStyle: 'normal',
-				},
-			],
+export const useProjectStore = create<Project>()(
+	immer(() => ({
+		settings: {
+			unit: 'rem',
+			precision: 3,
+			type: 'traditional',
 		},
-	],
-	fluid: {
-		min: {
-			id: crypto.randomUUID(),
-			base: 1,
-			ratio: 1.2,
-			bounds: { min: -1, max: 5 },
-			overrides: {},
-			textStyles: [
-				{
-					fontFamily: 'Arial',
-					fontWeight: '400',
-					fontStyle: 'normal',
-				},
-			],
+		traditional: [
+			{
+				id: crypto.randomUUID(),
+				minWidth: 0,
+				base: 1,
+				ratio: 1.2,
+				bounds: { min: -1, max: 5 },
+				overrides: {},
+				textStyles: [
+					{
+						fontFamily: 'Arial',
+						fontWeight: '400',
+						fontStyle: 'normal',
+					},
+				],
+			},
+		],
+		fluid: {
+			min: {
+				id: crypto.randomUUID(),
+				base: 1,
+				ratio: 1.2,
+				bounds: { min: -1, max: 5 },
+				overrides: {},
+				textStyles: [
+					{
+						fontFamily: 'Arial',
+						fontWeight: '400',
+						fontStyle: 'normal',
+					},
+				],
+			},
+			max: {
+				id: crypto.randomUUID(),
+				base: 1.1,
+				ratio: 1.2,
+				bounds: { min: -1, max: 5 },
+				overrides: {},
+				textStyles: [
+					{
+						fontFamily: 'Arial',
+						fontWeight: '400',
+						fontStyle: 'normal',
+					},
+				],
+			},
 		},
-		max: {
-			id: crypto.randomUUID(),
-			base: 1.1,
-			ratio: 1.2,
-			bounds: { min: -1, max: 5 },
-			overrides: {},
-			textStyles: [
-				{
-					fontFamily: 'Arial',
-					fontWeight: '400',
-					fontStyle: 'normal',
-				},
-			],
-		},
-	},
-});
-
-export const useProjectStore = create<Project>(() => ({
-	settings: {
-		unit: 'rem',
-		precision: 3,
-		type: 'traditional',
-	},
-	traditional: [
-		{
-			id: crypto.randomUUID(),
-			minWidth: 0,
-			base: 1,
-			ratio: 1.2,
-			bounds: { min: -1, max: 5 },
-			overrides: {},
-			textStyles: [
-				{
-					fontFamily: 'Arial',
-					fontWeight: '400',
-					fontStyle: 'normal',
-				},
-			],
-		},
-	],
-	fluid: {
-		min: {
-			id: crypto.randomUUID(),
-			base: 1,
-			ratio: 1.2,
-			bounds: { min: -1, max: 5 },
-			overrides: {},
-			textStyles: [
-				{
-					fontFamily: 'Arial',
-					fontWeight: '400',
-					fontStyle: 'normal',
-				},
-			],
-		},
-		max: {
-			id: crypto.randomUUID(),
-			base: 1.1,
-			ratio: 1.2,
-			bounds: { min: -1, max: 5 },
-			overrides: {},
-			textStyles: [
-				{
-					fontFamily: 'Arial',
-					fontWeight: '400',
-					fontStyle: 'normal',
-				},
-			],
-		},
-	},
-}));
+	}))
+);
 
 export const useSettingsUnit = () => {
 	return useProjectStore((state) => state.settings.unit);
 };
 
 export const setSettingsUnit = (unit: Unit) => {
-	useProjectStore.setState((state) => ({
-		settings: { ...state.settings, unit },
-	}));
+	useProjectStore.setState((state) => {
+		state.settings.unit = unit;
+	});
 };
 
 export const useSettingsPrecision = () => {
@@ -139,9 +87,9 @@ export const useSettingsPrecision = () => {
 };
 
 export const setSettingsPrecision = (precision: number) => {
-	useProjectStore.setState((state) => ({
-		settings: { ...state.settings, precision },
-	}));
+	useProjectStore.setState((state) => {
+		state.settings.precision = precision;
+	});
 };
 
 export const useSettingsType = () => {
@@ -149,9 +97,9 @@ export const useSettingsType = () => {
 };
 
 export const setSettingsType = (type: ProjectType) => {
-	useProjectStore.setState((state) => ({
-		settings: { ...state.settings, type },
-	}));
+	useProjectStore.setState((state) => {
+		state.settings.type = type;
+	});
 };
 
 export const useBreakpoint = (id: BreakpointId) => {
@@ -220,31 +168,24 @@ export const enableOverride = (
 	row: number,
 	column: number
 ) => {
-	const key = `${row}:${column}`;
-
 	useProjectStore.setState((state) => {
-		return {
-			traditional: state.traditional.map((traditional) =>
-				traditional.id === id
-					? {
-							...traditional,
-							overrides: {
-								...traditional.overrides,
-								[key]: {
-									fontSize: toPrecise(
-										scale(
-											row,
-											traditional.base,
-											traditional.ratio
-										),
-										state.settings.precision
-									),
-									lineHeight: 1,
-								},
-							},
-						}
-					: traditional
+		const key = `${row}:${column}`;
+		const traditional = state.traditional.find((t) => t.id === id);
+
+		if (!traditional) {
+			return;
+		}
+
+		if (key in traditional.overrides) {
+			return;
+		}
+
+		traditional.overrides[key] = {
+			fontSize: toPrecise(
+				scale(row, traditional.base, traditional.ratio),
+				state.settings.precision
 			),
+			lineHeight: 1,
 		};
 	});
 };
@@ -253,14 +194,47 @@ export const disableOverride = (
 	id: BreakpointId,
 	row: number,
 	column: number
-) => {};
+) => {
+	useProjectStore.setState((state) => {
+		const key = `${row}:${column}`;
+		const traditional = state.traditional.find((t) => t.id === id);
+
+		if (!traditional) {
+			return;
+		}
+
+		if (!(key in traditional.overrides)) {
+			return;
+		}
+
+		delete traditional.overrides[key];
+	});
+};
 
 export const setOverride = (
 	id: BreakpointId,
 	row: number,
 	column: number,
 	value: Partial<Override>
-) => {};
+) => {
+	useProjectStore.setState((state) => {
+		const key = `${row}:${column}`;
+		const traditional = state.traditional.find((t) => t.id === id);
+
+		if (!traditional) {
+			return;
+		}
+
+		if (!(key in traditional.overrides)) {
+			return;
+		}
+
+		traditional.overrides[key] = {
+			...traditional.overrides[key],
+			...value,
+		};
+	});
+};
 
 const buildBreakpointTable = (
 	breakpoint: BreakpointSettings | undefined,

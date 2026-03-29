@@ -10,7 +10,14 @@ import {
 import { Link1Icon, LinkBreak1Icon } from '@radix-ui/react-icons';
 
 import type { Cell } from '../types';
-import { useOverride, useSettingsUnit } from '../hooks/useProjectStore';
+import {
+	disableOverride,
+	enableOverride,
+	setOverride,
+	useOverride,
+	useSettingsUnit,
+} from '../hooks/useProjectStore';
+import type { ChangeEvent } from 'react';
 
 type BreakpointCellProps = {
 	cell: Cell;
@@ -28,6 +35,26 @@ const BreakpointCell = ({
 	const unit = useSettingsUnit();
 	const override = useOverride(id, rowIndex, columnIndex);
 
+	const onClickUnlink = () => {
+		enableOverride(id, rowIndex, columnIndex);
+	};
+
+	const onClickLink = () => {
+		disableOverride(id, rowIndex, columnIndex);
+	};
+
+	const onChangeFontSize = (event: ChangeEvent<HTMLInputElement>) => {
+		setOverride(id, rowIndex, columnIndex, {
+			fontSize: parseFloat(event.target.value),
+		});
+	};
+
+	const onChangeLineHeight = (event: ChangeEvent<HTMLInputElement>) => {
+		setOverride(id, rowIndex, columnIndex, {
+			lineHeight: parseFloat(event.target.value),
+		});
+	};
+
 	return (
 		<Box width={'500px'}>
 			<Card>
@@ -41,11 +68,11 @@ const BreakpointCell = ({
 						<Badge size={'2'}>Demo</Badge>
 
 						{override === undefined ? (
-							<Button>
+							<Button onClick={onClickUnlink}>
 								<LinkBreak1Icon /> Unlink
 							</Button>
 						) : (
-							<Button>
+							<Button onClick={onClickLink}>
 								<Link1Icon /> Link
 							</Button>
 						)}
@@ -89,6 +116,7 @@ const BreakpointCell = ({
 									type="number"
 									min={1}
 									step={unit === 'px' ? 0.05 : 0.005}
+									onChange={onChangeFontSize}
 								/>
 								<Text>{unit}</Text>
 							</Flex>
@@ -105,6 +133,7 @@ const BreakpointCell = ({
 									type="number"
 									min={1}
 									step={0.005}
+									onChange={onChangeLineHeight}
 								/>
 							</Flex>
 						</Flex>
