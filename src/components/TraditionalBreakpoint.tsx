@@ -1,5 +1,6 @@
-import { Box } from '@radix-ui/themes';
+import { Box, Flex } from '@radix-ui/themes';
 import BreakpointTable from './BreakpointTable';
+import TraditionalBreakpointAside from './TraditionalBreakpointAside';
 
 type TraditionalBreakpointProps = {
 	id: string;
@@ -7,9 +8,13 @@ type TraditionalBreakpointProps = {
 
 const TraditionalBreakpoint = ({ id }: TraditionalBreakpointProps) => {
 	return (
-		<Box width={'100%'}>
-			<BreakpointTable id={id} />
-		</Box>
+		<Flex width={'100%'}>
+			<TraditionalBreakpointAside id={id} />
+
+			<Box>
+				<BreakpointTable id={id} />
+			</Box>
+		</Flex>
 	);
 };
 

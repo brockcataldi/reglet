@@ -2,12 +2,12 @@ export const scale = (step: number, base: number, ratio: number): number =>
 	base * Math.pow(ratio, step);
 
 export const suffix = (value: number): string => {
-	switch (Math.abs(value)) {
-		case 1:
+	switch (Math.trunc(value).toString().at(-1)) {
+		case '1':
 			return `${value}st`;
-		case 2:
+		case '2':
 			return `${value}nd`;
-		case 3:
+		case '3':
 			return `${value}rd`;
 		default:
 			return `${value}th`;

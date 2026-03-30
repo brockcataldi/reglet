@@ -6,10 +6,11 @@ import {
 	useBreakpointTextStyles,
 } from '../hooks/useProjectStore';
 
-import { Table, IconButton, Flex, Avatar } from '@radix-ui/themes';
+import { Table, IconButton, Flex, Avatar, Tooltip } from '@radix-ui/themes';
 import { MinusIcon, PlusIcon } from '@radix-ui/react-icons';
 
 import BreakpointCell from './BreakpointCell';
+import { suffix } from '../functions';
 
 type BreakpointTableProps = {
 	id: string;
@@ -37,15 +38,19 @@ const BreakpointTable = ({ id }: BreakpointTableProps) => {
 			<Table.Header>
 				<Table.Row>
 					<Table.ColumnHeaderCell>
-						<IconButton
-							size={'3'}
-							onClick={() => {
-								console.log('clicked');
-								incrementBound(id, 'max');
-							}}
+						<Tooltip
+							content={`Add a ${suffix(bounds.max + 1)} row`}
 						>
-							<PlusIcon />
-						</IconButton>
+							<IconButton
+								size={'3'}
+								onClick={() => {
+									console.log('clicked');
+									incrementBound(id, 'max');
+								}}
+							>
+								<PlusIcon />
+							</IconButton>
+						</Tooltip>
 					</Table.ColumnHeaderCell>
 					{textStyles.map((textStyle, textStyleIndex) => {
 						return (
@@ -114,14 +119,18 @@ const BreakpointTable = ({ id }: BreakpointTableProps) => {
 				})}
 				<Table.Row>
 					<Table.ColumnHeaderCell>
-						<IconButton
-							size={'3'}
-							onClick={() => {
-								decrementBound(id, 'min');
-							}}
+						<Tooltip
+							content={`Add a ${suffix(bounds.min - 1)} row`}
 						>
-							<PlusIcon />
-						</IconButton>
+							<IconButton
+								size={'3'}
+								onClick={() => {
+									decrementBound(id, 'min');
+								}}
+							>
+								<PlusIcon />
+							</IconButton>
+						</Tooltip>
 					</Table.ColumnHeaderCell>
 				</Table.Row>
 			</Table.Body>

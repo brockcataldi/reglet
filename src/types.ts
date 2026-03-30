@@ -1,4 +1,4 @@
-export type Unit = 'px' | 'rem' | 'em';
+export type Unit = 'px' | 'rem' | 'pt';
 export type ProjectType = 'traditional' | 'fluid';
 
 export type Bounds = {

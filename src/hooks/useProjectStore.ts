@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
+import { persist } from 'zustand/middleware';
 
 import {
 	isFluidBreakpointsKey,
@@ -58,6 +59,7 @@ const createDefaultFluidBreakpoint = (base?: number): FluidBreakpoint => ({
 
 const createBreakpointTable = (
 	breakpoint: BreakpointSettings | undefined,
+	unit: Unit,
 	precision: number
 ): Cell[][] => {
 	if (!breakpoint) {
@@ -67,17 +69,20 @@ const createBreakpointTable = (
 	const cells: Cell[][] = [];
 	const { bounds, textStyles, base, ratio, overrides } = breakpoint;
 
+	const cutoff = unit === 'px' ? 24 : 1.5;
+
 	for (let i = bounds.max; i >= bounds.min; i--) {
 		const row: Cell[] = [];
 		for (let j = 0; j < textStyles.length; j++) {
 			const override = overrides[`${i}:${j}`];
 
+			const calculated = toPrecise(scale(i, base, ratio), precision);
+
 			const cell = {
 				...textStyles[j],
-				fontSize:
-					override?.fontSize ??
-					toPrecise(scale(i, base, ratio), precision),
-				lineHeight: override?.lineHeight ?? 1,
+				fontSize: override?.fontSize ?? calculated,
+				lineHeight:
+					(override?.lineHeight ?? calculated > cutoff) ? 1.15 : 1.5,
 			};
 
 			row.push(cell);
@@ -88,14 +93,19 @@ const createBreakpointTable = (
 };
 
 export const useProjectStore = create<Project>()(
-	immer(() => ({
-		settings: createDefaultSettings(),
-		traditional: [createDefaultTraditionalBreakpoint()],
-		fluid: {
-			min: createDefaultFluidBreakpoint(),
-			max: createDefaultFluidBreakpoint(1.1),
-		},
-	}))
+	persist(
+		immer(() => ({
+			settings: createDefaultSettings(),
+			traditional: [createDefaultTraditionalBreakpoint()],
+			fluid: {
+				min: createDefaultFluidBreakpoint(),
+				max: createDefaultFluidBreakpoint(1.1),
+			},
+		})),
+		{
+			name: 'project',
+		}
+	)
 );
 
 export const useSettingsUnit = () => {
@@ -155,6 +165,42 @@ export const useBreakpointBounds = (id: BreakpointId) => {
 	});
 };
 
+export const useBreakpointBase = (id: BreakpointId) => {
+	return useProjectStore((state) => {
+		if (isFluidBreakpointsKey(id)) {
+			return state.fluid[id]?.base;
+		}
+		return state.traditional.find((t) => t.id === id)?.base;
+	});
+};
+
+export const useBreakpointRatio = (id: BreakpointId) => {
+	return useProjectStore((state) => {
+		if (isFluidBreakpointsKey(id)) {
+			return state.fluid[id]?.ratio;
+		}
+		return state.traditional.find((t) => t.id === id)?.ratio;
+	});
+};
+
+export const updateTraditionalBreakpoint = (
+	id: BreakpointId,
+	settings: Partial<TraditionalBreakpoint>
+) => {
+	useProjectStore.setState((state) => {
+		const index = state.traditional.findIndex((t) => t.id === id);
+
+		if (index === -1) {
+			return;
+		}
+
+		state.traditional[index] = {
+			...state.traditional[index],
+			...settings,
+		};
+	});
+};
+
 export const useTraditionalBreakpointExists = (id: string | undefined) => {
 	return useProjectStore((state) =>
 		state.traditional.some((t) => t.id === id)
@@ -168,10 +214,11 @@ export const useFirstTraditionalBreakpointId = () => {
 export const useBreakpointTable = (id: BreakpointId) => {
 	const precision = useSettingsPrecision();
 	const breakpoint = useBreakpoint(id);
+	const unit = useSettingsUnit();
 
 	return useMemo(() => {
-		return createBreakpointTable(breakpoint, precision);
-	}, [breakpoint, precision]);
+		return createBreakpointTable(breakpoint, unit, precision);
+	}, [breakpoint, unit, precision]);
 };
 
 export const useOverride = (id: BreakpointId, row: number, column: number) => {
@@ -254,7 +301,7 @@ export const disableOverride = (
 	});
 };
 
-export const setOverride = (
+export const updateOverride = (
 	id: BreakpointId,
 	row: number,
 	column: number,
@@ -293,10 +340,7 @@ export const setOverride = (
 
 export const incrementBound = (id: BreakpointId, key: keyof Bounds) => {
 	useProjectStore.setState((state) => {
-		console.log('incrementBound');
-
 		if (isFluidBreakpointsKey(id)) {
-			console.log('fluid');
 			const fluid = state.fluid[id];
 			fluid.bounds[key] = fluid.bounds[key] + 1;
 			return;
@@ -307,9 +351,6 @@ export const incrementBound = (id: BreakpointId, key: keyof Bounds) => {
 		if (!traditional) {
 			return;
 		}
-
-		console.log('traditional');
-
 		traditional.bounds[key] = traditional.bounds[key] + 1;
 	});
 };

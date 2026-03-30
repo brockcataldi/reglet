@@ -13,7 +13,7 @@ import type { Cell } from '../types';
 import {
 	disableOverride,
 	enableOverride,
-	setOverride,
+	updateOverride,
 	useOverride,
 	useSettingsUnit,
 } from '../hooks/useProjectStore';
@@ -44,13 +44,13 @@ const BreakpointCell = ({
 	};
 
 	const onChangeFontSize = (event: ChangeEvent<HTMLInputElement>) => {
-		setOverride(id, rowIndex, columnIndex, {
+		updateOverride(id, rowIndex, columnIndex, {
 			fontSize: parseFloat(event.target.value),
 		});
 	};
 
 	const onChangeLineHeight = (event: ChangeEvent<HTMLInputElement>) => {
-		setOverride(id, rowIndex, columnIndex, {
+		updateOverride(id, rowIndex, columnIndex, {
 			lineHeight: parseFloat(event.target.value),
 		});
 	};
@@ -95,32 +95,39 @@ const BreakpointCell = ({
 
 					{override === undefined ? (
 						<Flex direction={'row'} gap="2" width={'100%'}>
-							<Text>
-								Font Size: {cell.fontSize}
-								{unit}
-							</Text>
-							<Text>Line Height: {cell.lineHeight}</Text>
+							<Flex direction={'column'} gap={'1'} align="start">
+								<Text>Font Size</Text>
+								<Text>
+									{cell.fontSize} {unit}
+								</Text>
+							</Flex>
+							<Flex direction={'column'} gap={'1'} align="start">
+								<Text>Line Height</Text>
+								<Text>{cell.lineHeight}</Text>
+							</Flex>
 						</Flex>
 					) : (
-						<Flex direction={'column'} gap="2" width={'100%'}>
-							<Flex direction={'row'} gap="1" align="center">
+						<Flex direction={'row'} gap="3" width={'100%'}>
+							<Flex direction={'column'} gap="1" align="start">
 								<Text
 									as="label"
 									htmlFor={`${rowIndex}:${columnIndex}-font-size`}
 								>
-									Font Size:
+									Font Size
 								</Text>
-								<TextField.Root
-									value={override.fontSize}
-									id={`${rowIndex}:${columnIndex}-font-size`}
-									type="number"
-									min={1}
-									step={unit === 'px' ? 0.05 : 0.005}
-									onChange={onChangeFontSize}
-								/>
-								<Text>{unit}</Text>
+								<Flex direction={'row'} gap="1" align="center">
+									<TextField.Root
+										value={override.fontSize}
+										id={`${rowIndex}:${columnIndex}-font-size`}
+										type="number"
+										min={1}
+										step={unit === 'px' ? 0.05 : 0.005}
+										onChange={onChangeFontSize}
+									/>
+									<Text>{unit}</Text>
+								</Flex>
 							</Flex>
-							<Flex direction={'row'} gap="1" align="center">
+							<Flex direction={'column'} gap="1" align="start">
 								<Text
 									as="label"
 									htmlFor={`${rowIndex}:${columnIndex}-line-height`}
