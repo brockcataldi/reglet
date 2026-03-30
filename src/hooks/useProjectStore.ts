@@ -4,70 +4,96 @@ import { immer } from 'zustand/middleware/immer';
 
 import {
 	isFluidBreakpointsKey,
+	type Bounds,
 	type BreakpointId,
 	type BreakpointSettings,
 	type Cell,
+	type FluidBreakpoint,
 	type Override,
 	type Project,
 	type ProjectType,
+	type Settings,
+	type TraditionalBreakpoint,
 	type Unit,
 } from '../types';
 
 import { scale, toPrecise } from '../functions';
 
+const createDefaultSettings = (): Settings => ({
+	unit: 'rem',
+	precision: 3,
+	type: 'traditional',
+});
+
+const createDefaultTraditionalBreakpoint = (): TraditionalBreakpoint => ({
+	id: crypto.randomUUID(),
+	minWidth: 0,
+	base: 1,
+	ratio: 1.2,
+	bounds: { min: -1, max: 5 },
+	overrides: {},
+	textStyles: [
+		{
+			fontFamily: 'Arial',
+			fontWeight: '400',
+			fontStyle: 'normal',
+		},
+	],
+});
+
+const createDefaultFluidBreakpoint = (base?: number): FluidBreakpoint => ({
+	id: crypto.randomUUID(),
+	base: base ?? 1,
+	ratio: 1.2,
+	bounds: { min: -1, max: 5 },
+	overrides: {},
+	textStyles: [
+		{
+			fontFamily: 'Arial',
+			fontWeight: '400',
+			fontStyle: 'normal',
+		},
+	],
+});
+
+const createBreakpointTable = (
+	breakpoint: BreakpointSettings | undefined,
+	precision: number
+): Cell[][] => {
+	if (!breakpoint) {
+		return [];
+	}
+
+	const cells: Cell[][] = [];
+	const { bounds, textStyles, base, ratio, overrides } = breakpoint;
+
+	for (let i = bounds.max; i >= bounds.min; i--) {
+		const row: Cell[] = [];
+		for (let j = 0; j < textStyles.length; j++) {
+			const override = overrides[`${i}:${j}`];
+
+			const cell = {
+				...textStyles[j],
+				fontSize:
+					override?.fontSize ??
+					toPrecise(scale(i, base, ratio), precision),
+				lineHeight: override?.lineHeight ?? 1,
+			};
+
+			row.push(cell);
+		}
+		cells.push(row);
+	}
+	return cells;
+};
+
 export const useProjectStore = create<Project>()(
 	immer(() => ({
-		settings: {
-			unit: 'rem',
-			precision: 3,
-			type: 'traditional',
-		},
-		traditional: [
-			{
-				id: crypto.randomUUID(),
-				minWidth: 0,
-				base: 1,
-				ratio: 1.2,
-				bounds: { min: -1, max: 5 },
-				overrides: {},
-				textStyles: [
-					{
-						fontFamily: 'Arial',
-						fontWeight: '400',
-						fontStyle: 'normal',
-					},
-				],
-			},
-		],
+		settings: createDefaultSettings(),
+		traditional: [createDefaultTraditionalBreakpoint()],
 		fluid: {
-			min: {
-				id: crypto.randomUUID(),
-				base: 1,
-				ratio: 1.2,
-				bounds: { min: -1, max: 5 },
-				overrides: {},
-				textStyles: [
-					{
-						fontFamily: 'Arial',
-						fontWeight: '400',
-						fontStyle: 'normal',
-					},
-				],
-			},
-			max: {
-				id: crypto.randomUUID(),
-				base: 1.1,
-				ratio: 1.2,
-				bounds: { min: -1, max: 5 },
-				overrides: {},
-				textStyles: [
-					{
-						fontFamily: 'Arial',
-						fontWeight: '400',
-						fontStyle: 'normal',
-					},
-				],
-			},
+			min: createDefaultFluidBreakpoint(),
+			max: createDefaultFluidBreakpoint(1.1),
 		},
 	}))
 );
@@ -130,10 +156,6 @@ export const useBreakpointBounds = (id: BreakpointId) => {
 };
 
 export const useTraditionalBreakpointExists = (id: string | undefined) => {
-	if (!id) {
-		return;
-	}
-
 	return useProjectStore((state) =>
 		state.traditional.some((t) => t.id === id)
 	);
@@ -148,7 +170,7 @@ export const useBreakpointTable = (id: BreakpointId) => {
 	const breakpoint = useBreakpoint(id);
 
 	return useMemo(() => {
-		return buildBreakpointTable(breakpoint, precision);
+		return createBreakpointTable(breakpoint, precision);
 	}, [breakpoint, precision]);
 };
 
@@ -170,6 +192,21 @@ export const enableOverride = (
 ) => {
 	useProjectStore.setState((state) => {
 		const key = `${row}:${column}`;
+
+		if (isFluidBreakpointsKey(id)) {
+			const fluid = state.fluid[id];
+
+			fluid.overrides[key] = {
+				fontSize: toPrecise(
+					scale(row, fluid.base, fluid.ratio),
+					state.settings.precision
+				),
+				lineHeight: 1,
+			};
+
+			return;
+		}
+
 		const traditional = state.traditional.find((t) => t.id === id);
 
 		if (!traditional) {
@@ -197,6 +234,12 @@ export const disableOverride = (
 ) => {
 	useProjectStore.setState((state) => {
 		const key = `${row}:${column}`;
+
+		if (isFluidBreakpointsKey(id)) {
+			delete state.fluid[id].overrides[key];
+			return;
+		}
+
 		const traditional = state.traditional.find((t) => t.id === id);
 
 		if (!traditional) {
@@ -219,6 +262,18 @@ export const setOverride = (
 ) => {
 	useProjectStore.setState((state) => {
 		const key = `${row}:${column}`;
+
+		if (isFluidBreakpointsKey(id)) {
+			const fluid = state.fluid[id];
+
+			fluid.overrides[key] = {
+				...fluid.overrides[key],
+				...value,
+			};
+
+			return;
+		}
+
 		const traditional = state.traditional.find((t) => t.id === id);
 
 		if (!traditional) {
@@ -236,33 +291,43 @@ export const setOverride = (
 	});
 };
 
-const buildBreakpointTable = (
-	breakpoint: BreakpointSettings | undefined,
-	precision: number
-): Cell[][] => {
-	if (!breakpoint) {
-		return [];
-	}
+export const incrementBound = (id: BreakpointId, key: keyof Bounds) => {
+	useProjectStore.setState((state) => {
+		console.log('incrementBound');
 
-	const cells: Cell[][] = [];
-	const { bounds, textStyles, base, ratio, overrides } = breakpoint;
-
-	for (let i = bounds.max; i >= bounds.min; i--) {
-		const row: Cell[] = [];
-		for (let j = 0; j < textStyles.length; j++) {
-			const override = overrides[`${i}:${j}`];
-
-			const cell = {
-				...textStyles[j],
-				fontSize:
-					override?.fontSize ??
-					toPrecise(scale(i, base, ratio), precision),
-				lineHeight: override?.lineHeight ?? 1,
-			};
-
-			row.push(cell);
+		if (isFluidBreakpointsKey(id)) {
+			console.log('fluid');
+			const fluid = state.fluid[id];
+			fluid.bounds[key] = fluid.bounds[key] + 1;
+			return;
 		}
-		cells.push(row);
-	}
-	return cells;
+
+		const traditional = state.traditional.find((t) => t.id === id);
+
+		if (!traditional) {
+			return;
+		}
+
+		console.log('traditional');
+
+		traditional.bounds[key] = traditional.bounds[key] + 1;
+	});
+};
+
+export const decrementBound = (id: BreakpointId, key: keyof Bounds) => {
+	useProjectStore.setState((state) => {
+		if (isFluidBreakpointsKey(id)) {
+			const fluid = state.fluid[id];
+			fluid.bounds[key] = fluid.bounds[key] - 1;
+			return;
+		}
+
+		const traditional = state.traditional.find((t) => t.id === id);
+
+		if (!traditional) {
+			return;
+		}
+
+		traditional.bounds[key] = traditional.bounds[key] - 1;
+	});
 };

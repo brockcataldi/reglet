@@ -1,12 +1,15 @@
-import { Table, IconButton, Flex, Avatar } from '@radix-ui/themes';
-import { MinusIcon, PlusIcon } from '@radix-ui/react-icons';
-
-import BreakpointCell from './BreakpointCell';
 import {
+	decrementBound,
+	incrementBound,
 	useBreakpointBounds,
 	useBreakpointTable,
 	useBreakpointTextStyles,
 } from '../hooks/useProjectStore';
+
+import { Table, IconButton, Flex, Avatar } from '@radix-ui/themes';
+import { MinusIcon, PlusIcon } from '@radix-ui/react-icons';
+
+import BreakpointCell from './BreakpointCell';
 
 type BreakpointTableProps = {
 	id: string;
@@ -34,7 +37,13 @@ const BreakpointTable = ({ id }: BreakpointTableProps) => {
 			<Table.Header>
 				<Table.Row>
 					<Table.ColumnHeaderCell>
-						<IconButton size={'3'}>
+						<IconButton
+							size={'3'}
+							onClick={() => {
+								console.log('clicked');
+								incrementBound(id, 'max');
+							}}
+						>
 							<PlusIcon />
 						</IconButton>
 					</Table.ColumnHeaderCell>
@@ -61,14 +70,26 @@ const BreakpointTable = ({ id }: BreakpointTableProps) => {
 									/>
 									{rowIndex === 0 &&
 									bounds.max - rowIndex !== 0 ? (
-										<IconButton size={'3'} color={'red'}>
+										<IconButton
+											size={'3'}
+											color={'red'}
+											onClick={() => {
+												decrementBound(id, 'max');
+											}}
+										>
 											<MinusIcon />
 										</IconButton>
 									) : null}
 
 									{rowIndex === cells.length - 1 &&
 									bounds.max - rowIndex !== 0 ? (
-										<IconButton size={'3'} color={'red'}>
+										<IconButton
+											size={'3'}
+											color={'red'}
+											onClick={() => {
+												incrementBound(id, 'min');
+											}}
+										>
 											<MinusIcon />
 										</IconButton>
 									) : null}
@@ -93,7 +114,12 @@ const BreakpointTable = ({ id }: BreakpointTableProps) => {
 				})}
 				<Table.Row>
 					<Table.ColumnHeaderCell>
-						<IconButton size={'3'}>
+						<IconButton
+							size={'3'}
+							onClick={() => {
+								decrementBound(id, 'min');
+							}}
+						>
 							<PlusIcon />
 						</IconButton>
 					</Table.ColumnHeaderCell>
