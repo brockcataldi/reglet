@@ -1,6 +1,14 @@
-import { Box, Flex } from '@radix-ui/themes';
+import {
+	Box,
+	Button,
+	Dialog,
+	Flex,
+	Heading,
+	SegmentedControl,
+} from '@radix-ui/themes';
 import BreakpointTable from './BreakpointTable';
 import TraditionalBreakpointAside from './TraditionalBreakpointAside';
+import ProjectSettings from './ProjectSettings';
 
 type TraditionalBreakpointProps = {
 	id: string;
@@ -8,13 +16,35 @@ type TraditionalBreakpointProps = {
 
 const TraditionalBreakpoint = ({ id }: TraditionalBreakpointProps) => {
 	return (
-		<Flex width={'100%'}>
-			<TraditionalBreakpointAside id={id} />
+		<Box>
+			<header className="editor__header">
+				<Box width={'100%'} p={'2'}>
+					<Flex align="center" justify={'between'}>
+						<SegmentedControl.Root defaultValue="inbox">
+							<SegmentedControl.Item value="inbox">
+								Root
+							</SegmentedControl.Item>
+							<SegmentedControl.Item value="drafts">
+								800
+							</SegmentedControl.Item>
+							<SegmentedControl.Item value="sent">
+								1200
+							</SegmentedControl.Item>
+						</SegmentedControl.Root>
 
-			<Box>
-				<BreakpointTable id={id} />
-			</Box>
-		</Flex>
+						<ProjectSettings />
+					</Flex>
+				</Box>
+			</header>
+			<aside className="editor__aside">
+				<TraditionalBreakpointAside id={id} />
+			</aside>
+			<main className="editor__main">
+				<Box p="2">
+					<BreakpointTable id={id} />
+				</Box>
+			</main>
+		</Box>
 	);
 };
 

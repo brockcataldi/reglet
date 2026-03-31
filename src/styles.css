@@ -2,3 +2,29 @@ html,
 body {
 	margin: 0;
 }
+
+.editor__header {
+	width: calc(100% - 250px);
+	position: fixed;
+	top: 0;
+	left: 250px;
+	z-index: 10;
+	background-color: var(--color-surface);
+	box-shadow: var(--shadow-3);
+}
+
+.editor__aside {
+	width: 250px;
+	height: 100dvh;
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 10;
+	background-color: var(--color-surface);
+	box-shadow: var(--shadow-3);
+}
+
+.editor__main {
+	margin-top: 50px;
+	margin-left: 250px;
+}

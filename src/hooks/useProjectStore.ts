@@ -18,7 +18,7 @@ import {
 	type Unit,
 } from '../types';
 
-import { scale, toPrecise } from '../functions';
+import { convertUnit, scale, toPrecise } from '../functions';
 
 const createDefaultSettings = (): Settings => ({
 	unit: 'rem',
@@ -114,6 +114,18 @@ export const useSettingsUnit = () => {
 
 export const setSettingsUnit = (unit: Unit) => {
 	useProjectStore.setState((state) => {
+		const oldUnit = state.settings.unit;
+
+		for (let i = 0; i < state.traditional.length; i++) {
+			state.traditional[i].base = convertUnit(
+				state.traditional[i].base,
+				oldUnit,
+				unit
+			);
+		}
+
+		state.fluid.min.base = convertUnit(state.fluid.min.base, oldUnit, unit);
+		state.fluid.max.base = convertUnit(state.fluid.max.base, oldUnit, unit);
 		state.settings.unit = unit;
 	});
 };
@@ -240,15 +252,19 @@ export const enableOverride = (
 	useProjectStore.setState((state) => {
 		const key = `${row}:${column}`;
 
+		const cutoff = state.settings.unit === 'px' ? 24 : 1.5;
+
 		if (isFluidBreakpointsKey(id)) {
 			const fluid = state.fluid[id];
 
+			const calculated = toPrecise(
+				scale(row, fluid.base, fluid.ratio),
+				state.settings.precision
+			);
+
 			fluid.overrides[key] = {
-				fontSize: toPrecise(
-					scale(row, fluid.base, fluid.ratio),
-					state.settings.precision
-				),
-				lineHeight: 1,
+				fontSize: calculated,
+				lineHeight: calculated > cutoff ? 1.15 : 1.5,
 			};
 
 			return;
@@ -264,12 +280,14 @@ export const enableOverride = (
 			return;
 		}
 
+		const calculated = toPrecise(
+			scale(row, traditional.base, traditional.ratio),
+			state.settings.precision
+		);
+
 		traditional.overrides[key] = {
-			fontSize: toPrecise(
-				scale(row, traditional.base, traditional.ratio),
-				state.settings.precision
-			),
-			lineHeight: 1,
+			fontSize: calculated,
+			lineHeight: calculated > cutoff ? 1.15 : 1.5,
 		};
 	});
 };

@@ -118,7 +118,7 @@ const BreakpointTable = ({ id }: BreakpointTableProps) => {
 					);
 				})}
 				<Table.Row>
-					<Table.ColumnHeaderCell>
+					<Table.ColumnHeaderCell colSpan={textStyles.length + 1}>
 						<Tooltip
 							content={`Add a ${suffix(bounds.min - 1)} row`}
 						>

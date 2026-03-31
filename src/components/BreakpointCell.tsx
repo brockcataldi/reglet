@@ -1,8 +1,11 @@
+import type { ChangeEvent } from 'react';
+
 import {
 	Badge,
 	Box,
 	Button,
 	Card,
+	DataList,
 	Flex,
 	Text,
 	TextField,
@@ -17,7 +20,6 @@ import {
 	useOverride,
 	useSettingsUnit,
 } from '../hooks/useProjectStore';
-import type { ChangeEvent } from 'react';
 
 type BreakpointCellProps = {
 	cell: Cell;
@@ -65,7 +67,8 @@ const BreakpointCell = ({
 						align={'center'}
 						justify={'between'}
 					>
-						<Badge size={'2'}>Demo</Badge>
+						<span></span>
+						{/* <Badge size={'2'}>Demo</Badge> */}
 
 						{override === undefined ? (
 							<Button onClick={onClickUnlink}>
@@ -94,15 +97,15 @@ const BreakpointCell = ({
 					</p>
 
 					{override === undefined ? (
-						<Flex direction={'row'} gap="2" width={'100%'}>
+						<Flex direction={'row'} gap="6" width={'100%'}>
 							<Flex direction={'column'} gap={'1'} align="start">
-								<Text>Font Size</Text>
+								<Text size={'2'}>Font Size</Text>
 								<Text>
 									{cell.fontSize} {unit}
 								</Text>
 							</Flex>
 							<Flex direction={'column'} gap={'1'} align="start">
-								<Text>Line Height</Text>
+								<Text size={'2'}>Line Height</Text>
 								<Text>{cell.lineHeight}</Text>
 							</Flex>
 						</Flex>

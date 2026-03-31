@@ -1,12 +1,5 @@
 import type { ChangeEvent } from 'react';
-import {
-	Box,
-	Flex,
-	Heading,
-	ScrollArea,
-	Text,
-	TextField,
-} from '@radix-ui/themes';
+import { Box, Flex, ScrollArea, Text, TextField } from '@radix-ui/themes';
 
 import {
 	updateTraditionalBreakpoint,
@@ -39,11 +32,9 @@ const TraditionalBreakpointAside = ({ id }: TraditionalBreakpointProps) => {
 	};
 
 	return (
-		<Box style={{ width: '250px', height: '100vh', background: 'red' }}>
+		<Box height={'100%'}>
 			<ScrollArea asChild>
-				<Box p={'3'}>
-					<Heading>Breakpoint Settings</Heading>
-
+				<Flex p={'4'} direction={'column'} gap={'4'}>
 					<Flex direction={'column'} gap={'1'}>
 						<Text as="label" htmlFor={`${id}-base`} size={'2'}>
 							Base Value
@@ -69,7 +60,7 @@ const TraditionalBreakpointAside = ({ id }: TraditionalBreakpointProps) => {
 							onChange={onChangeRatio}
 						/>
 					) : null}
-				</Box>
+				</Flex>
 			</ScrollArea>
 		</Box>
 	);
