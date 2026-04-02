@@ -7,12 +7,14 @@ import {
 	Dialog,
 	Button,
 } from '@radix-ui/themes';
+
+import type { Unit } from '../project/types';
+
 import {
 	setSettingsUnit,
 	useSettingsType,
 	useSettingsUnit,
-} from '../hooks/useProjectStore';
-import type { Unit } from '../types';
+} from '../project/slices/settings';
 
 const ProjectSettings = () => {
 	const unit = useSettingsUnit();

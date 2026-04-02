@@ -1,18 +1,19 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 
 import IndexRoute from './routes/IndexRoute';
-import TraditionalIndexRoute from './routes/TraditionalIndexRoute';
-import TraditionalRoute from './routes/TraditionalRoute';
+import NewRoute from './routes/NewRoute';
+import BreakpointIndexRoute from './routes/BreakpointIndexRoute';
+import BreakpointRoute from './routes/BreakpointRoute';
 
 const App = () => {
 	return (
 		<BrowserRouter>
 			<Routes>
 				<Route index path="/" element={<IndexRoute />} />
-
-				<Route path="traditional">
-					<Route index element={<TraditionalIndexRoute />} />
-					<Route path=":id" element={<TraditionalRoute />} />
+				<Route path="new" element={<NewRoute />} />
+				<Route path="breakpoint">
+					<Route index element={<BreakpointIndexRoute />} />
+					<Route path=":id" element={<BreakpointRoute />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>

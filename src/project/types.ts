@@ -12,6 +12,7 @@ export type Override = {
 };
 
 export type TextStyle = {
+	id: string;
 	fontFamily: string;
 	fontWeight: string;
 	fontStyle: string;
@@ -25,28 +26,40 @@ export type Cell = {
 	fontSize: number;
 };
 
-export type BreakpointSettings = {
-	id: string;
+export type Breakpoint = {
 	base: number;
 	ratio: number;
 	bounds: Bounds;
 	overrides: Record<string, Override>;
-	textStyles: TextStyle[];
 };
 
 export type Settings = {
 	unit: Unit;
 	precision: number;
-	type: ProjectType;
 };
 
-export type TraditionalBreakpoint = BreakpointSettings & {
+export type TraditionalBreakpoint = {
+	id: string;
 	minWidth: number;
+	breakpoint: Breakpoint;
 };
-export type TraditionalBreakpoints = TraditionalBreakpoint[];
 
-export type FluidBreakpoint = BreakpointSettings;
-export type FluidBreakpoints = { min: FluidBreakpoint; max: FluidBreakpoint };
+export const isTraditionalBreakpoint = (
+	value: unknown
+): value is TraditionalBreakpoint => {
+	return (
+		value !== null &&
+		typeof value === 'object' &&
+		'id' in value &&
+		'minWidth' in value &&
+		'breakpoint' in value
+	);
+};
+
+export type FluidBreakpoints = {
+	min: Breakpoint;
+	max: Breakpoint;
+};
 
 export const isFluidBreakpointsKey = (
 	value: unknown
@@ -54,10 +67,16 @@ export const isFluidBreakpointsKey = (
 	return value === 'min' || value === 'max';
 };
 
-export type BreakpointId = string | keyof FluidBreakpoints;
-
-export type Project = {
-	settings: Settings;
-	traditional: TraditionalBreakpoints;
-	fluid: FluidBreakpoints;
-};
+export type Project =
+	| {
+			settings: Settings;
+			textStyles: TextStyle[];
+			type: 'traditional';
+			breakpoints: TraditionalBreakpoint[];
+	  }
+	| {
+			settings: Settings;
+			textStyles: TextStyle[];
+			type: 'fluid';
+			breakpoints: FluidBreakpoints;
+	  };

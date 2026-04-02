@@ -1,25 +1,17 @@
-import type { ChangeEvent } from 'react';
-
-import {
-	Badge,
-	Box,
-	Button,
-	Card,
-	DataList,
-	Flex,
-	Text,
-	TextField,
-} from '@radix-ui/themes';
+import { Box, Button, Card, Flex, Separator } from '@radix-ui/themes';
 import { Link1Icon, LinkBreak1Icon } from '@radix-ui/react-icons';
 
-import type { Cell } from '../types';
+import type { Cell } from '../project/types';
+
 import {
 	disableOverride,
 	enableOverride,
-	updateOverride,
 	useOverride,
-	useSettingsUnit,
-} from '../hooks/useProjectStore';
+} from '../project/slices/overrides';
+
+import { useSettingsUnit } from '../project/slices/settings';
+import BreakpointCellEdit from './BreakpointCellEdit';
+import BreakpointCellDetails from './BreakpointCellDetails';
 
 type BreakpointCellProps = {
 	cell: Cell;
@@ -45,18 +37,6 @@ const BreakpointCell = ({
 		disableOverride(id, rowIndex, columnIndex);
 	};
 
-	const onChangeFontSize = (event: ChangeEvent<HTMLInputElement>) => {
-		updateOverride(id, rowIndex, columnIndex, {
-			fontSize: parseFloat(event.target.value),
-		});
-	};
-
-	const onChangeLineHeight = (event: ChangeEvent<HTMLInputElement>) => {
-		updateOverride(id, rowIndex, columnIndex, {
-			lineHeight: parseFloat(event.target.value),
-		});
-	};
-
 	return (
 		<Box width={'500px'}>
 			<Card>
@@ -80,6 +60,9 @@ const BreakpointCell = ({
 							</Button>
 						)}
 					</Flex>
+
+					<Separator size={'4'} orientation={'horizontal'} />
+
 					<p
 						style={{
 							fontFamily: cell.fontFamily,
@@ -96,57 +79,16 @@ const BreakpointCell = ({
 						Lorem ipsum dolor sit amet consectetur adipisicing elit.
 					</p>
 
+					<Separator size={'4'} orientation={'horizontal'} />
+
 					{override === undefined ? (
-						<Flex direction={'row'} gap="6" width={'100%'}>
-							<Flex direction={'column'} gap={'1'} align="start">
-								<Text size={'2'}>Font Size</Text>
-								<Text>
-									{cell.fontSize} {unit}
-								</Text>
-							</Flex>
-							<Flex direction={'column'} gap={'1'} align="start">
-								<Text size={'2'}>Line Height</Text>
-								<Text>{cell.lineHeight}</Text>
-							</Flex>
-						</Flex>
+						<BreakpointCellDetails cell={cell} />
 					) : (
-						<Flex direction={'row'} gap="3" width={'100%'}>
-							<Flex direction={'column'} gap="1" align="start">
-								<Text
-									as="label"
-									htmlFor={`${rowIndex}:${columnIndex}-font-size`}
-								>
-									Font Size
-								</Text>
-								<Flex direction={'row'} gap="1" align="center">
-									<TextField.Root
-										value={override.fontSize}
-										id={`${rowIndex}:${columnIndex}-font-size`}
-										type="number"
-										min={1}
-										step={unit === 'px' ? 0.05 : 0.005}
-										onChange={onChangeFontSize}
-									/>
-									<Text>{unit}</Text>
-								</Flex>
-							</Flex>
-							<Flex direction={'column'} gap="1" align="start">
-								<Text
-									as="label"
-									htmlFor={`${rowIndex}:${columnIndex}-line-height`}
-								>
-									Line Height:
-								</Text>
-								<TextField.Root
-									value={override.lineHeight}
-									id={`${rowIndex}:${columnIndex}-line-height`}
-									type="number"
-									min={1}
-									step={0.005}
-									onChange={onChangeLineHeight}
-								/>
-							</Flex>
-						</Flex>
+						<BreakpointCellEdit
+							id={id}
+							rowIndex={rowIndex}
+							columnIndex={columnIndex}
+						/>
 					)}
 				</Flex>
 			</Card>

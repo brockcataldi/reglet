@@ -2,11 +2,12 @@ import type { ChangeEvent } from 'react';
 import { Box, Flex, ScrollArea, Text, TextField } from '@radix-ui/themes';
 
 import {
-	updateTraditionalBreakpoint,
+	updateBreakpoint,
 	useBreakpointBase,
 	useBreakpointRatio,
-	useSettingsUnit,
-} from '../hooks/useProjectStore';
+} from '../project/slices/breakpoint';
+
+import { useSettingsUnit } from '../project/slices/settings';
 
 import RatioField from './ui/RatioField';
 
@@ -20,13 +21,13 @@ const TraditionalBreakpointAside = ({ id }: TraditionalBreakpointProps) => {
 	const ratio = useBreakpointRatio(id);
 
 	const onChangeBase = (event: ChangeEvent<HTMLInputElement>) => {
-		updateTraditionalBreakpoint(id, {
+		updateBreakpoint(id, {
 			base: parseFloat(event.target.value),
 		});
 	};
 
 	const onChangeRatio = (newRatio: number) => {
-		updateTraditionalBreakpoint(id, {
+		updateBreakpoint(id, {
 			ratio: newRatio,
 		});
 	};

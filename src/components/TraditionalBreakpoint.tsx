@@ -1,11 +1,4 @@
-import {
-	Box,
-	Button,
-	Dialog,
-	Flex,
-	Heading,
-	SegmentedControl,
-} from '@radix-ui/themes';
+import { Box, Flex, SegmentedControl } from '@radix-ui/themes';
 import BreakpointTable from './BreakpointTable';
 import TraditionalBreakpointAside from './TraditionalBreakpointAside';
 import ProjectSettings from './ProjectSettings';
@@ -31,7 +24,6 @@ const TraditionalBreakpoint = ({ id }: TraditionalBreakpointProps) => {
 								1200
 							</SegmentedControl.Item>
 						</SegmentedControl.Root>
-
 						<ProjectSettings />
 					</Flex>
 				</Box>

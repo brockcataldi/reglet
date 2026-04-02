@@ -1,16 +1,17 @@
-import {
-	decrementBound,
-	incrementBound,
-	useBreakpointBounds,
-	useBreakpointTable,
-	useBreakpointTextStyles,
-} from '../hooks/useProjectStore';
-
 import { Table, IconButton, Flex, Avatar, Tooltip } from '@radix-ui/themes';
 import { MinusIcon, PlusIcon } from '@radix-ui/react-icons';
 
+import {
+	decrementBound,
+	incrementBound,
+	useBounds,
+} from '../project/slices/bounds';
+import { useBreakpointTable } from '../project/slices/breakpoint';
+import { useTextStylesLength } from '../project/slices/text-styles';
+import { suffix } from '../project/helpers';
+
 import BreakpointCell from './BreakpointCell';
-import { suffix } from '../functions';
+import BreakpointHeader from './BreakpointHeader';
 
 type BreakpointTableProps = {
 	id: string;
@@ -18,14 +19,10 @@ type BreakpointTableProps = {
 
 const BreakpointTable = ({ id }: BreakpointTableProps) => {
 	const cells = useBreakpointTable(id);
-	const textStyles = useBreakpointTextStyles(id);
-	const bounds = useBreakpointBounds(id);
+	const textStylesLength = useTextStylesLength();
+	const bounds = useBounds(id);
 
 	if (!cells.length) {
-		return;
-	}
-
-	if (!textStyles) {
 		return;
 	}
 
@@ -35,34 +32,8 @@ const BreakpointTable = ({ id }: BreakpointTableProps) => {
 
 	return (
 		<Table.Root>
-			<Table.Header>
-				<Table.Row>
-					<Table.ColumnHeaderCell>
-						<Tooltip
-							content={`Add a ${suffix(bounds.max + 1)} row`}
-						>
-							<IconButton
-								size={'3'}
-								onClick={() => {
-									console.log('clicked');
-									incrementBound(id, 'max');
-								}}
-							>
-								<PlusIcon />
-							</IconButton>
-						</Tooltip>
-					</Table.ColumnHeaderCell>
-					{textStyles.map((textStyle, textStyleIndex) => {
-						return (
-							<Table.ColumnHeaderCell
-								key={`${id}-text-style-${textStyleIndex}`}
-							>
-								{textStyle.fontFamily}
-							</Table.ColumnHeaderCell>
-						);
-					})}
-				</Table.Row>
-			</Table.Header>
+			<BreakpointHeader id={id} />
+
 			<Table.Body>
 				{cells.map((row, rowIndex) => {
 					return (
@@ -118,7 +89,7 @@ const BreakpointTable = ({ id }: BreakpointTableProps) => {
 					);
 				})}
 				<Table.Row>
-					<Table.ColumnHeaderCell colSpan={textStyles.length + 1}>
+					<Table.ColumnHeaderCell colSpan={textStylesLength + 1}>
 						<Tooltip
 							content={`Add a ${suffix(bounds.min - 1)} row`}
 						>
