@@ -1,122 +1,51 @@
 import { useMemo } from 'react';
-import {
-	isFluidBreakpointsKey,
-	isTraditionalBreakpoint,
-	type Breakpoint,
-	type FluidBreakpoints,
-} from '../types';
+import { type Breakpoint } from '../types';
 import { createBreakpointTable } from '../helpers';
 import { projectStore } from '../store';
 import { useSettingsPrecision, useSettingsUnit } from './settings';
 import { useTextStyles } from './text-styles';
 
-export const useBreakpoint = (id: string) => {
-	return projectStore((state) => {
-		if (state.type === 'fluid') {
-			if (isFluidBreakpointsKey(id)) {
-				return state.breakpoints[id];
-			}
-			return;
-		}
-
-		return state.breakpoints.find((t) => t.id === id);
-	});
+export const useBreakpoint = (id: number) => {
+	return projectStore((state) => state.breakpoints[id]);
 };
 
-export const useBreakpointBounds = (id: string) => {
-	return projectStore((state) => {
-		if (state.type === 'fluid') {
-			if (isFluidBreakpointsKey(id)) {
-				return state.breakpoints[id].bounds;
-			}
-			return;
-		}
-		return state.breakpoints.find((t) => t.id === id)?.breakpoint.bounds;
-	});
+export const useBreakpointBase = (id: number) => {
+	return projectStore((state) => state.breakpoints[id].base);
 };
 
-export const useBreakpointBase = (id: string) => {
-	return projectStore((state) => {
-		if (state.type === 'fluid') {
-			if (isFluidBreakpointsKey(id)) {
-				return state.breakpoints[id].base;
-			}
-			return;
-		}
-		return state.breakpoints.find((t) => t.id === id)?.breakpoint.base;
-	});
+export const useBreakpointRatio = (id: number) => {
+	return projectStore((state) => state.breakpoints[id].ratio);
 };
 
-export const useBreakpointRatio = (id: string) => {
-	return projectStore((state) => {
-		if (state.type === 'fluid') {
-			if (isFluidBreakpointsKey(id)) {
-				return state.breakpoints[id].ratio;
-			}
-			return;
-		}
-		return state.breakpoints.find((t) => t.id === id)?.breakpoint.ratio;
-	});
-};
-
-export const useBreakpointExists = (id: string | undefined) => {
-	return projectStore((state) => {
-		if (state.type === 'fluid') {
-			return isFluidBreakpointsKey(id);
-		}
-
-		return state.breakpoints.some((t) => t.id === id);
-	});
+export const useBreakpointExists = (id: number | undefined) => {
+	return projectStore((state) =>
+		id === undefined ? false : id in state.breakpoints
+	);
 };
 
 export const useFirstBreakpointId = () => {
-	return projectStore((state) => {
-		if (state.type === 'fluid') {
-			return 'min' as keyof FluidBreakpoints;
-		}
-
-		return state.breakpoints[0].id;
-	});
+	return projectStore((state) => Object.keys(state.breakpoints)[0]);
 };
 
-export const useBreakpointTable = (id: string) => {
+export const useBreakpointTable = (id: number) => {
 	const precision = useSettingsPrecision();
 	const breakpoint = useBreakpoint(id);
 	const unit = useSettingsUnit();
 	const textStyles = useTextStyles();
 
 	return useMemo(() => {
-		return createBreakpointTable(
-			isTraditionalBreakpoint(breakpoint)
-				? breakpoint.breakpoint
-				: breakpoint,
-			textStyles,
-			unit,
-			precision
-		);
+		return createBreakpointTable(breakpoint, textStyles, unit, precision);
 	}, [breakpoint, textStyles, unit, precision]);
 };
 
-export const updateBreakpoint = (id: string, settings: Partial<Breakpoint>) => {
+export const updateBreakpoint = (id: number, settings: Partial<Breakpoint>) => {
 	projectStore.setState((state) => {
-		if (state.type === 'fluid') {
-			if (isFluidBreakpointsKey(id)) {
-				state.breakpoints[id] = {
-					...state.breakpoints[id],
-					...settings,
-				};
-			}
+		if (!(id in state.breakpoints)) {
 			return;
 		}
 
-		const index = state.breakpoints.findIndex((t) => t.id === id);
-
-		if (index === -1) {
-			return;
-		}
-
-		state.breakpoints[index].breakpoint = {
-			...state.breakpoints[index].breakpoint,
+		state.breakpoints[id] = {
+			...state.breakpoints[id],
 			...settings,
 		};
 	});

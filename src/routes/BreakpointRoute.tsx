@@ -1,23 +1,18 @@
 import { Navigate, useParams } from 'react-router';
 
-import { useSettingsType } from '../project/slices/settings';
 import { useBreakpointExists } from '../project/slices/breakpoint';
 
 import TraditionalBreakpoint from '../components/TraditionalBreakpoint';
 
 const BreakpointRoute = () => {
 	const { id } = useParams();
-	const type = useSettingsType();
-	const breakpointExists = useBreakpointExists(id);
+	const _id = id === undefined ? id : parseInt(id);
+	const breakpointExists = useBreakpointExists(_id);
 
-	if (!id || !breakpointExists) {
+	if (!_id || !breakpointExists) {
 		return <Navigate to={'/breakpoint'} replace />;
 	}
 
-	if (type === 'fluid') {
-		return <h1>Fluid Breakpoint</h1>;
-	}
-
-	return <TraditionalBreakpoint id={id} />;
+	return <TraditionalBreakpoint id={_id} />;
 };
 export default BreakpointRoute;

@@ -1,5 +1,4 @@
-import type { ChangeEvent } from 'react';
-import { Box, Flex, ScrollArea, Text, TextField } from '@radix-ui/themes';
+import { Box, Flex, ScrollArea } from '@radix-ui/themes';
 
 import {
 	updateBreakpoint,
@@ -7,22 +6,20 @@ import {
 	useBreakpointRatio,
 } from '../project/slices/breakpoint';
 
-import { useSettingsUnit } from '../project/slices/settings';
-
 import RatioField from './ui/RatioField';
+import UnitField from './ui/UnitField';
 
 type TraditionalBreakpointProps = {
-	id: string;
+	id: number;
 };
 
 const TraditionalBreakpointAside = ({ id }: TraditionalBreakpointProps) => {
-	const unit = useSettingsUnit();
 	const base = useBreakpointBase(id);
 	const ratio = useBreakpointRatio(id);
 
-	const onChangeBase = (event: ChangeEvent<HTMLInputElement>) => {
+	const onChangeBase = (newBase: number) => {
 		updateBreakpoint(id, {
-			base: parseFloat(event.target.value),
+			base: newBase,
 		});
 	};
 
@@ -36,22 +33,14 @@ const TraditionalBreakpointAside = ({ id }: TraditionalBreakpointProps) => {
 		<Box height={'100%'}>
 			<ScrollArea asChild>
 				<Flex p={'4'} direction={'column'} gap={'4'}>
-					<Flex direction={'column'} gap={'1'}>
-						<Text as="label" htmlFor={`${id}-base`} size={'2'}>
-							Base Value
-						</Text>
-						<Flex direction={'row'} gap={'1'} align={'center'}>
-							<TextField.Root
-								type="number"
-								id={`${id}-base`}
-								min={0}
-								step={unit === 'px' ? 1 : 0.05}
-								value={base}
-								onChange={onChangeBase}
-							/>
-							<Text>{unit}</Text>
-						</Flex>
-					</Flex>
+					{base !== undefined ? (
+						<UnitField
+							id={`${id}-base`}
+							label="Base Value"
+							value={base}
+							onChange={onChangeBase}
+						/>
+					) : null}
 
 					{ratio !== undefined ? (
 						<RatioField

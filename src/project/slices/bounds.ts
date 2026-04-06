@@ -1,56 +1,28 @@
-import { isFluidBreakpointsKey, type Bounds } from '../types';
+import { type Bounds } from '../types';
 import { projectStore } from '../store';
 
-export const useBounds = (id: string) => {
-	return projectStore((state) => {
-		if (state.type === 'fluid') {
-			if (isFluidBreakpointsKey(id)) {
-				return state.breakpoints[id].bounds;
-			}
-			return;
-		}
-		return state.breakpoints.find((t) => t.id === id)?.breakpoint.bounds;
-	});
+export const useBounds = (id: number) => {
+	return projectStore((state) => state.breakpoints[id].bounds);
 };
 
-export const incrementBound = (id: string, key: keyof Bounds) => {
+export const incrementBound = (id: number, key: keyof Bounds) => {
 	projectStore.setState((state) => {
-		if (state.type === 'fluid') {
-			if (isFluidBreakpointsKey(id)) {
-				const breakpoint = state.breakpoints[id];
-				breakpoint.bounds[key] = breakpoint.bounds[key] + 1;
-			}
+		if (!(id in state.breakpoints)) {
 			return;
 		}
 
-		const breakpoint = state.breakpoints.find(
-			(t) => t.id === id
-		)?.breakpoint;
-
-		if (!breakpoint) {
-			return;
-		}
+		const breakpoint = state.breakpoints[id];
 		breakpoint.bounds[key] = breakpoint.bounds[key] + 1;
 	});
 };
 
-export const decrementBound = (id: string, key: keyof Bounds) => {
+export const decrementBound = (id: number, key: keyof Bounds) => {
 	projectStore.setState((state) => {
-		if (state.type === 'fluid') {
-			if (isFluidBreakpointsKey(id)) {
-				const breakpoint = state.breakpoints[id];
-				breakpoint.bounds[key] = breakpoint.bounds[key] - 1;
-			}
+		if (!(id in state.breakpoints)) {
 			return;
 		}
 
-		const breakpoint = state.breakpoints.find(
-			(t) => t.id === id
-		)?.breakpoint;
-
-		if (!breakpoint) {
-			return;
-		}
+		const breakpoint = state.breakpoints[id];
 		breakpoint.bounds[key] = breakpoint.bounds[key] - 1;
 	});
 };

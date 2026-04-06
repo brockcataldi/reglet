@@ -14,7 +14,7 @@ import BreakpointCell from './BreakpointCell';
 import BreakpointHeader from './BreakpointHeader';
 
 type BreakpointTableProps = {
-	id: string;
+	id: number;
 };
 
 const BreakpointTable = ({ id }: BreakpointTableProps) => {

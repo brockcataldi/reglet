@@ -8,7 +8,7 @@ import { suffix } from '../project/helpers';
 import BreakpointHeaderCell from './BreakpointHeaderCell';
 
 type BreakpointHeader = {
-	id: string;
+	id: number;
 };
 
 const BreakpointHeader = ({ id }: BreakpointHeader) => {

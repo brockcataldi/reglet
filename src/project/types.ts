@@ -38,45 +38,9 @@ export type Settings = {
 	precision: number;
 };
 
-export type TraditionalBreakpoint = {
-	id: string;
-	minWidth: number;
-	breakpoint: Breakpoint;
+export type Project = {
+	settings: Settings;
+	textStyles: TextStyle[];
+	type: 'traditional' | 'fluid';
+	breakpoints: Record<number, Breakpoint>;
 };
-
-export const isTraditionalBreakpoint = (
-	value: unknown
-): value is TraditionalBreakpoint => {
-	return (
-		value !== null &&
-		typeof value === 'object' &&
-		'id' in value &&
-		'minWidth' in value &&
-		'breakpoint' in value
-	);
-};
-
-export type FluidBreakpoints = {
-	min: Breakpoint;
-	max: Breakpoint;
-};
-
-export const isFluidBreakpointsKey = (
-	value: unknown
-): value is keyof FluidBreakpoints => {
-	return value === 'min' || value === 'max';
-};
-
-export type Project =
-	| {
-			settings: Settings;
-			textStyles: TextStyle[];
-			type: 'traditional';
-			breakpoints: TraditionalBreakpoint[];
-	  }
-	| {
-			settings: Settings;
-			textStyles: TextStyle[];
-			type: 'fluid';
-			breakpoints: FluidBreakpoints;
-	  };

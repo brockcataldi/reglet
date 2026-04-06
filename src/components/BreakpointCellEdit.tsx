@@ -1,13 +1,18 @@
 import type { ChangeEvent } from 'react';
 
-import { Flex, Text, TextField } from '@radix-ui/themes';
+import { Button, Flex, Text, TextField } from '@radix-ui/themes';
+import { Link1Icon } from '@radix-ui/react-icons';
 
-import { updateOverride, useOverride } from '../project/slices/overrides';
+import {
+	disableOverride,
+	updateOverride,
+	useOverride,
+} from '../project/slices/overrides';
 
-import { useSettingsUnit } from '../project/slices/settings';
+import UnitField from './ui/UnitField';
 
 type BreakpointCellEditProps = {
-	id: string;
+	id: number;
 	rowIndex: number;
 	columnIndex: number;
 };
@@ -17,16 +22,15 @@ const BreakpointCellEdit = ({
 	rowIndex,
 	columnIndex,
 }: BreakpointCellEditProps) => {
-	const unit = useSettingsUnit();
 	const override = useOverride(id, rowIndex, columnIndex);
 
 	if (!override) {
 		return;
 	}
 
-	const onChangeFontSize = (event: ChangeEvent<HTMLInputElement>) => {
+	const onChangeFontSize = (newValue: number) => {
 		updateOverride(id, rowIndex, columnIndex, {
-			fontSize: parseFloat(event.target.value),
+			fontSize: newValue,
 		});
 	};
 
@@ -36,43 +40,53 @@ const BreakpointCellEdit = ({
 		});
 	};
 
+	const onClickLink = () => {
+		disableOverride(id, rowIndex, columnIndex);
+	};
+
 	return (
-		<Flex direction={'row'} gap="3" width={'100%'}>
-			<Flex direction={'column'} gap="1" align="start">
-				<Text
-					as="label"
-					htmlFor={`${rowIndex}:${columnIndex}-font-size`}
-				>
-					Font Size
-				</Text>
-				<Flex direction={'row'} gap="1" align="center">
+		<Flex
+			direction={'row'}
+			gap="3"
+			width={'100%'}
+			align={'end'}
+			justify={'between'}
+		>
+			<Flex
+				direction={'row'}
+				gap="3"
+				width={'100%'}
+				align={'end'}
+				justify={'start'}
+			>
+				<UnitField
+					id={`${rowIndex}:${columnIndex}-font-size`}
+					label="Font Size"
+					value={override.fontSize}
+					onChange={onChangeFontSize}
+				/>
+
+				<Flex direction={'column'} align="start">
+					<Text
+						as="label"
+						htmlFor={`${rowIndex}:${columnIndex}-line-height`}
+					>
+						Line Height
+					</Text>
 					<TextField.Root
-						value={override.fontSize}
-						id={`${rowIndex}:${columnIndex}-font-size`}
+						value={override.lineHeight}
+						id={`${rowIndex}:${columnIndex}-line-height`}
 						type="number"
 						min={1}
-						step={unit === 'px' ? 0.05 : 0.005}
-						onChange={onChangeFontSize}
+						step={0.005}
+						onChange={onChangeLineHeight}
 					/>
-					<Text>{unit}</Text>
 				</Flex>
 			</Flex>
-			<Flex direction={'column'} gap="1" align="start">
-				<Text
-					as="label"
-					htmlFor={`${rowIndex}:${columnIndex}-line-height`}
-				>
-					Line Height:
-				</Text>
-				<TextField.Root
-					value={override.lineHeight}
-					id={`${rowIndex}:${columnIndex}-line-height`}
-					type="number"
-					min={1}
-					step={0.005}
-					onChange={onChangeLineHeight}
-				/>
-			</Flex>
+
+			<Button onClick={onClickLink}>
+				<Link1Icon /> Link
+			</Button>
 		</Flex>
 	);
 };

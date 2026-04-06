@@ -4,7 +4,7 @@ import TraditionalBreakpointAside from './TraditionalBreakpointAside';
 import ProjectSettings from './ProjectSettings';
 
 type TraditionalBreakpointProps = {
-	id: string;
+	id: number;
 };
 
 const TraditionalBreakpoint = ({ id }: TraditionalBreakpointProps) => {

@@ -1,4 +1,4 @@
-import { type ProjectType, type Unit } from '../types';
+import { type Unit } from '../types';
 
 import { convertUnit } from '../helpers';
 import { projectStore } from '../store';
@@ -11,42 +11,23 @@ export const useSettingsPrecision = () => {
 	return projectStore((state) => state.settings.precision);
 };
 
-export const useSettingsType = () => {
-	return projectStore((state) => state.type);
-};
-
-export const setSettingsType = (type: ProjectType) => {
-	projectStore.setState((state) => {
-		state.type = type;
-	});
-};
-
 export const setSettingsUnit = (unit: Unit) => {
 	projectStore.setState((state) => {
 		const oldUnit = state.settings.unit;
 		state.settings.unit = unit;
 
-		if (state.type === 'traditional') {
-			for (let i = 0; i < state.breakpoints.length; i++) {
-				state.breakpoints[i].breakpoint.base = convertUnit(
-					state.breakpoints[i].breakpoint.base,
-					oldUnit,
-					unit
-				);
-			}
-			return;
-		}
+		for (const i of Object.keys(state.breakpoints)) {
+			const size = parseInt(i);
+			const breakpoint = state.breakpoints[size];
+			breakpoint.base = convertUnit(breakpoint.base, oldUnit, unit);
 
-		state.breakpoints.min.base = convertUnit(
-			state.breakpoints.min.base,
-			oldUnit,
-			unit
-		);
-		state.breakpoints.max.base = convertUnit(
-			state.breakpoints.max.base,
-			oldUnit,
-			unit
-		);
+			for (const [key, value] of Object.entries(breakpoint.overrides)) {
+				breakpoint.overrides[key] = {
+					fontSize: convertUnit(value.fontSize, oldUnit, unit),
+					lineHeight: value.lineHeight,
+				};
+			}
+		}
 	});
 };
 

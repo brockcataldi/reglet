@@ -10,15 +10,13 @@ import {
 
 import type { Unit } from '../project/types';
 
-import {
-	setSettingsUnit,
-	useSettingsType,
-	useSettingsUnit,
-} from '../project/slices/settings';
+import { setSettingsUnit, useSettingsUnit } from '../project/slices/settings';
+
+import { useProjectType } from '../project/slices/project';
 
 const ProjectSettings = () => {
 	const unit = useSettingsUnit();
-	const type = useSettingsType();
+	const type = useProjectType();
 
 	const onChangeUnit = (value: Unit) => {
 		setSettingsUnit(value);

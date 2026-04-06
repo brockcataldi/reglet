@@ -12,3 +12,13 @@ export const setNewProject = (newUnit: Unit, newType: ProjectType) => {
 		state.breakpoints = breakpoints;
 	});
 };
+
+export const useProjectType = () => {
+	return projectStore((state) => state.type);
+};
+
+export const setProjectType = (type: ProjectType) => {
+	projectStore.setState((state) => {
+		state.type = type;
+	});
+};
