@@ -3,49 +3,79 @@ import { type Breakpoint } from '../types';
 import { createBreakpointTable } from '../helpers';
 import { projectStore } from '../store';
 import { useSettingsPrecision, useSettingsUnit } from './settings';
-import { useTextStyles } from './text-styles';
+import { useStyles } from './styles';
 
-export const useBreakpoint = (id: number) => {
-	return projectStore((state) => state.breakpoints[id]);
-};
-
-export const useBreakpointBase = (id: number) => {
-	return projectStore((state) => state.breakpoints[id].base);
-};
-
-export const useBreakpointRatio = (id: number) => {
-	return projectStore((state) => state.breakpoints[id].ratio);
-};
-
-export const useBreakpointExists = (id: number | undefined) => {
+export const useBreakpoint = (id: string) => {
 	return projectStore((state) =>
-		id === undefined ? false : id in state.breakpoints
+		state.breakpoints.find((breakpoint) => breakpoint.id === id)
+	);
+};
+
+export const useBreakpointBase = (id: string) => {
+	return projectStore(
+		(state) =>
+			state.breakpoints.find((breakpoint) => breakpoint.id === id)?.base
+	);
+};
+
+export const useBreakpointRatio = (id: string) => {
+	return projectStore(
+		(state) =>
+			state.breakpoints.find((breakpoint) => breakpoint.id === id)?.ratio
+	);
+};
+
+export const useBreakpointExists = (id: string | undefined) => {
+	return projectStore((state) =>
+		state.breakpoints.some((breakpoint) => breakpoint.id === id)
 	);
 };
 
 export const useFirstBreakpointId = () => {
-	return projectStore((state) => Object.keys(state.breakpoints)[0]);
+	return projectStore((state) => state.breakpoints[0].id);
 };
 
-export const useBreakpointTable = (id: number) => {
-	const precision = useSettingsPrecision();
+type BreakpointWidth = {
+	id: string;
+	width: number;
+};
+
+export const useBreakpointWidths = (): BreakpointWidth[] => {
+	const breakpoints = projectStore((state) => state.breakpoints);
+
+	return useMemo(
+		() =>
+			breakpoints.map((breakpoint) => ({
+				id: breakpoint.id,
+				width: breakpoint.width,
+			})),
+		[breakpoints]
+	);
+};
+
+export const useBreakpointTable = (id: string) => {
 	const breakpoint = useBreakpoint(id);
+	const precision = useSettingsPrecision();
 	const unit = useSettingsUnit();
-	const textStyles = useTextStyles();
+	const styles = useStyles();
 
 	return useMemo(() => {
-		return createBreakpointTable(breakpoint, textStyles, unit, precision);
-	}, [breakpoint, textStyles, unit, precision]);
+		return createBreakpointTable(breakpoint, styles, unit, precision);
+	}, [breakpoint, styles, unit, precision]);
 };
 
-export const updateBreakpoint = (id: number, settings: Partial<Breakpoint>) => {
+export const updateBreakpoint = (id: string, settings: Partial<Breakpoint>) => {
 	projectStore.setState((state) => {
-		if (!(id in state.breakpoints)) {
+		const index = state.breakpoints.findIndex(
+			(breakpoint) => breakpoint.id === id
+		);
+
+		if (index === -1) {
 			return;
 		}
 
-		state.breakpoints[id] = {
-			...state.breakpoints[id],
+		state.breakpoints[index] = {
+			...state.breakpoints[index],
 			...settings,
 		};
 	});

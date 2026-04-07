@@ -2,17 +2,16 @@ import { Navigate, useParams } from 'react-router';
 
 import { useBreakpointExists } from '../project/slices/breakpoint';
 
-import TraditionalBreakpoint from '../components/TraditionalBreakpoint';
+import Editor from '../components/Editor';
 
 const BreakpointRoute = () => {
 	const { id } = useParams();
-	const _id = id === undefined ? id : parseInt(id);
-	const breakpointExists = useBreakpointExists(_id);
+	const exists = useBreakpointExists(id);
 
-	if (!_id || !breakpointExists) {
+	if (id === undefined || !exists) {
 		return <Navigate to={'/breakpoint'} replace />;
 	}
 
-	return <TraditionalBreakpoint id={_id} />;
+	return <Editor id={id} />;
 };
 export default BreakpointRoute;

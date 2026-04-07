@@ -18,7 +18,7 @@ const UnitField = ({ id, label, value, onChange }: UnitFieldProps) => {
 
 	return (
 		<Flex direction={'column'} align="start">
-			<Text as="label" htmlFor={id}>
+			<Text as="label" htmlFor={id} size={'2'}>
 				{label}
 			</Text>
 			<Flex direction={'row'} gap="1" align="center">

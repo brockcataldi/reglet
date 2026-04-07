@@ -16,9 +16,8 @@ export const setSettingsUnit = (unit: Unit) => {
 		const oldUnit = state.settings.unit;
 		state.settings.unit = unit;
 
-		for (const i of Object.keys(state.breakpoints)) {
-			const size = parseInt(i);
-			const breakpoint = state.breakpoints[size];
+		for (let i = 0; i < state.breakpoints.length; i++) {
+			const breakpoint = state.breakpoints[i];
 			breakpoint.base = convertUnit(breakpoint.base, oldUnit, unit);
 
 			for (const [key, value] of Object.entries(breakpoint.overrides)) {

@@ -2,17 +2,17 @@ import { Table, IconButton, Tooltip } from '@radix-ui/themes';
 import { PlusIcon } from '@radix-ui/react-icons';
 
 import { incrementBound, useBounds } from '../project/slices/bounds';
-import { useTextStyles } from '../project/slices/text-styles';
+import { useStyles } from '../project/slices/styles';
 import { suffix } from '../project/helpers';
 
-import BreakpointHeaderCell from './BreakpointHeaderCell';
+import CanvasHeaderCell from './CanvasHeaderCell';
 
-type BreakpointHeader = {
-	id: number;
+type CanvasHeaderProps = {
+	id: string;
 };
 
-const BreakpointHeader = ({ id }: BreakpointHeader) => {
-	const textStyles = useTextStyles();
+const CanvasHeader = ({ id }: CanvasHeaderProps) => {
+	const styles = useStyles();
 	const bounds = useBounds(id);
 
 	if (!bounds) {
@@ -34,9 +34,9 @@ const BreakpointHeader = ({ id }: BreakpointHeader) => {
 						</IconButton>
 					</Tooltip>
 				</Table.ColumnHeaderCell>
-				{textStyles.map((textStyle, index) => (
-					<BreakpointHeaderCell
-						textStyle={textStyle}
+				{styles.map((style, index) => (
+					<CanvasHeaderCell
+						style={style}
 						key={`${id}-text-style-${index}`}
 					/>
 				))}
@@ -45,4 +45,4 @@ const BreakpointHeader = ({ id }: BreakpointHeader) => {
 	);
 };
 
-export default BreakpointHeader;
+export default CanvasHeader;

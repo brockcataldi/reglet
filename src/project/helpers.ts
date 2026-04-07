@@ -4,7 +4,7 @@ import {
 	type Cell,
 	type Project,
 	type ProjectType,
-	type TextStyle,
+	type Style,
 	type Unit,
 } from './types';
 
@@ -38,7 +38,7 @@ export const convertUnit = (value: number, oldUnit: Unit, newUnit: Unit) => {
 	return value * ratio;
 };
 
-export const createDefaultTextStyle = (): TextStyle => ({
+export const createDefaultTextStyle = (): Style => ({
 	id: crypto.randomUUID(),
 	fontFamily: 'Arial',
 	fontWeight: '400',
@@ -46,12 +46,17 @@ export const createDefaultTextStyle = (): TextStyle => ({
 });
 
 export const createDefaultBreakpoint = (
+	width: number,
 	multiplier: number,
 	unit: Unit
 ): Breakpoint => {
-	const value = 16 * multiplier;
 	return {
-		base: unit === 'px' ? value : convertUnit(value, 'px', unit),
+		id: crypto.randomUUID(),
+		width,
+		base:
+			unit === 'px'
+				? 16 * multiplier
+				: convertUnit(16 * multiplier, 'px', unit),
 		ratio: 1.2,
 		bounds: { min: -1, max: 5 },
 		overrides: {},
@@ -60,7 +65,7 @@ export const createDefaultBreakpoint = (
 
 export const createBreakpointTable = (
 	breakpoint: Breakpoint | undefined,
-	textStyles: TextStyle[],
+	style: Style[],
 	unit: Unit,
 	precision: number
 ): Cell[][] => {
@@ -74,13 +79,13 @@ export const createBreakpointTable = (
 
 	for (let i = bounds.max; i >= bounds.min; i--) {
 		const row: Cell[] = [];
-		for (let j = 0; j < textStyles.length; j++) {
+		for (let j = 0; j < style.length; j++) {
 			const override = overrides[`${i}:${j}`];
 			const calculated = toPrecise(scale(i, base, ratio), precision);
 			const estimatedLineHeight = calculated > cutoff ? 1.15 : 1.5;
 
 			const cell = {
-				...textStyles[j],
+				...style[j],
 				fontSize: override?.fontSize ?? calculated,
 				lineHeight: override?.lineHeight ?? estimatedLineHeight,
 			};
@@ -99,11 +104,11 @@ export const createProject = (unit: Unit, type: ProjectType): Project => {
 			unit,
 			precision: 3,
 		},
-		textStyles: [createDefaultTextStyle()],
-		breakpoints: {
-			0: createDefaultBreakpoint(1, unit),
-			768: createDefaultBreakpoint(1.1, unit),
-			1024: createDefaultBreakpoint(1.2, unit),
-		},
+		styles: [createDefaultTextStyle()],
+		breakpoints: [
+			createDefaultBreakpoint(0, 1, unit),
+			createDefaultBreakpoint(768, 1.1, unit),
+			createDefaultBreakpoint(1024, 1.2, unit),
+		],
 	};
 };

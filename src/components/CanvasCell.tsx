@@ -5,22 +5,17 @@ import type { Cell } from '../project/types';
 import { useOverride } from '../project/slices/overrides';
 
 import { useSettingsUnit } from '../project/slices/settings';
-import BreakpointCellEdit from './BreakpointCellEdit';
-import BreakpointCellDetails from './BreakpointCellDetails';
+import CanvasCellEdit from './CanvasCellEdit';
+import CanvasCellDetails from './CanvasCellDetails';
 
-type BreakpointCellProps = {
+type CanvasCellProps = {
 	cell: Cell;
-	id: number;
+	id: string;
 	rowIndex: number;
 	columnIndex: number;
 };
 
-const BreakpointCell = ({
-	cell,
-	id,
-	rowIndex,
-	columnIndex,
-}: BreakpointCellProps) => {
+const CanvasCell = ({ cell, id, rowIndex, columnIndex }: CanvasCellProps) => {
 	const unit = useSettingsUnit();
 	const override = useOverride(id, rowIndex, columnIndex);
 
@@ -47,14 +42,14 @@ const BreakpointCell = ({
 					<Separator size={'4'} orientation={'horizontal'} />
 
 					{override === undefined ? (
-						<BreakpointCellDetails
+						<CanvasCellDetails
 							cell={cell}
 							id={id}
 							rowIndex={rowIndex}
 							columnIndex={columnIndex}
 						/>
 					) : (
-						<BreakpointCellEdit
+						<CanvasCellEdit
 							id={id}
 							rowIndex={rowIndex}
 							columnIndex={columnIndex}
@@ -66,4 +61,4 @@ const BreakpointCell = ({
 	);
 };
 
-export default BreakpointCell;
+export default CanvasCell;

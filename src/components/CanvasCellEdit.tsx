@@ -11,17 +11,13 @@ import {
 
 import UnitField from './ui/UnitField';
 
-type BreakpointCellEditProps = {
-	id: number;
+type CanvasCellEditProps = {
+	id: string;
 	rowIndex: number;
 	columnIndex: number;
 };
 
-const BreakpointCellEdit = ({
-	id,
-	rowIndex,
-	columnIndex,
-}: BreakpointCellEditProps) => {
+const CanvasCellEdit = ({ id, rowIndex, columnIndex }: CanvasCellEditProps) => {
 	const override = useOverride(id, rowIndex, columnIndex);
 
 	if (!override) {
@@ -91,4 +87,4 @@ const BreakpointCellEdit = ({
 	);
 };
 
-export default BreakpointCellEdit;
+export default CanvasCellEdit;

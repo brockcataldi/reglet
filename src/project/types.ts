@@ -11,7 +11,7 @@ export type Override = {
 	fontSize: number;
 };
 
-export type TextStyle = {
+export type Style = {
 	id: string;
 	fontFamily: string;
 	fontWeight: string;
@@ -27,6 +27,8 @@ export type Cell = {
 };
 
 export type Breakpoint = {
+	id: string;
+	width: number;
 	base: number;
 	ratio: number;
 	bounds: Bounds;
@@ -40,7 +42,7 @@ export type Settings = {
 
 export type Project = {
 	settings: Settings;
-	textStyles: TextStyle[];
+	styles: Style[];
 	type: 'traditional' | 'fluid';
-	breakpoints: Record<number, Breakpoint>;
+	breakpoints: Breakpoint[];
 };

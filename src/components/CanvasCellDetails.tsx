@@ -6,19 +6,19 @@ import { useSettingsUnit } from '../project/slices/settings';
 import { LinkBreak1Icon } from '@radix-ui/react-icons';
 import { enableOverride } from '../project/slices/overrides';
 
-type BreakpointCellDetailsProps = {
+type CanvasCellDetailsProps = {
 	cell: Cell;
-	id: number;
+	id: string;
 	rowIndex: number;
 	columnIndex: number;
 };
 
-const BreakpointCellDetails = ({
+const CanvasCellDetails = ({
 	cell,
 	id,
 	rowIndex,
 	columnIndex,
-}: BreakpointCellDetailsProps) => {
+}: CanvasCellDetailsProps) => {
 	const unit = useSettingsUnit();
 
 	const onClickUnlink = () => {
@@ -64,4 +64,4 @@ const BreakpointCellDetails = ({
 	);
 };
 
-export default BreakpointCellDetails;
+export default CanvasCellDetails;

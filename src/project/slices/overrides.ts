@@ -3,20 +3,22 @@ import { type Override } from '../types';
 import { projectStore } from '../store';
 import { LARGE_TEXT_CUTOFFS } from '../constants';
 
-export const useOverride = (id: number, row: number, column: number) => {
+export const useOverride = (id: string, row: number, column: number) => {
 	return projectStore(
-		(state) => state.breakpoints[id].overrides[`${row}:${column}`]
+		(state) =>
+			state.breakpoints.find((breakpoint) => breakpoint.id === id)
+				?.overrides[`${row}:${column}`]
 	);
 };
 
-export const enableOverride = (id: number, row: number, column: number) => {
+export const enableOverride = (id: string, row: number, column: number) => {
 	projectStore.setState((state) => {
-		if (!(id in state.breakpoints)) {
-			return;
-		}
+		const index = state.breakpoints.findIndex(
+			(breakpoint) => breakpoint.id === id
+		);
 
 		const cutoff = LARGE_TEXT_CUTOFFS[state.settings.unit];
-		const breakpoint = state.breakpoints[id];
+		const breakpoint = state.breakpoints[index];
 		const calculated = toPrecise(
 			scale(row, breakpoint.base, breakpoint.ratio),
 			state.settings.precision
@@ -29,37 +31,36 @@ export const enableOverride = (id: number, row: number, column: number) => {
 	});
 };
 
-export const disableOverride = (id: number, row: number, column: number) => {
+export const disableOverride = (id: string, row: number, column: number) => {
 	projectStore.setState((state) => {
-		if (!(id in state.breakpoints)) {
-			return;
-		}
+		const index = state.breakpoints.findIndex(
+			(breakpoint) => breakpoint.id === id
+		);
 
 		const key = `${row}:${column}`;
-		const breakpoint = state.breakpoints[id];
+		const breakpoint = state.breakpoints[index];
 
 		if (!(key in breakpoint.overrides)) {
 			return;
 		}
 
-		delete state.breakpoints[id].overrides[key];
+		delete state.breakpoints[index].overrides[key];
 	});
 };
 
 export const updateOverride = (
-	id: number,
+	id: string,
 	row: number,
 	column: number,
 	value: Partial<Override>
 ) => {
 	projectStore.setState((state) => {
 		const key = `${row}:${column}`;
+		const index = state.breakpoints.findIndex(
+			(breakpoint) => breakpoint.id === id
+		);
 
-		if (!(id in state.breakpoints)) {
-			return;
-		}
-
-		const breakpoint = state.breakpoints[id];
+		const breakpoint = state.breakpoints[index];
 
 		if (!(key in breakpoint.overrides)) {
 			return;

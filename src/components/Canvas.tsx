@@ -7,19 +7,19 @@ import {
 	useBounds,
 } from '../project/slices/bounds';
 import { useBreakpointTable } from '../project/slices/breakpoint';
-import { useTextStylesLength } from '../project/slices/text-styles';
+import { useStylesLength } from '../project/slices/styles';
 import { suffix } from '../project/helpers';
 
-import BreakpointCell from './BreakpointCell';
-import BreakpointHeader from './BreakpointHeader';
+import CanvasCell from './CanvasCell';
+import CanvasHeader from './CanvasHeader';
 
-type BreakpointTableProps = {
-	id: number;
+type CanvasProps = {
+	id: string;
 };
 
-const BreakpointTable = ({ id }: BreakpointTableProps) => {
+const Canvas = ({ id }: CanvasProps) => {
 	const cells = useBreakpointTable(id);
-	const textStylesLength = useTextStylesLength();
+	const stylesLength = useStylesLength();
 	const bounds = useBounds(id);
 
 	if (!cells.length) {
@@ -32,8 +32,7 @@ const BreakpointTable = ({ id }: BreakpointTableProps) => {
 
 	return (
 		<Table.Root>
-			<BreakpointHeader id={id} />
-
+			<CanvasHeader id={id} />
 			<Table.Body>
 				{cells.map((row, rowIndex) => {
 					return (
@@ -76,7 +75,7 @@ const BreakpointTable = ({ id }: BreakpointTableProps) => {
 									<Table.Cell
 										key={`${id}-cell-${rowIndex}-${columnIndex}`}
 									>
-										<BreakpointCell
+										<CanvasCell
 											cell={cell}
 											id={id}
 											rowIndex={bounds.max - rowIndex}
@@ -89,7 +88,7 @@ const BreakpointTable = ({ id }: BreakpointTableProps) => {
 					);
 				})}
 				<Table.Row>
-					<Table.ColumnHeaderCell colSpan={textStylesLength + 1}>
+					<Table.ColumnHeaderCell colSpan={stylesLength + 1}>
 						<Tooltip
 							content={`Add a ${suffix(bounds.min - 1)} row`}
 						>
@@ -109,4 +108,4 @@ const BreakpointTable = ({ id }: BreakpointTableProps) => {
 	);
 };
 
-export default BreakpointTable;
+export default Canvas;
