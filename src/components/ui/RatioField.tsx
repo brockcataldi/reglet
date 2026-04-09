@@ -1,20 +1,7 @@
 import { Text, Select, TextField, Button, Flex } from '@radix-ui/themes';
 import { useState, type ChangeEvent } from 'react';
 
-const RATIOS: [number, string][] = [
-	[1.067, 'Minor Second'],
-	[1.125, 'Major Second'],
-	[1.2, 'Minor Third'],
-	[1.25, 'Major Third'],
-	[1.333, 'Perfect Fourth'],
-	[1.414, 'Augmented Fourth (Tritone)'],
-	[1.5, 'Perfect Fifth'],
-	[1.618, 'Golden Ratio'],
-	[1.667, 'Minor Sixth'],
-	[1.778, 'Major Sixth'],
-	[1.875, 'Minor Seventh'],
-	[2, 'Octave'],
-];
+import { RATIOS } from '../../project/constants';
 
 type RatioFieldProps = {
 	id: string;

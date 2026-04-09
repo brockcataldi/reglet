@@ -1,7 +1,7 @@
 import { CONVERSION_RATIOS, LARGE_TEXT_CUTOFFS } from './constants';
 import {
 	type Breakpoint,
-	type Cell,
+	type Values,
 	type Project,
 	type ProjectType,
 	type Style,
@@ -35,7 +35,7 @@ export const convertUnit = (value: number, oldUnit: Unit, newUnit: Unit) => {
 		return value;
 	}
 
-	return value * ratio;
+	return Math.round((value * ratio + Number.EPSILON) * 100) / 100;
 };
 
 export const createDefaultTextStyle = (): Style => ({
@@ -68,17 +68,17 @@ export const createBreakpointTable = (
 	style: Style[],
 	unit: Unit,
 	precision: number
-): Cell[][] => {
+): Values[][] => {
 	if (!breakpoint) {
 		return [];
 	}
 
-	const cells: Cell[][] = [];
+	const cells: Values[][] = [];
 	const { bounds, base, ratio, overrides } = breakpoint;
 	const cutoff = LARGE_TEXT_CUTOFFS[unit];
 
 	for (let i = bounds.max; i >= bounds.min; i--) {
-		const row: Cell[] = [];
+		const row: Values[] = [];
 		for (let j = 0; j < style.length; j++) {
 			const override = overrides[`${i}:${j}`];
 			const calculated = toPrecise(scale(i, base, ratio), precision);
@@ -108,7 +108,7 @@ export const createProject = (unit: Unit, type: ProjectType): Project => {
 		breakpoints: [
 			createDefaultBreakpoint(0, 1, unit),
 			createDefaultBreakpoint(768, 1.1, unit),
-			createDefaultBreakpoint(1024, 1.2, unit),
+			createDefaultBreakpoint(1200, 1.2, unit),
 		],
 	};
 };

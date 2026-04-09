@@ -4,16 +4,16 @@ import {
 	updateBreakpoint,
 	useBreakpointBase,
 	useBreakpointRatio,
-} from '../project/slices/breakpoint';
+} from '../../project/slices/breakpoint';
 
-import RatioField from './ui/RatioField';
-import UnitField from './ui/UnitField';
+import RatioField from '../ui/RatioField';
+import UnitField from '../ui/UnitField';
 
-type EditorAsideProps = {
+type AsideProps = {
 	id: string;
 };
 
-const EditorAside = ({ id }: EditorAsideProps) => {
+const Aside = ({ id }: AsideProps) => {
 	const base = useBreakpointBase(id);
 	const ratio = useBreakpointRatio(id);
 
@@ -54,4 +54,4 @@ const EditorAside = ({ id }: EditorAsideProps) => {
 	);
 };
 
-export default EditorAside;
+export default Aside;

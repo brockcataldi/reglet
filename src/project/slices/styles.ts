@@ -1,5 +1,6 @@
-import { projectStore } from '../store';
 import type { Style } from '../types';
+
+import { projectStore } from '../store';
 
 export const useStyles = () => {
 	return projectStore((state) => state.styles);

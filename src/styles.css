@@ -4,10 +4,10 @@ body {
 }
 
 .editor__header {
-	width: calc(100% - 250px);
+	width: 100%;
 	position: fixed;
 	top: 0;
-	left: 250px;
+	left: 0;
 	z-index: 10;
 	background-color: var(--color-surface);
 	box-shadow: var(--shadow-3);
@@ -18,13 +18,13 @@ body {
 	height: 100dvh;
 	position: fixed;
 	left: 0;
-	top: 0;
-	z-index: 10;
+	top: 56px;
+	z-index: 9;
 	background-color: var(--color-surface);
 	box-shadow: var(--shadow-3);
 }
 
 .editor__main {
-	margin-top: 50px;
+	margin-top: 56px;
 	margin-left: 250px;
 }

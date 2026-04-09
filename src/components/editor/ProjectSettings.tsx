@@ -8,11 +8,14 @@ import {
 	Button,
 } from '@radix-ui/themes';
 
-import type { Unit } from '../project/types';
+import type { Unit } from '../../project/types';
 
-import { setSettingsUnit, useSettingsUnit } from '../project/slices/settings';
+import {
+	setSettingsUnit,
+	useSettingsUnit,
+} from '../../project/slices/settings';
 
-import { useProjectType } from '../project/slices/project';
+import { useProjectType } from '../../project/slices/project';
 
 const ProjectSettings = () => {
 	const unit = useSettingsUnit();
@@ -30,6 +33,9 @@ const ProjectSettings = () => {
 
 			<Dialog.Content maxWidth="600px">
 				<Dialog.Title size={'7'}>Project Settings</Dialog.Title>
+				<Dialog.Description>
+					REWORK THIS I DON'T THINK IT NEEDS TO BE HERE
+				</Dialog.Description>
 
 				<Flex direction={'column'} gap={'2'}>
 					<Heading as="h2" size={'4'}>

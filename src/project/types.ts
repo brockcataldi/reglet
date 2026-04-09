@@ -18,7 +18,7 @@ export type Style = {
 	fontStyle: string;
 };
 
-export type Cell = {
+export type Values = {
 	fontFamily: string;
 	fontWeight: string;
 	fontStyle: string;

@@ -1,8 +1,8 @@
 import { Box } from '@radix-ui/themes';
 
-import EditorAside from './EditorAside';
-import EditorHeader from './EditorHeader';
-import Canvas from './Canvas';
+import Aside from './Aside';
+import Header from './Header';
+import Canvas from '../canvas/Canvas';
 
 type EditorProps = {
 	id: string;
@@ -12,10 +12,10 @@ const Editor = ({ id }: EditorProps) => {
 	return (
 		<Box>
 			<header className="editor__header">
-				<EditorHeader id={id} />
+				<Header id={id} />
 			</header>
 			<aside className="editor__aside">
-				<EditorAside id={id} />
+				<Aside id={id} />
 			</aside>
 			<main className="editor__main">
 				<Box p="2">
