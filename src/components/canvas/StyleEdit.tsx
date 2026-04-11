@@ -2,30 +2,27 @@ import { useState, type ChangeEvent } from 'react';
 import {
 	Flex,
 	Text,
-	Dialog,
-	Button,
 	TextField,
 	Box,
 	DataList,
 	Separator,
 	SegmentedControl,
 	Card,
+	VisuallyHidden,
 } from '@radix-ui/themes';
 
-import { Pencil1Icon } from '@radix-ui/react-icons';
+import { HeadingIcon, PilcrowIcon } from '@radix-ui/react-icons';
 
-import type { Style } from '../../project/types';
+import type { Style } from '@/project';
 
-import { updateStyle } from '../../project/slices/styles';
-
-import FamilyField from '../ui/FamilyField';
+import FamilyField from '$/ui/FamilyField';
 
 type StyleEditProps = {
-	style: Style;
+	value: Style;
+	onChange: (value: Style) => void;
 };
 
-const StyleEdit = ({ style }: StyleEditProps) => {
-	const [preview, setPreview] = useState<Style>(style);
+const StyleEdit = ({ value, onChange }: StyleEditProps) => {
 	const [display, setDisplay] = useState<'heading' | 'paragraph'>('heading');
 
 	const onChangeDisplay = (newDisplay: 'heading' | 'paragraph') => {
@@ -33,156 +30,135 @@ const StyleEdit = ({ style }: StyleEditProps) => {
 	};
 
 	const onChangeFontFamily = (fontFamily: string) => {
-		setPreview({
-			...preview,
+		onChange({
+			...value,
 			fontFamily,
 		});
 	};
 
 	const onChangeFontStyle = (event: ChangeEvent<HTMLInputElement>) => {
-		setPreview({
-			...preview,
+		onChange({
+			...value,
 			fontStyle: event.target.value,
 		});
 	};
 
 	const onChangeFontWeight = (event: ChangeEvent<HTMLInputElement>) => {
-		setPreview({
-			...preview,
+		onChange({
+			...value,
 			fontWeight: event.target.value,
 		});
 	};
 
-	const onClickSave = () => {
-		updateStyle(style.id, preview);
-	};
-
-	const onClickCancel = () => {
-		setPreview(style);
-	};
-
 	return (
-		<Dialog.Root>
-			<Dialog.Trigger>
-				<Button>
-					<Pencil1Icon />
-					Edit
-				</Button>
-			</Dialog.Trigger>
-			<Dialog.Content maxWidth="600px">
-				<Dialog.Title size={'7'}>Text Settings</Dialog.Title>
-				<Dialog.Description>
-					Customize the text appearance for this column.
-				</Dialog.Description>
-
-				<Card mt="4">
-					<Flex
-						gap={'4'}
-						direction={'column'}
-						align={'start'}
-						justify={'start'}
+		<Box>
+			<Card mt="4">
+				<Flex
+					gap={'4'}
+					direction={'column'}
+					align={'start'}
+					justify={'start'}
+				>
+					<SegmentedControl.Root
+						value={display}
+						onValueChange={onChangeDisplay}
 					>
-						<Box width={'100%'}>
-							<p
-								style={{
-									width: '100%',
-									fontFamily: preview.fontFamily,
-									fontStyle: preview.fontStyle,
-									fontWeight: preview.fontWeight,
-									fontSize:
-										display === 'heading' ? '2rem' : '1rem',
-									margin: '0',
-									whiteSpace:
-										display === 'heading'
-											? 'nowrap'
-											: 'wrap',
-									overflow: 'hidden',
-								}}
+						<SegmentedControl.Item value="heading">
+							<Flex
+								direction="column"
+								align="center"
+								justify="center"
 							>
-								Lorem ipsum dolor sit amet consectetur
-								adipisicing elit. Ullam provident eaque quas
-								tempore. Nostrum cupiditate expedita velit,
-								obcaecati delectus qui unde, fugit nemo laborum
-								debitis saepe, quas quis quo suscipit.
-							</p>
-						</Box>
-						<SegmentedControl.Root
-							value={display}
-							onValueChange={onChangeDisplay}
-						>
-							<SegmentedControl.Item value="heading">
-								Heading
-							</SegmentedControl.Item>
-							<SegmentedControl.Item value="paragraph">
-								Paragraph
-							</SegmentedControl.Item>
-						</SegmentedControl.Root>
-					</Flex>
-				</Card>
-
-				<Separator orientation={'horizontal'} size={'4'} my={'4'} />
-
-				<DataList.Root>
-					<DataList.Item align="center">
-						<DataList.Label minWidth="88px">
-							<Text
-								as="label"
-								htmlFor={`${style.id}-font-family`}
+								<HeadingIcon />
+							</Flex>
+							<VisuallyHidden>Heading</VisuallyHidden>
+						</SegmentedControl.Item>
+						<SegmentedControl.Item value="paragraph">
+							<Flex
+								direction="column"
+								align="center"
+								justify="center"
 							>
-								Font Family
-							</Text>
-						</DataList.Label>
-						<DataList.Value>
-							<FamilyField
-								id={`${style.id}-font-family`}
-								value={preview.fontFamily}
-								onChange={onChangeFontFamily}
-							/>
-						</DataList.Value>
-					</DataList.Item>
-					<DataList.Item>
-						<DataList.Label minWidth="88px">
-							Font Style
-						</DataList.Label>
-						<DataList.Value>
-							<TextField.Root
-								type="text"
-								value={preview.fontStyle}
-								onChange={onChangeFontStyle}
-							/>
-						</DataList.Value>
-					</DataList.Item>
-					<DataList.Item>
-						<DataList.Label minWidth="88px">
-							Font Weight
-						</DataList.Label>
-						<DataList.Value>
-							{' '}
-							<TextField.Root
-								type="text"
-								value={preview.fontWeight}
-								onChange={onChangeFontWeight}
-							/>
-						</DataList.Value>
-					</DataList.Item>
-				</DataList.Root>
-
-				<Flex gap="3" mt="4" justify="end">
-					<Dialog.Close>
-						<Button
-							variant="soft"
-							color="gray"
-							onClick={onClickCancel}
+								<PilcrowIcon />
+							</Flex>
+							<VisuallyHidden>Paragraph</VisuallyHidden>
+						</SegmentedControl.Item>
+					</SegmentedControl.Root>
+					<Box width={'100%'}>
+						<p
+							style={{
+								width: '100%',
+								fontFamily: value.fontFamily,
+								fontStyle: value.fontStyle,
+								fontWeight: value.fontWeight,
+								fontSize:
+									display === 'heading' ? '2rem' : '1rem',
+								margin: '0',
+								whiteSpace:
+									display === 'heading' ? 'nowrap' : 'wrap',
+								overflow: 'hidden',
+								lineHeight: '1.5',
+							}}
 						>
-							Cancel
-						</Button>
-					</Dialog.Close>
-					<Dialog.Close>
-						<Button onClick={onClickSave}>Save</Button>
-					</Dialog.Close>
+							Lorem ipsum dolor sit amet consectetur adipisicing
+							elit. Ullam provident eaque quas tempore. Nostrum
+							cupiditate expedita velit, obcaecati delectus qui
+							unde, fugit nemo laborum debitis saepe, quas quis
+							quo suscipit.
+						</p>
+					</Box>
 				</Flex>
-			</Dialog.Content>
-		</Dialog.Root>
+			</Card>
+
+			<Separator orientation={'horizontal'} size={'4'} my={'4'} />
+
+			<DataList.Root>
+				<DataList.Item align="center">
+					<DataList.Label minWidth="88px">
+						<Text as="label" htmlFor={`${value.id}-font-family`}>
+							Font Family
+						</Text>
+					</DataList.Label>
+					<DataList.Value>
+						<FamilyField
+							id={`${value.id}-font-family`}
+							value={value.fontFamily}
+							onChange={onChangeFontFamily}
+						/>
+					</DataList.Value>
+				</DataList.Item>
+				<DataList.Item>
+					<DataList.Label minWidth="88px">
+						<Text as="label" htmlFor={`${value.id}-font-style`}>
+							Font Style
+						</Text>
+					</DataList.Label>
+					<DataList.Value>
+						<TextField.Root
+							id={`${value.id}-font-style`}
+							type="text"
+							value={value.fontStyle}
+							onChange={onChangeFontStyle}
+						/>
+					</DataList.Value>
+				</DataList.Item>
+				<DataList.Item>
+					<DataList.Label minWidth="88px">
+						<Text as="label" htmlFor={`${value.id}-font-weight`}>
+							Font Weight
+						</Text>
+					</DataList.Label>
+					<DataList.Value>
+						<TextField.Root
+							id={`${value.id}-font-weight`}
+							type="text"
+							value={value.fontWeight}
+							onChange={onChangeFontWeight}
+						/>
+					</DataList.Value>
+				</DataList.Item>
+			</DataList.Root>
+		</Box>
 	);
 };
 

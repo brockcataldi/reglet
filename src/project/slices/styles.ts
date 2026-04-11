@@ -1,6 +1,4 @@
-import type { Style } from '../types';
-
-import { projectStore } from '../store';
+import { projectStore, type Style } from '@/project';
 
 export const useStyles = () => {
 	return projectStore((state) => state.styles);
@@ -28,5 +26,18 @@ export const updateStyle = (id: string, values: Partial<Style>) => {
 			...state.styles[index],
 			...values,
 		};
+	});
+};
+
+export const addStyle = (value: Style) => {
+	projectStore.setState((state) => {
+		state.styles.push(value);
+	});
+};
+
+export const removeStyle = (id: string) => {
+	projectStore.setState((state) => {
+		const index = state.styles.findIndex((style) => style.id === id);
+		state.styles.splice(index, 1);
 	});
 };

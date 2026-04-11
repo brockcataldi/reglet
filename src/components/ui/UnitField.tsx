@@ -1,6 +1,8 @@
-import { Flex, Text, TextField } from '@radix-ui/themes';
-import { useSettingsUnit } from '../../project/slices/settings';
 import type { ChangeEvent } from 'react';
+
+import { Flex, Text, TextField } from '@radix-ui/themes';
+
+import { useSettingsUnit } from '@/project';
 
 type UnitFieldProps = {
 	id: string;

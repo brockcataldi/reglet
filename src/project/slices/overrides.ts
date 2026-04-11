@@ -1,7 +1,10 @@
-import { scale, toPrecise } from '../helpers';
-import { type Override } from '../types';
-import { projectStore } from '../store';
-import { LARGE_TEXT_CUTOFFS } from '../constants';
+import {
+	LARGE_TEXT_CUTOFFS,
+	scale,
+	toPrecise,
+	projectStore,
+	type Override,
+} from '@/project';
 
 export const useOverride = (id: string, row: number, column: number) => {
 	return projectStore(

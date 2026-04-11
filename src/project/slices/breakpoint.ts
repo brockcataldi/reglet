@@ -1,9 +1,13 @@
 import { useMemo } from 'react';
-import { type Breakpoint } from '../types';
-import { createBreakpointTable } from '../helpers';
-import { projectStore } from '../store';
-import { useSettingsPrecision, useSettingsUnit } from './settings';
-import { useStyles } from './styles';
+
+import {
+	createBreakpointTable,
+	projectStore,
+	useSettingsPrecision,
+	useSettingsUnit,
+	useStyles,
+	type Breakpoint,
+} from '@/project';
 
 export const useBreakpoint = (id: string) => {
 	return projectStore((state) =>

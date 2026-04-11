@@ -4,10 +4,10 @@ import {
 	updateBreakpoint,
 	useBreakpointBase,
 	useBreakpointRatio,
-} from '../../project/slices/breakpoint';
+} from '@/project';
 
-import RatioField from '../ui/RatioField';
-import UnitField from '../ui/UnitField';
+import RatioField from '$/ui/RatioField';
+import UnitField from '$/ui/UnitField';
 
 type AsideProps = {
 	id: string;

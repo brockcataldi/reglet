@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
 	Table,
 	Flex,
@@ -6,24 +8,57 @@ import {
 	VisuallyHidden,
 	Heading,
 	Card,
+	Button,
 } from '@radix-ui/themes';
+
 import { MinusIcon, PlusIcon } from '@radix-ui/react-icons';
 
-import type { Bounds, Values } from '../../project/types';
-
 import {
+	useBounds,
+	useBreakpointTable,
+	useStyles,
+	useStylesLength,
+	addStyle,
 	decrementBound,
 	incrementBound,
-	useBounds,
-} from '../../project/slices/bounds';
-import { useBreakpointTable } from '../../project/slices/breakpoint';
-import { useStyles, useStylesLength } from '../../project/slices/styles';
-import { suffix } from '../../project/helpers';
+	createDefaultTextStyle,
+	suffix,
+	type Style,
+	type Bounds,
+	type Values,
+} from '@/project';
 
-import DescriptiveIconButton from '../ui/DescriptiveIconButton';
+import DescriptiveIconButton from '$/ui/DescriptiveIconButton';
+
 import Cell from './Cell';
 import HeaderCell from './HeaderCell';
-import S from './S';
+import StyleEdit from './StyleEdit';
+
+const Add = () => {
+	const [value, setValue] = useState<Style>(createDefaultTextStyle());
+
+	const onClickAdd = () => {
+		addStyle(value);
+		setValue(createDefaultTextStyle());
+	};
+
+	return (
+		<Box width={'500px'} height={'100%'}>
+			<Card>
+				<Heading as="h2" mb={'4'}>
+					Add Another Text Style
+				</Heading>
+				<StyleEdit
+					value={value}
+					onChange={(newValue) => setValue(newValue)}
+				/>
+				<Flex>
+					<Button onClick={onClickAdd}>Add Style</Button>
+				</Flex>
+			</Card>
+		</Box>
+	);
+};
 
 type RowProps = {
 	row: Values[];
@@ -84,27 +119,7 @@ const Row = ({ id, bounds, index, row, length }: RowProps) => {
 
 			{index === 0 ? (
 				<Table.Cell rowSpan={length}>
-					<Box
-						width={'500px'}
-						height={'100%'}
-						position={'sticky'}
-						top={'58px'}
-						left={'0px'}
-					>
-						<Card>
-							<Heading as="h2" mb={'4'}>
-								Add Another Text Style
-							</Heading>
-							<S
-								style={{
-									id: crypto.randomUUID(),
-									fontFamily: 'Arial',
-									fontStyle: 'normal',
-									fontWeight: '400',
-								}}
-							/>
-						</Card>
-					</Box>
+					<Add />
 				</Table.Cell>
 			) : null}
 		</Table.Row>
@@ -117,8 +132,8 @@ type CanvasProps = {
 
 const Canvas = ({ id }: CanvasProps) => {
 	const styles = useStyles();
-	const values = useBreakpointTable(id);
 	const stylesLength = useStylesLength();
+	const values = useBreakpointTable(id);
 	const bounds = useBounds(id);
 
 	const length = values.length;
@@ -132,26 +147,33 @@ const Canvas = ({ id }: CanvasProps) => {
 	}
 
 	return (
-		<Table.Root>
+		<Table.Root style={{ overflowX: 'visible' }}>
 			<Table.Header>
 				<Table.Row>
 					<Table.ColumnHeaderCell width={'40px'}>
-						<DescriptiveIconButton
-							content={`Add a ${suffix(bounds.max + 1)} row`}
-							size={'3'}
-							onClick={() => {
-								incrementBound(id, 'max');
-							}}
+						<Flex
+							direction="column"
+							align="center"
+							justify="center"
+							height="100%"
 						>
-							<PlusIcon />
-						</DescriptiveIconButton>
+							<DescriptiveIconButton
+								content={`Add a ${suffix(bounds.max + 1)} row`}
+								size={'3'}
+								onClick={() => {
+									incrementBound(id, 'max');
+								}}
+							>
+								<PlusIcon />
+							</DescriptiveIconButton>
+						</Flex>
 					</Table.ColumnHeaderCell>
 					{styles.map((style, index) => (
 						<Table.ColumnHeaderCell
 							width={'500px'}
 							key={`${id}-text-style-${index}`}
 						>
-							<HeaderCell style={style} />
+							<HeaderCell style={style} length={stylesLength} />
 						</Table.ColumnHeaderCell>
 					))}
 					<Table.ColumnHeaderCell width={'500px'}>

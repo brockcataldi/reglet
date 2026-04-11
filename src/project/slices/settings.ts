@@ -1,7 +1,4 @@
-import { type Unit } from '../types';
-
-import { convertUnit } from '../helpers';
-import { projectStore } from '../store';
+import { convertUnit, projectStore, type Unit } from '@/project';
 
 export const useSettingsUnit = () => {
 	return projectStore((state) => state.settings.unit);

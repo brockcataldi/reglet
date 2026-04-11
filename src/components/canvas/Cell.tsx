@@ -11,17 +11,16 @@ import {
 
 import { Link1Icon, LinkBreak1Icon } from '@radix-ui/react-icons';
 
-import type { Values } from '../../project/types';
-
-import { useOverride } from '../../project/slices/overrides';
-import { useSettingsUnit } from '../../project/slices/settings';
 import {
+	useOverride,
+	useSettingsUnit,
 	disableOverride,
 	enableOverride,
 	updateOverride,
-} from '../../project/slices/overrides';
+	type Values,
+} from '@/project';
 
-import UnitField from '../ui/UnitField';
+import UnitField from '$/ui/UnitField';
 
 type EditProps = {
 	id: string;

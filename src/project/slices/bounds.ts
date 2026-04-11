@@ -1,5 +1,4 @@
-import { type Bounds } from '../types';
-import { projectStore } from '../store';
+import { projectStore, type Bounds } from '@/project';
 
 export const useBounds = (id: string) => {
 	return projectStore(

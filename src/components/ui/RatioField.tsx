@@ -1,7 +1,7 @@
 import { Text, Select, TextField, Button, Flex } from '@radix-ui/themes';
 import { useState, type ChangeEvent } from 'react';
 
-import { RATIOS } from '../../project/constants';
+import { RATIOS } from '@/project';
 
 type RatioFieldProps = {
 	id: string;

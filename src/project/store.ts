@@ -2,8 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
-import type { Project } from './types';
-import { createProject } from './helpers';
+import { createProject, type Project } from '@/project';
 
 export const projectStore = create<Project>()(
 	persist(

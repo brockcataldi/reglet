@@ -8,14 +8,12 @@ import {
 	Button,
 } from '@radix-ui/themes';
 
-import type { Unit } from '../../project/types';
-
 import {
 	setSettingsUnit,
 	useSettingsUnit,
-} from '../../project/slices/settings';
-
-import { useProjectType } from '../../project/slices/project';
+	useProjectType,
+	type Unit,
+} from '@/project';
 
 const ProjectSettings = () => {
 	const unit = useSettingsUnit();

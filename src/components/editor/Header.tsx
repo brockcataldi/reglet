@@ -9,8 +9,10 @@ import {
 } from '@radix-ui/themes';
 
 import { Link } from 'react-router';
-import { useBreakpointWidths } from '../../project/slices/breakpoint';
-import { widthToIcon } from '../helpers';
+
+import { useBreakpointWidths } from '@/project';
+
+import { widthToIcon } from '$/helpers';
 
 type HeaderProps = {
 	id: string;
@@ -53,8 +55,12 @@ const Header = ({ id }: HeaderProps) => {
 				</TabNav.Root>
 
 				<Flex gap={'3'}>
-					<Button>Preview</Button>
-					<Button>Export</Button>
+					<Button variant="soft" color="gray">
+						Preview
+					</Button>
+					<Button variant="soft" color="gray">
+						Export
+					</Button>
 				</Flex>
 			</Flex>
 		</Box>

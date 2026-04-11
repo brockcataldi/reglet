@@ -1,7 +1,9 @@
-import { type ProjectType, type Unit } from '../types';
-
-import { createProject } from '../helpers';
-import { projectStore } from '../store';
+import {
+	createProject,
+	projectStore,
+	type ProjectType,
+	type Unit,
+} from '@/project';
 
 export const setNewProject = (newUnit: Unit, newType: ProjectType) => {
 	projectStore.setState((state) => {
