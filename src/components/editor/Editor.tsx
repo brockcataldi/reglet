@@ -4,6 +4,7 @@ import Aside from './Aside';
 import Header from './Header';
 
 import Canvas from '$/canvas/Canvas';
+import { ErrorBoundary } from 'react-error-boundary';
 
 type EditorProps = {
 	id: string;
@@ -11,9 +12,11 @@ type EditorProps = {
 
 const Editor = ({ id }: EditorProps) => {
 	return (
-		<Box>
+		<Box className="editor">
 			<header className="editor__header">
-				<Header id={id} />
+				<ErrorBoundary fallback={<h1>Bro idek</h1>}>
+					<Header id={id} />
+				</ErrorBoundary>
 			</header>
 			<aside className="editor__aside">
 				<Aside id={id} />

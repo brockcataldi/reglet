@@ -1,16 +1,15 @@
-import { Text, Select, TextField, Button, Flex } from '@radix-ui/themes';
+import { Select, TextField, Button, Flex } from '@radix-ui/themes';
 import { useState, type ChangeEvent } from 'react';
 
-import { RATIOS } from '@/project';
+import { RATIOS } from '@/project/constants';
 
 type RatioFieldProps = {
 	id: string;
-	label: string;
 	value: number;
 	onChange: (newValue: number) => void;
 };
 
-const RatioField = ({ id, label, value, onChange }: RatioFieldProps) => {
+const RatioField = ({ id, value, onChange }: RatioFieldProps) => {
 	const [isManual, setIsManual] = useState(false);
 
 	const matchedRatio = RATIOS.find(
@@ -21,64 +20,60 @@ const RatioField = ({ id, label, value, onChange }: RatioFieldProps) => {
 	const selectValue =
 		matchedRatio && !isManual ? matchedRatio[0].toString() : 'custom';
 
-	return (
-		<Flex direction={'column'} gapY={'1'}>
-			<Text size={'2'} as={'label'} htmlFor={id}>
-				{label}
-			</Text>
-
-			{showCustomInput ? (
-				<Flex direction={'row'} gap="1">
-					<TextField.Root
-						id={id}
-						type="number"
-						min={1}
-						step={0.01}
-						value={value}
-						onChange={(event: ChangeEvent<HTMLInputElement>) => {
-							const val = parseFloat(event.target.value);
-							if (!isNaN(val)) {
-								onChange(val);
-							}
-						}}
-					></TextField.Root>
-					<Button
-						onClick={() => {
-							setIsManual(false);
-							onChange(1.2);
-						}}
-					>
-						Back to Presets
-					</Button>
-				</Flex>
-			) : (
-				<Select.Root
-					value={selectValue}
-					onValueChange={(newValue) => {
-						if (newValue === 'custom') {
-							setIsManual(true);
-						} else {
-							setIsManual(false);
-							onChange(parseFloat(newValue));
+	if (showCustomInput) {
+		return (
+			<Flex direction={'row'} gap="1">
+				<TextField.Root
+					id={id}
+					type="number"
+					min={1}
+					step={0.01}
+					value={value}
+					onChange={(event: ChangeEvent<HTMLInputElement>) => {
+						const val = parseFloat(event.target.value);
+						if (!isNaN(val)) {
+							onChange(val);
 						}
 					}}
+				></TextField.Root>
+				<Button
+					onClick={() => {
+						setIsManual(false);
+						onChange(1.2);
+					}}
 				>
-					<Select.Trigger id={id} />
-					<Select.Content>
-						<Select.Item value={'custom'}>Custom</Select.Item>
-						<Select.Separator />
-						{RATIOS.map(([ratioValue, ratioLabel]) => (
-							<Select.Item
-								value={ratioValue.toString()}
-								key={`ratio-${ratioValue}`}
-							>
-								{ratioValue} - {ratioLabel}
-							</Select.Item>
-						))}
-					</Select.Content>
-				</Select.Root>
-			)}
-		</Flex>
+					Back to Presets
+				</Button>
+			</Flex>
+		);
+	}
+
+	return (
+		<Select.Root
+			value={selectValue}
+			onValueChange={(newValue) => {
+				if (newValue === 'custom') {
+					setIsManual(true);
+				} else {
+					setIsManual(false);
+					onChange(parseFloat(newValue));
+				}
+			}}
+		>
+			<Select.Trigger id={id} />
+			<Select.Content>
+				<Select.Item value={'custom'}>Custom</Select.Item>
+				<Select.Separator />
+				{RATIOS.map(([ratioValue, ratioLabel]) => (
+					<Select.Item
+						value={ratioValue.toString()}
+						key={`ratio-${ratioValue}`}
+					>
+						{ratioValue} - {ratioLabel}
+					</Select.Item>
+				))}
+			</Select.Content>
+		</Select.Root>
 	);
 };
 

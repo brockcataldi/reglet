@@ -1,10 +1,8 @@
-import { Box, Flex } from '@radix-ui/themes';
+import { Box, Flex, Text } from '@radix-ui/themes';
 
-import {
-	updateBreakpoint,
-	useBreakpointBase,
-	useBreakpointRatio,
-} from '@/project';
+import { useBreakpointBase, useBreakpointRatio } from '@/project/hooks';
+
+import { updateBreakpoint } from '@/project/actions';
 
 import RatioField from '$/ui/RatioField';
 import UnitField from '$/ui/UnitField';
@@ -31,23 +29,31 @@ const Aside = ({ id }: AsideProps) => {
 
 	return (
 		<Box height={'100%'}>
-			<Flex p={'4'} direction={'column'} gap={'10'}>
+			<Flex p={'4'} direction={'column'} gapY={'2'}>
 				{base !== undefined ? (
-					<UnitField
-						id={`${id}-base`}
-						label="Base Value"
-						value={base}
-						onChange={onChangeBase}
-					/>
+					<Flex direction={'column'}>
+						<Text as="label" htmlFor={`${id}-base`} size={'2'}>
+							Base Font Size
+						</Text>
+						<UnitField
+							id={`${id}-base`}
+							value={base}
+							onChange={onChangeBase}
+						/>
+					</Flex>
 				) : null}
 
 				{ratio !== undefined ? (
-					<RatioField
-						id={`${id}-ratio`}
-						label="Ratio"
-						value={ratio}
-						onChange={onChangeRatio}
-					/>
+					<Flex direction={'column'}>
+						<Text as="label" htmlFor={`${id}-ratio`} size={'2'}>
+							Ratio
+						</Text>
+						<RatioField
+							id={`${id}-ratio`}
+							value={ratio}
+							onChange={onChangeRatio}
+						/>
+					</Flex>
 				) : null}
 			</Flex>
 		</Box>

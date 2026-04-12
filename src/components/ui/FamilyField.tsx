@@ -1,7 +1,7 @@
 import { useState, type ChangeEvent } from 'react';
 import { Box, Button, Flex, Select, TextField } from '@radix-ui/themes';
 
-import { WEB_SAFE_FONTS } from '@/project';
+import { WEB_SAFE_FONTS } from '@/project/constants';
 
 type FamilyFieldProps = {
 	id: string;

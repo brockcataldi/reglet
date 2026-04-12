@@ -1,16 +1,17 @@
 import {
 	Box,
 	Flex,
-	TabNav,
 	Text,
 	Heading,
 	VisuallyHidden,
 	Button,
+	Badge,
+	TabNav,
 } from '@radix-ui/themes';
 
 import { Link } from 'react-router';
 
-import { useBreakpointWidths } from '@/project';
+import { useBreakpointWidths, useProjectType } from '@/project/hooks';
 
 import { widthToIcon } from '$/helpers';
 
@@ -20,6 +21,7 @@ type HeaderProps = {
 
 const Header = ({ id }: HeaderProps) => {
 	const widths = useBreakpointWidths();
+	const type = useProjectType();
 
 	return (
 		<Box width={'100%'} p={'2'}>
@@ -27,13 +29,13 @@ const Header = ({ id }: HeaderProps) => {
 				<VisuallyHidden>
 					<Heading as="h1">Reglet editor</Heading>
 				</VisuallyHidden>
-				<TabNav.Root>
-					{widths
-						.sort((a, b) => a.width - b.width)
-						.map((width) => (
+				<Flex align={'center'} justify={'start'} gap={'2'}>
+					<Badge size={'3'}>{type}</Badge>
+					<TabNav.Root>
+						{widths.map((width) => (
 							<TabNav.Link
-								active={id === width.id}
 								asChild
+								active={id === width.id}
 								key={`link-to-${width.id}`}
 							>
 								<Link to={`/breakpoint/${width.id}`}>
@@ -52,15 +54,11 @@ const Header = ({ id }: HeaderProps) => {
 								</Link>
 							</TabNav.Link>
 						))}
-				</TabNav.Root>
-
+					</TabNav.Root>
+				</Flex>
 				<Flex gap={'3'}>
-					<Button variant="soft" color="gray">
-						Preview
-					</Button>
-					<Button variant="soft" color="gray">
-						Export
-					</Button>
+					<Button>Preview</Button>
+					<Button>Export</Button>
 				</Flex>
 			</Flex>
 		</Box>

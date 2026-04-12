@@ -3,7 +3,9 @@ import { useState } from 'react';
 import { Flex, Card, Text, Dialog, Button } from '@radix-ui/themes';
 import { Pencil1Icon, TrashIcon } from '@radix-ui/react-icons';
 
-import { removeStyle, updateStyle, type Style } from '@/project';
+import { type Style } from '@/project/types';
+
+import { removeStyle, updateStyle } from '@/project/actions';
 
 import StyleEdit from './StyleEdit';
 

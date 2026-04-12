@@ -1,4 +1,5 @@
-import { CONVERSION_RATIOS, type Unit } from '@/project';
+import { CONVERSION_RATIOS } from '@/project/constants';
+import { type Unit } from '@/project/types';
 
 export const scale = (step: number, base: number, ratio: number): number => {
 	return base * Math.pow(ratio, step);

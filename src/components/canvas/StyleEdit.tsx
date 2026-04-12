@@ -1,21 +1,10 @@
-import { useState, type ChangeEvent } from 'react';
-import {
-	Flex,
-	Text,
-	TextField,
-	Box,
-	DataList,
-	Separator,
-	SegmentedControl,
-	Card,
-	VisuallyHidden,
-} from '@radix-ui/themes';
+import { type ChangeEvent } from 'react';
+import { Text, TextField, Box, DataList, Separator } from '@radix-ui/themes';
 
-import { HeadingIcon, PilcrowIcon } from '@radix-ui/react-icons';
-
-import type { Style } from '@/project';
+import type { Style } from '@/project/types';
 
 import FamilyField from '$/ui/FamilyField';
+import Display from '$/ui/Display';
 
 type StyleEditProps = {
 	value: Style;
@@ -23,12 +12,6 @@ type StyleEditProps = {
 };
 
 const StyleEdit = ({ value, onChange }: StyleEditProps) => {
-	const [display, setDisplay] = useState<'heading' | 'paragraph'>('heading');
-
-	const onChangeDisplay = (newDisplay: 'heading' | 'paragraph') => {
-		setDisplay(newDisplay);
-	};
-
 	const onChangeFontFamily = (fontFamily: string) => {
 		onChange({
 			...value,
@@ -52,63 +35,7 @@ const StyleEdit = ({ value, onChange }: StyleEditProps) => {
 
 	return (
 		<Box>
-			<Card mt="4">
-				<Flex
-					gap={'4'}
-					direction={'column'}
-					align={'start'}
-					justify={'start'}
-				>
-					<SegmentedControl.Root
-						value={display}
-						onValueChange={onChangeDisplay}
-					>
-						<SegmentedControl.Item value="heading">
-							<Flex
-								direction="column"
-								align="center"
-								justify="center"
-							>
-								<HeadingIcon />
-							</Flex>
-							<VisuallyHidden>Heading</VisuallyHidden>
-						</SegmentedControl.Item>
-						<SegmentedControl.Item value="paragraph">
-							<Flex
-								direction="column"
-								align="center"
-								justify="center"
-							>
-								<PilcrowIcon />
-							</Flex>
-							<VisuallyHidden>Paragraph</VisuallyHidden>
-						</SegmentedControl.Item>
-					</SegmentedControl.Root>
-					<Box width={'100%'}>
-						<p
-							style={{
-								width: '100%',
-								fontFamily: value.fontFamily,
-								fontStyle: value.fontStyle,
-								fontWeight: value.fontWeight,
-								fontSize:
-									display === 'heading' ? '2rem' : '1rem',
-								margin: '0',
-								whiteSpace:
-									display === 'heading' ? 'nowrap' : 'wrap',
-								overflow: 'hidden',
-								lineHeight: '1.5',
-							}}
-						>
-							Lorem ipsum dolor sit amet consectetur adipisicing
-							elit. Ullam provident eaque quas tempore. Nostrum
-							cupiditate expedita velit, obcaecati delectus qui
-							unde, fugit nemo laborum debitis saepe, quas quis
-							quo suscipit.
-						</p>
-					</Box>
-				</Flex>
-			</Card>
+			<Display type="style" value={value} />
 
 			<Separator orientation={'horizontal'} size={'4'} my={'4'} />
 

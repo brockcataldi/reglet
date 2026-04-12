@@ -35,6 +35,11 @@ export type Breakpoint = {
 	overrides: Record<string, Override>;
 };
 
+export type BreakpointWidth = {
+	id: string;
+	width: number;
+};
+
 export type Settings = {
 	unit: Unit;
 	precision: number;

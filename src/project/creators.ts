@@ -1,15 +1,15 @@
+import { LARGE_TEXT_CUTOFFS } from '@/project/constants';
+
+import { convertUnit, toPrecise, scale } from '@/project/helpers';
+
 import {
-	LARGE_TEXT_CUTOFFS,
-	convertUnit,
-	toPrecise,
-	scale,
 	type Breakpoint,
 	type Values,
 	type Project,
 	type ProjectType,
 	type Style,
 	type Unit,
-} from '@/project';
+} from '@/project/types';
 
 export const createDefaultTextStyle = (): Style => ({
 	id: crypto.randomUUID(),
@@ -78,10 +78,16 @@ export const createProject = (unit: Unit, type: ProjectType): Project => {
 			precision: 3,
 		},
 		styles: [createDefaultTextStyle()],
-		breakpoints: [
-			createDefaultBreakpoint(0, 1, unit),
-			createDefaultBreakpoint(768, 1.1, unit),
-			createDefaultBreakpoint(1200, 1.2, unit),
-		],
+		breakpoints:
+			type === 'traditional'
+				? [
+						createDefaultBreakpoint(0, 1, unit),
+						createDefaultBreakpoint(768, 1.1, unit),
+						createDefaultBreakpoint(1200, 1.2, unit),
+					]
+				: [
+						createDefaultBreakpoint(360, 1, unit),
+						createDefaultBreakpoint(1240, 1.2, unit),
+					],
 	};
 };

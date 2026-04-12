@@ -1,6 +1,6 @@
 import { Navigate, useParams } from 'react-router';
 
-import { useBreakpointExists } from '../project/slices/breakpoint';
+import { useBreakpointExists } from '@/project/hooks';
 
 import Editor from '../components/editor/Editor';
 

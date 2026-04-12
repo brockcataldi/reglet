@@ -1,26 +1,20 @@
 import type { ChangeEvent } from 'react';
-import {
-	Box,
-	Button,
-	Card,
-	Flex,
-	Separator,
-	Text,
-	TextField,
-} from '@radix-ui/themes';
+import { Box, Button, Card, Flex, Text, TextField } from '@radix-ui/themes';
 
 import { Link1Icon, LinkBreak1Icon } from '@radix-ui/react-icons';
 
+import { type Values } from '@/project/types';
+
+import { useOverride, useSettingsUnit } from '@/project/hooks';
+
 import {
-	useOverride,
-	useSettingsUnit,
 	disableOverride,
 	enableOverride,
 	updateOverride,
-	type Values,
-} from '@/project';
+} from '@/project/actions';
 
 import UnitField from '$/ui/UnitField';
+import Display from '$/ui/Display';
 
 type EditProps = {
 	id: string;
@@ -66,15 +60,24 @@ const Edit = ({ id, rowIndex, columnIndex }: EditProps) => {
 				align={'end'}
 				justify={'start'}
 			>
-				<UnitField
-					id={`${rowIndex}:${columnIndex}-font-size`}
-					label="Font Size"
-					value={override.fontSize}
-					onChange={onChangeFontSize}
-				/>
+				<Flex direction={'column'} align="start">
+					<Text
+						size={'2'}
+						as="label"
+						htmlFor={`${rowIndex}:${columnIndex}-font-size`}
+					>
+						Font Size
+					</Text>
+					<UnitField
+						id={`${rowIndex}:${columnIndex}-font-size`}
+						value={override.fontSize}
+						onChange={onChangeFontSize}
+					/>
+				</Flex>
 
 				<Flex direction={'column'} align="start">
 					<Text
+						size={'2'}
 						as="label"
 						htmlFor={`${rowIndex}:${columnIndex}-line-height`}
 					>
@@ -91,7 +94,7 @@ const Edit = ({ id, rowIndex, columnIndex }: EditProps) => {
 				</Flex>
 			</Flex>
 
-			<Button onClick={onClickLink} variant="soft" color="gray">
+			<Button onClick={onClickLink}>
 				<Link1Icon /> Link
 			</Button>
 		</Flex>
@@ -144,7 +147,7 @@ const Details = ({ values, id, rowIndex, columnIndex }: DetailsProps) => {
 				</Flex>
 			</Flex>
 
-			<Button onClick={onClickUnlink} variant="soft" color="gray">
+			<Button onClick={onClickUnlink}>
 				<LinkBreak1Icon /> Unlink
 			</Button>
 		</Flex>
@@ -159,30 +162,19 @@ type CellProps = {
 };
 
 const Cell = ({ values, id, rowIndex, columnIndex }: CellProps) => {
-	const unit = useSettingsUnit();
 	const override = useOverride(id, rowIndex, columnIndex);
 
 	return (
 		<Box width={'500px'}>
 			<Card>
 				<Flex gap={'2'} align={'start'} direction={'column'}>
-					<p
-						style={{
-							fontFamily: values.fontFamily,
-							fontStyle: values.fontStyle,
-							fontWeight: values.fontWeight,
-							fontSize: `${values.fontSize}${unit}`,
-							lineHeight: values.lineHeight,
-							margin: '0',
-							whiteSpace: 'nowrap',
-							width: '100%',
-							overflow: 'hidden',
-						}}
-					>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit.
-					</p>
-
-					<Separator size={'4'} orientation={'horizontal'} />
+					<Display
+						type="values"
+						value={values}
+						defaultType={
+							values.lineHeight === 1.5 ? 'paragraph' : 'heading'
+						}
+					/>
 
 					{override === undefined ? (
 						<Details

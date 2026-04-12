@@ -22,6 +22,9 @@ importers:
             react-dom:
                 specifier: ^19.2.4
                 version: 19.2.4(react@19.2.4)
+            react-error-boundary:
+                specifier: ^6.1.1
+                version: 6.1.1(react@19.2.4)
             react-router:
                 specifier: ^7.13.2
                 version: 7.13.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -2441,6 +2444,14 @@ packages:
         peerDependencies:
             react: ^19.2.4
 
+    react-error-boundary@6.1.1:
+        resolution:
+            {
+                integrity: sha512-BrYwPOdXi5mqkk5lw+Uvt0ThHx32rCt3BkukS4X23A2AIWDPSGX6iaWTc0y9TU/mHDA/6qOSGel+B2ERkOvD1w==,
+            }
+        peerDependencies:
+            react: ^18.0.0 || ^19.0.0
+
     react-remove-scroll-bar@2.3.8:
         resolution:
             {
@@ -4433,6 +4444,10 @@ snapshots:
         dependencies:
             react: 19.2.4
             scheduler: 0.27.0
+
+    react-error-boundary@6.1.1(react@19.2.4):
+        dependencies:
+            react: 19.2.4
 
     react-remove-scroll-bar@2.3.8(@types/react@19.2.14)(react@19.2.4):
         dependencies:

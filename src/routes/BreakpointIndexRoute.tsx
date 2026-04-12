@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router';
-import { useFirstBreakpointId } from '../project/slices/breakpoint';
+import { useFirstBreakpointId } from '@/project/hooks';
 
 const BreakpointIndexRoute = () => {
 	const first = useFirstBreakpointId();

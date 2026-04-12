@@ -17,8 +17,8 @@ import {
 
 import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
 
-import type { ProjectType, Unit } from '../project/types';
-import { setNewProject } from '../project/slices/project';
+import type { ProjectType, Unit } from '@/project/types';
+import { setNewProject } from '@/project/actions';
 
 const NewRoute = () => {
 	const navigate = useNavigate();

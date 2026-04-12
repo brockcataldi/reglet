@@ -4,29 +4,28 @@ import {
 	Table,
 	Flex,
 	Avatar,
-	Box,
 	VisuallyHidden,
-	Heading,
-	Card,
 	Button,
+	ChevronDownIcon,
+	Dialog,
 } from '@radix-ui/themes';
 
-import { MinusIcon, PlusIcon } from '@radix-ui/react-icons';
+import { ChevronUpIcon, PlusIcon } from '@radix-ui/react-icons';
+
+import { type Style, type Bounds, type Values } from '@/project/types';
 
 import {
 	useBounds,
 	useBreakpointTable,
 	useStyles,
 	useStylesLength,
-	addStyle,
-	decrementBound,
-	incrementBound,
-	createDefaultTextStyle,
-	suffix,
-	type Style,
-	type Bounds,
-	type Values,
-} from '@/project';
+} from '@/project/hooks';
+
+import { addStyle, decrementBound, incrementBound } from '@/project/actions';
+
+import { createDefaultTextStyle } from '@/project/creators';
+
+import { suffix } from '@/project/helpers';
 
 import DescriptiveIconButton from '$/ui/DescriptiveIconButton';
 
@@ -42,21 +41,47 @@ const Add = () => {
 		setValue(createDefaultTextStyle());
 	};
 
+	const onClickCancel = () => {
+		setValue(createDefaultTextStyle());
+	};
+
 	return (
-		<Box width={'500px'} height={'100%'}>
-			<Card>
-				<Heading as="h2" mb={'4'}>
-					Add Another Text Style
-				</Heading>
+		<Dialog.Root>
+			<Dialog.Trigger>
+				<DescriptiveIconButton content="Add Text Style" size={'3'}>
+					<PlusIcon />
+				</DescriptiveIconButton>
+			</Dialog.Trigger>
+			<Dialog.Content>
+				<Dialog.Title>Add Text Style</Dialog.Title>
+
 				<StyleEdit
 					value={value}
 					onChange={(newValue) => setValue(newValue)}
 				/>
-				<Flex>
-					<Button onClick={onClickAdd}>Add Style</Button>
+
+				<Flex
+					direction={'row'}
+					gap={'2'}
+					align={'center'}
+					justify={'end'}
+					mt={'4'}
+				>
+					<Dialog.Close>
+						<Button onClick={onClickAdd}>Add</Button>
+					</Dialog.Close>
+					<Dialog.Close>
+						<Button
+							variant="soft"
+							color="gray"
+							onClick={onClickCancel}
+						>
+							Cancel
+						</Button>
+					</Dialog.Close>
 				</Flex>
-			</Card>
-		</Box>
+			</Dialog.Content>
+		</Dialog.Root>
 	);
 };
 
@@ -74,32 +99,51 @@ const Row = ({ id, bounds, index, row, length }: RowProps) => {
 	const isBottomRow = index === length - 1;
 	const canDelete = rowNumber !== 0;
 
-	const deleteAction = isTopRow
-		? {
-				content: `Delete the ${suffix(bounds.max)} row`,
-				onClick: () => decrementBound(id, 'max'),
-			}
-		: isBottomRow
-			? {
-					content: `Delete the ${suffix(bounds.min)} row`,
-					onClick: () => incrementBound(id, 'min'),
-				}
-			: null;
-
 	return (
 		<Table.Row>
 			<Table.RowHeaderCell>
 				<Flex direction={'column'} gap={'2'}>
-					<Avatar size={'3'} fallback={bounds.max - index} />
-
-					{canDelete && deleteAction && (
+					{isTopRow && (
 						<DescriptiveIconButton
-							content={deleteAction.content}
+							content={`Add a ${suffix(bounds.max + 1)} row`}
+							size="3"
+							onClick={() => incrementBound(id, 'max')}
+						>
+							<ChevronUpIcon />
+						</DescriptiveIconButton>
+					)}
+
+					{canDelete && isBottomRow && (
+						<DescriptiveIconButton
+							content={`Delete the ${suffix(bounds.min)} row`}
 							color="red"
 							size="3"
-							onClick={deleteAction.onClick}
+							onClick={() => incrementBound(id, 'min')}
 						>
-							<MinusIcon />
+							<ChevronUpIcon />
+						</DescriptiveIconButton>
+					)}
+
+					<Avatar size={'3'} fallback={bounds.max - index} />
+
+					{isBottomRow && (
+						<DescriptiveIconButton
+							content={`Add a ${suffix(bounds.min - 1)} row`}
+							size="3"
+							onClick={() => decrementBound(id, 'min')}
+						>
+							<ChevronDownIcon />
+						</DescriptiveIconButton>
+					)}
+
+					{canDelete && isTopRow && (
+						<DescriptiveIconButton
+							content={`Delete the ${suffix(bounds.max)} row`}
+							color="red"
+							size="3"
+							onClick={() => decrementBound(id, 'max')}
+						>
+							<ChevronDownIcon />
 						</DescriptiveIconButton>
 					)}
 				</Flex>
@@ -116,12 +160,6 @@ const Row = ({ id, bounds, index, row, length }: RowProps) => {
 					</Table.Cell>
 				);
 			})}
-
-			{index === 0 ? (
-				<Table.Cell rowSpan={length}>
-					<Add />
-				</Table.Cell>
-			) : null}
 		</Table.Row>
 	);
 };
@@ -147,26 +185,13 @@ const Canvas = ({ id }: CanvasProps) => {
 	}
 
 	return (
-		<Table.Root style={{ overflowX: 'visible' }}>
+		<Table.Root>
 			<Table.Header>
 				<Table.Row>
 					<Table.ColumnHeaderCell width={'40px'}>
-						<Flex
-							direction="column"
-							align="center"
-							justify="center"
-							height="100%"
-						>
-							<DescriptiveIconButton
-								content={`Add a ${suffix(bounds.max + 1)} row`}
-								size={'3'}
-								onClick={() => {
-									incrementBound(id, 'max');
-								}}
-							>
-								<PlusIcon />
-							</DescriptiveIconButton>
-						</Flex>
+						<VisuallyHidden>Row Actions</VisuallyHidden>
+
+						<Add />
 					</Table.ColumnHeaderCell>
 					{styles.map((style, index) => (
 						<Table.ColumnHeaderCell
@@ -194,19 +219,6 @@ const Canvas = ({ id }: CanvasProps) => {
 						index={index}
 					/>
 				))}
-				<Table.Row>
-					<Table.Cell colSpan={stylesLength + 2}>
-						<DescriptiveIconButton
-							content={`Add a ${suffix(bounds.min - 1)} row`}
-							size={'3'}
-							onClick={() => {
-								decrementBound(id, 'min');
-							}}
-						>
-							<PlusIcon />
-						</DescriptiveIconButton>
-					</Table.Cell>
-				</Table.Row>
 			</Table.Body>
 		</Table.Root>
 	);

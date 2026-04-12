@@ -1,13 +1,14 @@
 import { useMemo } from 'react';
+import { projectStore } from '@/project/store';
+import type { BreakpointWidth } from '@/project/types';
+import { createBreakpointTable } from '@/project/creators';
 
-import {
-	createBreakpointTable,
-	projectStore,
-	useSettingsPrecision,
-	useSettingsUnit,
-	useStyles,
-	type Breakpoint,
-} from '@/project';
+export const useBounds = (id: string) => {
+	return projectStore(
+		(state) =>
+			state.breakpoints.find((breakpoint) => breakpoint.id === id)?.bounds
+	);
+};
 
 export const useBreakpoint = (id: string) => {
 	return projectStore((state) =>
@@ -39,20 +40,17 @@ export const useFirstBreakpointId = () => {
 	return projectStore((state) => state.breakpoints[0].id);
 };
 
-type BreakpointWidth = {
-	id: string;
-	width: number;
-};
-
 export const useBreakpointWidths = (): BreakpointWidth[] => {
 	const breakpoints = projectStore((state) => state.breakpoints);
 
 	return useMemo(
 		() =>
-			breakpoints.map((breakpoint) => ({
-				id: breakpoint.id,
-				width: breakpoint.width,
-			})),
+			breakpoints
+				.map((breakpoint) => ({
+					id: breakpoint.id,
+					width: breakpoint.width,
+				}))
+				.sort((a, b) => a.width - b.width),
 		[breakpoints]
 	);
 };
@@ -68,19 +66,36 @@ export const useBreakpointTable = (id: string) => {
 	}, [breakpoint, styles, unit, precision]);
 };
 
-export const updateBreakpoint = (id: string, settings: Partial<Breakpoint>) => {
-	projectStore.setState((state) => {
-		const index = state.breakpoints.findIndex(
-			(breakpoint) => breakpoint.id === id
-		);
+export const useOverride = (id: string, row: number, column: number) => {
+	return projectStore(
+		(state) =>
+			state.breakpoints.find((breakpoint) => breakpoint.id === id)
+				?.overrides[`${row}:${column}`]
+	);
+};
 
-		if (index === -1) {
-			return;
-		}
+export const useStyles = () => {
+	return projectStore((state) => state.styles);
+};
 
-		state.breakpoints[index] = {
-			...state.breakpoints[index],
-			...settings,
-		};
-	});
+export const useStylesLength = () => {
+	return projectStore((state) => state.styles.length);
+};
+
+export const useStyle = (id: string) => {
+	return projectStore((state) =>
+		state.styles.find((style) => style.id === id)
+	);
+};
+
+export const useSettingsUnit = () => {
+	return projectStore((state) => state.settings.unit);
+};
+
+export const useSettingsPrecision = () => {
+	return projectStore((state) => state.settings.precision);
+};
+
+export const useProjectType = () => {
+	return projectStore((state) => state.type);
 };
