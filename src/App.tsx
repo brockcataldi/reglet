@@ -9,7 +9,7 @@ const App = () => {
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route index path="/" element={<IndexRoute />} />
+				<Route index element={<IndexRoute />} />
 				<Route path="new" element={<NewRoute />} />
 				<Route path="breakpoint">
 					<Route index element={<BreakpointIndexRoute />} />

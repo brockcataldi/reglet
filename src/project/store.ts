@@ -10,6 +10,8 @@ export const projectStore = create<Project>()(
 		immer(() => createProject('rem', 'traditional')),
 		{
 			name: 'project',
+			version: 1,
+			migrate: () => createProject('rem', 'traditional'),
 		}
 	)
 );

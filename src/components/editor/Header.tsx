@@ -5,8 +5,8 @@ import {
 	Heading,
 	VisuallyHidden,
 	Button,
-	Badge,
 	TabNav,
+	Badge,
 } from '@radix-ui/themes';
 
 import { Link } from 'react-router';
@@ -21,7 +21,7 @@ type HeaderProps = {
 
 const Header = ({ id }: HeaderProps) => {
 	const widths = useBreakpointWidths();
-	const type = useProjectType();
+	const projectType = useProjectType();
 
 	return (
 		<Box width={'100%'} p={'2'}>
@@ -30,7 +30,7 @@ const Header = ({ id }: HeaderProps) => {
 					<Heading as="h1">Reglet editor</Heading>
 				</VisuallyHidden>
 				<Flex align={'center'} justify={'start'} gap={'2'}>
-					<Badge size={'3'}>{type}</Badge>
+					<Badge size={'3'}>{projectType}</Badge>
 					<TabNav.Root>
 						{widths.map((width) => (
 							<TabNav.Link

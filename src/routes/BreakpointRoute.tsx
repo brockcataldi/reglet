@@ -9,9 +9,10 @@ const BreakpointRoute = () => {
 	const exists = useBreakpointExists(id);
 
 	if (id === undefined || !exists) {
-		return <Navigate to={'/breakpoint'} replace />;
+		return <Navigate to="/breakpoint" replace />;
 	}
 
-	return <Editor id={id} />;
+	return <Editor key={id} id={id} />;
 };
+
 export default BreakpointRoute;
