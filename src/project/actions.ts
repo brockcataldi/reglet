@@ -35,6 +35,12 @@ export const decrementBound = (id: string, key: keyof Bounds) => {
 	});
 };
 
+export const updateBreakpoints = (breakpoints: Breakpoint[]) => {
+	projectStore.setState((state) => {
+		state.breakpoints = breakpoints;
+	});
+};
+
 export const updateBreakpoint = (id: string, settings: Partial<Breakpoint>) => {
 	projectStore.setState((state) => {
 		const index = state.breakpoints.findIndex(

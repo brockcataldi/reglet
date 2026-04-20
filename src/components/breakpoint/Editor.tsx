@@ -3,7 +3,7 @@ import { Box } from '@radix-ui/themes';
 import Aside from './Aside';
 import Header from './Header';
 
-import Canvas from '$/canvas/Canvas';
+import Canvas from '@/components/breakpoint/canvas/Canvas';
 
 type EditorProps = {
 	id: string;

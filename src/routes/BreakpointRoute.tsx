@@ -2,7 +2,7 @@ import { Navigate, useParams } from 'react-router';
 
 import { useBreakpointExists } from '@/project/hooks';
 
-import Editor from '../components/editor/Editor';
+import Editor from '../components/breakpoint/Editor';
 
 const BreakpointRoute = () => {
 	const { id } = useParams();

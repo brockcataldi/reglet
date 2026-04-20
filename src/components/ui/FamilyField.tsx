@@ -19,7 +19,7 @@ const FamilyField = ({ id, value, onChange }: FamilyFieldProps) => {
 	return (
 		<Box>
 			{showCustomInput ? (
-				<Flex direction={'row'} gap="1">
+				<Flex direction="row" gap="1">
 					<TextField.Root
 						id={id}
 						type="text"

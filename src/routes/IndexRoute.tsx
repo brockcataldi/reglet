@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 const IndexRoute = () => {
 	return (
 		<Container>
-			<Link to={'/new'}>Breakpoint</Link>
+			<Link to="/new">Breakpoint</Link>
 		</Container>
 	);
 };

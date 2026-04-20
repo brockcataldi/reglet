@@ -3,15 +3,15 @@ import { Text, TextField, Box, DataList, Separator } from '@radix-ui/themes';
 
 import type { Style } from '@/project/types';
 
-import FamilyField from '$/ui/FamilyField';
-import Display from '$/ui/Display';
+import FamilyField from '@/components/ui/FamilyField';
+import Display from '@/components/ui/Display';
 
-type StyleEditProps = {
+type StyleEditorProps = {
 	value: Style;
 	onChange: (value: Style) => void;
 };
 
-const StyleEdit = ({ value, onChange }: StyleEditProps) => {
+const StyleEditor = ({ value, onChange }: StyleEditorProps) => {
 	const onChangeFontFamily = (fontFamily: string) => {
 		onChange({
 			...value,
@@ -34,10 +34,10 @@ const StyleEdit = ({ value, onChange }: StyleEditProps) => {
 	};
 
 	return (
-		<Box>
+		<Box py="6">
 			<Display type="style" value={value} />
 
-			<Separator orientation={'horizontal'} size={'4'} my={'4'} />
+			<Separator orientation="horizontal" size="4" my="4" />
 
 			<DataList.Root>
 				<DataList.Item align="center">
@@ -89,4 +89,4 @@ const StyleEdit = ({ value, onChange }: StyleEditProps) => {
 	);
 };
 
-export default StyleEdit;
+export default StyleEditor;

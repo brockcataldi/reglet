@@ -30,15 +30,15 @@ const Display = ({ defaultType, type, value }: DisplayProps) => {
 	};
 
 	return (
-		<Box width={'100%'}>
+		<Box width="100%">
 			<Card>
 				<Flex
-					gap={'4'}
-					direction={'column'}
-					align={'start'}
-					justify={'start'}
+					gap="4"
+					direction="column"
+					align="start"
+					justify="start"
 				>
-					<Box width={'100%'}>
+					<Box width="100%">
 						<p
 							style={{
 								width: '100%',
@@ -67,10 +67,10 @@ const Display = ({ defaultType, type, value }: DisplayProps) => {
 						</p>
 					</Box>
 					<Flex
-						direction={'row'}
-						align={'center'}
-						justify={'start'}
-						width={'100%'}
+						direction="row"
+						align="center"
+						justify="start"
+						width="100%"
 					>
 						<SegmentedControl.Root
 							value={display}
@@ -81,7 +81,7 @@ const Display = ({ defaultType, type, value }: DisplayProps) => {
 									direction="row"
 									align="center"
 									justify="center"
-									gap={'1'}
+									gap="1"
 								>
 									<HeadingIcon />
 									Heading
@@ -92,7 +92,7 @@ const Display = ({ defaultType, type, value }: DisplayProps) => {
 									direction="row"
 									align="center"
 									justify="center"
-									gap={'1'}
+									gap="1"
 								>
 									<PilcrowIcon />
 									Paragraph

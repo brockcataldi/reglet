@@ -1,9 +1,7 @@
 import { useMemo } from 'react';
 
 import type { BreakpointWidth } from '@/project/types';
-
 import { projectStore } from '@/project/store';
-
 import { createBreakpointTable } from '@/project/creators';
 
 export const useBounds = (id: string) => {
@@ -11,6 +9,10 @@ export const useBounds = (id: string) => {
 		(state) =>
 			state.breakpoints.find((breakpoint) => breakpoint.id === id)?.bounds
 	);
+};
+
+export const useBreakpoints = () => {
+	return projectStore((state) => state.breakpoints);
 };
 
 export const useBreakpoint = (id: string) => {
@@ -49,11 +51,11 @@ export const useBreakpointWidths = (): BreakpointWidth[] => {
 	return useMemo(
 		() =>
 			breakpoints
+				.toSorted((a, b) => a.width - b.width)
 				.map((breakpoint) => ({
 					id: breakpoint.id,
 					width: breakpoint.width,
-				}))
-				.sort((a, b) => a.width - b.width),
+				})),
 		[breakpoints]
 	);
 };

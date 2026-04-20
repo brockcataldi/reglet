@@ -40,16 +40,16 @@ const NewRoute = () => {
 	};
 
 	return (
-		<Container maxWidth={'600px'}>
-			<Section size={'1'}>
-				<Heading size={'9'} as="h1" mb={'2'}>
+		<Container maxWidth="600px">
+			<Section size="1">
+				<Heading size="9" as="h1" mb="2">
 					New Project
 				</Heading>
 				<Text>Don't worry all of these settings can be changed.</Text>
 			</Section>
-			<Separator orientation={'horizontal'} size={'4'} />
-			<Section size={'1'}>
-				<Heading size={'7'} as="h2" mb={'2'}>
+			<Separator orientation="horizontal" size="4" />
+			<Section size="1">
+				<Heading size="7" as="h2" mb="2">
 					Select a Unit Type
 				</Heading>
 				<RadioCards.Root
@@ -61,14 +61,14 @@ const NewRoute = () => {
 						<Flex
 							direction="column"
 							width="100%"
-							gap={'1'}
-							align={'start'}
-							justify={'start'}
+							gap="1"
+							align="start"
+							justify="start"
 						>
-							<Text size={'4'}>
+							<Text size="4">
 								<Code>rem</Code>
 							</Text>
-							<Text size={'1'}>
+							<Text size="1">
 								Relative to the root font size; best for
 								scalable, accessible type.
 							</Text>
@@ -78,14 +78,14 @@ const NewRoute = () => {
 						<Flex
 							direction="column"
 							width="100%"
-							gap={'1'}
-							align={'start'}
-							justify={'start'}
+							gap="1"
+							align="start"
+							justify="start"
 						>
-							<Text size={'4'}>
+							<Text size="4">
 								<Code>px</Code>
 							</Text>
-							<Text size={'1'}>
+							<Text size="1">
 								Fixed pixel units; best when you need exact,
 								device-independent sizing.
 							</Text>
@@ -95,14 +95,14 @@ const NewRoute = () => {
 						<Flex
 							direction="column"
 							width="100%"
-							gap={'1'}
-							align={'start'}
-							justify={'start'}
+							gap="1"
+							align="start"
+							justify="start"
 						>
-							<Text size={'4'}>
+							<Text size="4">
 								<Code>pt</Code>
 							</Text>
-							<Text size={'1'}>
+							<Text size="1">
 								Print-oriented points; mainly for print styles,
 								not typical screen UI type.
 							</Text>
@@ -110,8 +110,8 @@ const NewRoute = () => {
 					</RadioCards.Item>
 				</RadioCards.Root>
 			</Section>
-			<Section size={'1'}>
-				<Heading size={'7'} as="h2" mb={'2'}>
+			<Section size="1">
+				<Heading size="7" as="h2" mb="2">
 					Select a Type of Project
 				</Heading>
 				<RadioCards.Root
@@ -123,14 +123,14 @@ const NewRoute = () => {
 						<Flex
 							direction="column"
 							width="100%"
-							gap={'1'}
-							align={'start'}
-							justify={'start'}
+							gap="1"
+							align="start"
+							justify="start"
 						>
-							<Text weight={'bold'} size={'4'}>
+							<Text weight="bold" size="4">
 								Traditional
 							</Text>
-							<Text size={'1'}>
+							<Text size="1">
 								Type sizes change at specific screen widths
 								using set breakpoints.
 							</Text>
@@ -140,14 +140,14 @@ const NewRoute = () => {
 						<Flex
 							direction="column"
 							width="100%"
-							gap={'1'}
-							align={'start'}
-							justify={'start'}
+							gap="1"
+							align="start"
+							justify="start"
 						>
-							<Text weight={'bold'} size={'4'}>
+							<Text weight="bold" size="4">
 								Fluid
 							</Text>
-							<Text size={'1'}>
+							<Text size="1">
 								Type scales smoothly between sizes based on the
 								viewport or container.
 							</Text>
@@ -155,9 +155,9 @@ const NewRoute = () => {
 					</RadioCards.Item>
 				</RadioCards.Root>
 			</Section>
-			<Section size={'1'}>
+			<Section size="1">
 				{!localStorage.getItem('project') ? null : (
-					<Callout.Root color={'red'} mb={'2'}>
+					<Callout.Root color="red" mb="2">
 						<Callout.Icon>
 							<ExclamationTriangleIcon />
 						</Callout.Icon>
@@ -172,8 +172,6 @@ const NewRoute = () => {
 				)}
 				<Button onClick={onClickNewProject}>Start Project</Button>
 			</Section>
-
-			<pre>{JSON.stringify({ unit, type }, null, 4)}</pre>
 		</Container>
 	);
 };

@@ -22,7 +22,7 @@ const RatioField = ({ id, value, onChange }: RatioFieldProps) => {
 
 	if (showCustomInput) {
 		return (
-			<Flex direction={'row'} gap="1">
+			<Flex direction="row" gap="1">
 				<TextField.Root
 					id={id}
 					type="number"
@@ -62,7 +62,7 @@ const RatioField = ({ id, value, onChange }: RatioFieldProps) => {
 		>
 			<Select.Trigger id={id} />
 			<Select.Content>
-				<Select.Item value={'custom'}>Custom</Select.Item>
+				<Select.Item value="custom">Custom</Select.Item>
 				<Select.Separator />
 				{RATIOS.map(([ratioValue, ratioLabel]) => (
 					<Select.Item

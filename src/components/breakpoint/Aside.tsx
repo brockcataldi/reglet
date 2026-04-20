@@ -4,8 +4,8 @@ import { useBreakpointBase, useBreakpointRatio } from '@/project/hooks';
 
 import { updateBreakpoint } from '@/project/actions';
 
-import RatioField from '$/ui/RatioField';
-import UnitField from '$/ui/UnitField';
+import RatioField from '@/components/ui/RatioField';
+import UnitField from '@/components/ui/UnitField';
 
 type AsideProps = {
 	id: string;
@@ -28,11 +28,11 @@ const Aside = ({ id }: AsideProps) => {
 	};
 
 	return (
-		<Box height={'100%'}>
-			<Flex p={'4'} direction={'column'} gapY={'2'}>
+		<Box height="100%">
+			<Flex p="4" direction="column" gapY="2">
 				{base !== undefined ? (
-					<Flex direction={'column'}>
-						<Text as="label" htmlFor={`${id}-base`} size={'2'}>
+					<Flex direction="column">
+						<Text as="label" htmlFor={`${id}-base`} size="2">
 							Base Font Size
 						</Text>
 						<UnitField
@@ -44,8 +44,8 @@ const Aside = ({ id }: AsideProps) => {
 				) : null}
 
 				{ratio !== undefined ? (
-					<Flex direction={'column'}>
-						<Text as="label" htmlFor={`${id}-ratio`} size={'2'}>
+					<Flex direction="column">
+						<Text as="label" htmlFor={`${id}-ratio`} size="2">
 							Ratio
 						</Text>
 						<RatioField

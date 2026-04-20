@@ -18,7 +18,7 @@ const UnitField = ({ id, value, onChange }: UnitFieldProps) => {
 	};
 
 	return (
-		<Flex direction={'row'} gap="1" align="center">
+		<Flex direction="row" gap="1" align="center">
 			<TextField.Root
 				value={value}
 				id={id}
