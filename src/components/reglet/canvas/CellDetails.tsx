@@ -26,12 +26,7 @@ const CellDetails = ({
 	};
 
 	return (
-		<Flex
-			direction="row"
-			width="100%"
-			align="end"
-			justify="between"
-		>
+		<Flex direction="row" width="100%" align="end" justify="between">
 			<Flex
 				direction="row"
 				width="100%"

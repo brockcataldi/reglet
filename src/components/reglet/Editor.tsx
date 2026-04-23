@@ -1,9 +1,11 @@
 import { Box } from '@radix-ui/themes';
 
+import Canvas from '@/components/reglet/canvas/Canvas';
+
 import Aside from './Aside';
 import Header from './Header';
 
-import Canvas from '@/components/breakpoint/canvas/Canvas';
+import './editor.css';
 
 type EditorProps = {
 	id: string;

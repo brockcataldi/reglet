@@ -1,8 +1,8 @@
 import { Navigate } from 'react-router';
-import { useFirstBreakpointId } from '@/project/hooks';
+import { getFirstBreakpointId } from '@/project/selectors';
 
 const BreakpointIndexRoute = () => {
-	const first = useFirstBreakpointId();
+	const first = getFirstBreakpointId();
 
 	if (!first) {
 		return <h1>Something interesting happened...</h1>;

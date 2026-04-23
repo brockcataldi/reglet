@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { Link } from 'react-router';
 
 import {
 	Button,
@@ -18,11 +18,9 @@ import {
 import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
 
 import type { ProjectType, Unit } from '@/project/types';
-import { setNewProject } from '@/project/actions';
+import { updateNewProject } from '@/project/actions';
 
 const NewRoute = () => {
-	const navigate = useNavigate();
-
 	const [unit, setUnit] = useState<Unit>('rem');
 	const [type, setType] = useState<ProjectType>('traditional');
 
@@ -35,8 +33,7 @@ const NewRoute = () => {
 	};
 
 	const onClickNewProject = () => {
-		setNewProject(unit, type);
-		navigate('/breakpoint');
+		updateNewProject(unit, type);
 	};
 
 	return (
@@ -170,7 +167,11 @@ const NewRoute = () => {
 						</Callout.Text>
 					</Callout.Root>
 				)}
-				<Button onClick={onClickNewProject}>Start Project</Button>
+				<Button asChild>
+					<Link to="/breakpoint" onClick={onClickNewProject}>
+						Start Project
+					</Link>
+				</Button>
 			</Section>
 		</Container>
 	);

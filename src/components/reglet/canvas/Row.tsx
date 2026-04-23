@@ -1,4 +1,4 @@
-import { Table, Flex, Avatar, ChevronDownIcon } from '@radix-ui/themes';
+import { Flex, Avatar, ChevronDownIcon } from '@radix-ui/themes';
 import { ChevronUpIcon } from '@radix-ui/react-icons';
 
 import { type Bounds, type Values } from '@/project/types';
@@ -24,8 +24,8 @@ const Row = ({ id, bounds, index, row, length }: RowProps) => {
 	const canDelete = rowNumber !== 0;
 
 	return (
-		<Table.Row>
-			<Table.RowHeaderCell>
+		<tr className="canvas__row">
+			<th className="canvas__cell canvas__cell--actions">
 				<Flex direction="column" gap="2">
 					{isTopRow && (
 						<DescriptiveIconButton
@@ -71,20 +71,17 @@ const Row = ({ id, bounds, index, row, length }: RowProps) => {
 						</DescriptiveIconButton>
 					)}
 				</Flex>
-			</Table.RowHeaderCell>
-			{row.map((cell, columnIndex) => {
-				return (
-					<Table.Cell key={`${id}-cell-${index}-${columnIndex}`}>
-						<Cell
-							values={cell}
-							id={id}
-							rowIndex={bounds.max - index}
-							columnIndex={columnIndex}
-						/>
-					</Table.Cell>
-				);
-			})}
-		</Table.Row>
+			</th>
+			{row.map((cell, columnIndex) => (
+				<Cell
+					key={`${id}-cell-${index}-${columnIndex}`}
+					values={cell}
+					id={id}
+					rowIndex={bounds.max - index}
+					columnIndex={columnIndex}
+				/>
+			))}
+		</tr>
 	);
 };
 

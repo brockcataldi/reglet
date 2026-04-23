@@ -148,7 +148,7 @@ export const removeStyle = (id: string) => {
 	});
 };
 
-export const setSettingsUnit = (unit: Unit) => {
+export const updateSettingsUnit = (unit: Unit) => {
 	projectStore.setState((state) => {
 		const oldUnit = state.settings.unit;
 		state.settings.unit = unit;
@@ -167,13 +167,13 @@ export const setSettingsUnit = (unit: Unit) => {
 	});
 };
 
-export const setSettingsPrecision = (precision: number) => {
+export const updateSettingsPrecision = (precision: number) => {
 	projectStore.setState((state) => {
 		state.settings.precision = precision;
 	});
 };
 
-export const setNewProject = (newUnit: Unit, newType: ProjectType) => {
+export const updateNewProject = (newUnit: Unit, newType: ProjectType) => {
 	projectStore.setState((state) => {
 		const { settings, breakpoints, type } = createProject(newUnit, newType);
 
@@ -183,7 +183,7 @@ export const setNewProject = (newUnit: Unit, newType: ProjectType) => {
 	});
 };
 
-export const setProjectType = (type: ProjectType) => {
+export const updateProjectType = (type: ProjectType) => {
 	projectStore.setState((state) => {
 		state.type = type;
 	});

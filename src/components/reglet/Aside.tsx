@@ -15,18 +15,6 @@ const Aside = ({ id }: AsideProps) => {
 	const base = useBreakpointBase(id);
 	const ratio = useBreakpointRatio(id);
 
-	const onChangeBase = (newBase: number) => {
-		updateBreakpoint(id, {
-			base: newBase,
-		});
-	};
-
-	const onChangeRatio = (newRatio: number) => {
-		updateBreakpoint(id, {
-			ratio: newRatio,
-		});
-	};
-
 	return (
 		<Box height="100%">
 			<Flex p="4" direction="column" gapY="2">
@@ -38,7 +26,11 @@ const Aside = ({ id }: AsideProps) => {
 						<UnitField
 							id={`${id}-base`}
 							value={base}
-							onChange={onChangeBase}
+							onChange={(newBase: number) => {
+								updateBreakpoint(id, {
+									base: newBase,
+								});
+							}}
 						/>
 					</Flex>
 				) : null}
@@ -51,7 +43,11 @@ const Aside = ({ id }: AsideProps) => {
 						<RatioField
 							id={`${id}-ratio`}
 							value={ratio}
-							onChange={onChangeRatio}
+							onChange={(newRatio: number) => {
+								updateBreakpoint(id, {
+									ratio: newRatio,
+								});
+							}}
 						/>
 					</Flex>
 				) : null}

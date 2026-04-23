@@ -11,7 +11,7 @@ export default defineConfig([
 	{
 		files: ['**/*.{ts,tsx}'],
 		plugins: {
-			react
+			react,
 		},
 		extends: [
 			js.configs.recommended,
@@ -24,13 +24,13 @@ export default defineConfig([
 			globals: globals.browser,
 		},
 		rules: {
-			"react/jsx-curly-brace-presence": [
-				"error",
+			'react/jsx-curly-brace-presence': [
+				'error',
 				{
-				props: "never",
-				children: "never",
+					props: 'never',
+					children: 'never',
 				},
 			],
-		}
+		},
 	},
 ]);

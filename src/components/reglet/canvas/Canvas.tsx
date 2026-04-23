@@ -1,4 +1,4 @@
-import { Table, VisuallyHidden } from '@radix-ui/themes';
+import { VisuallyHidden } from '@radix-ui/themes';
 
 import {
 	useBounds,
@@ -10,6 +10,8 @@ import {
 import HeaderCell from './HeaderCell';
 import Row from './Row';
 import StyleAdd from './StyleAdd';
+
+import './canvas.css';
 
 type CanvasProps = {
 	id: string;
@@ -32,29 +34,23 @@ const Canvas = ({ id }: CanvasProps) => {
 	}
 
 	return (
-		<Table.Root>
-			<Table.Header>
-				<Table.Row>
-					<Table.ColumnHeaderCell width="40px">
+		<table className="canvas">
+			<thead className="canvas__header">
+				<tr className="canvas__header-row">
+					<th className="canvas__header-cell canvas__header-cell--actions">
 						<VisuallyHidden>Row Actions</VisuallyHidden>
 						<StyleAdd />
-					</Table.ColumnHeaderCell>
+					</th>
 					{styles.map((style, index) => (
-						<Table.ColumnHeaderCell
-							width="500px"
+						<HeaderCell
 							key={`${id}-text-style-${index}`}
-						>
-							<HeaderCell style={style} length={stylesLength} />
-						</Table.ColumnHeaderCell>
+							style={style}
+							length={stylesLength}
+						/>
 					))}
-					<Table.ColumnHeaderCell width="500px">
-						<VisuallyHidden>
-							Add another text style column
-						</VisuallyHidden>
-					</Table.ColumnHeaderCell>
-				</Table.Row>
-			</Table.Header>
-			<Table.Body>
+				</tr>
+			</thead>
+			<tbody className="canvas__body">
 				{values.map((row, index) => (
 					<Row
 						key={`${id}-row-${index}`}
@@ -65,8 +61,8 @@ const Canvas = ({ id }: CanvasProps) => {
 						index={index}
 					/>
 				))}
-			</Table.Body>
-		</Table.Root>
+			</tbody>
+		</table>
 	);
 };
 

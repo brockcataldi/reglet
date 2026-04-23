@@ -18,3 +18,7 @@ export const getBreakpointWidths = (): BreakpointWidth[] => {
 			width: breakpoint.width,
 		}));
 };
+
+export const getFirstBreakpointId = () => {
+	return projectStore.getState().breakpoints[0].id;
+};

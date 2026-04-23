@@ -1,29 +1,17 @@
 import { useState } from 'react';
 
 import { Flex, Button, Dialog } from '@radix-ui/themes';
-
 import { PlusIcon } from '@radix-ui/react-icons';
 
 import { type Style } from '@/project/types';
-
 import { addStyle } from '@/project/actions';
 import { createDefaultTextStyle } from '@/project/creators';
 
 import DescriptiveIconButton from '@/components/ui/DescriptiveIconButton';
-
 import StyleEdit from './StyleEditor';
 
 const StyleAdd = () => {
 	const [value, setValue] = useState<Style>(createDefaultTextStyle());
-
-	const onClickAdd = () => {
-		addStyle(value);
-		setValue(createDefaultTextStyle());
-	};
-
-	const onClickCancel = () => {
-		setValue(createDefaultTextStyle());
-	};
 
 	return (
 		<Dialog.Root>
@@ -41,20 +29,24 @@ const StyleAdd = () => {
 					onChange={(newValue) => setValue(newValue)}
 				/>
 
-				<Flex
-					direction="row"
-					gap="2"
-					align="center"
-					justify="end"
-				>
+				<Flex direction="row" gap="2" align="center" justify="end">
 					<Dialog.Close>
-						<Button onClick={onClickAdd}>Add</Button>
+						<Button
+							onClick={() => {
+								addStyle(value);
+								setValue(createDefaultTextStyle());
+							}}
+						>
+							Add
+						</Button>
 					</Dialog.Close>
 					<Dialog.Close>
 						<Button
 							variant="soft"
 							color="gray"
-							onClick={onClickCancel}
+							onClick={() => {
+								setValue(createDefaultTextStyle());
+							}}
 						>
 							Cancel
 						</Button>

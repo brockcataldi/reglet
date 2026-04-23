@@ -1,4 +1,4 @@
-import { Box, Card, Flex } from '@radix-ui/themes';
+import { Card, Flex } from '@radix-ui/themes';
 
 import { type Values } from '@/project/types';
 import { useOverride } from '@/project/hooks';
@@ -19,7 +19,7 @@ const Cell = ({ values, id, rowIndex, columnIndex }: CellProps) => {
 	const override = useOverride(id, rowIndex, columnIndex);
 
 	return (
-		<Box width="500px">
+		<td className="canvas__cell">
 			<Card>
 				<Flex gap="2" align="start" direction="column">
 					<Display
@@ -46,7 +46,7 @@ const Cell = ({ values, id, rowIndex, columnIndex }: CellProps) => {
 					)}
 				</Flex>
 			</Card>
-		</Box>
+		</td>
 	);
 };
 

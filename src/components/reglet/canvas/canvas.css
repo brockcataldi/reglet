@@ -1,0 +1,22 @@
+.canvas {
+	table-layout: fixed;
+	width: 100%;
+}
+
+.canvas__header {
+}
+
+.canvas__header-row {
+}
+
+.canvas__header-cell,
+.canvas__cell {
+	width: 600px;
+	padding-inline: var(--space-2);
+	vertical-align: top;
+}
+
+.canvas__header-cell--actions,
+.canvas__cell--actions {
+	width: 40px;
+}

@@ -32,12 +32,7 @@ const Display = ({ defaultType, type, value }: DisplayProps) => {
 	return (
 		<Box width="100%">
 			<Card>
-				<Flex
-					gap="4"
-					direction="column"
-					align="start"
-					justify="start"
-				>
+				<Flex gap="4" direction="column" align="start" justify="start">
 					<Box width="100%">
 						<p
 							style={{

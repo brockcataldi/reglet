@@ -16,13 +16,6 @@ type StyleEditProps = {
 const StyleEdit = ({ style }: StyleEditProps) => {
 	const [value, setValue] = useState<Style>(style);
 
-	const onClickCancel = () => {
-		setValue(style);
-	};
-	const onClickSave = () => {
-		updateStyle(style.id, value);
-	};
-
 	return (
 		<Dialog.Root>
 			<Dialog.Trigger>
@@ -42,20 +35,23 @@ const StyleEdit = ({ style }: StyleEditProps) => {
 					onChange={(newValue) => setValue(newValue)}
 				/>
 
-				<Flex
-					direction="row"
-					gap="2"
-					align="center"
-					justify="end"
-				>
+				<Flex direction="row" gap="2" align="center" justify="end">
 					<Dialog.Close>
-						<Button onClick={onClickSave}>Save</Button>
+						<Button
+							onClick={() => {
+								updateStyle(style.id, value);
+							}}
+						>
+							Save
+						</Button>
 					</Dialog.Close>
 					<Dialog.Close>
 						<Button
 							variant="soft"
 							color="gray"
-							onClick={onClickCancel}
+							onClick={() => {
+								setValue(style);
+							}}
 						>
 							Cancel
 						</Button>
