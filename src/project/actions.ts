@@ -175,11 +175,12 @@ export const updateSettingsPrecision = (precision: number) => {
 
 export const updateNewProject = (newUnit: Unit, newType: ProjectType) => {
 	projectStore.setState((state) => {
-		const { settings, breakpoints, type } = createProject(newUnit, newType);
+		const { settings, breakpoints, type, styles } = createProject(newUnit, newType);
 
 		state.type = type;
 		state.settings = settings;
 		state.breakpoints = breakpoints;
+		state.styles = styles;
 	});
 };
 
