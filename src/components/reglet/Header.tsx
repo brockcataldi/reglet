@@ -1,12 +1,4 @@
-import {
-	Box,
-	Flex,
-	Text,
-	Heading,
-	VisuallyHidden,
-	Button,
-	Select,
-} from '@radix-ui/themes';
+import { Flex, Text, Button, Select } from '@radix-ui/themes';
 
 import { Link } from 'react-router';
 
@@ -14,7 +6,7 @@ import { widthToIcon } from '@/components/helpers';
 import { Pencil1Icon, TrashIcon } from '@radix-ui/react-icons';
 
 import DescriptiveIconButton from '../ui/DescriptiveIconButton';
-import { useBreakpointWidths, useProjectType } from '@/project/hooks';
+import { useProjectType } from '@/project/hooks';
 import type { ProjectType } from '@/project/types';
 import { updateProjectType } from '@/project/actions';
 import { getBreakpointWidths } from '@/project/selectors';
@@ -28,31 +20,32 @@ const Header = ({ id }: HeaderProps) => {
 	const breakpoints = getBreakpointWidths();
 
 	// too many breakpoints error
-	const fluidError = type === 'fluid' && breakpoints.length > 2;	
+	// const fluidError = type === 'fluid' && breakpoints.length > 2;
 	// missing root error
-	const traditionalError = type === 'traditional' && !breakpoints.some((w) => w.width === 0);
+	// const traditionalError = type === 'traditional' && !breakpoints.some((w) => w.width === 0);
 
 	return (
-		<Box width="100%" p="2">
+		<header className="fixed top-0 left-0 z-10 w-full bg-neutral-50 p-2 shadow-md">
 			<Flex align="center" justify="between">
-				<VisuallyHidden>
-					<Heading as="h1">Reglet editor</Heading>
-				</VisuallyHidden>
+				<h1 className="sr-only">Reglet editor</h1>
 
 				<Flex>
-					<Select.Root value={type} onValueChange={(value: ProjectType) => updateProjectType(value)}>
+					<Select.Root
+						value={type}
+						onValueChange={(value: ProjectType) =>
+							updateProjectType(value)
+						}
+					>
 						<Select.Trigger />
 						<Select.Content>
-							<Select.Item value='traditional'>
+							<Select.Item value="traditional">
 								Traditional
 							</Select.Item>
-							<Select.Item value='fluid'>
-								Fluid
-							</Select.Item>
+							<Select.Item value="fluid">Fluid</Select.Item>
 						</Select.Content>
 					</Select.Root>
 
-					<ul className="editor__header-nav">
+					<ul className="flex flex-row items-center justify-start">
 						{breakpoints.map((width) => (
 							<li
 								key={width.id}
@@ -128,7 +121,7 @@ const Header = ({ id }: HeaderProps) => {
 					<Button>Export</Button>
 				</Flex>
 			</Flex>
-		</Box>
+		</header>
 	);
 };
 
