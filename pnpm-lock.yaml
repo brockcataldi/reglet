@@ -7,12 +7,15 @@ settings:
 importers:
     .:
         dependencies:
-            '@radix-ui/react-icons':
-                specifier: ^1.3.2
-                version: 1.3.2(react@19.2.4)
-            '@radix-ui/themes':
-                specifier: ^3.3.0
-                version: 3.3.0(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+            '@heroicons/react':
+                specifier: ^2.2.0
+                version: 2.2.0(react@19.2.4)
+            class-variance-authority:
+                specifier: ^0.7.1
+                version: 0.7.1
+            clsx:
+                specifier: ^2.1.1
+                version: 2.1.1
             immer:
                 specifier: ^11.1.4
                 version: 11.1.4
@@ -28,6 +31,9 @@ importers:
             react-router:
                 specifier: ^7.13.2
                 version: 7.13.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+            tailwind-merge:
+                specifier: ^3.5.0
+                version: 3.5.0
             zod:
                 specifier: ^4.3.6
                 version: 4.3.6
@@ -325,6 +331,14 @@ packages:
                 integrity: sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==,
             }
 
+    '@heroicons/react@2.2.0':
+        resolution:
+            {
+                integrity: sha512-LMcepvRaS9LYHJGsF0zzmgKCUim/X3N/DQKc4jepAXJ7l8QxJ1PmxJzqplF2Z3FE4PqBAIGyJAQ/w4B5dsqbtQ==,
+            }
+        peerDependencies:
+            react: '>= 16 || ^19.0.0-rc'
+
     '@humanfs/core@0.19.1':
         resolution:
             {
@@ -397,12 +411,6 @@ packages:
         resolution:
             {
                 integrity: sha512-oLAl5kBpV4w69UtFZ9xqcmTi+GENWOcPF7FCrczTiBbmC0ibXxCwyvZGbO39rCVEuLGAZM84DH0pUIyyv/YJzA==,
-            }
-
-    '@radix-ui/colors@3.0.0':
-        resolution:
-            {
-                integrity: sha512-FUOsGBkHrYJwCSEtWRCIfQbZG7q1e6DgxCIOe1SUQzDe/7rXXeA47s8yCn6fuTNQAj1Zq4oTFi9Yjp3wzElcxg==,
             }
 
     '@radix-ui/number@1.1.1':
@@ -720,14 +728,6 @@ packages:
                 optional: true
             '@types/react-dom':
                 optional: true
-
-    '@radix-ui/react-icons@1.3.2':
-        resolution:
-            {
-                integrity: sha512-fyQIhGDhzfc9pK2kH6Pl9c4BDJGfMkPqkyIgYDthyNYoNg3wVhoJMMh19WS4Up/1KMPFVpNsT2q3WmXn2N1m6g==,
-            }
-        peerDependencies:
-            react: ^16.x || ^17.x || ^18.x || ^19.0.0 || ^19.0.0-rc
 
     '@radix-ui/react-id@1.1.1':
         resolution:
@@ -1282,22 +1282,6 @@ packages:
             {
                 integrity: sha512-HPwpGIzkl28mWyZqG52jiqDJ12waP11Pa1lGoiyUkIEuMLBP0oeK/C89esbXrxsky5we7dfd8U58nm0SgAWpVw==,
             }
-
-    '@radix-ui/themes@3.3.0':
-        resolution:
-            {
-                integrity: sha512-I0/h2CRNTpYNB7Mi3xFIvSsQq5a108d7kK8dTO5zp5b9HR5QJXKag6B8tjpz2ITkVYkFdkGk45doNkSr7OxwNw==,
-            }
-        peerDependencies:
-            '@types/react': '*'
-            '@types/react-dom': '*'
-            react: 16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
-            react-dom: 16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
-        peerDependenciesMeta:
-            '@types/react':
-                optional: true
-            '@types/react-dom':
-                optional: true
 
     '@rolldown/binding-android-arm64@1.0.0-rc.12':
         resolution:
@@ -1971,11 +1955,18 @@ packages:
             }
         engines: { node: '>=10' }
 
-    classnames@2.5.1:
+    class-variance-authority@0.7.1:
         resolution:
             {
-                integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==,
+                integrity: sha512-Ka+9Trutv7G8M6WT6SeiRWz792K5qEqIGEGzXKhAE6xOWAY6pPH8U+9IY3oCMv6kqTmLsv7Xh/2w2RigkePMsg==,
             }
+
+    clsx@2.1.1:
+        resolution:
+            {
+                integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==,
+            }
+        engines: { node: '>=6' }
 
     color-convert@2.0.1:
         resolution:
@@ -3548,6 +3539,12 @@ packages:
             }
         engines: { node: '>= 0.4' }
 
+    tailwind-merge@3.5.0:
+        resolution:
+            {
+                integrity: sha512-I8K9wewnVDkL1NTGoqWmVEIlUcB9gFriAEkXkfCjX5ib8ezGxtR3xD7iZIxrfArjEsH7F1CHD4RFUtxefdqV/A==,
+            }
+
     tailwindcss@4.2.4:
         resolution:
             {
@@ -4016,6 +4013,10 @@ snapshots:
 
     '@floating-ui/utils@0.2.11': {}
 
+    '@heroicons/react@2.2.0(react@19.2.4)':
+        dependencies:
+            react: 19.2.4
+
     '@humanfs/core@0.19.1': {}
 
     '@humanfs/node@0.16.7':
@@ -4054,8 +4055,6 @@ snapshots:
         optional: true
 
     '@oxc-project/types@0.122.0': {}
-
-    '@radix-ui/colors@3.0.0': {}
 
     '@radix-ui/number@1.1.1': {}
 
@@ -4305,10 +4304,6 @@ snapshots:
         optionalDependencies:
             '@types/react': 19.2.14
             '@types/react-dom': 19.2.3(@types/react@19.2.14)
-
-    '@radix-ui/react-icons@1.3.2(react@19.2.4)':
-        dependencies:
-            react: 19.2.4
 
     '@radix-ui/react-id@1.1.1(@types/react@19.2.14)(react@19.2.4)':
         dependencies:
@@ -4808,18 +4803,6 @@ snapshots:
 
     '@radix-ui/rect@1.1.1': {}
 
-    '@radix-ui/themes@3.3.0(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
-        dependencies:
-            '@radix-ui/colors': 3.0.0
-            classnames: 2.5.1
-            radix-ui: 1.4.3(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-            react: 19.2.4
-            react-dom: 19.2.4(react@19.2.4)
-            react-remove-scroll-bar: 2.3.8(@types/react@19.2.14)(react@19.2.4)
-        optionalDependencies:
-            '@types/react': 19.2.14
-            '@types/react-dom': 19.2.3(@types/react@19.2.14)
-
     '@rolldown/binding-android-arm64@1.0.0-rc.12':
         optional: true
 
@@ -5230,7 +5213,11 @@ snapshots:
             ansi-styles: 4.3.0
             supports-color: 7.2.0
 
-    classnames@2.5.1: {}
+    class-variance-authority@0.7.1:
+        dependencies:
+            clsx: 2.1.1
+
+    clsx@2.1.1: {}
 
     color-convert@2.0.1:
         dependencies:
@@ -6308,6 +6295,8 @@ snapshots:
             has-flag: 4.0.0
 
     supports-preserve-symlinks-flag@1.0.0: {}
+
+    tailwind-merge@3.5.0: {}
 
     tailwindcss@4.2.4: {}
 

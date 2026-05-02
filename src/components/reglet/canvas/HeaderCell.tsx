@@ -1,11 +1,13 @@
-import { Flex, Card, Text, Button } from '@radix-ui/themes';
-import { TrashIcon } from '@radix-ui/react-icons';
+import { TrashIcon } from '@heroicons/react/24/outline';
 
 import { type Style } from '@/project/types';
 
 import { removeStyle } from '@/project/actions';
 
 import StyleEdit from './StyleEdit';
+
+import { Stat } from '@/components/ui/Stat';
+import { Button } from '@/components/ui/Buttons';
 
 type HeaderCellProps = {
 	style: Style;
@@ -18,43 +20,23 @@ const HeaderCell = ({ style, length }: HeaderCellProps) => {
 	};
 
 	return (
-		<th className="canvas__header-cell">
-			<Card>
-				<Flex direction="row" justify="between" align="center">
-					<Flex direction="column" gap="2">
-						<Flex direction="row" gap="6" width="100%">
-							<Flex direction="column" align="start">
-								<Text size="2" weight="regular">
-									Font Family
-								</Text>
-								<Text>{style.fontFamily}</Text>
-							</Flex>
-							<Flex direction="column" align="start">
-								<Text size="2" weight="regular">
-									Font Style
-								</Text>
-								<Text>{style.fontStyle}</Text>
-							</Flex>
-							<Flex direction="column" align="start">
-								<Text size="2" weight="regular">
-									Font Weight
-								</Text>
-								<Text>{style.fontWeight}</Text>
-							</Flex>
-						</Flex>
-					</Flex>
-
-					<Flex direction="row" justify="end" align="center" gap="2">
-						<StyleEdit style={style} />
-						{length > 1 ? (
-							<Button color="red" onClick={onClickDelete}>
-								<TrashIcon />
-								Delete
-							</Button>
-						) : null}
-					</Flex>
-				</Flex>
-			</Card>
+		<th className="w-150">
+			<div className="flex w-150 flex-row items-start justify-between gap-2 p-2">
+				<div className="flex flex-row items-start gap-2">
+					<Stat label="Font Family" value={style.fontFamily} />
+					<Stat label="Font Style" value={style.fontStyle} />
+					<Stat label="Font Weight" value={style.fontWeight} />
+				</div>
+				<div className="flex flex-row items-center justify-end gap-3">
+					<StyleEdit style={style} />
+					{length > 1 ? (
+						<Button variant={'error'} onClick={onClickDelete}>
+							<TrashIcon />
+							Delete
+						</Button>
+					) : null}
+				</div>
+			</div>
 		</th>
 	);
 };

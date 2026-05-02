@@ -1,7 +1,11 @@
 import { useState, type ChangeEvent } from 'react';
-import { Box, Button, Flex, Select, TextField } from '@radix-ui/themes';
 
 import { WEB_SAFE_FONTS } from '@/project/constants';
+import { Button } from './Buttons';
+import { TextBox } from './TextBox';
+import { Select } from './Select';
+
+import { Select as SelectPrimitve } from 'radix-ui';
 
 type FamilyFieldProps = {
 	id: string;
@@ -17,10 +21,10 @@ const FamilyField = ({ id, value, onChange }: FamilyFieldProps) => {
 	const selectValue = matched && !isManual ? matched : 'custom';
 
 	return (
-		<Box>
+		<div>
 			{showCustomInput ? (
-				<Flex direction="row" gap="1">
-					<TextField.Root
+				<div className="flex flex-row gap-2">
+					<TextBox
 						id={id}
 						type="text"
 						min={1}
@@ -29,7 +33,7 @@ const FamilyField = ({ id, value, onChange }: FamilyFieldProps) => {
 						onChange={(event: ChangeEvent<HTMLInputElement>) => {
 							onChange(event.target.value);
 						}}
-					></TextField.Root>
+					></TextBox>
 					<Button
 						onClick={() => {
 							setIsManual(false);
@@ -38,9 +42,9 @@ const FamilyField = ({ id, value, onChange }: FamilyFieldProps) => {
 					>
 						Back to Presets
 					</Button>
-				</Flex>
+				</div>
 			) : (
-				<Select.Root
+				<Select
 					value={selectValue}
 					onValueChange={(newValue) => {
 						if (newValue === 'custom') {
@@ -51,32 +55,31 @@ const FamilyField = ({ id, value, onChange }: FamilyFieldProps) => {
 						}
 					}}
 				>
-					<Select.Trigger id={id} />
-					<Select.Content>
-						<Select.Item value="custom">Custom</Select.Item>
-						<Select.Separator />
-						<Select.Group>
-							<Select.Label>Installed</Select.Label>
-							<Select.Item value="none-installed" disabled>
-								None Installed
-							</Select.Item>
-						</Select.Group>
-						<Select.Separator />
-						<Select.Group>
-							<Select.Label>Web Safe</Select.Label>
-							{WEB_SAFE_FONTS.map((webSafeFont) => (
-								<Select.Item
-									value={webSafeFont}
-									key={`${id}-web-safe-${webSafeFont}`}
-								>
-									{webSafeFont}
-								</Select.Item>
-							))}
-						</Select.Group>
-					</Select.Content>
-				</Select.Root>
+					<SelectPrimitve.Item value="custom">
+						Custom
+					</SelectPrimitve.Item>
+					<SelectPrimitve.Separator />
+					<SelectPrimitve.Group>
+						<SelectPrimitve.Label>Installed</SelectPrimitve.Label>
+						<SelectPrimitve.Item value="none-installed" disabled>
+							None Installed
+						</SelectPrimitve.Item>
+					</SelectPrimitve.Group>
+					<SelectPrimitve.Separator />
+					<SelectPrimitve.Group>
+						<SelectPrimitve.Label>Web Safe</SelectPrimitve.Label>
+						{WEB_SAFE_FONTS.map((webSafeFont) => (
+							<SelectPrimitve.Item
+								value={webSafeFont}
+								key={`${id}-web-safe-${webSafeFont}`}
+							>
+								{webSafeFont}
+							</SelectPrimitve.Item>
+						))}
+					</SelectPrimitve.Group>
+				</Select>
 			)}
-		</Box>
+		</div>
 	);
 };
 

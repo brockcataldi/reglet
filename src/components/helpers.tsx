@@ -1,13 +1,17 @@
-import { DesktopIcon, LaptopIcon, MobileIcon } from '@radix-ui/react-icons';
+import {
+	ComputerDesktopIcon,
+	DevicePhoneMobileIcon,
+	DeviceTabletIcon,
+} from '@heroicons/react/24/outline';
 
 export const widthToIcon = (width: number) => {
 	if (width > 1199) {
-		return <DesktopIcon />;
+		return <ComputerDesktopIcon />;
 	}
 
-	if (width > 992) {
-		return <LaptopIcon />;
+	if (width > 768) {
+		return <DevicePhoneMobileIcon />;
 	}
 
-	return <MobileIcon />;
+	return <DeviceTabletIcon />;
 };

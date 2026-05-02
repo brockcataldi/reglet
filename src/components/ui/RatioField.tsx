@@ -1,7 +1,10 @@
-import { Select, TextField, Button, Flex } from '@radix-ui/themes';
 import { useState, type ChangeEvent } from 'react';
 
 import { RATIOS } from '@/project/constants';
+import { TextBox } from './TextBox';
+import { Button } from './Buttons';
+import { Select } from './Select';
+import { Select as SelectPrimitive } from 'radix-ui';
 
 type RatioFieldProps = {
 	id: string;
@@ -22,8 +25,8 @@ const RatioField = ({ id, value, onChange }: RatioFieldProps) => {
 
 	if (showCustomInput) {
 		return (
-			<Flex direction="row" gap="1">
-				<TextField.Root
+			<div className="flex flex-row gap-2">
+				<TextBox
 					id={id}
 					type="number"
 					min={1}
@@ -35,7 +38,7 @@ const RatioField = ({ id, value, onChange }: RatioFieldProps) => {
 							onChange(val);
 						}
 					}}
-				></TextField.Root>
+				></TextBox>
 				<Button
 					onClick={() => {
 						setIsManual(false);
@@ -44,12 +47,12 @@ const RatioField = ({ id, value, onChange }: RatioFieldProps) => {
 				>
 					Back to Presets
 				</Button>
-			</Flex>
+			</div>
 		);
 	}
 
 	return (
-		<Select.Root
+		<Select
 			value={selectValue}
 			onValueChange={(newValue) => {
 				if (newValue === 'custom') {
@@ -60,20 +63,17 @@ const RatioField = ({ id, value, onChange }: RatioFieldProps) => {
 				}
 			}}
 		>
-			<Select.Trigger id={id} />
-			<Select.Content>
-				<Select.Item value="custom">Custom</Select.Item>
-				<Select.Separator />
-				{RATIOS.map(([ratioValue, ratioLabel]) => (
-					<Select.Item
-						value={ratioValue.toString()}
-						key={`ratio-${ratioValue}`}
-					>
-						{ratioValue} - {ratioLabel}
-					</Select.Item>
-				))}
-			</Select.Content>
-		</Select.Root>
+			<SelectPrimitive.Item value="custom">Custom</SelectPrimitive.Item>
+			<SelectPrimitive.Separator />
+			{RATIOS.map(([ratioValue, ratioLabel]) => (
+				<SelectPrimitive.Item
+					value={ratioValue.toString()}
+					key={`ratio-${ratioValue}`}
+				>
+					{ratioValue} - {ratioLabel}
+				</SelectPrimitive.Item>
+			))}
+		</Select>
 	);
 };
 

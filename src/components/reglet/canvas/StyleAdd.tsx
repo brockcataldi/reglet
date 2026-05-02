@@ -1,13 +1,15 @@
 import { useState } from 'react';
 
-import { Flex, Button, Dialog } from '@radix-ui/themes';
-import { PlusIcon } from '@radix-ui/react-icons';
+import { Dialog } from 'radix-ui';
+
+import { PlusIcon } from '@heroicons/react/24/outline';
 
 import { type Style } from '@/project/types';
 import { addStyle } from '@/project/actions';
 import { createDefaultTextStyle } from '@/project/creators';
 
-import DescriptiveIconButton from '@/components/ui/DescriptiveIconButton';
+import { DescriptiveIconButton } from '@/components/ui/IconButtons';
+import { Button } from '@/components/ui/Buttons';
 import StyleEdit from './StyleEditor';
 
 const StyleAdd = () => {
@@ -16,7 +18,7 @@ const StyleAdd = () => {
 	return (
 		<Dialog.Root>
 			<Dialog.Trigger>
-				<DescriptiveIconButton content="Add Text Style" size="3">
+				<DescriptiveIconButton content="Add Text Style">
 					<PlusIcon />
 				</DescriptiveIconButton>
 			</Dialog.Trigger>
@@ -28,8 +30,7 @@ const StyleAdd = () => {
 					value={value}
 					onChange={(newValue) => setValue(newValue)}
 				/>
-
-				<Flex direction="row" gap="2" align="center" justify="end">
+				<div className="flex flex-row gap-4">
 					<Dialog.Close>
 						<Button
 							onClick={() => {
@@ -42,8 +43,6 @@ const StyleAdd = () => {
 					</Dialog.Close>
 					<Dialog.Close>
 						<Button
-							variant="soft"
-							color="gray"
 							onClick={() => {
 								setValue(createDefaultTextStyle());
 							}}
@@ -51,7 +50,7 @@ const StyleAdd = () => {
 							Cancel
 						</Button>
 					</Dialog.Close>
-				</Flex>
+				</div>
 			</Dialog.Content>
 		</Dialog.Root>
 	);

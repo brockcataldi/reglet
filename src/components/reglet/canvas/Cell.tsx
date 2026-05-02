@@ -1,5 +1,3 @@
-import { Card, Flex } from '@radix-ui/themes';
-
 import { type Values } from '@/project/types';
 import { useOverride } from '@/project/hooks';
 
@@ -19,33 +17,31 @@ const Cell = ({ values, id, rowIndex, columnIndex }: CellProps) => {
 	const override = useOverride(id, rowIndex, columnIndex);
 
 	return (
-		<td className="canvas__cell">
-			<Card>
-				<Flex gap="2" align="start" direction="column">
-					<Display
-						type="values"
-						value={values}
-						defaultType={
-							values.lineHeight === 1.5 ? 'paragraph' : 'heading'
-						}
-					/>
+		<td className="w-150">
+			<div className="flex w-150 flex-col items-start justify-start gap-2 p-2">
+				<Display
+					type="values"
+					value={values}
+					defaultType={
+						values.lineHeight === 1.5 ? 'paragraph' : 'heading'
+					}
+				/>
 
-					{override === undefined ? (
-						<CellDetails
-							values={values}
-							id={id}
-							rowIndex={rowIndex}
-							columnIndex={columnIndex}
-						/>
-					) : (
-						<CellEdit
-							id={id}
-							rowIndex={rowIndex}
-							columnIndex={columnIndex}
-						/>
-					)}
-				</Flex>
-			</Card>
+				{override === undefined ? (
+					<CellDetails
+						values={values}
+						id={id}
+						rowIndex={rowIndex}
+						columnIndex={columnIndex}
+					/>
+				) : (
+					<CellEdit
+						id={id}
+						rowIndex={rowIndex}
+						columnIndex={columnIndex}
+					/>
+				)}
+			</div>
 		</td>
 	);
 };

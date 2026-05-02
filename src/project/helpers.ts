@@ -1,3 +1,6 @@
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
 import { CONVERSION_RATIOS } from '@/project/constants';
 import { type Unit } from '@/project/types';
 
@@ -32,3 +35,7 @@ export const convertUnit = (value: number, oldUnit: Unit, newUnit: Unit) => {
 
 	return Math.round((value * ratio + Number.EPSILON) * 100) / 100;
 };
+
+export function cn(...inputs: ClassValue[]) {
+	return twMerge(clsx(inputs));
+}

@@ -1,11 +1,11 @@
 import { useState } from 'react';
+import { Dialog } from 'radix-ui';
 
-import { Flex, Dialog, Button } from '@radix-ui/themes';
-import { Pencil1Icon } from '@radix-ui/react-icons';
+import { PencilIcon } from '@heroicons/react/24/outline';
 
 import { type Style } from '@/project/types';
-
 import { updateStyle } from '@/project/actions';
+import { Button } from '@/components/ui/Buttons';
 
 import StyleEditor from './StyleEditor';
 
@@ -20,7 +20,7 @@ const StyleEdit = ({ style }: StyleEditProps) => {
 		<Dialog.Root>
 			<Dialog.Trigger>
 				<Button>
-					<Pencil1Icon />
+					<PencilIcon />
 					Edit
 				</Button>
 			</Dialog.Trigger>
@@ -35,7 +35,7 @@ const StyleEdit = ({ style }: StyleEditProps) => {
 					onChange={(newValue) => setValue(newValue)}
 				/>
 
-				<Flex direction="row" gap="2" align="center" justify="end">
+				<div className="flex flex-row gap-4">
 					<Dialog.Close>
 						<Button
 							onClick={() => {
@@ -47,8 +47,6 @@ const StyleEdit = ({ style }: StyleEditProps) => {
 					</Dialog.Close>
 					<Dialog.Close>
 						<Button
-							variant="soft"
-							color="gray"
 							onClick={() => {
 								setValue(style);
 							}}
@@ -56,7 +54,7 @@ const StyleEdit = ({ style }: StyleEditProps) => {
 							Cancel
 						</Button>
 					</Dialog.Close>
-				</Flex>
+				</div>
 			</Dialog.Content>
 		</Dialog.Root>
 	);

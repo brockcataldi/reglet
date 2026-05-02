@@ -1,11 +1,10 @@
-import { Flex, Avatar, ChevronDownIcon } from '@radix-ui/themes';
-import { ChevronUpIcon } from '@radix-ui/react-icons';
+import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 
 import { type Bounds, type Values } from '@/project/types';
 import { decrementBound, incrementBound } from '@/project/actions';
 import { suffix } from '@/project/helpers';
 
-import DescriptiveIconButton from '@/components/ui/DescriptiveIconButton';
+import { DescriptiveIconButton } from '@/components/ui/IconButtons';
 
 import Cell from './Cell';
 
@@ -24,13 +23,12 @@ const Row = ({ id, bounds, index, row, length }: RowProps) => {
 	const canDelete = rowNumber !== 0;
 
 	return (
-		<tr className="canvas__row">
-			<th className="canvas__cell canvas__cell--actions">
-				<Flex direction="column" gap="2">
+		<tr>
+			<th className={'w-12'}>
+				<div className="flex flex-col gap-2">
 					{isTopRow && (
 						<DescriptiveIconButton
 							content={`Add a ${suffix(bounds.max + 1)} row`}
-							size="3"
 							onClick={() => incrementBound(id, 'max')}
 						>
 							<ChevronUpIcon />
@@ -41,19 +39,19 @@ const Row = ({ id, bounds, index, row, length }: RowProps) => {
 						<DescriptiveIconButton
 							content={`Delete the ${suffix(bounds.min)} row`}
 							color="red"
-							size="3"
 							onClick={() => incrementBound(id, 'min')}
 						>
 							<ChevronUpIcon />
 						</DescriptiveIconButton>
 					)}
 
-					<Avatar size="3" fallback={bounds.max - index} />
+					<div>
+						<p>{bounds.max - index}</p>
+					</div>
 
 					{isBottomRow && (
 						<DescriptiveIconButton
 							content={`Add a ${suffix(bounds.min - 1)} row`}
-							size="3"
 							onClick={() => decrementBound(id, 'min')}
 						>
 							<ChevronDownIcon />
@@ -63,14 +61,12 @@ const Row = ({ id, bounds, index, row, length }: RowProps) => {
 					{canDelete && isTopRow && (
 						<DescriptiveIconButton
 							content={`Delete the ${suffix(bounds.max)} row`}
-							color="red"
-							size="3"
 							onClick={() => decrementBound(id, 'max')}
 						>
 							<ChevronDownIcon />
 						</DescriptiveIconButton>
 					)}
-				</Flex>
+				</div>
 			</th>
 			{row.map((cell, columnIndex) => (
 				<Cell

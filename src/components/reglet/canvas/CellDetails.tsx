@@ -1,10 +1,10 @@
-import { Button, Flex, Text } from '@radix-ui/themes';
-
-import { LinkBreak1Icon } from '@radix-ui/react-icons';
+import { LinkSlashIcon } from '@heroicons/react/24/outline';
 
 import { type Values } from '@/project/types';
 import { useSettingsUnit } from '@/project/hooks';
 import { enableOverride } from '@/project/actions';
+import { Button } from '@/components/ui/Buttons';
+import { Stat } from '@/components/ui/Stat';
 
 type CellDetailsProps = {
 	values: Values;
@@ -26,36 +26,16 @@ const CellDetails = ({
 	};
 
 	return (
-		<Flex direction="row" width="100%" align="end" justify="between">
-			<Flex
-				direction="row"
-				width="100%"
-				align="end"
-				justify="start"
-				gap="6"
-			>
-				<Flex direction="column" align="start">
-					<Text size="2" as="p">
-						Font Size
-					</Text>
-					<Text as="p" weight="bold">
-						{values.fontSize} {unit}
-					</Text>
-				</Flex>
-				<Flex direction="column" align="start">
-					<Text size="2" as="p">
-						Line Height
-					</Text>
-					<Text as="p" weight="bold">
-						{values.lineHeight}
-					</Text>
-				</Flex>
-			</Flex>
+		<div className="flex w-full flex-row items-end justify-between">
+			<div className="flex w-full flex-row items-end justify-start gap-4">
+				<Stat label="Font Size" value={`${values.fontSize}${unit}`} />
+				<Stat label="Line Height" value={`${values.lineHeight}`} />
+			</div>
 
 			<Button onClick={onClickUnlink}>
-				<LinkBreak1Icon /> Unlink
+				<LinkSlashIcon /> Unlink
 			</Button>
-		</Flex>
+		</div>
 	);
 };
 

@@ -1,5 +1,3 @@
-import { VisuallyHidden } from '@radix-ui/themes';
-
 import {
 	useBounds,
 	useBreakpointTable,
@@ -10,8 +8,6 @@ import {
 import HeaderCell from './HeaderCell';
 import Row from './Row';
 import StyleAdd from './StyleAdd';
-
-import './canvas.css';
 
 type CanvasProps = {
 	id: string;
@@ -34,11 +30,15 @@ const Canvas = ({ id }: CanvasProps) => {
 	}
 
 	return (
-		<table className="canvas">
-			<thead className="canvas__header">
-				<tr className="canvas__header-row">
-					<th className="canvas__header-cell canvas__header-cell--actions">
-						<VisuallyHidden>Row Actions</VisuallyHidden>
+		<table className="w-full table-fixed border-collapse">
+			<colgroup>
+				<col className="w-12" />
+				<col className="w-150" />
+			</colgroup>
+			<thead>
+				<tr>
+					<th className="w-12">
+						<span className="sr-only">Row Actions</span>
 						<StyleAdd />
 					</th>
 					{styles.map((style, index) => (
@@ -50,7 +50,7 @@ const Canvas = ({ id }: CanvasProps) => {
 					))}
 				</tr>
 			</thead>
-			<tbody className="canvas__body">
+			<tbody>
 				{values.map((row, index) => (
 					<Row
 						key={`${id}-row-${index}`}

@@ -1,8 +1,7 @@
 import type { ChangeEvent } from 'react';
 
-import { Flex, Text, TextField } from '@radix-ui/themes';
-
 import { useSettingsUnit } from '@/project/hooks';
+import { TextBox } from '@/components/ui/TextBox';
 
 type UnitFieldProps = {
 	id: string;
@@ -18,8 +17,8 @@ const UnitField = ({ id, value, onChange }: UnitFieldProps) => {
 	};
 
 	return (
-		<Flex direction="row" gap="1" align="center">
-			<TextField.Root
+		<div className="flex flex-row items-center gap-1">
+			<TextBox
 				value={value}
 				id={id}
 				type="number"
@@ -27,8 +26,8 @@ const UnitField = ({ id, value, onChange }: UnitFieldProps) => {
 				step={unit === 'rem' ? 0.005 : 0.05}
 				onChange={onChangeValue}
 			/>
-			<Text>{unit}</Text>
-		</Flex>
+			<p>{unit}</p>
+		</div>
 	);
 };
 export default UnitField;

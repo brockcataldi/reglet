@@ -1,11 +1,13 @@
 import type { ChangeEvent } from 'react';
-import { Flex, TextField, Text, Button } from '@radix-ui/themes';
-import { Link1Icon } from '@radix-ui/react-icons';
+
+import { LinkIcon } from '@heroicons/react/24/outline';
 
 import { disableOverride, updateOverride } from '@/project/actions';
 import { useOverride } from '@/project/hooks';
 
 import UnitField from '@/components/ui/UnitField';
+import { Button } from '@/components/ui/Buttons';
+import { TextBox } from '@/components/ui/TextBox';
 
 type CellEditProps = {
 	id: string;
@@ -37,44 +39,29 @@ const CellEdit = ({ id, rowIndex, columnIndex }: CellEditProps) => {
 	};
 
 	return (
-		<Flex
-			direction="row"
-			gap="3"
-			width="100%"
-			align="end"
-			justify="between"
-		>
-			<Flex
-				direction="row"
-				gap="3"
-				width="100%"
-				align="end"
-				justify="start"
-			>
-				<Flex direction="column" align="start">
-					<Text
-						size="2"
-						as="label"
+		<div className="flex w-full flex-row items-end justify-between gap-3">
+			<div className="flex w-full flex-row items-end justify-start gap-3">
+				<div className="flex flex-col items-start">
+					<label
+						className="text-sm"
 						htmlFor={`${rowIndex}:${columnIndex}-font-size`}
 					>
 						Font Size
-					</Text>
+					</label>
 					<UnitField
 						id={`${rowIndex}:${columnIndex}-font-size`}
 						value={override.fontSize}
 						onChange={onChangeFontSize}
 					/>
-				</Flex>
-
-				<Flex direction="column" align="start">
-					<Text
-						size="2"
-						as="label"
+				</div>
+				<div className="flex flex-col items-start">
+					<label
+						className="text-sm"
 						htmlFor={`${rowIndex}:${columnIndex}-line-height`}
 					>
 						Line Height
-					</Text>
-					<TextField.Root
+					</label>
+					<TextBox
 						value={override.lineHeight}
 						id={`${rowIndex}:${columnIndex}-line-height`}
 						type="number"
@@ -82,13 +69,13 @@ const CellEdit = ({ id, rowIndex, columnIndex }: CellEditProps) => {
 						step={0.005}
 						onChange={onChangeLineHeight}
 					/>
-				</Flex>
-			</Flex>
+				</div>
+			</div>
 
 			<Button onClick={onClickLink}>
-				<Link1Icon /> Link
+				<LinkIcon /> Link
 			</Button>
-		</Flex>
+		</div>
 	);
 };
 

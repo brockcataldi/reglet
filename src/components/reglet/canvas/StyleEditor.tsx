@@ -1,10 +1,10 @@
 import { type ChangeEvent } from 'react';
-import { Text, TextField, Box, DataList, Separator } from '@radix-ui/themes';
 
 import type { Style } from '@/project/types';
 
 import FamilyField from '@/components/ui/FamilyField';
 import Display from '@/components/ui/Display';
+import { TextBox } from '@/components/ui/TextBox';
 
 type StyleEditorProps = {
 	value: Style;
@@ -34,58 +34,50 @@ const StyleEditor = ({ value, onChange }: StyleEditorProps) => {
 	};
 
 	return (
-		<Box py="6">
+		<div className="p-6">
 			<Display type="style" value={value} />
 
-			<Separator orientation="horizontal" size="4" my="4" />
+			<hr className="my-4" />
 
-			<DataList.Root>
-				<DataList.Item align="center">
-					<DataList.Label minWidth="88px">
-						<Text as="label" htmlFor={`${value.id}-font-family`}>
-							Font Family
-						</Text>
-					</DataList.Label>
-					<DataList.Value>
-						<FamilyField
-							id={`${value.id}-font-family`}
-							value={value.fontFamily}
-							onChange={onChangeFontFamily}
-						/>
-					</DataList.Value>
-				</DataList.Item>
-				<DataList.Item>
-					<DataList.Label minWidth="88px">
-						<Text as="label" htmlFor={`${value.id}-font-style`}>
-							Font Style
-						</Text>
-					</DataList.Label>
-					<DataList.Value>
-						<TextField.Root
-							id={`${value.id}-font-style`}
-							type="text"
-							value={value.fontStyle}
-							onChange={onChangeFontStyle}
-						/>
-					</DataList.Value>
-				</DataList.Item>
-				<DataList.Item>
-					<DataList.Label minWidth="88px">
-						<Text as="label" htmlFor={`${value.id}-font-weight`}>
-							Font Weight
-						</Text>
-					</DataList.Label>
-					<DataList.Value>
-						<TextField.Root
-							id={`${value.id}-font-weight`}
-							type="text"
-							value={value.fontWeight}
-							onChange={onChangeFontWeight}
-						/>
-					</DataList.Value>
-				</DataList.Item>
-			</DataList.Root>
-		</Box>
+			<dl>
+				<dt>
+					<label htmlFor={`${value.id}-font-family`}>
+						Font Family
+					</label>
+				</dt>
+				<dd>
+					<FamilyField
+						id={`${value.id}-font-family`}
+						value={value.fontFamily}
+						onChange={onChangeFontFamily}
+					/>
+				</dd>
+				<dt>
+					<label htmlFor={`${value.id}-font-style`}>Font Style</label>
+				</dt>
+				<dd>
+					<TextBox
+						id={`${value.id}-font-style`}
+						type="text"
+						value={value.fontStyle}
+						onChange={onChangeFontStyle}
+					/>
+				</dd>
+				<dt>
+					<label htmlFor={`${value.id}-font-weight`}>
+						Font Weight
+					</label>
+				</dt>
+				<dd>
+					<TextBox
+						id={`${value.id}-font-weight`}
+						type="text"
+						value={value.fontWeight}
+						onChange={onChangeFontWeight}
+					/>
+				</dd>
+			</dl>
+		</div>
 	);
 };
 
