@@ -1,19 +1,19 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 // import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
-import type { ProjectType, Unit } from '@/project/types';
-import { updateNewProject } from '@/project/actions';
+import type { ProjectType, Unit } from "@/project/types";
+import { updateNewProject } from "@/project/actions";
 
-import { RadioCards, RadioCard } from '@/components/ui/RadioCards';
-import { LinkButton } from '@/components/ui/Buttons';
+import { RadioCards, RadioCard } from "@/components/ui/RadioCards";
+import { LinkButton } from "@/components/ui/Buttons";
 
 const NewRoute = () => {
-	const [unit, setUnit] = useState<Unit>('rem');
-	const [type, setType] = useState<ProjectType>('traditional');
+	const [unit, setUnit] = useState<Unit>("rem");
+	const [type, setType] = useState<ProjectType>("traditional");
 
-	const previousProjectExists = localStorage.getItem('project');
+	const previousProjectExists = localStorage.getItem("project");
 
 	const onChangeUnit = (newUnit: Unit) => {
 		setUnit(newUnit);
@@ -111,7 +111,7 @@ const NewRoute = () => {
 					>
 						<ExclamationTriangleIcon className="h-8 w-8" />
 						<p>
-							It seems you've already create a project,{' '}
+							It seems you've already create a project,{" "}
 							<strong>
 								creating a new project will overwrite that
 								project.
@@ -122,7 +122,7 @@ const NewRoute = () => {
 
 				<div className="flex flex-row items-center justify-start gap-3">
 					<LinkButton
-						variant={previousProjectExists ? 'error' : 'primary'}
+						variant={previousProjectExists ? "error" : "primary"}
 						to="/breakpoint"
 						onClick={onClickNewProject}
 					>

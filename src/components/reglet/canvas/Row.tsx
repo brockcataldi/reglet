@@ -1,12 +1,12 @@
-import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
+import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 
-import { type Bounds, type Values } from '@/project/types';
-import { decrementBound, incrementBound } from '@/project/actions';
-import { suffix } from '@/project/helpers';
+import { type Bounds, type Values } from "@/project/types";
+import { decrementBound, incrementBound } from "@/project/actions";
+import { suffix } from "@/project/helpers";
 
-import { DescriptiveIconButton } from '@/components/ui/IconButtons';
+import { DescriptiveIconButton } from "@/components/ui/IconButtons";
 
-import Cell from './Cell';
+import Cell from "./Cell";
 
 type RowProps = {
 	row: Values[];
@@ -24,12 +24,12 @@ const Row = ({ id, bounds, index, row, length }: RowProps) => {
 
 	return (
 		<tr>
-			<th className={'w-12'}>
+			<th className={"w-12"}>
 				<div className="flex flex-col gap-2">
 					{isTopRow && (
 						<DescriptiveIconButton
 							content={`Add a ${suffix(bounds.max + 1)} row`}
-							onClick={() => incrementBound(id, 'max')}
+							onClick={() => incrementBound(id, "max")}
 						>
 							<ChevronUpIcon />
 						</DescriptiveIconButton>
@@ -39,7 +39,7 @@ const Row = ({ id, bounds, index, row, length }: RowProps) => {
 						<DescriptiveIconButton
 							content={`Delete the ${suffix(bounds.min)} row`}
 							color="red"
-							onClick={() => incrementBound(id, 'min')}
+							onClick={() => incrementBound(id, "min")}
 						>
 							<ChevronUpIcon />
 						</DescriptiveIconButton>
@@ -52,7 +52,7 @@ const Row = ({ id, bounds, index, row, length }: RowProps) => {
 					{isBottomRow && (
 						<DescriptiveIconButton
 							content={`Add a ${suffix(bounds.min - 1)} row`}
-							onClick={() => decrementBound(id, 'min')}
+							onClick={() => decrementBound(id, "min")}
 						>
 							<ChevronDownIcon />
 						</DescriptiveIconButton>
@@ -61,7 +61,7 @@ const Row = ({ id, bounds, index, row, length }: RowProps) => {
 					{canDelete && isTopRow && (
 						<DescriptiveIconButton
 							content={`Delete the ${suffix(bounds.max)} row`}
-							onClick={() => decrementBound(id, 'max')}
+							onClick={() => decrementBound(id, "max")}
 						>
 							<ChevronDownIcon />
 						</DescriptiveIconButton>

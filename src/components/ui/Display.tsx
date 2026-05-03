@@ -1,27 +1,27 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { type Style, type Values } from '@/project/types';
-import { useSettingsUnit } from '@/project/hooks';
+import { type Style, type Values } from "@/project/types";
+import { useSettingsUnit } from "@/project/hooks";
 
 // import { RadioCard, RadioCards } from '@/components/ui/RadioCards';
 
-type DisplayType = 'heading' | 'paragraph';
+type DisplayType = "heading" | "paragraph";
 
 type DisplayProps =
 	| {
-			type: 'style';
+			type: "style";
 			defaultType?: DisplayType;
 			value: Style;
 	  }
 	| {
-			type: 'values';
+			type: "values";
 			defaultType?: DisplayType;
 			value: Values;
 	  };
 
 const Display = ({ defaultType, type, value }: DisplayProps) => {
 	const unit = useSettingsUnit();
-	const [display] = useState<DisplayType>(defaultType ?? 'heading');
+	const [display] = useState<DisplayType>(defaultType ?? "heading");
 
 	// const onChangeDisplay = (newDisplay: DisplayType) => {
 	// 	setDisplay(newDisplay);
@@ -46,20 +46,20 @@ const Display = ({ defaultType, type, value }: DisplayProps) => {
 			<div className="w-full">
 				<p
 					style={{
-						width: '100%',
+						width: "100%",
 						fontFamily: value.fontFamily,
 						fontStyle: value.fontStyle,
 						fontWeight: value.fontWeight,
-						lineHeight: type === 'style' ? '1.5' : value.lineHeight,
+						lineHeight: type === "style" ? "1.5" : value.lineHeight,
 						fontSize:
-							type === 'style'
-								? display === 'heading'
-									? '2rem'
-									: '1rem'
+							type === "style"
+								? display === "heading"
+									? "2rem"
+									: "1rem"
 								: `${value.fontSize}${unit}`,
-						margin: '0',
-						whiteSpace: display === 'heading' ? 'nowrap' : 'wrap',
-						overflow: 'hidden',
+						margin: "0",
+						whiteSpace: display === "heading" ? "nowrap" : "wrap",
+						overflow: "hidden",
 					}}
 				>
 					Lorem ipsum dolor sit amet consectetur adipisicing elit.

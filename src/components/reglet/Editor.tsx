@@ -1,7 +1,7 @@
-import Canvas from '@/components/reglet/canvas/Canvas';
+import Canvas from "@/components/reglet/canvas/Canvas";
 
-// import Aside from './Aside';
-// import Header from './Header';
+import Aside from "./Aside";
+import Header from "./Header";
 
 type EditorProps = {
 	id: string;
@@ -10,8 +10,8 @@ type EditorProps = {
 const Editor = ({ id }: EditorProps) => {
 	return (
 		<div>
-			{/* <Header id={id} /> */}
-			{/* <Aside id={id} /> */}
+			<Header id={id} />
+			<Aside id={id} />
 			<main className="mt-10 ml-64 p-4">
 				<Canvas id={id} />
 			</main>

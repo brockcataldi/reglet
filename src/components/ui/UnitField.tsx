@@ -1,7 +1,7 @@
-import type { ChangeEvent } from 'react';
+import type { ChangeEvent } from "react";
 
-import { useSettingsUnit } from '@/project/hooks';
-import { TextBox } from '@/components/ui/TextBox';
+import { useSettingsUnit } from "@/project/hooks";
+import { TextBox } from "@/components/ui/TextBox";
 
 type UnitFieldProps = {
 	id: string;
@@ -23,7 +23,7 @@ const UnitField = ({ id, value, onChange }: UnitFieldProps) => {
 				id={id}
 				type="number"
 				min={1}
-				step={unit === 'rem' ? 0.005 : 0.05}
+				step={unit === "rem" ? 0.005 : 0.05}
 				onChange={onChangeValue}
 			/>
 			<p>{unit}</p>

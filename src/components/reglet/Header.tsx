@@ -1,15 +1,15 @@
-import { Link } from 'react-router';
+import { Link } from "react-router";
 
-import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 // import { useProjectType } from '@/project/hooks';
 // import type { ProjectType } from '@/project/types';
 // import { updateProjectType } from '@/project/actions';
-import { getBreakpointWidths } from '@/project/selectors';
+import { getBreakpointWidths } from "@/project/selectors";
 
-import { widthToIcon } from '@/components/helpers';
-import { DescriptiveIconButton } from '@/components/ui/IconButtons';
-import { Button } from '@/components/ui/Buttons';
+import { widthToIcon } from "@/components/helpers";
+import { DescriptiveIconButton } from "@/components/ui/IconButtons";
+import { Button, LinkButton } from "@/components/ui/Buttons";
 
 type HeaderProps = {
 	id: string;
@@ -40,14 +40,14 @@ const Header = ({ id }: HeaderProps) => {
 									<Button
 										disabled
 										style={{
-											borderTopRightRadius: '0',
-											borderBottomRightRadius: '0',
+											borderTopRightRadius: "0",
+											borderBottomRightRadius: "0",
 										}}
 									>
 										{widthToIcon(width.width)}
 										<span>
 											{width.width === 0
-												? 'Root'
+												? "Root"
 												: width.width}
 										</span>
 									</Button>
@@ -64,14 +64,14 @@ const Header = ({ id }: HeaderProps) => {
 								</>
 							) : (
 								<>
-									<Link to={`/breakpoint/${width.id}`}>
+									<LinkButton to={`/breakpoint/${width.id}`}>
 										{widthToIcon(width.width)}
 										<span>
 											{width.width === 0
-												? 'Root'
+												? "Root"
 												: width.width}
 										</span>
-									</Link>
+									</LinkButton>
 								</>
 							)}
 						</li>

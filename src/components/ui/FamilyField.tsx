@@ -1,11 +1,11 @@
-import { useState, type ChangeEvent } from 'react';
+import { useState, type ChangeEvent } from "react";
 
-import { WEB_SAFE_FONTS } from '@/project/constants';
-import { Button } from './Buttons';
-import { TextBox } from './TextBox';
-import { Select } from './Select';
+import { WEB_SAFE_FONTS } from "@/project/constants";
+import { Button } from "./Buttons";
+import { TextBox } from "./TextBox";
+import { Select } from "./Select";
 
-import { Select as SelectPrimitve } from 'radix-ui';
+import { Select as SelectPrimitve } from "radix-ui";
 
 type FamilyFieldProps = {
 	id: string;
@@ -18,7 +18,7 @@ const FamilyField = ({ id, value, onChange }: FamilyFieldProps) => {
 
 	const matched = WEB_SAFE_FONTS.find((font) => font === value);
 	const showCustomInput = isManual || !matched;
-	const selectValue = matched && !isManual ? matched : 'custom';
+	const selectValue = matched && !isManual ? matched : "custom";
 
 	return (
 		<div>
@@ -47,7 +47,7 @@ const FamilyField = ({ id, value, onChange }: FamilyFieldProps) => {
 				<Select
 					value={selectValue}
 					onValueChange={(newValue) => {
-						if (newValue === 'custom') {
+						if (newValue === "custom") {
 							setIsManual(true);
 						} else {
 							setIsManual(false);

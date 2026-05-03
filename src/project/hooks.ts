@@ -1,8 +1,8 @@
-import { useMemo } from 'react';
+import { useMemo } from "react";
 
-import type { BreakpointWidth } from '@/project/types';
-import { projectStore } from '@/project/store';
-import { createBreakpointTable } from '@/project/creators';
+import type { BreakpointWidth } from "@/project/types";
+import { projectStore } from "@/project/store";
+import { createBreakpointTable } from "@/project/creators";
 
 export const useBounds = (id: string) => {
 	return projectStore(

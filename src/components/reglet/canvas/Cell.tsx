@@ -1,10 +1,10 @@
-import { type Values } from '@/project/types';
-import { useOverride } from '@/project/hooks';
+import { type Values } from "@/project/types";
+import { useOverride } from "@/project/hooks";
 
-import Display from '@/components/ui/Display';
+import Display from "@/components/ui/Display";
 
-import CellEdit from './CellEdit';
-import CellDetails from './CellDetails';
+import CellEdit from "./CellEdit";
+import CellDetails from "./CellDetails";
 
 type CellProps = {
 	values: Values;
@@ -23,7 +23,7 @@ const Cell = ({ values, id, rowIndex, columnIndex }: CellProps) => {
 					type="values"
 					value={values}
 					defaultType={
-						values.lineHeight === 1.5 ? 'paragraph' : 'heading'
+						values.lineHeight === 1.5 ? "paragraph" : "heading"
 					}
 				/>
 

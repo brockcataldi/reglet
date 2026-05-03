@@ -1,5 +1,5 @@
-export type Unit = 'px' | 'rem' | 'pt';
-export type ProjectType = 'traditional' | 'fluid';
+export type Unit = "px" | "rem" | "pt";
+export type ProjectType = "traditional" | "fluid";
 
 export type Bounds = {
 	min: number;
@@ -48,6 +48,6 @@ export type Settings = {
 export type Project = {
 	settings: Settings;
 	styles: Style[];
-	type: 'traditional' | 'fluid';
+	type: "traditional" | "fluid";
 	breakpoints: Breakpoint[];
 };

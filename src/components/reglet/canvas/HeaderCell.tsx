@@ -1,13 +1,13 @@
-import { TrashIcon } from '@heroicons/react/24/outline';
+import { TrashIcon } from "@heroicons/react/24/outline";
 
-import { type Style } from '@/project/types';
+import { type Style } from "@/project/types";
 
-import { removeStyle } from '@/project/actions';
+import { removeStyle } from "@/project/actions";
 
-import StyleEdit from './StyleEdit';
+import StyleEdit from "./StyleEdit";
 
-import { Stat } from '@/components/ui/Stat';
-import { Button } from '@/components/ui/Buttons';
+import { Stat } from "@/components/ui/Stat";
+import { Button } from "@/components/ui/Buttons";
 
 type HeaderCellProps = {
 	style: Style;
@@ -30,7 +30,7 @@ const HeaderCell = ({ style, length }: HeaderCellProps) => {
 				<div className="flex flex-row items-center justify-end gap-3">
 					<StyleEdit style={style} />
 					{length > 1 ? (
-						<Button variant={'error'} onClick={onClickDelete}>
+						<Button variant={"error"} onClick={onClickDelete}>
 							<TrashIcon />
 							Delete
 						</Button>

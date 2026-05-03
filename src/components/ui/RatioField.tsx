@@ -1,10 +1,11 @@
-import { useState, type ChangeEvent } from 'react';
+import { useState, type ChangeEvent } from "react";
+import { Select as SelectPrimitive } from "radix-ui";
 
-import { RATIOS } from '@/project/constants';
-import { TextBox } from './TextBox';
-import { Button } from './Buttons';
-import { Select } from './Select';
-import { Select as SelectPrimitive } from 'radix-ui';
+import { RATIOS } from "@/project/constants";
+
+import { TextBox } from "./TextBox";
+import { Button } from "./Buttons";
+import { Select } from "./Select";
 
 type RatioFieldProps = {
 	id: string;
@@ -21,7 +22,7 @@ const RatioField = ({ id, value, onChange }: RatioFieldProps) => {
 
 	const showCustomInput = isManual || !matchedRatio;
 	const selectValue =
-		matchedRatio && !isManual ? matchedRatio[0].toString() : 'custom';
+		matchedRatio && !isManual ? matchedRatio[0].toString() : "custom";
 
 	if (showCustomInput) {
 		return (
@@ -55,7 +56,7 @@ const RatioField = ({ id, value, onChange }: RatioFieldProps) => {
 		<Select
 			value={selectValue}
 			onValueChange={(newValue) => {
-				if (newValue === 'custom') {
+				if (newValue === "custom") {
 					setIsManual(true);
 				} else {
 					setIsManual(false);
@@ -70,7 +71,9 @@ const RatioField = ({ id, value, onChange }: RatioFieldProps) => {
 					value={ratioValue.toString()}
 					key={`ratio-${ratioValue}`}
 				>
-					{ratioValue} - {ratioLabel}
+					<SelectPrimitive.ItemText>
+						{ratioValue} - {ratioLabel}
+					</SelectPrimitive.ItemText>
 				</SelectPrimitive.Item>
 			))}
 		</Select>

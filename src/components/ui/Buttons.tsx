@@ -1,21 +1,21 @@
-import { type ComponentProps } from 'react';
-import { Link } from 'react-router';
-import { cva, type VariantProps } from 'class-variance-authority';
+import { type ComponentProps } from "react";
+import { Link } from "react-router";
+import { cva, type VariantProps } from "class-variance-authority";
 
-import { FOCUS_STYLE } from '@/components/constants';
-import { cn } from '@/project/helpers';
+import { FOCUS_STYLE } from "@/components/constants";
+import { cn } from "@/project/helpers";
 
 const buttonVariants = cva(
-	`block w-fit flex flex-row items-center justify-center gap-3 rounded-md border px-4 py-2 shadow-md [&>svg]:size-4 active:shadow-sm font-semibold ${FOCUS_STYLE}`,
+	`block w-fit flex flex-row items-center justify-center gap-3 rounded-md border px-4 py-2 shadow-md [&>svg]:size-4 active:shadow-sm font-medium text-sm ${FOCUS_STYLE}`,
 	{
 		variants: {
 			variant: {
-				primary: 'bg-white border-neutral-300',
-				error: 'bg-red-100 border-red-800 text-red-800',
+				primary: "bg-white border-neutral-300",
+				error: "bg-red-100 border-red-800 text-red-800",
 			},
 		},
 		defaultVariants: {
-			variant: 'primary',
+			variant: "primary",
 		},
 	}
 );
@@ -40,7 +40,7 @@ export const Button = ({
 	className,
 	children,
 	...props
-}: ComponentProps<'button'> & ButtonProps) => {
+}: ComponentProps<"button"> & ButtonProps) => {
 	return (
 		<button
 			className={cn(buttonVariants({ variant }), className)}

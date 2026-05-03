@@ -1,10 +1,10 @@
-import { LinkSlashIcon } from '@heroicons/react/24/outline';
+import { LinkSlashIcon } from "@heroicons/react/24/outline";
 
-import { type Values } from '@/project/types';
-import { useSettingsUnit } from '@/project/hooks';
-import { enableOverride } from '@/project/actions';
-import { Button } from '@/components/ui/Buttons';
-import { Stat } from '@/components/ui/Stat';
+import { type Values } from "@/project/types";
+import { useSettingsUnit } from "@/project/hooks";
+import { enableOverride } from "@/project/actions";
+import { Button } from "@/components/ui/Buttons";
+import { Stat } from "@/components/ui/Stat";
 
 type CellDetailsProps = {
 	values: Values;

@@ -1,5 +1,5 @@
-import { projectStore } from './store';
-import type { Breakpoint, BreakpointWidth, ProjectType } from './types';
+import { projectStore } from "./store";
+import type { Breakpoint, BreakpointWidth, ProjectType } from "./types";
 
 export const getProjectType = (): ProjectType => {
 	return projectStore.getState().type;

@@ -1,16 +1,16 @@
-import { RadioGroup } from 'radix-ui';
-import type { ComponentProps } from 'react';
+import { RadioGroup } from "radix-ui";
+import type { ComponentProps } from "react";
 
-import { cn } from '@/project/helpers';
+import { cn } from "@/project/helpers";
 
-import { FOCUS_STYLE } from '@/components/constants';
-import { cva, type VariantProps } from 'class-variance-authority';
+import { FOCUS_STYLE } from "@/components/constants";
+import { cva, type VariantProps } from "class-variance-authority";
 
 export const RadioCards = ({
 	className,
 	...props
 }: ComponentProps<typeof RadioGroup.Root>) => {
-	return <RadioGroup.Root className={cn('', className)} {...props} />;
+	return <RadioGroup.Root className={cn("", className)} {...props} />;
 };
 
 const radioCardVariant = cva(
@@ -18,12 +18,12 @@ const radioCardVariant = cva(
 	{
 		variants: {
 			size: {
-				default: 'p-3',
-				small: 'py-1 px-2',
+				default: "p-3",
+				small: "py-1 px-2",
 			},
 		},
 		defaultVariants: {
-			size: 'default',
+			size: "default",
 		},
 	}
 );

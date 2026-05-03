@@ -1,6 +1,6 @@
-import { LARGE_TEXT_CUTOFFS } from '@/project/constants';
+import { LARGE_TEXT_CUTOFFS } from "@/project/constants";
 
-import { convertUnit, toPrecise, scale } from '@/project/helpers';
+import { convertUnit, toPrecise, scale } from "@/project/helpers";
 
 import {
 	type Breakpoint,
@@ -9,13 +9,13 @@ import {
 	type ProjectType,
 	type Style,
 	type Unit,
-} from '@/project/types';
+} from "@/project/types";
 
 export const createDefaultTextStyle = (): Style => ({
 	id: crypto.randomUUID(),
-	fontFamily: 'Arial',
-	fontWeight: '400',
-	fontStyle: 'normal',
+	fontFamily: "Arial",
+	fontWeight: "400",
+	fontStyle: "normal",
 });
 
 export const createDefaultBreakpoint = (
@@ -27,9 +27,9 @@ export const createDefaultBreakpoint = (
 		id: crypto.randomUUID(),
 		width,
 		base:
-			unit === 'px'
+			unit === "px"
 				? 16 * multiplier
-				: convertUnit(16 * multiplier, 'px', unit),
+				: convertUnit(16 * multiplier, "px", unit),
 		ratio: 1.2,
 		bounds: { min: -1, max: 5 },
 		overrides: {},
@@ -79,7 +79,7 @@ export const createProject = (unit: Unit, type: ProjectType): Project => {
 		},
 		styles: [createDefaultTextStyle()],
 		breakpoints:
-			type === 'traditional'
+			type === "traditional"
 				? [
 						createDefaultBreakpoint(0, 1, unit),
 						createDefaultBreakpoint(768, 1.1, unit),

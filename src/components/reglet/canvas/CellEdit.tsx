@@ -1,13 +1,13 @@
-import type { ChangeEvent } from 'react';
+import type { ChangeEvent } from "react";
 
-import { LinkIcon } from '@heroicons/react/24/outline';
+import { LinkIcon } from "@heroicons/react/24/outline";
 
-import { disableOverride, updateOverride } from '@/project/actions';
-import { useOverride } from '@/project/hooks';
+import { disableOverride, updateOverride } from "@/project/actions";
+import { useOverride } from "@/project/hooks";
 
-import UnitField from '@/components/ui/UnitField';
-import { Button } from '@/components/ui/Buttons';
-import { TextBox } from '@/components/ui/TextBox';
+import UnitField from "@/components/ui/UnitField";
+import { Button } from "@/components/ui/Buttons";
+import { TextBox } from "@/components/ui/TextBox";
 
 type CellEditProps = {
 	id: string;

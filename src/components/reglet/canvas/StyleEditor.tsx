@@ -1,10 +1,10 @@
-import { type ChangeEvent } from 'react';
+import { type ChangeEvent } from "react";
 
-import type { Style } from '@/project/types';
+import type { Style } from "@/project/types";
 
-import FamilyField from '@/components/ui/FamilyField';
-import Display from '@/components/ui/Display';
-import { TextBox } from '@/components/ui/TextBox';
+import FamilyField from "@/components/ui/FamilyField";
+import Display from "@/components/ui/Display";
+import { TextBox } from "@/components/ui/TextBox";
 
 type StyleEditorProps = {
 	value: Style;

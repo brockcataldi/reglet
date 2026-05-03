@@ -1,9 +1,9 @@
-import { BrowserRouter, Route, Routes } from 'react-router';
+import { BrowserRouter, Route, Routes } from "react-router";
 
-import IndexRoute from './routes/IndexRoute';
-import NewRoute from './routes/NewRoute';
-import BreakpointIndexRoute from './routes/BreakpointIndexRoute';
-import BreakpointRoute from './routes/BreakpointRoute';
+import IndexRoute from "./routes/IndexRoute";
+import NewRoute from "./routes/NewRoute";
+import BreakpointIndexRoute from "./routes/BreakpointIndexRoute";
+import BreakpointRoute from "./routes/BreakpointRoute";
 
 const App = () => {
 	return (

@@ -3,11 +3,11 @@ import {
 	useBreakpointTable,
 	useStyles,
 	useStylesLength,
-} from '@/project/hooks';
+} from "@/project/hooks";
 
-import HeaderCell from './HeaderCell';
-import Row from './Row';
-import StyleAdd from './StyleAdd';
+import HeaderCell from "./HeaderCell";
+import Row from "./Row";
+import StyleAdd from "./StyleAdd";
 
 type CanvasProps = {
 	id: string;

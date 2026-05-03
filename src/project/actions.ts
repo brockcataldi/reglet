@@ -1,4 +1,4 @@
-import { LARGE_TEXT_CUTOFFS } from '@/project/constants';
+import { LARGE_TEXT_CUTOFFS } from "@/project/constants";
 
 import type {
 	Bounds,
@@ -7,11 +7,11 @@ import type {
 	ProjectType,
 	Style,
 	Unit,
-} from '@/project/types';
+} from "@/project/types";
 
-import { createProject } from '@/project/creators';
-import { convertUnit, scale, toPrecise } from '@/project/helpers';
-import { projectStore } from '@/project/store';
+import { createProject } from "@/project/creators";
+import { convertUnit, scale, toPrecise } from "@/project/helpers";
+import { projectStore } from "@/project/store";
 
 export const incrementBound = (id: string, key: keyof Bounds) => {
 	projectStore.setState((state) => {

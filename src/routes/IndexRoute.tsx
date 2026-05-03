@@ -1,4 +1,4 @@
-import { LinkButton } from '@/components/ui/Buttons';
+import { LinkButton } from "@/components/ui/Buttons";
 
 const IndexRoute = () => {
 	return (
