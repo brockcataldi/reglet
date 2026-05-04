@@ -3,15 +3,20 @@ import {
 	DevicePhoneMobileIcon,
 	DeviceTabletIcon,
 } from "@heroicons/react/24/outline";
+import type { ComponentProps } from "react";
 
-export const widthToIcon = (width: number) => {
-	if (width > 1199) {
-		return <ComputerDesktopIcon />;
+type WidthIconProps = {
+	value: number;
+} & ComponentProps<"svg">;
+
+export const WidthIcon = ({ value, ...props }: WidthIconProps) => {
+	if (value > 1199) {
+		return <ComputerDesktopIcon {...props} />;
 	}
 
-	if (width > 768) {
-		return <DevicePhoneMobileIcon />;
+	if (value > 768) {
+		return <DeviceTabletIcon {...props} />;
 	}
 
-	return <DeviceTabletIcon />;
+	return <DevicePhoneMobileIcon {...props} />;
 };

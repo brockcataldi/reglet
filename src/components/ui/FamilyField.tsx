@@ -3,9 +3,13 @@ import { useState, type ChangeEvent } from "react";
 import { WEB_SAFE_FONTS } from "@/project/constants";
 import { Button } from "./Buttons";
 import { TextBox } from "./TextBox";
-import { Select } from "./Select";
-
-import { Select as SelectPrimitve } from "radix-ui";
+import {
+	Select,
+	SelectGroup,
+	SelectLabel,
+	SelectOption,
+	SelectSeparator,
+} from "./Select";
 
 type FamilyFieldProps = {
 	id: string;
@@ -55,28 +59,26 @@ const FamilyField = ({ id, value, onChange }: FamilyFieldProps) => {
 						}
 					}}
 				>
-					<SelectPrimitve.Item value="custom">
-						Custom
-					</SelectPrimitve.Item>
-					<SelectPrimitve.Separator />
-					<SelectPrimitve.Group>
-						<SelectPrimitve.Label>Installed</SelectPrimitve.Label>
-						<SelectPrimitve.Item value="none-installed" disabled>
+					<SelectOption value="custom">Custom</SelectOption>
+					<SelectSeparator />
+					<SelectGroup>
+						<SelectLabel>Installed</SelectLabel>
+						<SelectOption value="none-installed" disabled>
 							None Installed
-						</SelectPrimitve.Item>
-					</SelectPrimitve.Group>
-					<SelectPrimitve.Separator />
-					<SelectPrimitve.Group>
-						<SelectPrimitve.Label>Web Safe</SelectPrimitve.Label>
+						</SelectOption>
+					</SelectGroup>
+					<SelectSeparator />
+					<SelectGroup>
+						<SelectLabel>Web Safe</SelectLabel>
 						{WEB_SAFE_FONTS.map((webSafeFont) => (
-							<SelectPrimitve.Item
+							<SelectOption
 								value={webSafeFont}
 								key={`${id}-web-safe-${webSafeFont}`}
 							>
 								{webSafeFont}
-							</SelectPrimitve.Item>
+							</SelectOption>
 						))}
-					</SelectPrimitve.Group>
+					</SelectGroup>
 				</Select>
 			)}
 		</div>

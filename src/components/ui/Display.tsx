@@ -28,7 +28,7 @@ const Display = ({ defaultType, type, value }: DisplayProps) => {
 	// };
 
 	return (
-		<div className="flex w-full flex-col items-start justify-start gap-4 rounded-md border border-neutral-300 p-3">
+		<div className="flex w-full flex-col items-start justify-start gap-4">
 			{/* <div className='flex flex-row items-center justify-start'>
 				<RadioCards
 					className='grid grid-cols-2 gap-2'
@@ -45,6 +45,7 @@ const Display = ({ defaultType, type, value }: DisplayProps) => {
 			</div> */}
 			<div className="w-full">
 				<p
+					className="border border-x-0 border-y-neutral-300"
 					style={{
 						width: "100%",
 						fontFamily: value.fontFamily,

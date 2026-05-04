@@ -2,16 +2,17 @@ import { type ComponentProps } from "react";
 import { Link } from "react-router";
 import { cva, type VariantProps } from "class-variance-authority";
 
-import { FOCUS_STYLE } from "@/components/constants";
 import { cn } from "@/project/helpers";
+import { TEXT_BUTTON_STYLE } from "@/components/constants";
+import { Tooltip, type TooltipProps } from "@/components/ui/Tooltip";
 
 const buttonVariants = cva(
-	`block w-fit flex flex-row items-center justify-center gap-3 rounded-md border px-4 py-2 shadow-md [&>svg]:size-4 active:shadow-sm font-medium text-sm ${FOCUS_STYLE}`,
+	`rounded-md border text-sm font-medium shadow-md active:shadow-sm [&>svg]:size-4`,
 	{
 		variants: {
 			variant: {
-				primary: "bg-white border-neutral-300",
-				error: "bg-red-100 border-red-800 text-red-800",
+				primary: "border-neutral-300 bg-white text-neutral-800",
+				destructive: "border-red-800 bg-red-100 text-red-800",
 			},
 		},
 		defaultVariants: {
@@ -20,33 +21,104 @@ const buttonVariants = cva(
 	}
 );
 
-type ButtonProps = VariantProps<typeof buttonVariants>;
-
-export const LinkButton = ({
-	variant,
-	className,
-	children,
-	...props
-}: ComponentProps<typeof Link> & ButtonProps) => {
-	return (
-		<Link className={cn(buttonVariants({ variant }), className)} {...props}>
-			{children}
-		</Link>
-	);
-};
+type ButtonVariantsProps = VariantProps<typeof buttonVariants>;
+type ButtonProps = ComponentProps<"button"> & ButtonVariantsProps;
 
 export const Button = ({
 	variant,
 	className,
 	children,
 	...props
-}: ComponentProps<"button"> & ButtonProps) => {
+}: ButtonProps) => {
 	return (
 		<button
-			className={cn(buttonVariants({ variant }), className)}
+			className={cn(
+				TEXT_BUTTON_STYLE,
+				buttonVariants({ variant }),
+				className
+			)}
 			{...props}
 		>
 			{children}
 		</button>
+	);
+};
+
+type LinkButtonProps = ComponentProps<typeof Link> & ButtonVariantsProps;
+
+export const LinkButton = ({
+	variant,
+	className,
+	children,
+	...props
+}: LinkButtonProps) => {
+	return (
+		<Link
+			className={cn(
+				TEXT_BUTTON_STYLE,
+				buttonVariants({ variant }),
+				className
+			)}
+			{...props}
+		>
+			{children}
+		</Link>
+	);
+};
+
+const iconButtonVariants = cva("grid place-items-center", {
+	variants: {
+		size: {
+			base: "h-10 w-10",
+			sm: "h-8 w-8",
+		},
+	},
+	defaultVariants: {
+		size: "base",
+	},
+});
+
+type IconButtonVariantsProps = VariantProps<typeof iconButtonVariants>;
+type IconButtonProps = IconButtonVariantsProps &
+	ButtonProps & { content: string };
+
+export const IconButton = ({
+	variant,
+	size,
+	className,
+	children,
+	content,
+	...props
+}: IconButtonProps) => {
+	return (
+		<button
+			className={cn(
+				iconButtonVariants({ size }),
+				buttonVariants({ variant }),
+				className
+			)}
+			{...props}
+		>
+			{children}
+			<span className="sr-only">{content}</span>
+		</button>
+	);
+};
+
+// I think this is bad practice
+// this is too compact, causing a mess of props
+export const DescriptiveIconButton = ({
+	content,
+	className,
+	children,
+	side,
+	...props
+}: IconButtonProps & TooltipProps) => {
+	return (
+		<Tooltip content={content} side={side}>
+			<IconButton className={className} {...props} content={content}>
+				{children}
+			</IconButton>
+		</Tooltip>
 	);
 };

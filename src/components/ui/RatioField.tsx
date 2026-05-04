@@ -1,11 +1,10 @@
 import { useState, type ChangeEvent } from "react";
-import { Select as SelectPrimitive } from "radix-ui";
 
 import { RATIOS } from "@/project/constants";
 
 import { TextBox } from "./TextBox";
 import { Button } from "./Buttons";
-import { Select } from "./Select";
+import { Select, SelectOption, SelectSeparator } from "./Select";
 
 type RatioFieldProps = {
 	id: string;
@@ -26,7 +25,7 @@ const RatioField = ({ id, value, onChange }: RatioFieldProps) => {
 
 	if (showCustomInput) {
 		return (
-			<div className="flex flex-row gap-2">
+			<div className="grid">
 				<TextBox
 					id={id}
 					type="number"
@@ -64,17 +63,13 @@ const RatioField = ({ id, value, onChange }: RatioFieldProps) => {
 				}
 			}}
 		>
-			<SelectPrimitive.Item value="custom">Custom</SelectPrimitive.Item>
-			<SelectPrimitive.Separator />
+			<SelectOption value="custom">Custom</SelectOption>
+			<SelectSeparator />
 			{RATIOS.map(([ratioValue, ratioLabel]) => (
-				<SelectPrimitive.Item
+				<SelectOption
 					value={ratioValue.toString()}
 					key={`ratio-${ratioValue}`}
-				>
-					<SelectPrimitive.ItemText>
-						{ratioValue} - {ratioLabel}
-					</SelectPrimitive.ItemText>
-				</SelectPrimitive.Item>
+				>{`${ratioValue} - ${ratioLabel}`}</SelectOption>
 			))}
 		</Select>
 	);

@@ -4,7 +4,7 @@ import { type Bounds, type Values } from "@/project/types";
 import { decrementBound, incrementBound } from "@/project/actions";
 import { suffix } from "@/project/helpers";
 
-import { DescriptiveIconButton } from "@/components/ui/IconButtons";
+import { DescriptiveIconButton } from "@/components/ui/Buttons";
 
 import Cell from "./Cell";
 
@@ -24,7 +24,7 @@ const Row = ({ id, bounds, index, row, length }: RowProps) => {
 
 	return (
 		<tr>
-			<th className={"w-12"}>
+			<th className="w-12">
 				<div className="flex flex-col gap-2">
 					{isTopRow && (
 						<DescriptiveIconButton
@@ -45,7 +45,7 @@ const Row = ({ id, bounds, index, row, length }: RowProps) => {
 						</DescriptiveIconButton>
 					)}
 
-					<div>
+					<div className="grid h-10 w-10 place-items-center rounded-md bg-neutral-100 text-sm">
 						<p>{bounds.max - index}</p>
 					</div>
 

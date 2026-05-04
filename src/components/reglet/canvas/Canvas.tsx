@@ -30,7 +30,7 @@ const Canvas = ({ id }: CanvasProps) => {
 	}
 
 	return (
-		<table className="w-full table-fixed border-collapse">
+		<table className="w-full table-fixed border-collapse border-spacing-5">
 			<colgroup>
 				<col className="w-12" />
 				<col className="w-150" />

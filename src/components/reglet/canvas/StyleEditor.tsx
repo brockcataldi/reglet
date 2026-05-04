@@ -34,7 +34,7 @@ const StyleEditor = ({ value, onChange }: StyleEditorProps) => {
 	};
 
 	return (
-		<div className="p-6">
+		<div className="w-full">
 			<Display type="style" value={value} />
 
 			<hr className="my-4" />

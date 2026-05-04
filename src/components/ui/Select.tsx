@@ -1,43 +1,27 @@
 import type { ComponentProps } from "react";
 import { Select as SelectPrimitive } from "radix-ui";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
-import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/project/helpers";
-import { FOCUS_STYLE } from "@/components/constants";
-
-const selectVariants = cva(
-	`w-full flex flex-row items-center justify-between gap-3 rounded-md border px-4 py-2 shadow-md text-left [&>svg]:size-4 active:shadow-sm font-normal text-sm ${FOCUS_STYLE}`,
-	{
-		variants: {
-			variant: {
-				primary: "bg-white border-neutral-300",
-				error: "bg-red-100 border-red-800 text-red-800",
-			},
-		},
-		defaultVariants: {
-			variant: "primary",
-		},
-	}
-);
 
 type SelectProps = {
 	className?: string;
 	placeholder?: string;
-} & VariantProps<typeof selectVariants> &
-	ComponentProps<typeof SelectPrimitive.Root>;
+} & ComponentProps<typeof SelectPrimitive.Root>;
 
 export const Select = ({
 	className,
 	children,
 	placeholder,
-	variant,
 	...props
 }: SelectProps) => {
 	return (
 		<SelectPrimitive.Root {...props}>
 			<SelectPrimitive.Trigger
-				className={cn(selectVariants({ variant }), className)}
+				className={cn(
+					`flex w-full flex-row items-center justify-between gap-3 rounded-md border border-neutral-300 bg-white px-4 py-2 text-left text-sm font-normal shadow-md active:shadow-sm [&>svg]:size-4`,
+					className
+				)}
 			>
 				<SelectPrimitive.Value placeholder={placeholder} />
 				<SelectPrimitive.Icon>
@@ -45,12 +29,12 @@ export const Select = ({
 				</SelectPrimitive.Icon>
 			</SelectPrimitive.Trigger>
 			<SelectPrimitive.Portal>
-				<SelectPrimitive.Content className="z-50 overflow-hidden rounded-md border border-neutral-300 bg-white shadow-md">
+				<SelectPrimitive.Content className="z-50 overflow-hidden rounded-md border border-neutral-300 bg-white p-1 shadow-md">
 					<SelectPrimitive.ScrollUpButton className="flex items-center justify-center py-1">
 						<ChevronUpIcon className="size-4" />
 					</SelectPrimitive.ScrollUpButton>
 
-					<SelectPrimitive.Viewport className="p-1">
+					<SelectPrimitive.Viewport>
 						{children}
 					</SelectPrimitive.Viewport>
 
@@ -63,6 +47,47 @@ export const Select = ({
 	);
 };
 
+type SelectSeparatorProps = ComponentProps<typeof SelectPrimitive.Separator>;
+
+export const SelectSeparator = ({ className }: SelectSeparatorProps) => {
+	return (
+		<SelectPrimitive.Separator
+			className={cn("my-2 h-px w-full bg-neutral-300", className)}
+		/>
+	);
+};
+
+type SelectGroupProps = ComponentProps<typeof SelectPrimitive.SelectGroup>;
+
+export const SelectGroup = ({
+	className,
+	children,
+	...props
+}: SelectGroupProps) => {
+	return (
+		<SelectPrimitive.SelectGroup className={cn("", className)} {...props}>
+			{children}
+		</SelectPrimitive.SelectGroup>
+	);
+};
+
+type SelectLabelProps = ComponentProps<typeof SelectPrimitive.SelectLabel>;
+
+export const SelectLabel = ({
+	className,
+	children,
+	...props
+}: SelectLabelProps) => {
+	return (
+		<SelectPrimitive.SelectLabel
+			className={cn("text-xs", className)}
+			{...props}
+		>
+			{children}
+		</SelectPrimitive.SelectLabel>
+	);
+};
+
 type SelectOptionProps = ComponentProps<typeof SelectPrimitive.SelectItem>;
 
 export const SelectOption = ({
@@ -71,7 +96,10 @@ export const SelectOption = ({
 	...props
 }: SelectOptionProps) => {
 	return (
-		<SelectPrimitive.Item className={cn("p-1", className)} {...props}>
+		<SelectPrimitive.Item
+			className={cn("px-2 py-1.5 text-sm", className)}
+			{...props}
+		>
 			<SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
 		</SelectPrimitive.Item>
 	);
