@@ -1,10 +1,8 @@
 import { type ComponentProps } from "react";
 import { Link } from "react-router";
 import { cva, type VariantProps } from "class-variance-authority";
-
 import { cn } from "@/project/helpers";
 import { TEXT_BUTTON_STYLE } from "@/components/constants";
-import { Tooltip, type TooltipProps } from "@/components/ui/Tooltip";
 
 const buttonVariants = cva(
 	`rounded-md border text-sm font-medium shadow-md active:shadow-sm [&>svg]:size-4`,
@@ -102,23 +100,5 @@ export const IconButton = ({
 			{children}
 			<span className="sr-only">{content}</span>
 		</button>
-	);
-};
-
-// I think this is bad practice
-// this is too compact, causing a mess of props
-export const DescriptiveIconButton = ({
-	content,
-	className,
-	children,
-	side,
-	...props
-}: IconButtonProps & TooltipProps) => {
-	return (
-		<Tooltip content={content} side={side}>
-			<IconButton className={className} {...props} content={content}>
-				{children}
-			</IconButton>
-		</Tooltip>
 	);
 };

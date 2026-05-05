@@ -4,7 +4,8 @@ import { type Bounds, type Values } from "@/project/types";
 import { decrementBound, incrementBound } from "@/project/actions";
 import { suffix } from "@/project/helpers";
 
-import { DescriptiveIconButton } from "@/components/ui/Buttons";
+import { IconButton } from "@/components/ui/Buttons";
+import { Tooltip } from "@/components/ui/Tooltip";
 
 import Cell from "./Cell";
 
@@ -27,44 +28,59 @@ const Row = ({ id, bounds, index, row, length }: RowProps) => {
 			<th className="w-12">
 				<div className="flex flex-col gap-2">
 					{isTopRow && (
-						<DescriptiveIconButton
+						<Tooltip
 							content={`Add a ${suffix(bounds.max + 1)} row`}
 							onClick={() => incrementBound(id, "max")}
 						>
-							<ChevronUpIcon />
-						</DescriptiveIconButton>
+							<IconButton
+								content={`Add a ${suffix(bounds.max + 1)} row`}
+							>
+								<ChevronUpIcon />
+							</IconButton>
+						</Tooltip>
 					)}
 
 					{canDelete && isBottomRow && (
-						<DescriptiveIconButton
+						<Tooltip
 							content={`Delete the ${suffix(bounds.min)} row`}
-							color="red"
 							onClick={() => incrementBound(id, "min")}
 						>
-							<ChevronUpIcon />
-						</DescriptiveIconButton>
+							<IconButton
+								content={`Delete the ${suffix(bounds.min)} row`}
+							>
+								<ChevronUpIcon />
+							</IconButton>
+						</Tooltip>
 					)}
 
-					<div className="grid h-10 w-10 place-items-center rounded-md bg-neutral-100 text-sm">
+					<div className="grid h-10 w-10 place-items-center rounded-md border border-neutral-300 bg-neutral-50 text-sm">
 						<p>{bounds.max - index}</p>
 					</div>
 
 					{isBottomRow && (
-						<DescriptiveIconButton
+						<Tooltip
 							content={`Add a ${suffix(bounds.min - 1)} row`}
 							onClick={() => decrementBound(id, "min")}
 						>
-							<ChevronDownIcon />
-						</DescriptiveIconButton>
+							<IconButton
+								content={`Add a ${suffix(bounds.min - 1)} row`}
+							>
+								<ChevronDownIcon />
+							</IconButton>
+						</Tooltip>
 					)}
 
 					{canDelete && isTopRow && (
-						<DescriptiveIconButton
+						<Tooltip
 							content={`Delete the ${suffix(bounds.max)} row`}
 							onClick={() => decrementBound(id, "max")}
 						>
-							<ChevronDownIcon />
-						</DescriptiveIconButton>
+							<IconButton
+								content={`Delete the ${suffix(bounds.max)} row`}
+							>
+								<ChevronDownIcon />
+							</IconButton>
+						</Tooltip>
 					)}
 				</div>
 			</th>

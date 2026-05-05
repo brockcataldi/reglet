@@ -14,12 +14,7 @@ import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 // import { updateProjectType } from '@/project/actions';
 import { getBreakpointWidths } from "@/project/selectors";
 
-import {
-	Button,
-	LinkButton,
-	DescriptiveIconButton,
-	IconButton,
-} from "@/components/ui/Buttons";
+import { Button, LinkButton, IconButton } from "@/components/ui/Buttons";
 import { Link } from "react-router";
 import type { BreakpointWidth } from "@/project/types";
 
@@ -127,7 +122,7 @@ const Aside = ({ id }: AsideProps) => {
 			<div className="flex h-full flex-col p-4">
 				<h1 className="sr-only">Reglet</h1>
 
-				<h2 className="text-sm">Breakpoints</h2>
+				<h2 className="text-sm text-neutral-500">Breakpoints</h2>
 				<ul className="flex flex-col items-center justify-center gap-1 rounded-md">
 					{breakpoints.map((width) => (
 						<HeaderNavigationItem

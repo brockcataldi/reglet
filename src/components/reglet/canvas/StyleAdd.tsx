@@ -5,7 +5,8 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import { type Style } from "@/project/types";
 import { addStyle } from "@/project/actions";
 import { createDefaultTextStyle } from "@/project/creators";
-import { Button, DescriptiveIconButton } from "@/components/ui/Buttons";
+import { Button, IconButton } from "@/components/ui/Buttons";
+
 import StyleEdit from "./StyleEditor";
 import {
 	DialogRoot,
@@ -14,15 +15,19 @@ import {
 	DialogClose,
 } from "@/components/ui/Dialog";
 
+import { Tooltip } from "@/components/ui/Tooltip";
+
 const StyleAdd = () => {
 	const [value, setValue] = useState<Style>(createDefaultTextStyle());
 
 	return (
 		<DialogRoot>
-			<DialogTrigger>
-				<DescriptiveIconButton content="Add Text Style" side="bottom">
-					<PlusIcon />
-				</DescriptiveIconButton>
+			<DialogTrigger asChild>
+				<Tooltip content={"Add Text Style"} side="bottom">
+					<IconButton content={"Add Text Style"}>
+						<PlusIcon />
+					</IconButton>
+				</Tooltip>
 			</DialogTrigger>
 			<DialogContent
 				title="New Text Style"

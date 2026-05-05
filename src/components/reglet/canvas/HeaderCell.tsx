@@ -6,7 +6,8 @@ import { removeStyle } from "@/project/actions";
 import StyleEdit from "./StyleEdit";
 
 import { Stat } from "@/components/ui/Stat";
-import { DescriptiveIconButton } from "@/components/ui/Buttons";
+import { IconButton } from "@/components/ui/Buttons";
+import { Tooltip } from "@/components/ui/Tooltip";
 
 type HeaderCellProps = {
 	style: Style;
@@ -29,13 +30,14 @@ const HeaderCell = ({ style, length }: HeaderCellProps) => {
 				<div className="flex flex-row items-center justify-end gap-1">
 					<StyleEdit style={style} />
 					{length > 1 ? (
-						<DescriptiveIconButton
-							content="Delete Text Style"
-							side="bottom"
-							onClick={onClickDelete}
-						>
-							<TrashIcon />
-						</DescriptiveIconButton>
+						<Tooltip content="Delete Text Style" side="bottom">
+							<IconButton
+								content="Delete Text Style"
+								onClick={onClickDelete}
+							>
+								<TrashIcon />
+							</IconButton>
+						</Tooltip>
 					) : null}
 				</div>
 			</div>

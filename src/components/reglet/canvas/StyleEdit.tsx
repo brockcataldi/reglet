@@ -4,7 +4,7 @@ import { PencilIcon } from "@heroicons/react/24/outline";
 
 import { type Style } from "@/project/types";
 import { updateStyle } from "@/project/actions";
-import { Button, DescriptiveIconButton } from "@/components/ui/Buttons";
+import { Button, IconButton } from "@/components/ui/Buttons";
 
 import StyleEditor from "./StyleEditor";
 import {
@@ -13,6 +13,7 @@ import {
 	DialogContent,
 	DialogClose,
 } from "@/components/ui/Dialog";
+import { Tooltip } from "@/components/ui/Tooltip";
 
 type StyleEditProps = {
 	style: Style;
@@ -24,9 +25,11 @@ const StyleEdit = ({ style }: StyleEditProps) => {
 	return (
 		<DialogRoot>
 			<DialogTrigger>
-				<DescriptiveIconButton content="Edit Text Style" side="bottom">
-					<PencilIcon />
-				</DescriptiveIconButton>
+				<Tooltip content={"Edit Text Style"} side="bottom">
+					<IconButton content={"Edit Text Style"}>
+						<PencilIcon />
+					</IconButton>
+				</Tooltip>
 			</DialogTrigger>
 			<DialogContent
 				title="Style Settings"
