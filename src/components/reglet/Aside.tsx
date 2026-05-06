@@ -1,63 +1,35 @@
-import { useBreakpointBase, useBreakpointRatio } from "@/project/hooks";
+import { Link } from "react-router";
+import { Pencil, Trash } from "lucide-react";
 
+import type { BreakpointWidth } from "@/project/types";
+import { useBreakpointBase, useBreakpointRatio } from "@/project/hooks";
+import { getBreakpointWidths } from "@/project/selectors";
 import { updateBreakpoint } from "@/project/actions";
 
 import RatioField from "@/components/ui/RatioField";
 import UnitField from "@/components/ui/UnitField";
-
-import type { ComponentProps } from "react";
-
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { IconButton } from "@/components/ui/Buttons";
+import { Tooltip } from "@/components/ui/Tooltip";
+import { WidthIcon } from "@/components/ui/WidthIcon";
 
 // import { useProjectType } from '@/project/hooks';
 // import type { ProjectType } from '@/project/types';
 // import { updateProjectType } from '@/project/actions';
-import { getBreakpointWidths } from "@/project/selectors";
 
-import { Button, LinkButton, IconButton } from "@/components/ui/Buttons";
-import { Link } from "react-router";
-import type { BreakpointWidth } from "@/project/types";
-
-import {
-	ComputerDesktopIcon,
-	DevicePhoneMobileIcon,
-	DeviceTabletIcon,
-} from "@heroicons/react/24/outline";
-import { Tooltip } from "../ui/Tooltip";
-
-type WidthIconProps = {
-	value: number;
-} & ComponentProps<"svg">;
-
-export const WidthIcon = ({ value, ...props }: WidthIconProps) => {
-	if (value > 1199) {
-		return <ComputerDesktopIcon {...props} />;
-	}
-
-	if (value > 767) {
-		return <DeviceTabletIcon {...props} />;
-	}
-
-	return <DevicePhoneMobileIcon {...props} />;
-};
-
-type HeaderNavigationItemProps = {
+type NavigationItemProps = {
 	value: BreakpointWidth;
 	selected: boolean;
 };
 
-const HeaderNavigationItem = ({
-	value,
-	selected,
-}: HeaderNavigationItemProps) => {
+const NavigationItem = ({ value, selected }: NavigationItemProps) => {
 	if (!selected) {
 		return (
 			<li className="w-full">
 				<Link
 					to={`/breakpoint/${value.id}`}
-					className="flex w-full flex-row items-center justify-start gap-2 rounded-md border border-neutral-300 bg-white px-4 py-2.5 text-left"
+					className="flex w-full flex-row items-center justify-start gap-2 rounded-md border border-neutral-300 bg-white px-2.5 py-2.5 text-left shadow-md"
 				>
-					<WidthIcon value={value.width} className={"size-5"} />
+					<WidthIcon value={value.width} className="size-5" />
 					<span className="text-sm">
 						{value.width === 0 ? "Root" : value.width}
 					</span>
@@ -68,9 +40,9 @@ const HeaderNavigationItem = ({
 
 	return (
 		<li className="w-full">
-			<span className="flex w-full flex-row items-center justify-between gap-2 rounded-md border border-blue-800 bg-blue-500/10 px-4 py-1 text-blue-800">
+			<span className="flex w-full flex-row items-center justify-between gap-2 rounded-md border border-blue-800 bg-blue-500/10 px-2.5 py-1 text-blue-800 shadow-md">
 				<span className="flex flex-row items-center justify-start gap-2">
-					<WidthIcon value={value.width} className={"size-5"} />
+					<WidthIcon value={value.width} className="size-5" />
 					<span className="text-sm">
 						{value.width === 0 ? "Root" : value.width}
 					</span>
@@ -82,11 +54,11 @@ const HeaderNavigationItem = ({
 						side="bottom"
 					>
 						<IconButton
-							size={"sm"}
+							size="sm"
 							content={`Edit the ${value.width}px size`}
-							className={"rounded-r-none"}
+							className="rounded-r-none"
 						>
-							<PencilIcon />
+							<Pencil />
 						</IconButton>
 					</Tooltip>
 					<Tooltip
@@ -94,12 +66,12 @@ const HeaderNavigationItem = ({
 						side="bottom"
 					>
 						<IconButton
-							size={"sm"}
+							size="sm"
 							variant="destructive"
 							content={`Delete the ${value.width}px size`}
-							className={"rounded-l-none"}
+							className="rounded-l-none"
 						>
-							<TrashIcon />
+							<Trash />
 						</IconButton>
 					</Tooltip>
 				</span>
@@ -119,52 +91,65 @@ const Aside = ({ id }: AsideProps) => {
 
 	return (
 		<aside className="fixed top-0 h-dvh w-64 border-r border-r-neutral-300 bg-white/95 shadow-md">
-			<div className="flex h-full flex-col p-4">
+			<div className="flex h-full flex-col gap-8 p-4">
 				<h1 className="sr-only">Reglet</h1>
 
-				<h2 className="text-sm text-neutral-500">Breakpoints</h2>
-				<ul className="flex flex-col items-center justify-center gap-1 rounded-md">
-					{breakpoints.map((width) => (
-						<HeaderNavigationItem
-							value={width}
-							selected={id === width.id}
-						/>
-					))}
-				</ul>
+				<nav>
+					<h2 className="text-sm text-neutral-500">Breakpoints</h2>
 
-				{base !== undefined ? (
-					<div className="flex flex-col">
-						<label htmlFor={`${id}-base`} className="text-sm">
-							Base Font Size
-						</label>
-						<UnitField
-							id={`${id}-base`}
-							value={base}
-							onChange={(newBase: number) => {
-								updateBreakpoint(id, {
-									base: newBase,
-								});
-							}}
-						/>
-					</div>
-				) : null}
+					<ul className="flex flex-col items-center justify-center gap-1 rounded-md">
+						{breakpoints.map((width) => (
+							<NavigationItem
+								key={`link-to-${width.id}`}
+								value={width}
+								selected={id === width.id}
+							/>
+						))}
+					</ul>
+				</nav>
 
-				{ratio !== undefined ? (
-					<div className="flex flex-col">
-						<label htmlFor={`${id}-base`} className="text-sm">
-							Base Font Size
-						</label>
-						<RatioField
-							id={`${id}-ratio`}
-							value={ratio}
-							onChange={(newRatio: number) => {
-								updateBreakpoint(id, {
-									ratio: newRatio,
-								});
-							}}
-						/>
-					</div>
-				) : null}
+				<div className="flex flex-col gap-2">
+					<h2>Breakpoint Settings</h2>
+					{base !== undefined ? (
+						<div className="flex flex-col">
+							<label
+								htmlFor={`${id}-base`}
+								className="text-sm text-neutral-500"
+							>
+								Base Font Size
+							</label>
+							<UnitField
+								id={`${id}-base`}
+								value={base}
+								onChange={(newBase: number) => {
+									updateBreakpoint(id, {
+										base: newBase,
+									});
+								}}
+							/>
+						</div>
+					) : null}
+
+					{ratio !== undefined ? (
+						<div className="flex flex-col">
+							<label
+								htmlFor={`${id}-base`}
+								className="text-sm text-neutral-500"
+							>
+								Ratio
+							</label>
+							<RatioField
+								id={`${id}-ratio`}
+								value={ratio}
+								onChange={(newRatio: number) => {
+									updateBreakpoint(id, {
+										ratio: newRatio,
+									});
+								}}
+							/>
+						</div>
+					) : null}
+				</div>
 			</div>
 		</aside>
 	);

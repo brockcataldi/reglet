@@ -3,14 +3,14 @@ import type { ComponentProps } from "react";
 
 import { cn } from "@/project/helpers";
 
-export const RadioCards = ({
+export const RadioBadges = ({
 	className,
 	...props
 }: ComponentProps<typeof RadioGroup.Root>) => {
 	return <RadioGroup.Root className={cn("", className)} {...props} />;
 };
 
-export const RadioCard = ({
+export const RadioBadge = ({
 	className,
 	children,
 	...props

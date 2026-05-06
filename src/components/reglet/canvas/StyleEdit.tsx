@@ -1,6 +1,5 @@
 import { useState } from "react";
-
-import { PencilIcon } from "@heroicons/react/24/outline";
+import { Pencil } from "lucide-react";
 
 import { type Style } from "@/project/types";
 import { updateStyle } from "@/project/actions";
@@ -24,13 +23,16 @@ const StyleEdit = ({ style }: StyleEditProps) => {
 
 	return (
 		<DialogRoot>
-			<DialogTrigger>
-				<Tooltip content={"Edit Text Style"} side="bottom">
-					<IconButton content={"Edit Text Style"}>
-						<PencilIcon />
+			<Tooltip content="Edit Text Style" side="bottom">
+				<DialogTrigger asChild>
+					<IconButton
+						content="Edit Text Style"
+						className="rounded-r-none"
+					>
+						<Pencil />
 					</IconButton>
-				</Tooltip>
-			</DialogTrigger>
+				</DialogTrigger>
+			</Tooltip>
 			<DialogContent
 				title="Style Settings"
 				description="Modify the appearance of the Text Style."

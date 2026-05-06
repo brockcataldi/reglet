@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { PlusIcon } from "@heroicons/react/24/outline";
+import { Plus } from "lucide-react";
 
 import { type Style } from "@/project/types";
 import { addStyle } from "@/project/actions";
@@ -22,17 +22,14 @@ const StyleAdd = () => {
 
 	return (
 		<DialogRoot>
-			<DialogTrigger asChild>
-				<Tooltip content={"Add Text Style"} side="bottom">
-					<IconButton content={"Add Text Style"}>
-						<PlusIcon />
+			<Tooltip content="New Style" side="bottom">
+				<DialogTrigger asChild>
+					<IconButton content="New Style">
+						<Plus />
 					</IconButton>
-				</Tooltip>
-			</DialogTrigger>
-			<DialogContent
-				title="New Text Style"
-				description="Add a new Text Style"
-			>
+				</DialogTrigger>
+			</Tooltip>
+			<DialogContent title="New Style" description="Add a new Text Style">
 				<StyleEdit
 					value={value}
 					onChange={(newValue) => setValue(newValue)}

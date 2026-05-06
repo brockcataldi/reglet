@@ -3,7 +3,7 @@ import { useState } from "react";
 import { type Style, type Values } from "@/project/types";
 import { useSettingsUnit } from "@/project/hooks";
 
-// import { RadioCard, RadioCards } from '@/components/ui/RadioCards';
+import { RadioBadge, RadioBadges } from "@/components/ui/RadioBadges";
 
 type DisplayType = "heading" | "paragraph";
 
@@ -21,28 +21,30 @@ type DisplayProps =
 
 const Display = ({ defaultType, type, value }: DisplayProps) => {
 	const unit = useSettingsUnit();
-	const [display] = useState<DisplayType>(defaultType ?? "heading");
+	const [display, setDisplay] = useState<DisplayType>(
+		defaultType ?? "heading"
+	);
 
-	// const onChangeDisplay = (newDisplay: DisplayType) => {
-	// 	setDisplay(newDisplay);
-	// };
+	const onChangeDisplay = (newDisplay: DisplayType) => {
+		setDisplay(newDisplay);
+	};
 
 	return (
 		<div className="flex w-full flex-col items-start justify-start gap-4">
-			{/* <div className='flex flex-row items-center justify-start'>
-				<RadioCards
-					className='grid grid-cols-2 gap-2'
+			<div className="flex flex-row items-center justify-start">
+				<RadioBadges
+					className="grid grid-cols-2 gap-2"
 					value={display}
 					onValueChange={onChangeDisplay}
 				>
-					<RadioCard value='heading' size='small'>
+					<RadioBadge value="heading">
 						<span className="text-sm">Heading</span>
-					</RadioCard>
-					<RadioCard value='paragraph' size='small'>
+					</RadioBadge>
+					<RadioBadge value="paragraph">
 						<span className="text-sm">Paragraph</span>
-					</RadioCard>
-				</RadioCards>
-			</div> */}
+					</RadioBadge>
+				</RadioBadges>
+			</div>
 			<div className="w-full">
 				<p
 					className="border border-x-0 border-y-neutral-300"

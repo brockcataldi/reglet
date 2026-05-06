@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 // import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { TriangleAlert } from "lucide-react";
 
 import type { ProjectType, Unit } from "@/project/types";
 import { updateNewProject } from "@/project/actions";
@@ -109,7 +109,7 @@ const NewRoute = () => {
 						role="alert"
 						className="mb-4 flex flex-row items-center justify-start gap-4 rounded-md border border-red-800 bg-red-100 px-4 py-2 text-red-800"
 					>
-						<ExclamationTriangleIcon className="h-8 w-8" />
+						<TriangleAlert className="h-8 w-8 stroke-1" />
 						<p>
 							It seems you've already create a project,{" "}
 							<strong>
@@ -122,7 +122,9 @@ const NewRoute = () => {
 
 				<div className="flex flex-row items-center justify-start gap-3">
 					<LinkButton
-						variant={previousProjectExists ? "error" : "primary"}
+						variant={
+							previousProjectExists ? "destructive" : "primary"
+						}
 						to="/breakpoint"
 						onClick={onClickNewProject}
 					>

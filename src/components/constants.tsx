@@ -1,4 +1,4 @@
-export const FOCUS_STYLE = "focus:ring-2 focus:ring-offset-2";
+// export const FOCUS_STYLE = "focus:outline-auto";
 
 export const TEXT_BUTTON_STYLE =
 	"flex w-fit flex-row items-center justify-center gap-3 px-4 py-2";

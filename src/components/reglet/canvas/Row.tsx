@@ -1,4 +1,4 @@
-import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import { ChevronUp, ChevronDown } from "lucide-react";
 
 import { type Bounds, type Values } from "@/project/types";
 import { decrementBound, incrementBound } from "@/project/actions";
@@ -35,7 +35,7 @@ const Row = ({ id, bounds, index, row, length }: RowProps) => {
 							<IconButton
 								content={`Add a ${suffix(bounds.max + 1)} row`}
 							>
-								<ChevronUpIcon />
+								<ChevronUp />
 							</IconButton>
 						</Tooltip>
 					)}
@@ -48,7 +48,7 @@ const Row = ({ id, bounds, index, row, length }: RowProps) => {
 							<IconButton
 								content={`Delete the ${suffix(bounds.min)} row`}
 							>
-								<ChevronUpIcon />
+								<ChevronDown />
 							</IconButton>
 						</Tooltip>
 					)}
@@ -65,7 +65,7 @@ const Row = ({ id, bounds, index, row, length }: RowProps) => {
 							<IconButton
 								content={`Add a ${suffix(bounds.min - 1)} row`}
 							>
-								<ChevronDownIcon />
+								<ChevronDown />
 							</IconButton>
 						</Tooltip>
 					)}
@@ -78,7 +78,7 @@ const Row = ({ id, bounds, index, row, length }: RowProps) => {
 							<IconButton
 								content={`Delete the ${suffix(bounds.max)} row`}
 							>
-								<ChevronDownIcon />
+								<ChevronDown />
 							</IconButton>
 						</Tooltip>
 					)}

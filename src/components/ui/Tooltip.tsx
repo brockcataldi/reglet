@@ -8,7 +8,6 @@ export const Tooltip = ({
 	content,
 	className,
 	children,
-	side,
 	...props
 }: TooltipProps) => (
 	<TooltipPrimitive.Provider>
