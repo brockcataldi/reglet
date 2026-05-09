@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react";
 import { Select as SelectPrimitive } from "radix-ui";
-import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 import { cn } from "@/project/helpers";
 
@@ -25,13 +25,13 @@ export const Select = ({
 			>
 				<SelectPrimitive.Value placeholder={placeholder} />
 				<SelectPrimitive.Icon>
-					<ChevronDownIcon className="size-4" />
+					<ChevronDown className="size-4" />
 				</SelectPrimitive.Icon>
 			</SelectPrimitive.Trigger>
 			<SelectPrimitive.Portal>
 				<SelectPrimitive.Content className="z-50 overflow-hidden rounded-md border border-neutral-300 bg-white p-1 shadow-md">
 					<SelectPrimitive.ScrollUpButton className="flex items-center justify-center py-1">
-						<ChevronUpIcon className="size-4" />
+						<ChevronUp className="size-4" />
 					</SelectPrimitive.ScrollUpButton>
 
 					<SelectPrimitive.Viewport>
@@ -39,7 +39,7 @@ export const Select = ({
 					</SelectPrimitive.Viewport>
 
 					<SelectPrimitive.ScrollDownButton className="flex items-center justify-center py-1">
-						<ChevronDownIcon className="size-4" />
+						<ChevronDown className="size-4" />
 					</SelectPrimitive.ScrollDownButton>
 				</SelectPrimitive.Content>
 			</SelectPrimitive.Portal>
@@ -80,7 +80,7 @@ export const SelectLabel = ({
 }: SelectLabelProps) => {
 	return (
 		<SelectPrimitive.SelectLabel
-			className={cn("text-xs", className)}
+			className={cn("px-2 py-1.5 text-xs text-neutral-500", className)}
 			{...props}
 		>
 			{children}
@@ -97,7 +97,10 @@ export const SelectOption = ({
 }: SelectOptionProps) => {
 	return (
 		<SelectPrimitive.Item
-			className={cn("px-2 py-1.5 text-sm", className)}
+			className={cn(
+				"px-2 py-1.5 text-sm hover:bg-neutral-100",
+				className
+			)}
 			{...props}
 		>
 			<SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>

@@ -109,7 +109,7 @@ const NewRoute = () => {
 						role="alert"
 						className="mb-4 flex flex-row items-center justify-start gap-4 rounded-md border border-red-800 bg-red-100 px-4 py-2 text-red-800"
 					>
-						<TriangleAlert className="h-8 w-8 stroke-1" />
+						<TriangleAlert className="h-8 w-8" />
 						<p>
 							It seems you've already create a project,{" "}
 							<strong>

@@ -18,12 +18,12 @@ export const RadioCard = ({
 	return (
 		<RadioGroup.Item
 			className={cn(
-				`focus-visible:outline-auto relative flex flex-row items-start justify-start rounded-md border border-neutral-300 p-2 shadow-md focus-visible:outline`,
+				`focus-visible:outline-auto relative flex flex-row items-start justify-start rounded-md border border-neutral-300 p-2 shadow-md focus-visible:outline data-[state='checked']:fill-blue-800 data-[state='checked']:text-blue-800`,
 				className
 			)}
 			{...props}
 		>
-			<RadioGroup.Indicator className="absolute top-0 left-0 h-full w-full rounded-md bg-blue-500/10 outline-2 -outline-offset-1 outline-blue-600" />
+			<RadioGroup.Indicator className="absolute top-0 left-0 h-full w-full rounded-md bg-blue-500/10 outline-1 outline-blue-600" />
 			<span className="flex flex-col text-left">{children}</span>
 		</RadioGroup.Item>
 	);

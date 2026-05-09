@@ -22,7 +22,7 @@ const UnitField = ({ id, value, onChange }: UnitFieldProps) => {
 				value={value}
 				id={id}
 				type="number"
-				min={1}
+				min={0}
 				step={unit === "rem" ? 0.005 : 0.05}
 				onChange={onChangeValue}
 			/>

@@ -8,11 +8,8 @@ type EditorProps = {
 const Editor = ({ id }: EditorProps) => {
 	return (
 		<div>
-			{/* <Header id={id} /> */}
 			<Aside id={id} />
-			<main className="ml-64 p-4">
-				<Canvas id={id} />
-			</main>
+			<Canvas id={id} />
 		</div>
 	);
 };

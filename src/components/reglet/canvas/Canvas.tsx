@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 import {
 	useBounds,
 	useBreakpointTable,
@@ -8,6 +10,7 @@ import {
 import HeaderCell from "./HeaderCell";
 import Row from "./Row";
 import StyleAdd from "./StyleAdd";
+import Cell from "./Cell";
 
 type CanvasProps = {
 	id: string;
@@ -15,11 +18,10 @@ type CanvasProps = {
 
 const Canvas = ({ id }: CanvasProps) => {
 	const styles = useStyles();
-	const stylesLength = useStylesLength();
+	const width = useStylesLength();
 	const values = useBreakpointTable(id);
 	const bounds = useBounds(id);
-
-	const length = values.length;
+	const height = values.length;
 
 	if (!values.length) {
 		return;
@@ -30,39 +32,49 @@ const Canvas = ({ id }: CanvasProps) => {
 	}
 
 	return (
-		<table className="w-full table-fixed border-collapse border-spacing-5">
-			<colgroup>
-				<col className="w-12" />
-				<col className="w-150" />
-			</colgroup>
-			<thead>
-				<tr>
-					<th className="w-12">
-						<span className="sr-only">Row Actions</span>
-						<StyleAdd />
-					</th>
-					{styles.map((style, index) => (
-						<HeaderCell
-							key={`${id}-text-style-${index}`}
-							style={style}
-							length={stylesLength}
-						/>
-					))}
-				</tr>
-			</thead>
-			<tbody>
-				{values.map((row, index) => (
-					<Row
-						key={`${id}-row-${index}`}
-						id={id}
-						row={row}
-						bounds={bounds}
-						length={length}
-						index={index}
+		<main
+			className="ml-64 grid w-full grid-cols-(--canvas-grid) gap-x-6 gap-y-8 p-4"
+			style={
+				{
+					"--canvas-grid": `calc(var(--spacing) * 10) repeat(${width}, calc(var(--spacing) * 150))`,
+					"--canvas-col-span": 1 + width,
+				} as CSSProperties
+			}
+		>
+			<header className="col-span-(--canvas-col-span) grid grid-cols-subgrid">
+				<div>
+					<span className="sr-only">Row Actions</span>
+					<StyleAdd />
+				</div>
+				{styles.map((style, index) => (
+					<HeaderCell
+						key={`${id}-text-style-${index}`}
+						style={style}
+						length={width}
 					/>
 				))}
-			</tbody>
-		</table>
+			</header>
+
+			{values.map((row, rowIndex) => (
+				<Row
+					key={`${id}-row-${rowIndex}`}
+					id={id}
+					bounds={bounds}
+					height={height}
+					index={rowIndex}
+				>
+					{row.map((cell, columnIndex) => (
+						<Cell
+							key={`${id}-cell-${rowIndex}-${columnIndex}`}
+							values={cell}
+							id={id}
+							rowIndex={bounds.max - rowIndex}
+							columnIndex={columnIndex}
+						/>
+					))}
+				</Row>
+			))}
+		</main>
 	);
 };
 

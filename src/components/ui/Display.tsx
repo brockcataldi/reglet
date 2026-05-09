@@ -4,6 +4,7 @@ import { type Style, type Values } from "@/project/types";
 import { useSettingsUnit } from "@/project/hooks";
 
 import { RadioBadge, RadioBadges } from "@/components/ui/RadioBadges";
+import { Heading, Pilcrow } from "lucide-react";
 
 type DisplayType = "heading" | "paragraph";
 
@@ -31,23 +32,27 @@ const Display = ({ defaultType, type, value }: DisplayProps) => {
 
 	return (
 		<div className="flex w-full flex-col items-start justify-start gap-4">
-			<div className="flex flex-row items-center justify-start">
-				<RadioBadges
-					className="grid grid-cols-2 gap-2"
-					value={display}
-					onValueChange={onChangeDisplay}
-				>
-					<RadioBadge value="heading">
-						<span className="text-sm">Heading</span>
-					</RadioBadge>
-					<RadioBadge value="paragraph">
-						<span className="text-sm">Paragraph</span>
-					</RadioBadge>
-				</RadioBadges>
+			<div className="flex w-full flex-row items-end justify-start">
+				<div className="flex flex-row items-center justify-start gap-2">
+					<p className="text-sm text-neutral-500">Preview</p>
+					<RadioBadges
+						value={display}
+						onValueChange={onChangeDisplay}
+					>
+						<RadioBadge value="heading">
+							<Heading />
+							<span>Heading</span>
+						</RadioBadge>
+						<RadioBadge value="paragraph">
+							<Pilcrow />
+							<span>Paragraph</span>
+						</RadioBadge>
+					</RadioBadges>
+				</div>
 			</div>
 			<div className="w-full">
 				<p
-					className="border border-x-0 border-y-neutral-300"
+					className="line-clamp-3 border border-x-0 border-y-neutral-300"
 					style={{
 						width: "100%",
 						fontFamily: value.fontFamily,
@@ -57,12 +62,11 @@ const Display = ({ defaultType, type, value }: DisplayProps) => {
 						fontSize:
 							type === "style"
 								? display === "heading"
-									? "2rem"
-									: "1rem"
+									? "3rem"
+									: "1.2rem"
 								: `${value.fontSize}${unit}`,
 						margin: "0",
 						whiteSpace: display === "heading" ? "nowrap" : "wrap",
-						overflow: "hidden",
 					}}
 				>
 					Lorem ipsum dolor sit amet consectetur adipisicing elit.
