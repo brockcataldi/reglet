@@ -1,4 +1,4 @@
-import { type Unit } from "@/project/types";
+import { type Unit } from "@/store/types";
 
 export const CONVERSION_RATIOS: Record<string, number> = {
 	"px-pt": 72 / 96,

@@ -1,11 +1,11 @@
 import { type ChangeEvent } from "react";
 
-import type { Style } from "@/project/types";
+import type { Style } from "@/store/types";
 
-import FamilyField from "@/components/ui/FamilyField";
-import Display from "@/components/ui/Display";
-import { TextBox } from "@/components/ui/TextBox";
-import { Select, SelectOption } from "@/components/ui/Select";
+import FamilyField from "@/ui/FamilyField";
+import Display from "@/ui/Display";
+import { TextBox } from "@/ui/TextBox";
+import { Select, SelectOption } from "@/ui/Select";
 
 type StyleEditorProps = {
 	value: Style;
@@ -23,7 +23,7 @@ const StyleEditor = ({ value, onChange }: StyleEditorProps) => {
 	const onChangeFontStyle = (fontStyle: string) => {
 		onChange({
 			...value,
-			fontStyle
+			fontStyle,
 		});
 	};
 
@@ -38,7 +38,7 @@ const StyleEditor = ({ value, onChange }: StyleEditorProps) => {
 		<div className="w-full">
 			<Display type="style" value={value} />
 
-			<dl className="grid grid-cols-[auto_1fr] gap-x-2 gap-y-3 my-4">
+			<dl className="my-4 grid grid-cols-[auto_1fr] gap-x-2 gap-y-3">
 				<div className="col-span-2 grid grid-cols-subgrid items-center">
 					<dt className="col-span-1">
 						<label htmlFor={`${value.id}-font-family`}>
@@ -60,8 +60,10 @@ const StyleEditor = ({ value, onChange }: StyleEditorProps) => {
 						</label>
 					</dt>
 					<dd className="col-span-1">
-						<Select value={value.fontStyle}
-							onValueChange={onChangeFontStyle}>
+						<Select
+							value={value.fontStyle}
+							onValueChange={onChangeFontStyle}
+						>
 							<SelectOption value="normal">Normal</SelectOption>
 							<SelectOption value="italic">Italic</SelectOption>
 						</Select>

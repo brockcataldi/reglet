@@ -1,5 +1,5 @@
 import { Navigate } from "react-router";
-import { getFirstBreakpointId } from "@/project/selectors";
+import { getFirstBreakpointId } from "@/store/selectors";
 
 const BreakpointIndexRoute = () => {
 	const first = getFirstBreakpointId();

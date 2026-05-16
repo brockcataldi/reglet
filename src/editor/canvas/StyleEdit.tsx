@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Pencil } from "lucide-react";
 
-import { type Style } from "@/project/types";
-import { updateStyle } from "@/project/actions";
-import { Button, IconButton } from "@/components/ui/Buttons";
+import { type Style } from "@/store/types";
+import { updateStyle } from "@/store/actions";
+import { Button, IconButton } from "@/ui/Buttons";
 
 import StyleEditor from "./StyleEditor";
 import {
@@ -11,8 +11,8 @@ import {
 	DialogTrigger,
 	DialogContent,
 	DialogClose,
-} from "@/components/ui/Dialog";
-import { Tooltip } from "@/components/ui/Tooltip";
+} from "@/ui/Dialog";
+import { Tooltip } from "@/ui/Tooltip";
 
 type StyleEditProps = {
 	style: Style;

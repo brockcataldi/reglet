@@ -2,10 +2,10 @@ import { useState } from "react";
 
 import { Plus } from "lucide-react";
 
-import { type Style } from "@/project/types";
-import { addStyle } from "@/project/actions";
-import { createDefaultTextStyle } from "@/project/creators";
-import { Button, IconButton } from "@/components/ui/Buttons";
+import { type Style } from "@/store/types";
+import { addStyle } from "@/store/actions";
+import { createDefaultTextStyle } from "@/store/creators";
+import { Button, IconButton } from "@/ui/Buttons";
 
 import StyleEdit from "./StyleEditor";
 import {
@@ -13,9 +13,9 @@ import {
 	DialogTrigger,
 	DialogContent,
 	DialogClose,
-} from "@/components/ui/Dialog";
+} from "@/ui/Dialog";
 
-import { Tooltip } from "@/components/ui/Tooltip";
+import { Tooltip } from "@/ui/Tooltip";
 
 const StyleAdd = () => {
 	const [value, setValue] = useState<Style>(createDefaultTextStyle());

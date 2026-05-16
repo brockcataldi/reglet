@@ -1,16 +1,21 @@
 import type { ChangeEvent } from "react";
 
-import { useSettingsUnit } from "@/project/hooks";
-import { TextBox } from "@/components/ui/TextBox";
+import type { Unit } from "@/store/types";
+import { useSettingsUnit } from "@/store/hooks";
+
+import { TextBox } from "@/ui/TextBox";
 
 type UnitFieldProps = {
 	id: string;
 	value: number;
+	unit?: Unit;
 	onChange: (newValue: number) => void;
 };
 
-const UnitField = ({ id, value, onChange }: UnitFieldProps) => {
-	const unit = useSettingsUnit();
+const UnitField = ({ id, value, unit, onChange }: UnitFieldProps) => {
+	const unitSettings = useSettingsUnit();
+
+	const selectedUnit = unit ?? unitSettings;
 
 	const onChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
 		onChange(parseFloat(event.target.value));
@@ -23,10 +28,16 @@ const UnitField = ({ id, value, onChange }: UnitFieldProps) => {
 				id={id}
 				type="number"
 				min={0}
-				step={unit === "rem" ? 0.005 : 0.05}
+				step={
+					selectedUnit === "rem"
+						? 0.005
+						: selectedUnit === "px"
+							? 1
+							: 0.05
+				}
 				onChange={onChangeValue}
 			/>
-			<p>{unit}</p>
+			<p>{selectedUnit}</p>
 		</div>
 	);
 };

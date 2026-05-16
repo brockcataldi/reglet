@@ -2,58 +2,65 @@ import { Link } from "react-router";
 import { cva } from "class-variance-authority";
 import { Pencil, Trash, TriangleAlert } from "lucide-react";
 
-import { cn } from "@/project/helpers";
-import type { BreakpointWidth, ProjectType } from "@/project/types";
+import { cn } from "@/store/helpers";
+import type { BreakpointWidth, ProjectType } from "@/store/types";
 import {
 	useBreakpointBase,
 	useBreakpointRatio,
 	useProjectType,
-} from "@/project/hooks";
-import { getBreakpointWidths } from "@/project/selectors";
-import { updateBreakpoint, updateProjectType } from "@/project/actions";
+} from "@/store/hooks";
+import { getBreakpointWidths } from "@/store/selectors";
+import { updateBreakpoint, updateProjectType } from "@/store/actions";
 
-import { IconButton } from "@/components/ui/Buttons";
-import { Tooltip } from "@/components/ui/Tooltip";
-import { WidthIcon } from "@/components/ui/WidthIcon";
-import { RadioBadge, RadioBadges } from "@/components/ui/RadioBadges";
-import RatioField from "@/components/ui/RatioField";
-import UnitField from "@/components/ui/UnitField";
+import { IconButton } from "@/ui/Buttons";
+import { Tooltip } from "@/ui/Tooltip";
+import { WidthIcon } from "@/ui/WidthIcon";
+import { RadioBadge, RadioBadges } from "@/ui/RadioBadges";
+import RatioField from "@/ui/RatioField";
+import UnitField from "@/ui/UnitField";
 
-const navigationItemVariant = cva('flex w-full flex-row items-center gap-2 rounded-md border shadow-md', {
-	variants: {
-		activity: {
-			inactive: 'border-neutral-300 bg-white px-2.5 py-2.5 text-left justify-start',
-			active: 'justify-between border-blue-800 bg-blue-500/10 px-2.5 py-1 text-blue-800'
+// import { useState } from "react";
+
+const navigationItemVariant = cva(
+	"flex w-full flex-row items-center gap-2 rounded-md border shadow-md",
+	{
+		variants: {
+			activity: {
+				inactive:
+					"justify-start border-neutral-300 bg-white px-2.5 py-2.5 text-left",
+				active: "justify-between border-blue-800 bg-blue-500/10 px-2.5 py-1 text-blue-800",
+			},
+			validity: {
+				valid: "",
+				invalid: "border-red-800 bg-red-500/10 text-red-800",
+			},
 		},
-		validity: {
-			valid: '',
-			invalid: 'border-red-800 bg-red-500/10 text-red-800'
-		}
-
-	},
-	defaultVariants:{
-		activity: 'inactive',
-		validity: 'valid'
+		defaultVariants: {
+			activity: "inactive",
+			validity: "valid",
+		},
 	}
-})
+);
 
-
-const getNavigationLabel = (width: number, type: ProjectType, position: number) => {
-	if(type === 'traditional'){
-		return (width === 0) ? `${width}px (Root)` : `${width}px`;
+const getNavigationLabel = (
+	width: number,
+	type: ProjectType,
+	position: number
+) => {
+	if (type === "traditional") {
+		return width === 0 ? `${width}px (Root)` : `${width}px`;
 	}
 
-	if(position === 0){
-		return `${width}px (Min)`
+	if (position === 0) {
+		return `${width}px (Min)`;
 	}
 
-	if(position === 2){
-		return `${width}px (Max)`
+	if (position === 2) {
+		return `${width}px (Max)`;
 	}
 
 	return `${width}px`;
-}
-
+};
 
 type NavigationItemProps = {
 	value: BreakpointWidth;
@@ -62,16 +69,25 @@ type NavigationItemProps = {
 	position: 0 | 1 | 2;
 };
 
-const NavigationItem = ({ value, selected, type, position }: NavigationItemProps) => {
-
-	const validity = (type === 'fluid' && position === 1) ? 'invalid' : 'valid';
+const NavigationItem = ({
+	value,
+	selected,
+	type,
+	position,
+}: NavigationItemProps) => {
+	const validity = type === "fluid" && position === 1 ? "invalid" : "valid";
 
 	if (!selected) {
 		return (
 			<li className="w-full">
 				<Link
 					to={`/breakpoint/${value.id}`}
-					className={cn( navigationItemVariant({ activity: 'inactive', validity }) )}
+					className={cn(
+						navigationItemVariant({
+							activity: "inactive",
+							validity,
+						})
+					)}
 				>
 					<WidthIcon value={value.width} className="size-5" />
 					<span className="text-sm">
@@ -84,8 +100,10 @@ const NavigationItem = ({ value, selected, type, position }: NavigationItemProps
 
 	return (
 		<li className="w-full">
-			<span 
-				className={cn( navigationItemVariant({ activity: 'active', validity }) )}
+			<span
+				className={cn(
+					navigationItemVariant({ activity: "active", validity })
+				)}
 			>
 				<span className="flex flex-row items-center justify-start gap-2">
 					<WidthIcon value={value.width} className="size-5" />
@@ -135,6 +153,7 @@ const Aside = ({ id }: AsideProps) => {
 	const base = useBreakpointBase(id);
 	const ratio = useBreakpointRatio(id);
 	const type = useProjectType();
+	// const [rhythm, setRhythm] = useState<number>(16);
 
 	return (
 		<aside className="fixed top-0 z-10 h-dvh w-64 border-r border-r-neutral-300 bg-white/95 shadow-md">
@@ -142,7 +161,6 @@ const Aside = ({ id }: AsideProps) => {
 				<h1 className="sr-only">Reglet Breakpoint Editor</h1>
 
 				<div className="flex flex-col gap-2">
-					
 					<h2 className="text-sm text-neutral-500">Project Type</h2>
 					<RadioBadges
 						value={type}
@@ -160,13 +178,15 @@ const Aside = ({ id }: AsideProps) => {
 
 					<h2 className="text-sm text-neutral-500">Breakpoints</h2>
 
-					{ type === 'fluid' && breakpoints.length > 2 ? (
+					{type === "fluid" && breakpoints.length > 2 ? (
 						<div
 							role="alert"
 							className="mb-4 grid grid-cols-[--spacing(6)_1fr] items-center gap-3 rounded-md border border-red-800 bg-red-100 p-2 text-red-800"
 						>
 							<TriangleAlert className="h-6 w-6" />
-							<p className="text-sm">Fluid typography can only have a minimum and maximum breakpoints
+							<p className="text-sm">
+								Fluid typography can only have a minimum and
+								maximum breakpoints
 							</p>
 						</div>
 					) : null}
@@ -178,7 +198,13 @@ const Aside = ({ id }: AsideProps) => {
 								value={width}
 								selected={id === width.id}
 								type={type}
-								position={index === 0 ? 0 : index === breakpoints.length - 1 ? 2 : 1}
+								position={
+									index === 0
+										? 0
+										: index === breakpoints.length - 1
+											? 2
+											: 1
+								}
 							/>
 						))}
 					</ul>
@@ -207,6 +233,25 @@ const Aside = ({ id }: AsideProps) => {
 							/>
 						</div>
 					) : null}
+
+					{/* {rhythm !== undefined ? (
+						<div className="flex flex-col">
+							<label
+								htmlFor={`${id}-base`}
+								className="text-sm text-neutral-500"
+							>
+								Rhythm
+							</label>
+							<UnitField
+								id={`${id}-base`}
+								value={rhythm}
+								unit="px"
+								onChange={(newRhythm: number) => {
+									setRhythm(newRhythm);
+								}}
+							/>
+						</div>
+					) : null} */}
 
 					{ratio !== undefined ? (
 						<div className="flex flex-col">

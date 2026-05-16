@@ -1,6 +1,6 @@
-import { LARGE_TEXT_CUTOFFS } from "@/project/constants";
+import { LARGE_TEXT_CUTOFFS } from "@/store/constants";
 
-import { convertUnit, toPrecise, scale } from "@/project/helpers";
+import { convertUnit, toPrecise, scale } from "@/store/helpers";
 
 import {
 	type Breakpoint,
@@ -9,7 +9,7 @@ import {
 	type ProjectType,
 	type Style,
 	type Unit,
-} from "@/project/types";
+} from "@/store/types";
 
 export const createDefaultTextStyle = (): Style => ({
 	id: crypto.randomUUID(),

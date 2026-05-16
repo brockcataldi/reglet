@@ -1,8 +1,8 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import { CONVERSION_RATIOS } from "@/project/constants";
-import { type Unit } from "@/project/types";
+import { CONVERSION_RATIOS } from "@/store/constants";
+import { type Unit } from "@/store/types";
 
 export const scale = (step: number, base: number, ratio: number): number => {
 	return base * Math.pow(ratio, step);

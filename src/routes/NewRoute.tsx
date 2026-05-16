@@ -1,13 +1,12 @@
 import { useState } from "react";
 
-// import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
 import { TriangleAlert } from "lucide-react";
 
-import type { ProjectType, Unit } from "@/project/types";
-import { updateNewProject } from "@/project/actions";
+import type { ProjectType, Unit } from "@/store/types";
+import { updateNewProject } from "@/store/actions";
 
-import { RadioCards, RadioCard } from "@/components/ui/RadioCards";
-import { LinkButton } from "@/components/ui/Buttons";
+import { RadioCards, RadioCard } from "@/ui/RadioCards";
+import { LinkButton } from "@/ui/Buttons";
 
 const NewRoute = () => {
 	const [unit, setUnit] = useState<Unit>("rem");

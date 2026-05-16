@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-import { type Style, type Values } from "@/project/types";
-import { useSettingsUnit } from "@/project/hooks";
+import { type Style, type Values } from "@/store/types";
+import { useSettingsUnit } from "@/store/hooks";
 
-import { RadioBadge, RadioBadges } from "@/components/ui/RadioBadges";
+import { RadioBadge, RadioBadges } from "@/ui/RadioBadges";
 import { Heading, Pilcrow } from "lucide-react";
 
 type DisplayType = "heading" | "paragraph";

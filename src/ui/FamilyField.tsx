@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent } from "react";
 
-import { WEB_SAFE_FONTS } from "@/project/constants";
+import { WEB_SAFE_FONTS } from "@/store/constants";
 import { Button } from "./Buttons";
 import { TextBox } from "./TextBox";
 import {

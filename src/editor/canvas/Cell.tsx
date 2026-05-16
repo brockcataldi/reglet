@@ -1,19 +1,19 @@
 import type { ChangeEvent } from "react";
 import { Link, Unlink } from "lucide-react";
 
-import { type Values } from "@/project/types";
-import { useOverride, useSettingsUnit } from "@/project/hooks";
+import { type Values } from "@/store/types";
+import { useOverride, useSettingsUnit } from "@/store/hooks";
 import {
 	disableOverride,
 	enableOverride,
 	updateOverride,
-} from "@/project/actions";
+} from "@/store/actions";
 
-import UnitField from "@/components/ui/UnitField";
-import Display from "@/components/ui/Display";
-import { Stat } from "@/components/ui/Stat";
-import { Button } from "@/components/ui/Buttons";
-import { TextBox } from "@/components/ui/TextBox";
+import UnitField from "@/ui/UnitField";
+import Display from "@/ui/Display";
+import { Stat } from "@/ui/Stat";
+import { Button } from "@/ui/Buttons";
+import { TextBox } from "@/ui/TextBox";
 
 type CellProps = {
 	values: Values;

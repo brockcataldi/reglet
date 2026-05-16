@@ -2,7 +2,7 @@ import type { ComponentProps } from "react";
 import { Select as SelectPrimitive } from "radix-ui";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
-import { cn } from "@/project/helpers";
+import { cn } from "@/store/helpers";
 
 type SelectProps = {
 	className?: string;

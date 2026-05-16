@@ -1,4 +1,4 @@
-import { cn } from "@/project/helpers";
+import { cn } from "@/store/helpers";
 import { Tooltip as TooltipPrimitive } from "radix-ui";
 import type { ComponentProps } from "react";
 

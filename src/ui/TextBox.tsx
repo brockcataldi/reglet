@@ -1,4 +1,4 @@
-import { cn } from "@/project/helpers";
+import { cn } from "@/store/helpers";
 import { type ComponentProps } from "react";
 
 export const TextBox = ({ className, ...props }: ComponentProps<"input">) => {

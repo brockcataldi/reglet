@@ -2,12 +2,12 @@ import type { ReactNode } from "react";
 
 import { ChevronUp, ChevronDown } from "lucide-react";
 
-import { type Bounds } from "@/project/types";
-import { decrementBound, incrementBound } from "@/project/actions";
-import { suffix } from "@/project/helpers";
+import { type Bounds } from "@/store/types";
+import { decrementBound, incrementBound } from "@/store/actions";
+import { suffix } from "@/store/helpers";
 
-import { IconButton } from "@/components/ui/Buttons";
-import { Tooltip } from "@/components/ui/Tooltip";
+import { IconButton } from "@/ui/Buttons";
+import { Tooltip } from "@/ui/Tooltip";
 
 type RowProps = {
 	height: number;

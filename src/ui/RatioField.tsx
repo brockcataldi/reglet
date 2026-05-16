@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent } from "react";
 
-import { RATIOS } from "@/project/constants";
+import { RATIOS } from "@/store/constants";
 
 import { TextBox } from "./TextBox";
 import { Button } from "./Buttons";

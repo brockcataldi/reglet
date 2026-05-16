@@ -5,7 +5,7 @@ import {
 	useBreakpointTable,
 	useStyles,
 	useStylesLength,
-} from "@/project/hooks";
+} from "@/store/hooks";
 
 import HeaderCell from "./HeaderCell";
 import Row from "./Row";

@@ -1,8 +1,7 @@
 import { type ComponentProps } from "react";
 import { Link } from "react-router";
 import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/project/helpers";
-import { TEXT_BUTTON_STYLE } from "@/components/constants";
+import { cn } from "@/store/helpers";
 
 const buttonVariants = cva(
 	`rounded-md border text-sm font-medium shadow-md active:shadow-sm [&>svg]:size-4`,
@@ -31,7 +30,7 @@ export const Button = ({
 	return (
 		<button
 			className={cn(
-				TEXT_BUTTON_STYLE,
+				"flex w-fit flex-row items-center justify-center gap-3 px-4 py-2",
 				buttonVariants({ variant }),
 				className
 			)}
@@ -53,7 +52,7 @@ export const LinkButton = ({
 	return (
 		<Link
 			className={cn(
-				TEXT_BUTTON_STYLE,
+				"flex w-fit flex-row items-center justify-center gap-3 px-4 py-2",
 				buttonVariants({ variant }),
 				className
 			)}

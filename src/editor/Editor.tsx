@@ -1,4 +1,4 @@
-import Canvas from "@/components/reglet/canvas/Canvas";
+import Canvas from "@/editor/canvas/Canvas";
 import Aside from "./Aside";
 
 type EditorProps = {
