@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { cn } from '$lib/utilities';
-	import type { HTMLButtonAttributes } from 'svelte/elements';
+	import type { HTMLAnchorAttributes } from 'svelte/elements';
 	import { textButtonVariants, type TextButtonVariantsProps } from './Variants';
 
-	type ButtonProps = TextButtonVariantsProps & HTMLButtonAttributes;
+	type ButtonProps = TextButtonVariantsProps & HTMLAnchorAttributes;
 
 	let { class: className, variant, children, ...props }: ButtonProps = $props();
 </script>
 
-<button class={cn(textButtonVariants({ variant }), className)} {...props}>
+<a class={cn(textButtonVariants({ variant }), className)} {...props}>
 	{@render children?.()}
-</button>
+</a>
