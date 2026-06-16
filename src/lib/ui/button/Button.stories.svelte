@@ -29,4 +29,6 @@
 	<House strokeWidth={1.5} />
 </Story>
 
+<Story name="Primary" args={{ variant: 'primary' }}>Hello World!</Story>
+
 <Story name="Destructive" args={{ variant: 'destructive' }}>Hello World!</Story>

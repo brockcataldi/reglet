@@ -5,6 +5,15 @@
 	let { class: className, children, ...props }: HTMLSelectAttributes = $props();
 </script>
 
-<select class={cn('border-0 border-b', className)} {...props}>
+<select
+	class={cn(
+		'border-0 border-b font-mono text-sm',
+		'not-placeholder-shown:border-b-2 not-placeholder-shown:border-b-cobalt-500',
+		'hover:border-b-2 hover:border-b-cobalt-500',
+		'focus-visible:border-b-2 focus-visible:border-b-cobalt-500',
+		className
+	)}
+	{...props}
+>
 	{@render children?.()}
 </select>
