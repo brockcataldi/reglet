@@ -23,7 +23,7 @@
 		</ol>
 
 		<div>
-			<LinkButton href={resolve('/new')}>Get Started</LinkButton>
+			<LinkButton href={resolve('/new/initial')}>Get Started</LinkButton>
 		</div>
 	</div>
 </main>

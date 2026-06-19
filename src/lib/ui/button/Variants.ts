@@ -10,19 +10,10 @@ export const textButtonVariants = cva(
 		variants: {
 			variant: {
 				primary: `
-				 	text-white bg-cobalt-500 
-                    hover:bg-neutral-800 hover:text-white
-                    focus-visible:bg-neutral-800 focus-visible:text-white
-				`,
-
-				// idk a hover state for this?
-				secondary: `
                     text-white bg-neutral-800 
                     hover:bg-cobalt-500 hover:text-white
                     focus-visible:bg-cobalt-500 focus-visible:text-white
-                `,
-
-				// idk a hover state for this?
+				`,
 				destructive: `
                     text-white bg-red-700
                     hover:bg-red-800 hover:text-red-100
@@ -45,9 +36,9 @@ export const iconButtonVariants = cva(
 		variants: {
 			variant: {
 				primary: `
-				 	text-white bg-cobalt-500 
-                    hover:bg-neutral-800 hover:text-white
-                    focus-visible:bg-neutral-800 focus-visible:text-white
+                    text-white bg-neutral-800 
+                    hover:bg-cobalt-500 hover:text-white
+                    focus-visible:bg-cobalt-500 focus-visible:text-white
 				`,
 				destructive: `
                     text-white bg-red-700
