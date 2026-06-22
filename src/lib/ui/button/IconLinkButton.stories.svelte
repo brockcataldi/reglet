@@ -14,16 +14,15 @@
 			},
 			variant: {
 				control: { type: 'select' },
-				options: ['default', 'destructive']
+				options: ['primary', 'destructive']
 			}
 		}
 	});
 </script>
 
-<Story name="Default" args={{ label: 'Hello World' }}>
-	<House strokeWidth={1.5} />
-</Story>
+<Story name="Default" args={{ label: 'Hello World', icon: House }}></Story>
 
-<Story name="Destructive" args={{ variant: 'destructive', label: 'Hello World' }}>
-	<House strokeWidth={1.5} />
-</Story>
+<Story
+	name="Destructive"
+	args={{ variant: 'destructive', label: 'Hello World', icon: House }}
+></Story>

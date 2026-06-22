@@ -8,7 +8,12 @@
 		children?: Snippet;
 	};
 
-	let { class: className, children, group = $bindable(), ...props }: Props = $props();
+	let {
+		class: className,
+		children,
+		group = $bindable(),
+		...props
+	}: Props = $props();
 </script>
 
 <label class={cn('block cursor-pointer', className)}>

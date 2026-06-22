@@ -2,16 +2,24 @@
 	import { cn } from '$lib/utilities';
 	import type { HTMLAnchorAttributes } from 'svelte/elements';
 	import { iconButtonVariants, type IconButtonVariantsProps } from './Variants';
+	import type { Component } from 'svelte';
 
-	type ButtonProps = {
+	export type IconLinkButtonProps = {
 		label: string;
+		icon: Component;
 	} & IconButtonVariantsProps &
-		HTMLAnchorAttributes;
+		Omit<HTMLAnchorAttributes, 'children'>;
 
-	let { label, class: className, variant, children, ...props }: ButtonProps = $props();
+	let {
+		label,
+		class: className,
+		icon: Icon,
+		variant,
+		...props
+	}: IconLinkButtonProps = $props();
 </script>
 
 <a class={cn(iconButtonVariants({ variant }), className)} {...props}>
-	{@render children?.()}
+	<Icon strokeWidth={1.5} />
 	<span class="sr-only">{label}</span>
 </a>

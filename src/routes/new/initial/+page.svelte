@@ -4,13 +4,22 @@
 	import RadioCard from '$lib/ui/form/RadioCard.svelte';
 </script>
 
+<svelte:head>
+	<title>Initial Settings // New Project // Reglet</title>
+</svelte:head>
+
 <div class="w-full">
-	<h2 class="font-mono text-sm text-neutral-400 uppercase">Project Type</h2>
-	<hr class="my-2 text-neutral-400" />
+	<h2 class="font-mono text-sm text-neutral-600 uppercase">Project Type</h2>
+	<hr class="my-2 text-neutral-600" />
 	<div class="grid grid-cols-2 gap-2">
-		<RadioCard value="standard" class="h-full" bind:group={projectSettings.type}>
+		<RadioCard
+			value="standard"
+			class="h-full"
+			bind:group={projectSettings.type}
+		>
 			<span class="block font-semibold">Standard</span>
-			<span class="text-sm">Type sizes change at specific screen widths using set breakpoints.</span
+			<span class="text-sm"
+				>Type sizes change at specific screen widths using set breakpoints.</span
 			>
 		</RadioCard>
 		<RadioCard value="fluid" class="h-full" bind:group={projectSettings.type}>
@@ -23,8 +32,8 @@
 </div>
 
 <div class="w-full">
-	<h2 class="font-mono text-sm text-neutral-400 uppercase">Unit</h2>
-	<hr class="my-2 text-neutral-400" />
+	<h2 class="font-mono text-sm text-neutral-600 uppercase">Unit</h2>
+	<hr class="my-2 text-neutral-600" />
 	<div class="grid grid-cols-3 gap-2">
 		<RadioCard value="rem" bind:group={projectSettings.unit}>
 			<span class="block font-semibold">rem</span>
@@ -41,7 +50,8 @@
 		<RadioCard value="pt" bind:group={projectSettings.unit}>
 			<span class="block font-semibold">pt</span>
 			<span class="text-sm"
-				>Print-oriented points; mainly for print styles, not typical screen UI type.</span
+				>Print-oriented points; mainly for print styles, not typical screen UI
+				type.</span
 			>
 		</RadioCard>
 	</div>

@@ -11,5 +11,7 @@
 
 <Story name="Default" args={{ class: 'max-w-[200px]' }}>
 	<span class="block text-lg uppercase">Radio Card</span>
-	<span class="block text-sm"> Lorem ipsum dolor sit amet consectetur adipisicing elit. </span>
+	<span class="block text-sm">
+		Lorem ipsum dolor sit amet consectetur adipisicing elit.
+	</span>
 </Story>

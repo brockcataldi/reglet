@@ -48,7 +48,9 @@
 		}
 	];
 
-	const currentIndex = $derived(steps.findIndex((step) => step.href === page.url.pathname));
+	const currentIndex = $derived(
+		steps.findIndex((step) => step.href === page.url.pathname)
+	);
 
 	const previousStep: NavigationStep | undefined = $derived.by(() => {
 		if (currentIndex - 1 < 0) {
@@ -79,7 +81,9 @@
 					{#if step.display}
 						{#if currentIndex === index}
 							<li class=" border-r border-black first:border-l">
-								<span class="block bg-black px-2 py-1 font-mono text-sm text-white">
+								<span
+									class="block bg-black px-2 py-1 font-mono text-sm text-white"
+								>
 									{step.name}
 								</span>
 							</li>
@@ -113,7 +117,9 @@
 			{/if}
 
 			{#if nextStep !== undefined}
-				<LinkButton href={nextStep.href}>{nextStep.nextOverride ?? 'Next'}</LinkButton>
+				<LinkButton href={nextStep.href}
+					>{nextStep.nextOverride ?? 'Next'}</LinkButton
+				>
 			{:else}
 				<span></span>
 			{/if}

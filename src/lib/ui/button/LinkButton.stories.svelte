@@ -16,11 +16,22 @@
 	});
 </script>
 
-<Story name="Default">Hello World!</Story>
+<Story name="Default" args={{ label: 'Hello World!' }}></Story>
 
-<Story name="Default with Icon">
-	<House strokeWidth={1.5} />
-	Hello World!
-</Story>
+<Story
+	name="Default with prepended Icon"
+	args={{ label: 'Hello World!', icon: House }}
+></Story>
 
-<Story name="Destructive" args={{ variant: 'destructive' }}>Hello World!</Story>
+<Story
+	name="Default with appended Icon"
+	args={{ label: 'Hello World!', icon: House, iconPosition: 'append' }}
+></Story>
+
+<Story name="Primary" args={{ variant: 'primary', label: 'Hello World!' }}
+></Story>
+
+<Story
+	name="Destructive"
+	args={{ variant: 'destructive', label: 'Hello World!' }}
+></Story>
