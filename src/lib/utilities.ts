@@ -23,3 +23,12 @@ export function read<T>(key: string): T | undefined {
 		return undefined;
 	}
 }
+
+export function isAbsoluteUrl(href: string): boolean {
+	try {
+		const url = new URL(href);
+		return url.protocol === 'http:' || url.protocol === 'https:';
+	} catch {
+		return false;
+	}
+}

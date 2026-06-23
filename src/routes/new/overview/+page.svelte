@@ -1,4 +1,4 @@
 <svelte:head>
-	<title>Overview // New Project // Reglet</title>
+	<title>Overview // Reglet</title>
 </svelte:head>
 <h2>Overview</h2>

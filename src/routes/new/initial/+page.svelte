@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>Initial Settings // New Project // Reglet</title>
+	<title>Initial Settings // Reglet</title>
 </svelte:head>
 
 <div class="w-full">

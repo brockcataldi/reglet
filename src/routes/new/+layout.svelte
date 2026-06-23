@@ -29,12 +29,6 @@
 		},
 		{
 			display: true,
-			slug: 'advanced',
-			name: 'Advanced',
-			href: resolve('/new/advanced')
-		},
-		{
-			display: true,
 			slug: 'overview',
 			name: 'Overview',
 			href: resolve('/new/overview')
@@ -71,16 +65,18 @@
 
 <main class="grid min-h-dvh place-items-center">
 	<div
-		class="flex w-full max-w-140 flex-col items-start justify-start gap-4 border border-black p-8"
+		class="flex w-full max-w-140 flex-col items-start justify-start gap-4 border border-black"
 	>
-		<h1 class="text-6xl font-bold tracking-tighter">New Project</h1>
+		<header class="px-8 pt-8 pb-4">
+			<h1 class="text-6xl font-bold tracking-tighter">New Project</h1>
+		</header>
 
-		<nav class="mb-5 w-full">
-			<ul class="grid w-full grid-cols-4 border-y border-b-black">
+		<nav class="w-full border-b border-b-black px-8">
+			<ul class="grid w-full grid-cols-4">
 				{#each steps as step, index (step.slug)}
 					{#if step.display}
 						{#if currentIndex === index}
-							<li class=" border-r border-black first:border-l">
+							<li class=" border-t border-r border-black first:border-l">
 								<span
 									class="block bg-black px-2 py-1 font-mono text-sm text-white"
 								>
@@ -88,7 +84,7 @@
 								</span>
 							</li>
 						{:else}
-							<li class="border-r border-black first:border-l">
+							<li class="border-t border-r border-black first:border-l">
 								<a
 									href={step.href}
 									class="block px-2 py-1 font-mono text-sm
@@ -107,22 +103,25 @@
 			</ul>
 		</nav>
 
-		{@render children?.()}
+		<section class="w-full px-8">
+			{@render children?.()}
+		</section>
 
-		<div class="flex w-full flex-row items-center justify-between">
+		<section
+			class="flex w-full flex-row items-center justify-between px-8 pt-4 pb-8"
+		>
 			{#if previousStep !== undefined}
-				<LinkButton href={previousStep.href}>Previous</LinkButton>
+				<LinkButton href={previousStep.href} label="Previous" />
 			{:else}
 				<span></span>
 			{/if}
 
 			{#if nextStep !== undefined}
-				<LinkButton href={nextStep.href}
-					>{nextStep.nextOverride ?? 'Next'}</LinkButton
-				>
+				<LinkButton href={nextStep.href} label={nextStep.nextOverride ?? 'Next'}
+				></LinkButton>
 			{:else}
 				<span></span>
 			{/if}
-		</div>
+		</section>
 	</div>
 </main>

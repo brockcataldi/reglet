@@ -24,3 +24,7 @@ vite.config.ts.timestamp-*
 
 *storybook.log
 storybook-static
+
+
+# Internal Notes File
+scratch.md

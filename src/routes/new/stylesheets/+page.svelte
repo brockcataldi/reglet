@@ -9,7 +9,7 @@
 </script>
 
 <svelte:head>
-	<title>Stylesheets // New Project // Reglet</title>
+	<title>Stylesheets // Reglet</title>
 </svelte:head>
 <div class="w-full">
 	<h2 class="font-mono text-sm text-neutral-600 uppercase">
@@ -19,5 +19,9 @@
 		</label>
 	</h2>
 	<hr class="my-2 text-neutral-600" />
-	<TextArea id="stylesheets" bind:value={projectSettings.raw} {placeholder} />
+	<TextArea
+		id="stylesheets"
+		bind:value={projectSettings.rawStylesheets}
+		{placeholder}
+	/>
 </div>

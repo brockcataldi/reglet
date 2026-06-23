@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { cn } from '$lib/utilities';
-	import { type HTMLTextareaAttributes } from 'svelte/elements';
+	import type { HTMLTextareaAttributes } from 'svelte/elements';
 
 	let {
 		class: className,

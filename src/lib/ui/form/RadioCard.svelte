@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cn } from '$lib/utilities';
 	import type { Snippet } from 'svelte';
-	import { type HTMLInputAttributes } from 'svelte/elements';
+	import type { HTMLInputAttributes } from 'svelte/elements';
 
 	type Props = Omit<HTMLInputAttributes, 'type'> & {
 		class?: string;
