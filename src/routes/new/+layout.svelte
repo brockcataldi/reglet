@@ -63,9 +63,9 @@
 	});
 </script>
 
-<main class="grid min-h-dvh place-items-center">
+<main class="min-h-dvh">
 	<div
-		class="flex w-full max-w-140 flex-col items-start justify-start gap-4 border border-black"
+		class="mx-auto mt-4 flex w-full max-w-140 flex-col items-start justify-start gap-4 border border-black"
 	>
 		<header class="px-8 pt-8 pb-4">
 			<h1 class="text-6xl font-bold tracking-tighter">New Project</h1>

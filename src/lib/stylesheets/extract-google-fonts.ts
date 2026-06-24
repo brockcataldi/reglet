@@ -14,11 +14,11 @@ export const extractGoogleFonts = (link: string): RawGoogleFont[] => {
 		return families.map((family) => {
 			try {
 				return extractGoogleFont(family);
-			} catch (error) {
+			} catch {
 				return { family, faces: [] };
 			}
 		});
-	} catch (error) {
+	} catch {
 		return [];
 	}
 };
