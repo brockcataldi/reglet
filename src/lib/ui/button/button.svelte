@@ -3,7 +3,7 @@
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 	import { cn } from '$lib/utilities';
 
-	import { textButtonVariants, type TextButtonVariantsProps } from './Variants';
+	import { textButtonVariants, type TextButtonVariantsProps } from './variants';
 
 	type ButtonProps = {
 		icon?: Component;

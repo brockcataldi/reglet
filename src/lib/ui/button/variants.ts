@@ -4,13 +4,13 @@ export const textButtonVariants = cva(
 	`
         inline-flex gap-2 items-center justify-center 
         py-3 px-5 text-sm [&>svg]:size-5
-        uppercase font-mono
+        uppercase font-mono border
     `,
 	{
 		variants: {
 			variant: {
 				primary: `
-                    text-white bg-neutral-800 
+                    text-black bg-white border-black
                     hover:bg-cobalt-500 hover:text-white
                     focus-visible:bg-cobalt-500 focus-visible:text-white
 				`,
@@ -36,7 +36,7 @@ export const iconButtonVariants = cva(
 		variants: {
 			variant: {
 				primary: `
-                    text-white bg-neutral-800 
+                    text-white bg-black
                     hover:bg-cobalt-500 hover:text-white
                     focus-visible:bg-cobalt-500 focus-visible:text-white
 				`,

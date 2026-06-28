@@ -3,5 +3,20 @@
 @plugin '@tailwindcss/typography';
 
 @theme {
-	--color-cobalt-500: #0037ff;
+	--color-cobalt-base: #0037ff;
+	--color-sunburst-base: #ffd400; /* 3% brighter than --color-yellow-400 */
+
+	--color-cobalt-50: color-mix(in oklab, var(--color-cobalt-base) 8%, white);
+	--color-cobalt-100: color-mix(in oklab, var(--color-cobalt-base) 16%, white);
+	--color-cobalt-200: color-mix(in oklab, var(--color-cobalt-base) 28%, white);
+	--color-cobalt-300: color-mix(in oklab, var(--color-cobalt-base) 44%, white);
+	--color-cobalt-400: color-mix(in oklab, var(--color-cobalt-base) 68%, white);
+	--color-cobalt-500: var(--color-cobalt-base);
+	--color-cobalt-600: color-mix(in oklab, var(--color-cobalt-base) 85%, black);
+	--color-cobalt-700: color-mix(in oklab, var(--color-cobalt-base) 70%, black);
+	--color-cobalt-800: color-mix(in oklab, var(--color-cobalt-base) 55%, black);
+	--color-cobalt-900: color-mix(in oklab, var(--color-cobalt-base) 40%, black);
+	--color-cobalt-950: color-mix(in oklab, var(--color-cobalt-base) 25%, black);
+
+	--color-sunburst-500: var(--color-sunburst-base);
 }

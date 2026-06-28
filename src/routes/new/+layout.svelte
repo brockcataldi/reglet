@@ -2,7 +2,7 @@
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import type { ResolvedPathname } from '$app/types';
-	import LinkButton from '$lib/ui/button/LinkButton.svelte';
+	import LinkButton from '$lib/ui/button/link-button.svelte';
 
 	let { children } = $props();
 
@@ -63,46 +63,52 @@
 	});
 </script>
 
-<main class="min-h-dvh">
-	<div
-		class="mx-auto mt-4 flex w-full max-w-140 flex-col items-start justify-start gap-4 border border-black"
-	>
-		<header class="px-8 pt-8 pb-4">
-			<h1 class="text-6xl font-bold tracking-tighter">New Project</h1>
-		</header>
-
-		<nav class="w-full border-b border-b-black px-8">
-			<ul class="grid w-full grid-cols-4">
-				{#each steps as step, index (step.slug)}
-					{#if step.display}
-						{#if currentIndex === index}
-							<li class=" border-t border-r border-black first:border-l">
-								<span
-									class="block bg-black px-2 py-1 font-mono text-sm text-white"
-								>
-									{step.name}
-								</span>
-							</li>
-						{:else}
-							<li class="border-t border-r border-black first:border-l">
-								<a
-									href={step.href}
-									class="block px-2 py-1 font-mono text-sm
-									hover:bg-cobalt-500 hover:text-white
-									focus-visible:bg-cobalt-500 focus-visible:text-white
-								"
-								>
-									<span>
+<main class="min-h-dvh w-full">
+	<header class="w-full bg-sunburst-500 pt-8">
+		<div class="mx-auto my-0 w-full max-w-140 border border-b-0 border-black">
+			<h1
+				class="w-full px-8 pt-8 pb-4 text-6xl font-bold tracking-tighter text-black"
+			>
+				New Project
+			</h1>
+			<nav class="w-full border-b border-b-black px-8">
+				<ul class="grid w-full grid-cols-4">
+					{#each steps as step, index (step.slug)}
+						{#if step.display}
+							{#if currentIndex === index}
+								<li class=" border-t border-r border-black first:border-l">
+									<span
+										class="block bg-black px-2 py-1 font-mono text-sm text-white"
+									>
 										{step.name}
 									</span>
-								</a>
-							</li>
+								</li>
+							{:else}
+								<li
+									class="border-t border-r border-black bg-white first:border-l"
+								>
+									<a
+										href={step.href}
+										class="block px-2 py-1 font-mono text-sm
+										hover:bg-cobalt-500 hover:text-white
+										focus-visible:bg-cobalt-500 focus-visible:text-white
+									"
+									>
+										<span>
+											{step.name}
+										</span>
+									</a>
+								</li>
+							{/if}
 						{/if}
-					{/if}
-				{/each}
-			</ul>
-		</nav>
-
+					{/each}
+				</ul>
+			</nav>
+		</div>
+	</header>
+	<div
+		class="mx-auto flex w-full max-w-140 flex-col items-start justify-start gap-4 border border-t-0 border-black pt-4"
+	>
 		<section class="w-full px-8">
 			{@render children?.()}
 		</section>

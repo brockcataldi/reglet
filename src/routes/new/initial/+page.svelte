@@ -1,16 +1,16 @@
 <script lang="ts">
 	import projectSettings from '$lib/stores/project-settings.svelte';
 
-	import RadioCard from '$lib/ui/form/RadioCard.svelte';
+	import Separator from '$lib/ui/display/separator.svelte';
+	import RadioCard from '$lib/ui/form/radio-card.svelte';
 </script>
 
 <svelte:head>
-	<title>Initial Settings // Reglet</title>
+	<title>Initial Settings - Reglet</title>
 </svelte:head>
 
 <div class="w-full">
-	<h2 class="font-mono text-sm text-neutral-600 uppercase">Project Type</h2>
-	<hr class="my-2 text-neutral-600" />
+	<Separator as="h2">Project Type</Separator>
 	<div class="grid grid-cols-2 gap-2">
 		<RadioCard
 			value="standard"
@@ -32,8 +32,7 @@
 </div>
 
 <div class="mt-4 w-full">
-	<h2 class="font-mono text-sm text-neutral-600 uppercase">Unit</h2>
-	<hr class="my-2 text-neutral-600" />
+	<Separator as="h2">Unit</Separator>
 	<div class="grid grid-cols-3 gap-2">
 		<RadioCard value="rem" bind:group={projectSettings.unit}>
 			<span class="block text-2xl font-semibold">rem</span>

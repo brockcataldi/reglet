@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cn } from '$lib/utilities';
 	import type { HTMLAnchorAttributes } from 'svelte/elements';
-	import { textButtonVariants, type TextButtonVariantsProps } from './Variants';
+	import { textButtonVariants, type TextButtonVariantsProps } from './variants';
 	import type { Component } from 'svelte';
 
 	type LinkButtonProps = {
