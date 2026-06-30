@@ -47,7 +47,9 @@
 		</svelte:element>
 
 		{#if description}
-			<p class="font-mono text-xs text-cobalt-500 uppercase">{description}</p>
+			<p class="font-mono text-xs text-cobalt-500 uppercase">
+				{description}
+			</p>
 		{/if}
 	</div>
 

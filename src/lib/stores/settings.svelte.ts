@@ -1,18 +1,9 @@
+import type { ProjectType, Unit, SettingsState } from '$lib/types';
+import { KEY_SETTINGS } from '$lib/constants';
 import { read, write } from '$lib/utilities';
 import { extractStylesheetUrls } from '$lib/stylesheets/extract-stylesheet-urls';
 
-type ProjectType = 'standard' | 'fluid';
-type Unit = 'rem' | 'px' | 'pt';
-
-type ProjectSettingsState = {
-	type: ProjectType;
-	unit: Unit;
-	rawStylesheets: string;
-};
-
-const PROJECT_SETTINGS_KEY: string = 'project-settings';
-
-class ProjectSettings {
+class Settings {
 	#type = $state<ProjectType>('standard');
 	#unit = $state<Unit>('rem');
 	#rawStylesheets = $state<string>('');
@@ -20,7 +11,7 @@ class ProjectSettings {
 	#stylesheets = $derived(extractStylesheetUrls(this.rawStylesheets));
 
 	constructor() {
-		const cached = read<ProjectSettingsState>(PROJECT_SETTINGS_KEY);
+		const cached = read<SettingsState>(KEY_SETTINGS);
 
 		if (cached) {
 			this.type = cached.type;
@@ -30,13 +21,13 @@ class ProjectSettings {
 
 		$effect.root(() => {
 			$effect(() => {
-				const current: ProjectSettingsState = {
+				const current: SettingsState = {
 					type: this.type,
 					unit: this.unit,
 					rawStylesheets: this.rawStylesheets
 				};
 
-				write(PROJECT_SETTINGS_KEY, current);
+				write(KEY_SETTINGS, current);
 			});
 		});
 	}
@@ -70,5 +61,5 @@ class ProjectSettings {
 	}
 }
 
-const projectSettings = new ProjectSettings();
-export default projectSettings;
+const settings = new Settings();
+export default settings;

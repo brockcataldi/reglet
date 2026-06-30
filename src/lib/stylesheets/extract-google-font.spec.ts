@@ -39,7 +39,9 @@ describe('extract-google-font', () => {
 
 	it('two axes, multiple faces', () => {
 		expect(
-			extractGoogleFont('Playfair+Display:ital,wght@0,400;0,700;1,400;1,700')
+			extractGoogleFont(
+				'Playfair+Display:ital,wght@0,400;0,700;1,400;1,700'
+			)
 		).toStrictEqual({
 			family: 'Playfair+Display',
 			faces: [

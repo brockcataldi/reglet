@@ -3,9 +3,9 @@ import { extractGoogleFonts } from './extract-google-fonts';
 
 describe('extract-google-fonts', () => {
 	it('returns empty array for non-Google Fonts URLs', () => {
-		expect(extractGoogleFonts('https://example.com/style.css')).toStrictEqual(
-			[]
-		);
+		expect(
+			extractGoogleFonts('https://example.com/style.css')
+		).toStrictEqual([]);
 		expect(
 			extractGoogleFonts('http://fonts.googleapis.com/css2?family=Roboto')
 		).toStrictEqual([]);

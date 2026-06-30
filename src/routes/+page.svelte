@@ -7,8 +7,12 @@
 	<heading
 		class="flex w-full flex-col items-start justify-start gap-1 bg-sunburst-500 pt-10"
 	>
-		<div class="mx-auto my-0 w-full max-w-140 border border-black px-8 py-4">
-			<h1 class="text-9xl font-bold tracking-tighter text-black">Reglet</h1>
+		<div
+			class="mx-auto my-0 w-full max-w-140 border border-black px-8 py-4"
+		>
+			<h1 class="text-9xl font-bold tracking-tighter text-black">
+				Reglet
+			</h1>
 			<div class="flex items-center justify-start gap-4">
 				<p class="text-2xl text-black">reg&middot;let</p>
 				<p class="text-2xl text-black">

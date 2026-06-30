@@ -3,7 +3,7 @@
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
-	"packageManager": "pnpm@10.25.0",
+	"packageManager": "pnpm@11.9.0",
 	"engines": {
 		"node": ">=20"
 	},
@@ -51,6 +51,7 @@
 		"@lucide/svelte": "^1.17.0",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
-		"tailwind-merge": "^3.6.0"
+		"tailwind-merge": "^3.6.0",
+		"zod": "^4.4.3"
 	}
 }

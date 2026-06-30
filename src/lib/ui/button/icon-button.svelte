@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { cn } from '$lib/utilities';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
-	import { iconButtonVariants, type IconButtonVariantsProps } from './variants';
+	import {
+		iconButtonVariants,
+		type IconButtonVariantsProps
+	} from './variants';
 	import type { Component } from 'svelte';
 
 	type IconButtonProps = {

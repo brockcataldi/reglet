@@ -5,6 +5,10 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
+export const createId = () => {
+	return crypto.randomUUID();
+};
+
 export function write<T>(key: string, value: T) {
 	localStorage.setItem(key, JSON.stringify(value));
 }
@@ -22,6 +26,18 @@ export function read<T>(key: string): T | undefined {
 		console.error(error);
 		return undefined;
 	}
+}
+
+export function formatMaybePlurals(
+	length: number,
+	singular: string,
+	plural?: string
+) {
+	if (length === 1) {
+		return singular;
+	}
+
+	return plural ?? singular + 's';
 }
 
 export function isAbsoluteUrl(href: string): boolean {

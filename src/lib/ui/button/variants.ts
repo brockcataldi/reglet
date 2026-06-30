@@ -53,5 +53,9 @@ export const iconButtonVariants = cva(
 	}
 );
 
-export type TextButtonVariantsProps = VariantProps<typeof textButtonVariants>;
-export type IconButtonVariantsProps = VariantProps<typeof iconButtonVariants>;
+export type TextButtonVariantsProps = VariantProps<
+	typeof textButtonVariants
+>;
+export type IconButtonVariantsProps = VariantProps<
+	typeof iconButtonVariants
+>;

@@ -67,7 +67,10 @@ https://example.com/style.css
 <link rel="stylesheet" href="https://example.com/b.css">
             `
 			)
-		).toStrictEqual(['https://example.com/a.css', 'https://example.com/b.css']);
+		).toStrictEqual([
+			'https://example.com/a.css',
+			'https://example.com/b.css'
+		]);
 	});
 
 	it('multiple text based urls', () => {
@@ -78,7 +81,10 @@ https://example.com/a.css
 https://example.com/b.css
             `
 			)
-		).toStrictEqual(['https://example.com/a.css', 'https://example.com/b.css']);
+		).toStrictEqual([
+			'https://example.com/a.css',
+			'https://example.com/b.css'
+		]);
 	});
 
 	it('deduplicates urls from links and text', () => {
@@ -104,7 +110,9 @@ https://example.com/style.css
 	});
 
 	it('ignores link tags without href', () => {
-		expect(extractStylesheetUrls(`<link rel="stylesheet">`)).toStrictEqual([]);
+		expect(extractStylesheetUrls(`<link rel="stylesheet">`)).toStrictEqual(
+			[]
+		);
 	});
 
 	it('ignores link tags with empty href', () => {
@@ -171,9 +179,9 @@ https://example.com/style.css
 	});
 
 	it('accepts http urls in text lines', () => {
-		expect(extractStylesheetUrls(`http://example.com/style.css`)).toStrictEqual(
-			['http://example.com/style.css']
-		);
+		expect(
+			extractStylesheetUrls(`http://example.com/style.css`)
+		).toStrictEqual(['http://example.com/style.css']);
 	});
 
 	it('ignores non-http(s) urls in text lines', () => {

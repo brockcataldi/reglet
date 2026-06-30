@@ -2,6 +2,7 @@
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import type { ResolvedPathname } from '$app/types';
+	import project from '$lib/stores/project.svelte';
 	import LinkButton from '$lib/ui/button/link-button.svelte';
 
 	let { children } = $props();
@@ -12,6 +13,7 @@
 		name: string;
 		href: ResolvedPathname;
 		nextOverride?: string;
+		onclick?: () => void;
 	};
 
 	const steps: NavigationStep[] = [
@@ -38,7 +40,8 @@
 			slug: 'editor',
 			name: 'Editor',
 			href: resolve('/editor'),
-			nextOverride: 'Create'
+			nextOverride: 'Create',
+			onclick: () => project.createNewProject()
 		}
 	];
 
@@ -65,7 +68,9 @@
 
 <main class="min-h-dvh w-full">
 	<header class="w-full bg-sunburst-500 pt-8">
-		<div class="mx-auto my-0 w-full max-w-140 border border-b-0 border-black">
+		<div
+			class="mx-auto my-0 w-full max-w-140 border border-b-0 border-black"
+		>
 			<h1
 				class="w-full px-8 pt-8 pb-4 text-6xl font-bold tracking-tighter text-black"
 			>
@@ -123,7 +128,10 @@
 			{/if}
 
 			{#if nextStep !== undefined}
-				<LinkButton href={nextStep.href} label={nextStep.nextOverride ?? 'Next'}
+				<LinkButton
+					href={nextStep.href}
+					label={nextStep.nextOverride ?? 'Next'}
+					onclick={nextStep.onclick}
 				></LinkButton>
 			{:else}
 				<span></span>
