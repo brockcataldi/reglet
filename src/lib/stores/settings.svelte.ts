@@ -1,7 +1,7 @@
 import type { ProjectType, Unit, SettingsState } from '$lib/types';
 import { KEY_SETTINGS } from '$lib/constants';
 import { read, write } from '$lib/utilities';
-import { extractStylesheetUrls } from '$lib/stylesheets/extract-stylesheet-urls';
+import { extractStylesheetUrls } from '$lib/fonts/extract-stylesheet-urls';
 
 class Settings {
 	#type = $state<ProjectType>('standard');

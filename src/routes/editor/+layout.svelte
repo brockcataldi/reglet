@@ -3,6 +3,7 @@
 	import { page } from '$app/state';
 
 	import project from '$lib/stores/project.svelte';
+	import settings from '$lib/stores/settings.svelte';
 	import { formatMaybePlurals } from '$lib/utilities';
 
 	let { children } = $props();
@@ -42,9 +43,13 @@
 									<span
 										class="block min-w-30 border-r border-r-black bg-black px-4 py-1 text-white"
 									>
-										<span class="block font-mono text-sm"
-											>{breakpoint.width}px</span
-										>
+										<span class="block font-mono text-sm">
+											{#if settings.type === 'standard' && breakpoint.width === 0}
+												Root
+											{:else}
+												{breakpoint.width}px
+											{/if}
+										</span>
 										<span class="block font-mono text-xs"
 											>{breakpoint.lanes.length}
 											{formatMaybePlurals(
@@ -60,9 +65,13 @@
 										href={resolve(`/editor/${breakpoint.id}`)}
 										class="block min-w-30 border-r border-r-black bg-white px-4 py-1 text-black hover:bg-cobalt-500 hover:text-white focus-visible:bg-cobalt-500 focus-visible:text-white"
 									>
-										<span class="block font-mono text-sm"
-											>{breakpoint.width}px</span
-										>
+										<span class="block font-mono text-sm">
+											{#if settings.type === 'standard' && breakpoint.width === 0}
+												Root
+											{:else}
+												{breakpoint.width}px
+											{/if}
+										</span>
 										<span class="block font-mono text-xs"
 											>{breakpoint.lanes.length}
 											{formatMaybePlurals(

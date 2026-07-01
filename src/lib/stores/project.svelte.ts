@@ -1,11 +1,19 @@
+import { KEY_PROJECT } from '$lib/constants';
 import type { Breakpoint } from '$lib/types';
 import { read, write } from '$lib/utilities';
-import { createDefaultProject } from '$lib/stores/project';
+import { createDefaultProject } from '$lib/project/create-default-project';
 import settings from '$lib/stores/settings.svelte';
-import { KEY_PROJECT } from '$lib/constants';
+
+// 0 - 768
+// 768 - 1200
+// 1200 - 2000 || largest + 400
 
 class Project {
 	#breakpoints = $state<Breakpoint[]>([]);
+	#sortedBreakpoints = $derived(
+		this.breakpoints.sort((a, b) => a.width - b.width)
+	);
+	// #widths = $derived(this.sortedBreakpoints.map(breakpoint => breakpoint.width));
 
 	constructor() {
 		const cached = read<Breakpoint[]>(KEY_PROJECT);
@@ -27,6 +35,10 @@ class Project {
 
 	set breakpoints(value: Breakpoint[]) {
 		this.#breakpoints = value;
+	}
+
+	get sortedBreakpoints() {
+		return this.#sortedBreakpoints;
 	}
 
 	createNewProject() {
