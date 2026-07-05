@@ -15,9 +15,9 @@ export const textButtonVariants = cva(
                     focus-visible:bg-cobalt-500 focus-visible:text-white
 				`,
 				destructive: `
-                    text-white bg-red-700
-                    hover:bg-red-800 hover:text-red-100
-                    focus-visible:bg-red-800 focus-visible:text-red-100
+                    text-white bg-white border-red-800 text-red-800
+                    hover:bg-red-700 hover:text-white
+                    focus-visible:bg-red-800 focus-visible:text-white
                 `
 			}
 		},

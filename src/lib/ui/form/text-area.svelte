@@ -20,10 +20,3 @@
 	bind:value
 	{...props}
 ></textarea>
-
-<!-- field-sizing: content; /* Tells the browser to size based on text */
-  resize: none;         /* Disables the manual drag handle */
-  overflow-y: auto;     /* Adds a scrollbar only if max-height is hit */
-  
-  /* Optional: Set constraints using line-height units (lh) */
-  min-height: calc(2lh + 16px);  -->

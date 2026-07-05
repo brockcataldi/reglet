@@ -2,17 +2,11 @@
 	import { cn } from '$lib/utilities';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 
-	type CheckboxProps = {
+	type RadioProps = {
 		label: string;
 	} & Omit<HTMLInputAttributes, 'type'>;
 
-	let {
-		label,
-		id,
-		checked = $bindable(),
-		group = $bindable(),
-		...props
-	}: CheckboxProps = $props();
+	let { label, id, group = $bindable(), ...props }: RadioProps = $props();
 </script>
 
 <label
@@ -22,19 +16,12 @@
 		'has-disabled:cursor-not-allowed has-disabled:opacity-60'
 	)}
 >
-	<input
-		{id}
-		type="checkbox"
-		class="sr-only"
-		bind:checked
-		bind:group
-		{...props}
-	/>
+	<input type="radio" {id} class="sr-only" bind:group {...props} />
 
 	<span
 		aria-hidden="true"
 		class={cn(
-			'relative inline-block h-4 w-4 border border-black bg-white',
+			'relative inline-block h-4 w-4 shrink-0 rounded-4xl border border-black bg-white',
 			'group-hover:border-cobalt-500 group-hover:bg-cobalt-500',
 			'group-has-checked:border-black group-has-checked:bg-black',
 			'group-has-focus-visible:border-cobalt-500 group-has-focus-visible:bg-cobalt-500 group-has-focus-visible:outline-2 group-has-focus-visible:outline-offset-2 group-has-focus-visible:outline-cobalt-500',
@@ -46,9 +33,7 @@
 		class={cn(
 			'font-mono text-sm',
 			'group-hover:text-cobalt-500',
-			'group-has-focus-visible:text-cobalt-500',
-			'group-has-checked:group-hover:text-cobalt-700',
-			'group-has-checked:group-has-focus-visible:text-cobalt-700'
+			'group-has-checked:group-hover:text-cobalt-700'
 		)}>{label}</span
 	>
 </label>

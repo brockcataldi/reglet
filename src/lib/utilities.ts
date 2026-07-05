@@ -40,6 +40,13 @@ export function formatMaybePlurals(
 	return plural ?? singular + 's';
 }
 
+export function formatBreakpointLabel(
+	width: number,
+	standard: boolean = true
+) {
+	return standard === false || width > 0 ? `${width}px` : 'Root';
+}
+
 export function isAbsoluteUrl(href: string): boolean {
 	try {
 		const url = new URL(href);

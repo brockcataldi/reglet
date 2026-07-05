@@ -22,9 +22,10 @@
 	<span
 		class={cn(
 			'block h-full w-fit border border-black p-4 font-mono text-black',
-			'peer-checked:border-black peer-checked:bg-black peer-checked:text-white',
 			'hover:border-cobalt-500 hover:bg-cobalt-500 hover:text-white',
-			'peer-focus-visible:border-cobalt-500 peer-focus-visible:bg-cobalt-500 peer-focus-visible:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-cobalt-500 peer-focus-visible:ring-offset-2'
+			'peer-checked:border-black peer-checked:bg-black peer-checked:text-white',
+			'peer-focus-visible:border-cobalt-500 peer-focus-visible:bg-cobalt-500 peer-focus-visible:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-cobalt-500 peer-focus-visible:ring-offset-2',
+			'peer-checked:peer-focus-visible:bg-cobalt-700 peer-checked:hover:bg-cobalt-700'
 		)}
 	>
 		{@render children?.()}

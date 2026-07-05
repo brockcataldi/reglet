@@ -1,15 +1,10 @@
 <script lang="ts">
-	import project from '$lib/stores/project.svelte';
+	import settings from '$lib/stores/settings.svelte';
+	import Standard from './_components/Standard.svelte';
 </script>
 
-<h2>Editor Index</h2>
-
-<ul>
-	{#each project.breakpoints as breakpoint (breakpoint.id)}
-		<li>
-			<h2>
-				{breakpoint.width}
-			</h2>
-		</li>
-	{/each}
-</ul>
+{#if settings.type === 'standard'}
+	<Standard />
+{:else}
+	<h1>Fluid Project</h1>
+{/if}
