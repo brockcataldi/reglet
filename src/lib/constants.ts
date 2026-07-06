@@ -4,26 +4,31 @@ export const KEY_PROJECT = 'reglet-project';
 export const PROJECT_DEFAULTS_FLUID = {
 	min: {
 		width: 300,
-		modifier: 1
+		modifier: 1,
+		label: 'Min'
 	},
 	max: {
 		width: 1000,
-		modifier: 1.2
+		modifier: 1.2,
+		label: 'Max'
 	}
 } as const;
 
 export const PROJECT_DEFAULTS_STANDARD = [
 	{
 		width: 0,
-		modifier: 1
+		modifier: 1,
+		label: 'Root'
 	},
 	{
 		width: 768,
-		modifier: 1.1
+		modifier: 1.1,
+		label: 'Tablet'
 	},
 	{
 		width: 1200,
-		modifier: 1.2
+		modifier: 1.2,
+		label: 'Desktop'
 	}
 ] as const;
 

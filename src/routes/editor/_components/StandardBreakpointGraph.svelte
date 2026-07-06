@@ -9,7 +9,7 @@
 	import Checkbox from '$lib/ui/form/checkbox.svelte';
 	import Separator from '$lib/ui/display/separator.svelte';
 
-    let visibleDevices = $state<string[]>([
+	let visibleDevices = $state<string[]>([
 		'iphone-16',
 		'iphone-16-pro-max',
 		'ipad-mini',
@@ -19,7 +19,6 @@
 		'macbook-pro-16',
 		'monitor-1080p'
 	]);
-
 
 	let widths = $derived(
 		project.sortedBreakpoints.map((breakpoint) => ({
@@ -75,7 +74,7 @@
 	};
 </script>
 
-<section class="w-full py-4">
+<div class="w-full">
 	<div class="relative w-full pb-30">
 		{#each orientationGroups.tt as device (`tt-${device.slug}`)}
 			<div
@@ -137,6 +136,9 @@
 		{/each}
 	</div>
 
+	<h3 class="mb-4 text-4xl font-bold tracking-tighter text-black">
+		Toggle Devices
+	</h3>
 	<ul class="grid grid-cols-4 gap-2">
 		{#each Object.entries(typeGroups) as group (`group-type-${group[0]}`)}
 			<li>
@@ -145,8 +147,8 @@
 					{#each group[1] as device (`checkbox-${device.slug}`)}
 						<li>
 							<Checkbox
-								label={device.name}
 								id={device.name}
+								label={device.name}
 								value={device.slug}
 								checked={visibleDevices.includes(device.slug)}
 								onchange={(event) => {
@@ -162,4 +164,4 @@
 			</li>
 		{/each}
 	</ul>
-</section>
+</div>

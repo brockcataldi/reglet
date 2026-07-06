@@ -4,16 +4,19 @@ import { createDefaultLane } from './create-default-lane';
 
 export const createDefaultBreakpoint = ({
 	width,
+	label,
 	unit,
 	modifier
 }: {
 	width: number;
+	label: string;
 	unit: Unit;
 	modifier: number;
 }): Breakpoint => {
 	return {
 		id: createId(),
 		width,
+		label,
 		lanes: [createDefaultLane({ unit, modifier })]
 	};
 };

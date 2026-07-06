@@ -9,6 +9,7 @@ type SettingsState = {
 
 type Breakpoint = {
 	id: string; // uuid
+	label: string;
 	width: number;
 	lanes: Lane[];
 };

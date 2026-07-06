@@ -10,7 +10,6 @@
 		label,
 		id,
 		checked = $bindable(),
-		group = $bindable(),
 		...props
 	}: CheckboxProps = $props();
 </script>
@@ -22,14 +21,7 @@
 		'has-disabled:cursor-not-allowed has-disabled:opacity-60'
 	)}
 >
-	<input
-		{id}
-		type="checkbox"
-		class="sr-only"
-		bind:checked
-		bind:group
-		{...props}
-	/>
+	<input {id} type="checkbox" class="sr-only" bind:checked {...props} />
 
 	<span
 		aria-hidden="true"

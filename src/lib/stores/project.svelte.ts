@@ -39,6 +39,30 @@ class Project {
 		return this.#sortedBreakpoints;
 	}
 
+	updateBreakpointName(id: string, label: string) {
+		const breakpoint = this.breakpoints.find(
+			(breakpoint) => breakpoint.id === id
+		);
+
+		if (!breakpoint) {
+			return;
+		}
+
+		breakpoint.label = label;
+	}
+
+	updateBreakpointWidth(id: string, value: number) {
+		const breakpoint = this.breakpoints.find(
+			(breakpoint) => breakpoint.id === id
+		);
+
+		if (!breakpoint) {
+			return;
+		}
+
+		breakpoint.width = value;
+	}
+
 	deleteBreakpoint(id: string) {
 		const index = this.breakpoints.findIndex(
 			(breakpoint) => breakpoint.id === id

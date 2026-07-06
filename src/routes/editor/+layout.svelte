@@ -3,11 +3,8 @@
 	import { page } from '$app/state';
 
 	import project from '$lib/stores/project.svelte';
-	import settings from '$lib/stores/settings.svelte';
-	import {
-		formatBreakpointLabel,
-		formatMaybePlurals
-	} from '$lib/utilities';
+	import { formatMaybePlurals } from '$lib/utilities';
+	import NavigationItem from './_components/NavigationItem.svelte';
 
 	let { children } = $props();
 
@@ -20,69 +17,48 @@
 	>
 		<div class="flex flex-row items-center justify-between">
 			<div class="flex flex-row items-center justify-start">
-				{#if id === undefined}
-					<span class="w-40 border-r bg-black px-2 py-1">
-						<h1
-							class="text-3xl font-bold tracking-tighter text-sunburst-500"
-						>
-							Reglet
-						</h1>
-					</span>
-				{:else}
-					<a
-						href={resolve('/editor')}
-						class="w-40 border-r border-r-black bg-sunburst-500 px-2 py-1 text-black
-                            hover:bg-cobalt-500 hover:text-white
-							focus-visible:bg-cobalt-500 focus-visible:text-white"
-					>
-						<h1 class="text-3xl font-bold tracking-tighter">Reglet</h1>
-					</a>
-				{/if}
+				<div
+					class="w-40 border-r border-r-black bg-sunburst-500 px-2 py-1 text-black"
+				>
+					<p class="text-3xl font-bold tracking-tighter">Reglet</p>
+				</div>
 				<nav>
 					<ul class="flex flex-row">
+						<li class="w-fit">
+							<NavigationItem
+								href={resolve('/editor/')}
+								active={id === undefined}
+							>
+								<span class="block font-mono text-sm font-bold">
+									Home
+								</span>
+								<span class="block font-mono text-xs"
+									>Edit Breakpoints</span
+								>
+							</NavigationItem>
+						</li>
 						{#each project.breakpoints as breakpoint (breakpoint.id)}
-							{#if breakpoint.id === id}
-								<li class="w-fit">
-									<span
-										class="block min-w-30 border-r border-r-black bg-black px-4 py-1 text-white"
-									>
-										<span class="block font-mono text-sm font-bold">
-											{formatBreakpointLabel(
-												breakpoint.width,
-												settings.type === 'standard'
-											)}
-										</span>
-										<span class="block font-mono text-xs"
-											>{breakpoint.lanes.length}
-											{formatMaybePlurals(
-												breakpoint.lanes.length,
-												'lane'
-											)}</span
-										>
+							<li class="w-fit">
+								<NavigationItem
+									href={resolve(`/editor/${breakpoint.id}`)}
+									active={breakpoint.id === id}
+								>
+									<span class="block font-mono text-sm font-bold">
+										{#if breakpoint.label === ''}
+											Needs Title
+										{:else}
+											{breakpoint.label}
+										{/if}
 									</span>
-								</li>
-							{:else}
-								<li class="w-fit">
-									<a
-										href={resolve(`/editor/${breakpoint.id}`)}
-										class="block min-w-30 border-r border-r-black bg-white px-4 py-1 text-black hover:bg-cobalt-500 hover:text-white focus-visible:bg-cobalt-500 focus-visible:text-white"
+									<span class="block font-mono text-xs"
+										>{breakpoint.lanes.length}
+										{formatMaybePlurals(
+											breakpoint.lanes.length,
+											'lane'
+										)}</span
 									>
-										<span class="block font-mono text-sm font-bold">
-											{formatBreakpointLabel(
-												breakpoint.width,
-												settings.type === 'standard'
-											)}
-										</span>
-										<span class="block font-mono text-xs"
-											>{breakpoint.lanes.length}
-											{formatMaybePlurals(
-												breakpoint.lanes.length,
-												'lane'
-											)}</span
-										>
-									</a>
-								</li>
-							{/if}
+								</NavigationItem>
+							</li>
 						{/each}
 					</ul>
 				</nav>
