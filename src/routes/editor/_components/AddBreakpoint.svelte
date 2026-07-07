@@ -1,16 +1,20 @@
 <script lang="ts">
 	import type { Breakpoint } from '$lib/types';
 
-	import project from '$lib/stores/project.svelte';
-
 	import Button from '$lib/ui/button/button.svelte';
 	import Input from '$lib/ui/form/input.svelte';
 
-	type BreakpointProps = {
-		breakpoint: Breakpoint;
-	};
+    let breakpoint = $state<Omit<Breakpoint, 'id'>>({
+        label: '',
+        width: 500,
+        lanes: []
+    });
 
-	let { breakpoint }: BreakpointProps = $props();
+    type AddBreakpointProps = {
+        onadd: (newBreakpoint: Omit<Breakpoint, 'id'>) => void
+    }
+
+    let { onadd }: AddBreakpointProps = $props();
 </script>
 
 <div class="w-full border border-black bg-white">
@@ -18,20 +22,14 @@
 		<div class="flex flex-col items-start justify-start gap-4">
 			<div>
 				<Input
-					id={`breakpoint-label-${breakpoint.id}`}
+					id='breakpoint-label-new'
 					placeholder="ex. Mobile"
 					class="text-4xl font-bold"
-					value={breakpoint.label}
-					oninput={(event) => {
-						project.updateBreakpointName(
-							breakpoint.id,
-							event.currentTarget.value
-						);
-					}}
+					bind:value={breakpoint.label}
 				/>
 				<label
 					class="font-mono text-sm text-neutral-600 uppercase"
-					for={`breakpoint-label-${breakpoint.id}`}
+					for='breakpoint-label-new'
 				>
 					Breakpoint Label
 				</label>
@@ -40,21 +38,17 @@
 				<div>
 					<div class="grid grid-cols-[1fr_32px] items-center gap-2">
 						<Input
-							id={`breakpoint-width-${breakpoint.id}`}
+							id='breakpoint-width-new'
 							type="number"
 							class="text-lg font-bold"
-							value={breakpoint.width}
-							oninput={(event) => {
-								const parsed = Number(event.currentTarget.value);
-								project.updateBreakpointWidth(breakpoint.id, parsed);
-							}}
+							bind:value={breakpoint.width}
 						/>
 						<p class="font-mono">px</p>
 					</div>
 
 					<label
 						class="font-mono text-sm text-neutral-600 uppercase"
-						for={`breakpoint-label-${breakpoint.id}`}
+						for='breakpoint-width-new'
 					>
 						Width Threshold
 					</label>
@@ -64,16 +58,15 @@
 						<li class="w-full">
 							<Button
 								class="w-full"
-								label="Duplicate"
-								onclick={() => project.duplicateBreakpoint(breakpoint.id)}
-							/>
-						</li>
-						<li class="w-full">
-							<Button
-								class="w-full"
-								variant="destructive"
-								label="Delete"
-								onclick={() => project.deleteBreakpoint(breakpoint.id)}
+								label="Create"
+								onclick={() => {
+                                    onadd(breakpoint);
+                                    breakpoint = {
+                                        label: '',
+                                        width: 500,
+                                        lanes: []
+                                    }
+                                }}
 							/>
 						</li>
 					</ul>

@@ -37,7 +37,7 @@
 								>
 							</NavigationItem>
 						</li>
-						{#each project.breakpoints as breakpoint (breakpoint.id)}
+						{#each project.sortedBreakpoints as breakpoint (breakpoint.id)}
 							<li class="w-fit">
 								<NavigationItem
 									href={resolve(`/editor/${breakpoint.id}`)}

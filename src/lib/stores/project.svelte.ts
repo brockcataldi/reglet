@@ -1,7 +1,7 @@
 import { KEY_PROJECT } from '$lib/constants';
 import type { Breakpoint } from '$lib/types';
 
-import { read, write } from '$lib/utilities';
+import { createId, read, write } from '$lib/utilities';
 import { createDefaultProject } from '$lib/project/create-default-project';
 
 import settings from '$lib/stores/settings.svelte';
@@ -37,6 +37,30 @@ class Project {
 
 	get sortedBreakpoints() {
 		return this.#sortedBreakpoints;
+	}
+
+	addBreakpoint(newBreakpoint: Omit<Breakpoint, 'id'>){
+		this.breakpoints.push({
+			...newBreakpoint,
+			id: createId()
+		})
+	}
+
+	duplicateBreakpoint(id: string) {
+		const breakpoint = this.breakpoints.find(
+			(breakpoint) => breakpoint.id === id
+		);
+
+		if (!breakpoint) {
+			return;
+		}
+
+		this.breakpoints.push({
+			...breakpoint,
+			id: createId(),
+			width: breakpoint.width + 1,
+			label: `${breakpoint.label} Copy`
+		});
 	}
 
 	updateBreakpointName(id: string, label: string) {
