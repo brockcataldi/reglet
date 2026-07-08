@@ -39,11 +39,11 @@ class Project {
 		return this.#sortedBreakpoints;
 	}
 
-	addBreakpoint(newBreakpoint: Omit<Breakpoint, 'id'>){
+	addBreakpoint(newBreakpoint: Omit<Breakpoint, 'id'>) {
 		this.breakpoints.push({
 			...newBreakpoint,
 			id: createId()
-		})
+		});
 	}
 
 	duplicateBreakpoint(id: string) {

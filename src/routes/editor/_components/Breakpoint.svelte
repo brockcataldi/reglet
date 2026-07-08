@@ -1,33 +1,37 @@
 <script lang="ts">
 	import type { Breakpoint } from '$lib/types';
 
-	import project from '$lib/stores/project.svelte';
-
 	import Button from '$lib/ui/button/button.svelte';
 	import Input from '$lib/ui/form/input.svelte';
+	import InputUnit from '$lib/ui/form/input-unit.svelte';
 
 	type BreakpointProps = {
 		breakpoint: Breakpoint;
+		onnamechange: (newName: string) => void;
+		onwidthchange: (newWidth: number) => void;
+		ondelete: () => void;
+		onduplicate: () => void;
 	};
 
-	let { breakpoint }: BreakpointProps = $props();
+	let {
+		breakpoint,
+		onnamechange,
+		onwidthchange,
+		ondelete,
+		onduplicate
+	}: BreakpointProps = $props();
 </script>
 
 <div class="w-full border border-black bg-white">
-	<div class="group block p-4">
-		<div class="flex flex-col items-start justify-start gap-4">
-			<div>
+	<div class="block p-4">
+		<div class="grid grid-cols-[3fr_1.5fr_1fr] gap-4">
+			<div class="w-full">
 				<Input
 					id={`breakpoint-label-${breakpoint.id}`}
 					placeholder="ex. Mobile"
-					class="text-4xl font-bold"
+					class="w-full text-4xl font-bold"
 					value={breakpoint.label}
-					oninput={(event) => {
-						project.updateBreakpointName(
-							breakpoint.id,
-							event.currentTarget.value
-						);
-					}}
+					oninput={(event) => onnamechange(event.currentTarget.value)}
 				/>
 				<label
 					class="font-mono text-sm text-neutral-600 uppercase"
@@ -36,48 +40,46 @@
 					Breakpoint Label
 				</label>
 			</div>
-			<div class="grid grid-cols-[2fr_3fr] gap-4">
-				<div>
-					<div class="grid grid-cols-[1fr_32px] items-center gap-2">
-						<Input
-							id={`breakpoint-width-${breakpoint.id}`}
-							type="number"
-							class="text-lg font-bold"
-							value={breakpoint.width}
-							oninput={(event) => {
-								const parsed = Number(event.currentTarget.value);
-								project.updateBreakpointWidth(breakpoint.id, parsed);
-							}}
-						/>
-						<p class="font-mono">px</p>
-					</div>
+			<div>
+				<InputUnit
+					id={`breakpoint-width-${breakpoint.id}`}
+					unit="px"
+					type="number"
+					class="text-4xl font-bold"
+					unitClass="text-2xl"
+					min={0}
+					step={1}
+					value={breakpoint.width}
+					oninput={(event) =>
+						onwidthchange(Number(event.currentTarget.value))}
+				/>
 
-					<label
-						class="font-mono text-sm text-neutral-600 uppercase"
-						for={`breakpoint-label-${breakpoint.id}`}
-					>
-						Width Threshold
-					</label>
-				</div>
-				<div>
-					<ul class="grid grid-cols-2 gap-2">
-						<li class="w-full">
-							<Button
-								class="w-full"
-								label="Duplicate"
-								onclick={() => project.duplicateBreakpoint(breakpoint.id)}
-							/>
-						</li>
-						<li class="w-full">
-							<Button
-								class="w-full"
-								variant="destructive"
-								label="Delete"
-								onclick={() => project.deleteBreakpoint(breakpoint.id)}
-							/>
-						</li>
-					</ul>
-				</div>
+				<label
+					class="font-mono text-sm text-neutral-600 uppercase"
+					for={`breakpoint-label-${breakpoint.id}`}
+				>
+					Width Threshold
+				</label>
+			</div>
+
+			<div>
+				<ul class="flex flex-col items-start justify-start gap-2">
+					<li class="w-full">
+						<Button
+							class="w-full py-2"
+							label="Duplicate"
+							onclick={() => onduplicate()}
+						/>
+					</li>
+					<li class="w-full">
+						<Button
+							class="w-full py-2"
+							variant="destructive"
+							label="Delete"
+							onclick={() => ondelete()}
+						/>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>

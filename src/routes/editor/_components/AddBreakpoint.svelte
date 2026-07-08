@@ -2,75 +2,85 @@
 	import type { Breakpoint } from '$lib/types';
 
 	import Button from '$lib/ui/button/button.svelte';
+	import InputUnit from '$lib/ui/form/input-unit.svelte';
 	import Input from '$lib/ui/form/input.svelte';
 
-    let breakpoint = $state<Omit<Breakpoint, 'id'>>({
-        label: '',
-        width: 500,
-        lanes: []
-    });
+	let breakpoint = $state<Omit<Breakpoint, 'id'>>({
+		label: '',
+		width: 500,
+		lanes: []
+	});
 
-    type AddBreakpointProps = {
-        onadd: (newBreakpoint: Omit<Breakpoint, 'id'>) => void
-    }
+	type AddBreakpointProps = {
+		onadd: (newBreakpoint: Omit<Breakpoint, 'id'>) => void;
+		oncancel: () => void;
+	};
 
-    let { onadd }: AddBreakpointProps = $props();
+	let { onadd, oncancel }: AddBreakpointProps = $props();
 </script>
 
 <div class="w-full border border-black bg-white">
-	<div class="group block p-4">
-		<div class="flex flex-col items-start justify-start gap-4">
-			<div>
+	<div class="block p-4">
+		<div class="grid grid-cols-[3fr_1.5fr_1fr] gap-4">
+			<div class="w-full">
 				<Input
-					id='breakpoint-label-new'
+					id="breakpoint-label-new"
 					placeholder="ex. Mobile"
-					class="text-4xl font-bold"
+					class="w-full text-4xl font-bold"
 					bind:value={breakpoint.label}
 				/>
 				<label
 					class="font-mono text-sm text-neutral-600 uppercase"
-					for='breakpoint-label-new'
+					for="breakpoint-label-new"
 				>
 					Breakpoint Label
 				</label>
 			</div>
-			<div class="grid grid-cols-[2fr_3fr] gap-4">
-				<div>
-					<div class="grid grid-cols-[1fr_32px] items-center gap-2">
-						<Input
-							id='breakpoint-width-new'
-							type="number"
-							class="text-lg font-bold"
-							bind:value={breakpoint.width}
-						/>
-						<p class="font-mono">px</p>
-					</div>
+			<div>
+				<InputUnit
+					id="breakpoint-label-width"
+					unit="px"
+					type="number"
+					class="text-4xl font-bold"
+					unitClass="text-2xl"
+					min={0}
+					step={1}
+					bind:value={breakpoint.width}
+				/>
 
-					<label
-						class="font-mono text-sm text-neutral-600 uppercase"
-						for='breakpoint-width-new'
-					>
-						Width Threshold
-					</label>
-				</div>
-				<div>
-					<ul class="grid grid-cols-2 gap-2">
-						<li class="w-full">
-							<Button
-								class="w-full"
-								label="Create"
-								onclick={() => {
-                                    onadd(breakpoint);
-                                    breakpoint = {
-                                        label: '',
-                                        width: 500,
-                                        lanes: []
-                                    }
-                                }}
-							/>
-						</li>
-					</ul>
-				</div>
+				<label
+					class="font-mono text-sm text-neutral-600 uppercase"
+					for="breakpoint-label-width"
+				>
+					Width Threshold
+				</label>
+			</div>
+
+			<div>
+				<ul class="flex flex-col items-start justify-start gap-2">
+					<li class="w-full">
+						<Button
+							class="w-full py-2"
+							label="Add"
+							onclick={() => {
+								onadd(breakpoint);
+								breakpoint = {
+									label: '',
+									width: 500,
+									lanes: []
+								};
+							}}
+						/>
+					</li>
+					<li class="w-full">
+						<Button
+							class="w-full py-2"
+							variant="destructive"
+							label="Cancel"
+							onclick={() => oncancel()}
+						/>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>

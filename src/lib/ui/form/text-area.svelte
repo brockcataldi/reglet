@@ -11,8 +11,7 @@
 
 <textarea
 	class={cn(
-		'field-sizing-content min-h-[6rlh] w-full resize-none border-0 border-b px-1 py-2 font-mono text-sm',
-		'not-placeholder-shown:border-b-2 not-placeholder-shown:border-b-cobalt-500',
+		'field-sizing-content min-h-[6rlh] w-full resize-none border-0 border-b border-black px-1 py-2 font-mono text-sm',
 		'hover:border-b-2 hover:border-b-cobalt-500',
 		'focus-visible:border-b-2 focus-visible:border-b-cobalt-500',
 		className
