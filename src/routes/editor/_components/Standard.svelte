@@ -2,9 +2,9 @@
 	import project from '$lib/stores/project.svelte';
 
 	import Breakpoint from './Breakpoint.svelte';
-	import StandardBreakpointGraph from './StandardBreakpointGraph.svelte';
 	import AddBreakpoint from './AddBreakpoint.svelte';
 	import Button from '$lib/ui/button/button.svelte';
+	import BreakpointGraph from './BreakpointGraph.svelte';
 
 	let showAdd = $state(false);
 </script>
@@ -16,28 +16,29 @@
 				<h1 class="mb-4 text-7xl font-bold tracking-tighter text-black">
 					Breakpoints
 				</h1>
-				<Button
-					label={showAdd ? 'Cancel Adding' : 'Add Breakpoint'}
-					variant={showAdd ? 'destructive' : 'primary'}
-					onclick={() => {
-						showAdd = !showAdd;
-					}}
-				/>
+
+				{#if showAdd === false}
+					<Button
+						label="Add Breakpoint"
+						variant="primary"
+						onclick={() => {
+							showAdd = !showAdd;
+						}}
+					/>
+				{/if}
 			</header>
 
 			{#if showAdd}
-				<div class="py-4">
-					<AddBreakpoint
-						onadd={(newBreakpoint) => {
-							project.addBreakpoint(newBreakpoint);
-							showAdd = false;
-						}}
-						oncancel={() => {
-							showAdd = false;
-						}}
-					/>
-				</div>
-				<hr class="mb-4" />
+				<AddBreakpoint
+					onadd={(newBreakpoint) => {
+						project.addBreakpoint(newBreakpoint);
+						showAdd = false;
+					}}
+					oncancel={() => {
+						showAdd = false;
+					}}
+				/>
+				<hr class="my-4" />
 			{/if}
 
 			<ul class="flex w-full flex-col gap-4">
@@ -55,12 +56,6 @@
 						/>
 					</li>
 				{/each}
-				<!-- <li class="w-full">
-					<CreateBreakpoint
-						oncreate={(newBreakpoint) =>
-							project.addBreakpoint(newBreakpoint)}
-					/>
-				</li> -->
 			</ul>
 		</div>
 	</section>
@@ -70,7 +65,7 @@
 			<h2 class="text-6xl font-bold tracking-tighter text-black">
 				Visualizer
 			</h2>
-			<StandardBreakpointGraph />
+			<BreakpointGraph />
 		</div>
 	</section>
 </div>

@@ -27,7 +27,7 @@
 >
 	<input
 		class={cn(
-			'peer w-full border-0 border-b border-black px-1 py-2 text-right font-mono text-sm',
+			'peer w-full border-0 border-b border-black px-1 py-2 text-right font-mono text-sm bg-transparent',
 			'disabled:bg-neutral-100',
 			'hover:border-b-2 hover:border-b-cobalt-500',
 			'focus-visible:border-b-2 focus-visible:border-b-cobalt-500',

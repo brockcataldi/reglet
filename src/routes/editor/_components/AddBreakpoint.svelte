@@ -1,15 +1,29 @@
 <script lang="ts">
+	import z from 'zod';
+
 	import type { Breakpoint } from '$lib/types';
 
 	import Button from '$lib/ui/button/button.svelte';
 	import InputUnit from '$lib/ui/form/input-unit.svelte';
 	import Input from '$lib/ui/form/input.svelte';
+	import Separator from '$lib/ui/display/separator.svelte';
 
-	let breakpoint = $state<Omit<Breakpoint, 'id'>>({
-		label: '',
-		width: 500,
-		lanes: []
+	let addBreakpointSchema = z.object({
+		label: z.string().trim().min(1, { error: 'Breakpoint Label cannot be empty' }),
+		width: z
+			.number({ error: 'Width Threshold cannot be empty' })
+			.min(0, { error: 'Width Threshold cannot be negative' })
 	});
+
+	type AddBreakpointSchema = z.infer<typeof addBreakpointSchema>;
+
+	let breakpoint = $state<Omit<Breakpoint, 'id' | 'lanes'>>({
+		label: '',
+		width: 500
+	});
+	let errors = $state<Partial<Record<keyof AddBreakpointSchema, string>>>(
+		{}
+	);
 
 	type AddBreakpointProps = {
 		onadd: (newBreakpoint: Omit<Breakpoint, 'id'>) => void;
@@ -17,26 +31,64 @@
 	};
 
 	let { onadd, oncancel }: AddBreakpointProps = $props();
-</script>
 
-<div class="w-full border border-black bg-white">
+	const validate = (): Omit<Breakpoint, 'id' | 'lanes'> | undefined => {
+		const validation = addBreakpointSchema.safeParse(breakpoint);
+
+		if (validation.success) {
+			return validation.data;
+		}
+
+		const fieldErrors = z.flattenError(validation.error).fieldErrors;
+
+		errors = {
+			label: fieldErrors.label?.[0],
+			width: fieldErrors.width?.[0]
+		};
+
+		return undefined;
+	};
+	const onclickAdd = () => {
+		const data = validate();
+
+		if (!data) {
+			return;
+		}
+
+		onadd({
+			...data,
+			lanes: []
+		});
+
+		breakpoint = {
+			label: '',
+			width: 500
+		};
+
+		return;
+	};
+
+</script>
+<div class='w-full border border-black bg-white'>
 	<div class="block p-4">
 		<div class="grid grid-cols-[3fr_1.5fr_1fr] gap-4">
 			<div class="w-full">
+				<Separator as="label" for="breakpoint-label-new">Breakpoint Label</Separator>
 				<Input
 					id="breakpoint-label-new"
 					placeholder="ex. Mobile"
 					class="w-full text-4xl font-bold"
 					bind:value={breakpoint.label}
 				/>
-				<label
-					class="font-mono text-sm text-neutral-600 uppercase"
-					for="breakpoint-label-new"
-				>
-					Breakpoint Label
-				</label>
+
+				{#if errors.label}
+					<p>
+						{errors.label}
+					</p>
+				{/if}
 			</div>
 			<div>
+				<Separator as="label" for="breakpoint-label-width">Width Threshold</Separator>
 				<InputUnit
 					id="breakpoint-label-width"
 					unit="px"
@@ -48,29 +100,17 @@
 					bind:value={breakpoint.width}
 				/>
 
-				<label
-					class="font-mono text-sm text-neutral-600 uppercase"
-					for="breakpoint-label-width"
-				>
-					Width Threshold
-				</label>
+				{#if errors.width}
+					<p>
+						{errors.width}
+					</p>
+				{/if}
 			</div>
 
 			<div>
 				<ul class="flex flex-col items-start justify-start gap-2">
 					<li class="w-full">
-						<Button
-							class="w-full py-2"
-							label="Add"
-							onclick={() => {
-								onadd(breakpoint);
-								breakpoint = {
-									label: '',
-									width: 500,
-									lanes: []
-								};
-							}}
-						/>
+						<Button class="w-full py-2" label="Add" onclick={onclickAdd} />
 					</li>
 					<li class="w-full">
 						<Button
