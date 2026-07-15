@@ -3,7 +3,6 @@
 	import { page } from '$app/state';
 
 	import project from '$lib/stores/project.svelte';
-	import { formatMaybePlurals } from '$lib/utilities';
 	import NavigationItem from './_components/NavigationItem.svelte';
 
 	let { children } = $props();
@@ -30,7 +29,7 @@
 								active={id === undefined}
 							>
 								<span class="block font-mono text-sm font-bold">
-									Home
+									Index
 								</span>
 								<span class="block font-mono text-xs"
 									>Edit Breakpoints</span
@@ -51,11 +50,7 @@
 										{/if}
 									</span>
 									<span class="block font-mono text-xs"
-										>{breakpoint.lanes.length}
-										{formatMaybePlurals(
-											breakpoint.lanes.length,
-											'lane'
-										)}</span
+										>{breakpoint.width}px</span
 									>
 								</NavigationItem>
 							</li>

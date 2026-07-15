@@ -7,6 +7,9 @@
 	import BreakpointGraph from './BreakpointGraph.svelte';
 
 	let showAdd = $state(false);
+
+	const openAdd = () => (showAdd = true);
+	const hideAdd = () => (showAdd = false);
 </script>
 
 <div>
@@ -21,9 +24,7 @@
 					<Button
 						label="Add Breakpoint"
 						variant="primary"
-						onclick={() => {
-							showAdd = !showAdd;
-						}}
+						onclick={openAdd}
 					/>
 				{/if}
 			</header>
@@ -31,12 +32,10 @@
 			{#if showAdd}
 				<AddBreakpoint
 					onadd={(newBreakpoint) => {
-						project.addBreakpoint(newBreakpoint);
+						project.createBreakpoint(newBreakpoint);
 						showAdd = false;
 					}}
-					oncancel={() => {
-						showAdd = false;
-					}}
+					oncancel={hideAdd}
 				/>
 				<hr class="my-4" />
 			{/if}

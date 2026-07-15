@@ -2,10 +2,12 @@ import {
 	PROJECT_DEFAULTS_FLUID,
 	PROJECT_DEFAULTS_STANDARD
 } from '$lib/constants';
+
 import type { Unit, ProjectType, Breakpoint } from '$lib/types';
+
 import { createDefaultBreakpoint } from './create-default-breakpoint';
 
-export const createDefaultProject = ({
+export const createDefaultBreakpoints = ({
 	unit,
 	type
 }: {

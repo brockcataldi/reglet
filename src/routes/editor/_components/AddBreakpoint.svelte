@@ -3,13 +3,20 @@
 
 	import type { Breakpoint } from '$lib/types';
 
+	import settings from '$lib/stores/settings.svelte';
+
+	import { createDefaultScale } from '$lib/project/create-default-scale';
+
 	import Button from '$lib/ui/button/button.svelte';
 	import InputUnit from '$lib/ui/form/input-unit.svelte';
 	import Input from '$lib/ui/form/input.svelte';
 	import Separator from '$lib/ui/display/separator.svelte';
 
 	let addBreakpointSchema = z.object({
-		label: z.string().trim().min(1, { error: 'Breakpoint Label cannot be empty' }),
+		label: z
+			.string()
+			.trim()
+			.min(1, { error: 'Breakpoint Label cannot be empty' }),
 		width: z
 			.number({ error: 'Width Threshold cannot be empty' })
 			.min(0, { error: 'Width Threshold cannot be negative' })
@@ -17,10 +24,11 @@
 
 	type AddBreakpointSchema = z.infer<typeof addBreakpointSchema>;
 
-	let breakpoint = $state<Omit<Breakpoint, 'id' | 'lanes'>>({
+	let breakpoint = $state<Omit<Breakpoint, 'id' | 'defaultScale'>>({
 		label: '',
 		width: 500
 	});
+
 	let errors = $state<Partial<Record<keyof AddBreakpointSchema, string>>>(
 		{}
 	);
@@ -32,7 +40,9 @@
 
 	let { onadd, oncancel }: AddBreakpointProps = $props();
 
-	const validate = (): Omit<Breakpoint, 'id' | 'lanes'> | undefined => {
+	const validate = ():
+		| Omit<Breakpoint, 'id' | 'defaultScale'>
+		| undefined => {
 		const validation = addBreakpointSchema.safeParse(breakpoint);
 
 		if (validation.success) {
@@ -57,7 +67,10 @@
 
 		onadd({
 			...data,
-			lanes: []
+			defaultScale: createDefaultScale({
+				unit: settings.unit,
+				modifier: 1.15
+			})
 		});
 
 		breakpoint = {
@@ -67,28 +80,33 @@
 
 		return;
 	};
-
 </script>
-<div class='w-full border border-black bg-white'>
+
+<div class="w-full border border-black bg-white">
 	<div class="block p-4">
 		<div class="grid grid-cols-[3fr_1.5fr_1fr] gap-4">
 			<div class="w-full">
-				<Separator as="label" for="breakpoint-label-new">Breakpoint Label</Separator>
+				<Separator as="label" for="breakpoint-label-new"
+					>Breakpoint Label</Separator
+				>
 				<Input
 					id="breakpoint-label-new"
 					placeholder="ex. Mobile"
 					class="w-full text-4xl font-bold"
+					variant={errors.label ? 'error' : 'default'}
 					bind:value={breakpoint.label}
 				/>
 
 				{#if errors.label}
-					<p>
+					<p class="text-red-800">
 						{errors.label}
 					</p>
 				{/if}
 			</div>
 			<div>
-				<Separator as="label" for="breakpoint-label-width">Width Threshold</Separator>
+				<Separator as="label" for="breakpoint-label-width"
+					>Width Threshold</Separator
+				>
 				<InputUnit
 					id="breakpoint-label-width"
 					unit="px"
@@ -97,11 +115,13 @@
 					unitClass="text-2xl"
 					min={0}
 					step={1}
+					placeholder="400"
+					variant={errors.width ? 'error' : 'default'}
 					bind:value={breakpoint.width}
 				/>
 
 				{#if errors.width}
-					<p>
+					<p class="text-red-800">
 						{errors.width}
 					</p>
 				{/if}

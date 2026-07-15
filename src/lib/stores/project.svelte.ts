@@ -2,13 +2,12 @@ import { KEY_PROJECT } from '$lib/constants';
 import type { Breakpoint } from '$lib/types';
 
 import { createId, read, write } from '$lib/utilities';
-import { createDefaultProject } from '$lib/project/create-default-project';
+import { createDefaultBreakpoints } from '$lib/project/create-default-breakpoints';
 
 import settings from '$lib/stores/settings.svelte';
 
 class Project {
 	#breakpoints = $state<Breakpoint[]>([]);
-
 	#sortedBreakpoints = $derived(
 		this.breakpoints.toSorted((a, b) => a.width - b.width)
 	);
@@ -39,7 +38,11 @@ class Project {
 		return this.#sortedBreakpoints;
 	}
 
-	addBreakpoint(newBreakpoint: Omit<Breakpoint, 'id'>) {
+	readBreakpoint(id: string) {
+		return this.breakpoints.find((breakpoint) => breakpoint.id === id);
+	}
+
+	createBreakpoint(newBreakpoint: Omit<Breakpoint, 'id'>) {
 		this.breakpoints.push({
 			...newBreakpoint,
 			id: createId()
@@ -98,7 +101,7 @@ class Project {
 	}
 
 	createNewProject() {
-		this.breakpoints = createDefaultProject({
+		this.breakpoints = createDefaultBreakpoints({
 			type: settings.type,
 			unit: settings.unit
 		});

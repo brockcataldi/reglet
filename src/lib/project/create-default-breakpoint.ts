@@ -1,6 +1,6 @@
 import type { Breakpoint, Unit } from '$lib/types';
 import { createId } from '$lib/utilities';
-import { createDefaultLane } from './create-default-lane';
+import { createDefaultScale } from './create-default-scale';
 
 export const createDefaultBreakpoint = ({
 	width,
@@ -17,6 +17,6 @@ export const createDefaultBreakpoint = ({
 		id: createId(),
 		width,
 		label,
-		lanes: [createDefaultLane({ unit, modifier })]
+		defaultScale: createDefaultScale({ unit, modifier })
 	};
 };
