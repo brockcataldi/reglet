@@ -56,7 +56,7 @@
 		value = $bindable(),
 		variant,
 		...props
-	}: HTMLInputAttributes &
+	}: Omit<HTMLInputAttributes, 'type'> &
 		InputUnitProps &
 		InputUnitInputVariants = $props();
 </script>
@@ -69,6 +69,7 @@
 >
 	<input
 		class={cn(inputUnitInputVariants({ variant }), className)}
+		type="number"
 		{...props}
 		bind:value
 	/>

@@ -3,6 +3,9 @@
 	import LinkButton from '$lib/ui/button/link-button.svelte';
 </script>
 
+<svelte:head>
+	<title>Reglet</title>
+</svelte:head>
 <main class="h-dvh w-full">
 	<heading
 		class="flex w-full flex-col items-start justify-start gap-1 bg-sunburst-500 pt-10"

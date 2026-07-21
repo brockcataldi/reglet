@@ -6,6 +6,7 @@ import { extractStylesheetUrls } from '$lib/fonts/extract-stylesheet-urls';
 class Settings {
 	#type = $state<ProjectType>('standard');
 	#unit = $state<Unit>('rem');
+	#precision = $state<number>(3);
 	#rawStylesheets = $state<string>('');
 
 	#stylesheets = $derived(extractStylesheetUrls(this.rawStylesheets));
@@ -16,6 +17,7 @@ class Settings {
 		if (cached) {
 			this.type = cached.type;
 			this.unit = cached.unit;
+			this.precision = cached.precision;
 			this.rawStylesheets = cached.rawStylesheets;
 		}
 
@@ -24,6 +26,7 @@ class Settings {
 				const current: SettingsState = {
 					type: this.type,
 					unit: this.unit,
+					precision: this.precision,
 					rawStylesheets: this.rawStylesheets
 				};
 
@@ -46,6 +49,14 @@ class Settings {
 
 	set unit(value: Unit) {
 		this.#unit = value;
+	}
+
+	get precision() {
+		return this.#precision;
+	}
+
+	set precision(value: number) {
+		this.#precision = value;
 	}
 
 	get rawStylesheets() {

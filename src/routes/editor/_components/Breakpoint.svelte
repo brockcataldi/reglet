@@ -44,7 +44,6 @@
 				<InputUnit
 					id={`breakpoint-width-${breakpoint.id}`}
 					unit="px"
-					type="number"
 					class="text-4xl font-bold"
 					unitClass="text-2xl"
 					min={0}

@@ -8,6 +8,12 @@
 	let breakpoint = $derived(project.readBreakpoint(params.id));
 </script>
 
+<svelte:head>
+	{#if breakpoint}
+		<title>{breakpoint.label} - Reglet</title>
+	{/if}
+</svelte:head>
+
 {#if breakpoint}
 	<Breakpoint {breakpoint} />
 {/if}

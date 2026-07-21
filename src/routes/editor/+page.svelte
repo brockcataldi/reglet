@@ -3,6 +3,9 @@
 	import Standard from './_components/Standard.svelte';
 </script>
 
+<svelte:head>
+	<title>Project - Reglet</title>
+</svelte:head>
 {#if settings.type === 'standard'}
 	<Standard />
 {:else}

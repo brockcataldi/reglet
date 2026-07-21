@@ -1,27 +1,36 @@
-import { KEY_PROJECT } from '$lib/constants';
-import type { Breakpoint } from '$lib/types';
+import {
+	KEY_PROJECT_BREAKPOINTS,
+	KEY_PROJECT_LANES
+} from '$lib/constants';
+import type { Breakpoint, Lane } from '$lib/types';
 
 import { createId, read, write } from '$lib/utilities';
 import { createDefaultBreakpoints } from '$lib/project/create-default-breakpoints';
+import { createDefaultLane } from '$lib/project/create-default-lane';
 
 import settings from '$lib/stores/settings.svelte';
 
 class Project {
 	#breakpoints = $state<Breakpoint[]>([]);
+	#lanes = $state<Lane[]>([]);
+
 	#sortedBreakpoints = $derived(
 		this.breakpoints.toSorted((a, b) => a.width - b.width)
 	);
 
 	constructor() {
-		const cached = read<Breakpoint[]>(KEY_PROJECT);
+		const cachedBreakpoints = read<Breakpoint[]>(KEY_PROJECT_BREAKPOINTS);
+		const cachedLanes = read<Lane[]>(KEY_PROJECT_LANES);
 
-		if (cached) {
-			this.breakpoints = cached;
+		if (cachedBreakpoints && cachedLanes) {
+			this.breakpoints = cachedBreakpoints;
+			this.lanes = cachedLanes;
 		}
 
 		$effect.root(() => {
 			$effect(() => {
-				write(KEY_PROJECT, this.breakpoints);
+				write(KEY_PROJECT_BREAKPOINTS, this.breakpoints);
+				write(KEY_PROJECT_LANES, this.lanes);
 			});
 		});
 	}
@@ -32,6 +41,14 @@ class Project {
 
 	set breakpoints(value: Breakpoint[]) {
 		this.#breakpoints = value;
+	}
+
+	get lanes() {
+		return this.#lanes;
+	}
+
+	set lanes(value: Lane[]) {
+		this.#lanes = value;
 	}
 
 	get sortedBreakpoints() {
@@ -105,6 +122,8 @@ class Project {
 			type: settings.type,
 			unit: settings.unit
 		});
+
+		this.lanes = [createDefaultLane()];
 	}
 }
 

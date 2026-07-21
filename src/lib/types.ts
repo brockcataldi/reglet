@@ -4,14 +4,16 @@ type Unit = 'rem' | 'px' | 'pt';
 type SettingsState = {
 	type: ProjectType;
 	unit: Unit;
+	precision: number;
 	rawStylesheets: string;
 };
 
 type Breakpoint = {
-	id: string; // uuid
+	id: string;
 	label: string;
 	width: number;
 	defaultScale: FullScaleSettings;
+	overrides: Record<string, number>;
 };
 
 type ScaleSettings = {
@@ -24,14 +26,7 @@ type FullScaleSettings = {
 	minStep: number;
 } & ScaleSettings;
 
-// type Lane = {
-// 	id: string;
-// 	font: FontSettings;
-// 	// // scale: ScaleSettings; to be added after, I think we make this optional overrides
-// 	// override: StepOverride[];
-// };
-
-type FontLane = {
+type Lane = {
 	id: string;
 	family: string;
 	weight: string | number;
@@ -45,12 +40,20 @@ type StepOverride = {
 	fontSize?: number;
 };
 
+type GridCell = {
+	step: number;
+	fontSize: number;
+	lineHeight: number;
+	laneId: string;
+} & Omit<Lane, 'id'>;
+
 export type {
 	ProjectType,
 	Unit,
 	SettingsState,
 	Breakpoint,
-	FontLane,
+	Lane,
 	ScaleSettings,
-	StepOverride
+	StepOverride,
+	GridCell
 };

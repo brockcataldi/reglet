@@ -1,5 +1,6 @@
 export const KEY_SETTINGS = 'reglet-settings';
-export const KEY_PROJECT = 'reglet-project';
+export const KEY_PROJECT_BREAKPOINTS = 'reglet-breakpoints';
+export const KEY_PROJECT_LANES = 'reglet-lanes';
 
 export const PROJECT_DEFAULTS_FLUID = {
 	min: {
