@@ -18,14 +18,25 @@
 		toGrid(breakpoint, project.lanes, settings.precision).reverse()
 	);
 
-	let gridColumnsRepeat = $derived(`repeat(${project.lanes.length + 1}, 600px)`);
+	let gridColumnsRepeat = $derived(
+		`repeat(${project.lanes.length}, 600px)`
+	);
 </script>
-<ul class="grid grid-cols-1 gap-8 py-8 w-fit" 
-	style:--columns={gridColumnsRepeat}>
+
+<ul
+	class="grid w-fit grid-cols-1 gap-8 py-8"
+	style:--columns={gridColumnsRepeat}
+>
+	<li class="grid w-fit grid-cols-[64px_1fr] gap-8 px-8">
+		<div></div>
+		<ul class="grid grid-cols-(--columns) gap-8">
+			{#each project.lanes as lane, laneIndex (`lane-${laneIndex}`)}
+				<pre>{JSON.stringify(lane)}</pre>
+			{/each}
+		</ul>
+	</li>
 	{#each grid as row, rowIndex (`grid-${rowIndex}`)}
-		<li
-			class="grid grid-cols-[64px_1fr] gap-8 px-8 w-fit"
-		>
+		<li class="grid w-fit grid-cols-[64px_1fr] gap-8 px-8">
 			<p
 				class="m-0 grid h-15 w-15 place-items-center border border-black p-0 text-3xl font-bold"
 			>
@@ -36,11 +47,7 @@
 				{#each row as cell, cellIndex (`cell-${rowIndex}-${cellIndex}`)}
 					<Cell {cell} />
 				{/each}
-				{#each row as cell, cellIndex (`cell-${rowIndex}-${cellIndex}`)}
-					<Cell {cell} />
-				{/each}
 			</ul>
-			
 		</li>
 	{/each}
 </ul>

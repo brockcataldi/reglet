@@ -23,8 +23,12 @@
 	});
 
 	type AddBreakpointSchema = z.infer<typeof addBreakpointSchema>;
+	type AddBreakpointData = Omit<
+		Breakpoint,
+		'id' | 'defaultScale' | 'overrides'
+	>;
 
-	let breakpoint = $state<Omit<Breakpoint, 'id' | 'defaultScale'>>({
+	let breakpoint = $state<AddBreakpointData>({
 		label: '',
 		width: 500
 	});
@@ -40,9 +44,7 @@
 
 	let { onadd, oncancel }: AddBreakpointProps = $props();
 
-	const validate = ():
-		| Omit<Breakpoint, 'id' | 'defaultScale'>
-		| undefined => {
+	const validate = (): AddBreakpointData | undefined => {
 		const validation = addBreakpointSchema.safeParse(breakpoint);
 
 		if (validation.success) {
@@ -70,7 +72,8 @@
 			defaultScale: createDefaultScale({
 				unit: settings.unit,
 				modifier: 1.15
-			})
+			}),
+			overrides: {}
 		});
 
 		breakpoint = {
@@ -110,7 +113,6 @@
 				<InputUnit
 					id="breakpoint-label-width"
 					unit="px"
-					type="number"
 					class="text-4xl font-bold"
 					unitClass="text-2xl"
 					min={0}

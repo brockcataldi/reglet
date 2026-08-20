@@ -32,7 +32,7 @@
 									Index
 								</span>
 								<span class="block font-mono text-xs"
-									>Edit Breakpoints</span
+									>Project Settings</span
 								>
 							</NavigationItem>
 						</li>

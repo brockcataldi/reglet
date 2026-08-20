@@ -117,6 +117,26 @@ class Project {
 		}
 	}
 
+	updateLaneFamily(id: string, family: string) {
+		const lane = this.lanes.find((lane) => lane.id === id);
+
+		if (!lane) {
+			return;
+		}
+
+		lane.family = family;
+	}
+
+	updateLaneWeight(id: string, weight: string) {
+		const lane = this.lanes.find((lane) => lane.id === id);
+
+		if (!lane) {
+			return;
+		}
+
+		lane.weight = weight;
+	}
+
 	createNewProject() {
 		this.breakpoints = createDefaultBreakpoints({
 			type: settings.type,

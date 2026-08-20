@@ -55,7 +55,7 @@
 
 				<label
 					class="font-mono text-sm text-neutral-600 uppercase"
-					for={`breakpoint-label-${breakpoint.id}`}
+					for={`breakpoint-width-${breakpoint.id}`}
 				>
 					Width Threshold
 				</label>
