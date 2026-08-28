@@ -31,7 +31,22 @@
 		<div></div>
 		<ul class="grid grid-cols-(--columns) gap-8">
 			{#each project.lanes as lane, laneIndex (`lane-${laneIndex}`)}
-				<pre>{JSON.stringify(lane)}</pre>
+				<li>
+					<div class="border border-black p-4">
+						<h2 class="text-4xl font-bold">
+							{lane.family}
+						</h2>
+
+						<ul>
+							<li>
+								font-weight: {lane.weight}
+							</li>
+							<li>
+								font-style: {lane.style}
+							</li>
+						</ul>
+					</div>
+				</li>
 			{/each}
 		</ul>
 	</li>

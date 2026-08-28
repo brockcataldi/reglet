@@ -2,23 +2,23 @@
 	import project from '$lib/stores/project.svelte';
 
 	import Breakpoint from './Breakpoint.svelte';
-	import AddBreakpoint from './AddBreakpoint.svelte';
+	import BreakpointCreator from './BreakpointCreator.svelte';
 	import Button from '$lib/ui/button/button.svelte';
 
-	let showAdd = $state(false);
+	let creatorVisible = $state(false);
 
-	const openAdd = () => (showAdd = true);
-	const hideAdd = () => (showAdd = false);
+	const openAdd = () => (creatorVisible = true);
+	const hideAdd = () => (creatorVisible = false);
 </script>
 
 <section class="w-full border-y border-black py-8">
 	<div class="mx-auto my-0 max-w-200">
 		<header class="flex flex-row items-center justify-between">
-			<h2 class="mb-4 text-5xl font-bold tracking-tighter text-black">
+			<h2 class="mb-4 text-6xl font-bold tracking-tighter text-black">
 				Breakpoints
 			</h2>
 
-			{#if showAdd === false}
+			{#if creatorVisible === false}
 				<Button
 					label="Add Breakpoint"
 					variant="primary"
@@ -27,11 +27,11 @@
 			{/if}
 		</header>
 
-		{#if showAdd}
-			<AddBreakpoint
-				onadd={(newBreakpoint) => {
+		{#if creatorVisible}
+			<BreakpointCreator
+				oncreate={(newBreakpoint) => {
 					project.createBreakpoint(newBreakpoint);
-					showAdd = false;
+					creatorVisible = false;
 				}}
 				oncancel={hideAdd}
 			/>
@@ -43,6 +43,7 @@
 				<li class="w-full">
 					<Breakpoint
 						{breakpoint}
+						canDelete={project.sortedBreakpoints.length > 1}
 						onnamechange={(newName) =>
 							project.updateBreakpointName(breakpoint.id, newName)}
 						onwidthchange={(newWidth) =>

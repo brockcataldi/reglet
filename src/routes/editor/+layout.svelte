@@ -3,7 +3,7 @@
 	import { page } from '$app/state';
 
 	import project from '$lib/stores/project.svelte';
-	import NavigationItem from './_components/NavigationItem.svelte';
+	import NavigationItem from './_layout-components/NavigationItem.svelte';
 
 	let { children } = $props();
 

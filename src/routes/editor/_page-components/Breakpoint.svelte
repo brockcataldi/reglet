@@ -6,6 +6,7 @@
 	import InputUnit from '$lib/ui/form/input-unit.svelte';
 
 	type BreakpointProps = {
+		canDelete: boolean;
 		breakpoint: Breakpoint;
 		onnamechange: (newName: string) => void;
 		onwidthchange: (newWidth: number) => void;
@@ -14,6 +15,7 @@
 	};
 
 	let {
+		canDelete,
 		breakpoint,
 		onnamechange,
 		onwidthchange,
@@ -24,7 +26,7 @@
 
 <div class="w-full border border-black bg-white">
 	<div class="block p-4">
-		<div class="grid grid-cols-[3fr_1.5fr_1fr] gap-4">
+		<div class="grid grid-cols-[3fr_1.5fr_135px] gap-4">
 			<div class="w-full">
 				<Input
 					id={`breakpoint-label-${breakpoint.id}`}
@@ -70,14 +72,16 @@
 							onclick={() => onduplicate()}
 						/>
 					</li>
-					<li class="w-full">
-						<Button
-							class="w-full py-2"
-							variant="destructive"
-							label="Delete"
-							onclick={() => ondelete()}
-						/>
-					</li>
+					{#if canDelete}
+						<li class="w-full">
+							<Button
+								class="w-full py-2"
+								variant="destructive"
+								label="Delete"
+								onclick={() => ondelete()}
+							/>
+						</li>
+					{/if}
 				</ul>
 			</div>
 		</div>

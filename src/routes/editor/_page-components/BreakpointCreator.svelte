@@ -1,74 +1,46 @@
 <script lang="ts">
-	import z from 'zod';
-
 	import type { Breakpoint } from '$lib/types';
 
 	import settings from '$lib/stores/settings.svelte';
 
 	import { createDefaultScale } from '$lib/project/create-default-scale';
 
+	import {
+		createBreakpointValidator,
+		type CreateBreakpointData,
+		type CreateBreakpointErrors
+	} from './create-breakpoint';
+
 	import Button from '$lib/ui/button/button.svelte';
 	import InputUnit from '$lib/ui/form/input-unit.svelte';
 	import Input from '$lib/ui/form/input.svelte';
 	import Separator from '$lib/ui/display/separator.svelte';
 
-	let addBreakpointSchema = z.object({
-		label: z
-			.string()
-			.trim()
-			.min(1, { error: 'Breakpoint Label cannot be empty' }),
-		width: z
-			.number({ error: 'Width Threshold cannot be empty' })
-			.min(0, { error: 'Width Threshold cannot be negative' })
-	});
-
-	type AddBreakpointSchema = z.infer<typeof addBreakpointSchema>;
-	type AddBreakpointData = Omit<
-		Breakpoint,
-		'id' | 'defaultScale' | 'overrides'
-	>;
-
-	let breakpoint = $state<AddBreakpointData>({
+	let breakpoint = $state<CreateBreakpointData>({
 		label: '',
 		width: 500
 	});
 
-	let errors = $state<Partial<Record<keyof AddBreakpointSchema, string>>>(
-		{}
-	);
+	let errors = $state<CreateBreakpointErrors>({});
 
-	type AddBreakpointProps = {
-		onadd: (newBreakpoint: Omit<Breakpoint, 'id'>) => void;
+	type BreakpointCreatorProps = {
+		oncreate: (newBreakpoint: Omit<Breakpoint, 'id'>) => void;
 		oncancel: () => void;
 	};
 
-	let { onadd, oncancel }: AddBreakpointProps = $props();
+	let { oncreate, oncancel }: BreakpointCreatorProps = $props();
 
-	const validate = (): AddBreakpointData | undefined => {
-		const validation = addBreakpointSchema.safeParse(breakpoint);
-
-		if (validation.success) {
-			return validation.data;
-		}
-
-		const fieldErrors = z.flattenError(validation.error).fieldErrors;
-
-		errors = {
-			label: fieldErrors.label?.[0],
-			width: fieldErrors.width?.[0]
-		};
-
-		return undefined;
-	};
 	const onclickAdd = () => {
-		const data = validate();
+		const [_data, _errors] = createBreakpointValidator(breakpoint);
 
-		if (!data) {
+		errors = _errors;
+
+		if (!_data) {
 			return;
 		}
 
-		onadd({
-			...data,
+		oncreate({
+			..._data,
 			defaultScale: createDefaultScale({
 				unit: settings.unit,
 				modifier: 1.15

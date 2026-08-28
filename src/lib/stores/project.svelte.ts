@@ -117,6 +117,13 @@ class Project {
 		}
 	}
 
+	createLane(lane: Omit<Lane, 'id'>) {
+		this.lanes.push({
+			...lane,
+			id: createId()
+		});
+	}
+
 	updateLaneFamily(id: string, family: string) {
 		const lane = this.lanes.find((lane) => lane.id === id);
 
@@ -135,6 +142,37 @@ class Project {
 		}
 
 		lane.weight = weight;
+	}
+
+	updateLaneStyle(id: string, style: 'normal' | 'italic' | 'oblique') {
+		const lane = this.lanes.find((lane) => lane.id === id);
+
+		if (!lane) {
+			return;
+		}
+
+		lane.style = style;
+	}
+
+	duplicateLane(id: string) {
+		const lane = this.lanes.find((lane) => lane.id === id);
+
+		if (!lane) {
+			return;
+		}
+
+		this.lanes.push({
+			...lane,
+			id: createId()
+		});
+	}
+
+	deleteLane(id: string) {
+		const index = this.lanes.findIndex((lane) => lane.id === id);
+
+		if (index !== undefined) {
+			this.lanes = this.lanes.toSpliced(index, 1);
+		}
 	}
 
 	createNewProject() {

@@ -21,6 +21,7 @@
 			style:font-family={cell.family}
 			style:font-size={`${cell.fontSize.toFixed(3)}${settings.unit}`}
 			style:font-weight={cell.weight}
+			style:font-style={cell.style}
 		>
 			Lorem ipsum dolor sit amet consectetur adipisicing elit.
 		</p>
