@@ -17,11 +17,11 @@
 		</div>
 	</header>
 
+	<Lanes />
+
 	{#if settings.type === 'standard'}
 		<BreakpointsStandard />
 	{:else}
 		<h1>Fluid Project</h1>
 	{/if}
-
-	<Lanes />
 </main>

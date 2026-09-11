@@ -74,9 +74,7 @@
 						onchange={(event) =>
 							onstylechange(
 								event.currentTarget.value as
-									| 'normal'
-									| 'italic'
-									| 'oblique'
+									'normal' | 'italic' | 'oblique'
 							)}
 					>
 						<option value="normal">normal</option>

@@ -1,6 +1,4 @@
 <script lang="ts">
-	import type { Breakpoint } from '$lib/types';
-
 	import settings from '$lib/stores/settings.svelte';
 
 	import { createDefaultScale } from '$lib/project/create-default-scale';
@@ -8,7 +6,8 @@
 	import {
 		createBreakpointValidator,
 		type CreateBreakpointData,
-		type CreateBreakpointErrors
+		type CreateBreakpointErrors,
+		type OnCreateBreakpointData
 	} from './create-breakpoint';
 
 	import Button from '$lib/ui/button/button.svelte';
@@ -24,13 +23,13 @@
 	let errors = $state<CreateBreakpointErrors>({});
 
 	type BreakpointCreatorProps = {
-		oncreate: (newBreakpoint: Omit<Breakpoint, 'id'>) => void;
+		oncreate: (newBreakpoint: OnCreateBreakpointData) => void;
 		oncancel: () => void;
 	};
 
 	let { oncreate, oncancel }: BreakpointCreatorProps = $props();
 
-	const onclickAdd = () => {
+	const onclickcreate = () => {
 		const [_data, _errors] = createBreakpointValidator(breakpoint);
 
 		errors = _errors;
@@ -59,13 +58,13 @@
 
 <div class="w-full border border-black bg-white">
 	<div class="block p-4">
-		<div class="grid grid-cols-[3fr_1.5fr_1fr] gap-4">
-			<div class="w-full">
-				<Separator as="label" for="breakpoint-label-new"
+		<ul class="grid grid-cols-[repeat(3,1fr)] gap-4">
+			<li class="col-span-2 w-full">
+				<Separator as="label" for="breakpoint-creator-label"
 					>Breakpoint Label</Separator
 				>
 				<Input
-					id="breakpoint-label-new"
+					id="breakpoint-creator-label"
 					placeholder="ex. Mobile"
 					class="w-full text-4xl font-bold"
 					variant={errors.label ? 'error' : 'default'}
@@ -77,13 +76,13 @@
 						{errors.label}
 					</p>
 				{/if}
-			</div>
-			<div>
-				<Separator as="label" for="breakpoint-label-width"
+			</li>
+			<li>
+				<Separator as="label" for="breakpoint-creator-width"
 					>Width Threshold</Separator
 				>
 				<InputUnit
-					id="breakpoint-label-width"
+					id="breakpoint-creator-width"
 					unit="px"
 					class="text-4xl font-bold"
 					unitClass="text-2xl"
@@ -99,23 +98,23 @@
 						{errors.width}
 					</p>
 				{/if}
-			</div>
-
-			<div>
-				<ul class="flex flex-col items-start justify-start gap-2">
-					<li class="w-full">
-						<Button class="w-full py-2" label="Add" onclick={onclickAdd} />
-					</li>
-					<li class="w-full">
-						<Button
-							class="w-full py-2"
-							variant="destructive"
-							label="Cancel"
-							onclick={() => oncancel()}
-						/>
-					</li>
-				</ul>
-			</div>
-		</div>
+			</li>
+			<li></li>
+			<li class="w-full">
+				<Button
+					class="w-full py-2"
+					label="Create"
+					onclick={onclickcreate}
+				/>
+			</li>
+			<li class="w-full">
+				<Button
+					class="w-full py-2"
+					variant="destructive"
+					label="Cancel"
+					onclick={() => oncancel()}
+				/>
+			</li>
+		</ul>
 	</div>
 </div>

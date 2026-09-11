@@ -19,6 +19,9 @@ export type CreateBreakpointData = Omit<
 	Breakpoint,
 	'id' | 'defaultScale' | 'overrides'
 >;
+
+export type OnCreateBreakpointData = Omit<Breakpoint, 'id'>;
+
 export type CreateBreakpointErrors = Partial<
 	Record<keyof CreateBreakpointSchema, string>
 >;

@@ -1,14 +1,26 @@
 <script lang="ts">
+	import type { Breakpoint as TBreakpoint } from '$lib/types';
 	import project from '$lib/stores/project.svelte';
 
 	import Breakpoint from './Breakpoint.svelte';
 	import BreakpointCreator from './BreakpointCreator.svelte';
 	import Button from '$lib/ui/button/button.svelte';
+	import Dialog from '$lib/ui/display/dialog.svelte';
 
-	let creatorVisible = $state(false);
+	let showCreator = $state(false);
 
-	const openAdd = () => (creatorVisible = true);
-	const hideAdd = () => (creatorVisible = false);
+	const openCreator = () => {
+		showCreator = true;
+	};
+
+	const closeCreator = () => {
+		showCreator = false;
+	};
+
+	const handleCreate = (newBreakpoint: Omit<TBreakpoint, 'id'>) => {
+		project.createBreakpoint(newBreakpoint);
+		showCreator = false;
+	};
 </script>
 
 <section class="w-full border-y border-black py-8">
@@ -18,25 +30,16 @@
 				Breakpoints
 			</h2>
 
-			{#if creatorVisible === false}
-				<Button
-					label="Add Breakpoint"
-					variant="primary"
-					onclick={openAdd}
-				/>
-			{/if}
+			<Button
+				label="Add Breakpoint"
+				variant="primary"
+				onclick={openCreator}
+			/>
 		</header>
 
-		{#if creatorVisible}
-			<BreakpointCreator
-				oncreate={(newBreakpoint) => {
-					project.createBreakpoint(newBreakpoint);
-					creatorVisible = false;
-				}}
-				oncancel={hideAdd}
-			/>
-			<hr class="my-4" />
-		{/if}
+		<Dialog showModal={showCreator} onclose={closeCreator}>
+			<BreakpointCreator oncreate={handleCreate} oncancel={closeCreator} />
+		</Dialog>
 
 		<ul class="flex w-full flex-col gap-4">
 			{#each project.sortedBreakpoints as breakpoint (`breakpoint-${breakpoint.id}`)}

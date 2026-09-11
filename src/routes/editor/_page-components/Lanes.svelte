@@ -1,8 +1,10 @@
 <script lang="ts">
+	import { type Lane as TLane } from '$lib/types';
+
 	import project from '$lib/stores/project.svelte';
+
 	import Button from '$lib/ui/button/button.svelte';
 	import Dialog from '$lib/ui/display/dialog.svelte';
-	import { type Lane as TLane } from '$lib/types';
 
 	import Lane from './Lane.svelte';
 	import LaneCreator from './LaneCreator.svelte';
