@@ -37,8 +37,8 @@
 			/>
 		</header>
 
-		<Dialog showModal={showCreator} onclose={closeCreator}>
-			<BreakpointCreator oncreate={handleCreate} oncancel={closeCreator} />
+		<Dialog showModal={showCreator} onClose={closeCreator}>
+			<BreakpointCreator onCreate={handleCreate} onCancel={closeCreator} />
 		</Dialog>
 
 		<ul class="flex w-full flex-col gap-4">
@@ -47,12 +47,12 @@
 					<Breakpoint
 						{breakpoint}
 						canDelete={project.sortedBreakpoints.length > 1}
-						onnamechange={(newName) =>
+						onNameChange={(newName) =>
 							project.updateBreakpointName(breakpoint.id, newName)}
-						onwidthchange={(newWidth) =>
+						onWidthChange={(newWidth) =>
 							project.updateBreakpointWidth(breakpoint.id, newWidth)}
-						ondelete={() => project.deleteBreakpoint(breakpoint.id)}
-						onduplicate={() => project.duplicateBreakpoint(breakpoint.id)}
+						onDelete={() => project.deleteBreakpoint(breakpoint.id)}
+						onDuplicate={() => project.duplicateBreakpoint(breakpoint.id)}
 					/>
 				</li>
 			{/each}

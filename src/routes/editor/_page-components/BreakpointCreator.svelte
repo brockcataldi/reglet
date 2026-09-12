@@ -23,13 +23,13 @@
 	let errors = $state<CreateBreakpointErrors>({});
 
 	type BreakpointCreatorProps = {
-		oncreate: (newBreakpoint: OnCreateBreakpointData) => void;
-		oncancel: () => void;
+		onCreate: (newBreakpoint: OnCreateBreakpointData) => void;
+		onCancel: () => void;
 	};
 
-	let { oncreate, oncancel }: BreakpointCreatorProps = $props();
+	let { onCreate, onCancel }: BreakpointCreatorProps = $props();
 
-	const onclickcreate = () => {
+	const onClickCreate = () => {
 		const [_data, _errors] = createBreakpointValidator(breakpoint);
 
 		errors = _errors;
@@ -38,7 +38,7 @@
 			return;
 		}
 
-		oncreate({
+		onCreate({
 			..._data,
 			defaultScale: createDefaultScale({
 				unit: settings.unit,
@@ -104,7 +104,7 @@
 				<Button
 					class="w-full py-2"
 					label="Create"
-					onclick={onclickcreate}
+					onclick={onClickCreate}
 				/>
 			</li>
 			<li class="w-full">
@@ -112,7 +112,7 @@
 					class="w-full py-2"
 					variant="destructive"
 					label="Cancel"
-					onclick={() => oncancel()}
+					onclick={() => onCancel()}
 				/>
 			</li>
 		</ul>

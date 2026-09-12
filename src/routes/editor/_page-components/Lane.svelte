@@ -6,20 +6,20 @@
 
 	type LaneProps = {
 		lane: Lane;
-		onfamilychange: (newFamily: string) => void;
-		onweightchange: (newWeight: string) => void;
-		onstylechange: (newStyle: 'normal' | 'italic' | 'oblique') => void;
-		onduplicate: () => void;
-		ondelete: () => void;
+		onFamilyChange: (newFamily: string) => void;
+		onWeightChange: (newWeight: string) => void;
+		onStyleChange: (newStyle: 'normal' | 'italic' | 'oblique') => void;
+		onDuplicate: () => void;
+		onDelete: () => void;
 	};
 
 	let {
 		lane,
-		onfamilychange,
-		onweightchange,
-		onstylechange,
-		onduplicate,
-		ondelete
+		onFamilyChange,
+		onWeightChange,
+		onStyleChange,
+		onDuplicate,
+		onDelete
 	}: LaneProps = $props();
 </script>
 
@@ -43,7 +43,7 @@
 						placeholder="ex. Mobile"
 						class="w-full text-2xl font-bold"
 						value={lane.family}
-						oninput={(event) => onfamilychange(event.currentTarget.value)}
+						oninput={(event) => onFamilyChange(event.currentTarget.value)}
 					/>
 					<label
 						class="font-mono text-sm text-neutral-600 uppercase"
@@ -58,7 +58,7 @@
 						placeholder="ex. Mobile"
 						class="w-full text-2xl font-bold"
 						value={lane.weight}
-						oninput={(event) => onweightchange(event.currentTarget.value)}
+						oninput={(event) => onWeightChange(event.currentTarget.value)}
 					/>
 					<label
 						class="font-mono text-sm text-neutral-600 uppercase"
@@ -72,7 +72,7 @@
 						class="w-full text-2xl font-bold"
 						value={lane.style}
 						onchange={(event) =>
-							onstylechange(
+							onStyleChange(
 								event.currentTarget.value as
 									'normal' | 'italic' | 'oblique'
 							)}
@@ -95,7 +95,7 @@
 						<Button
 							class="w-full py-2"
 							label="Duplicate"
-							onclick={() => onduplicate()}
+							onclick={() => onDuplicate()}
 						/>
 					</li>
 					<li class="w-full">
@@ -103,7 +103,7 @@
 							class="w-full py-2"
 							variant="destructive"
 							label="Delete"
-							onclick={() => ondelete()}
+							onclick={() => onDelete()}
 						/>
 					</li>
 				</ul>

@@ -7,14 +7,14 @@
 		showModal: boolean;
 		children?: Snippet;
 		class?: ClassNameValue;
-		onclose: () => void;
+		onClose: () => void;
 	};
 
 	let {
 		showModal,
 		children,
 		class: className,
-		onclose
+		onClose
 	}: DialogProps = $props();
 
 	let dialog = $state<HTMLDialogElement>();
@@ -36,10 +36,10 @@
 	});
 
 	const handleclose = () => {
-		onclose();
+		onClose();
 	};
 
-	const onclick = (event: MouseEvent) => {
+	const onClick = (event: MouseEvent) => {
 		if (event.target !== dialog) {
 			return;
 		}
@@ -51,11 +51,11 @@
 <dialog
 	class={cn(
 		className,
-		'top-[50%] left-[50%] max-w-120 translate-x-[-50%] translate-y-[-50%]  backdrop:bg-black/30'
+		'top-[50%] left-[50%] max-w-120 translate-x-[-50%] translate-y-[-50%] backdrop:bg-black/30'
 	)}
 	bind:this={dialog}
 	onclose={handleclose}
-	{onclick}
+	onclick={onClick}
 >
 	<div>
 		{@render children?.()}

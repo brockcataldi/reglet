@@ -13,7 +13,7 @@
 		name: string;
 		href: ResolvedPathname;
 		nextOverride?: string;
-		onclick?: () => void;
+		onClick?: () => void;
 	};
 
 	const steps: NavigationStep[] = [
@@ -41,7 +41,7 @@
 			name: 'Editor',
 			href: resolve('/editor'),
 			nextOverride: 'Create',
-			onclick: () => project.createNewProject()
+			onClick: () => project.createNewProject()
 		}
 	];
 
@@ -131,7 +131,7 @@
 				<LinkButton
 					href={nextStep.href}
 					label={nextStep.nextOverride ?? 'Next'}
-					onclick={nextStep.onclick}
+					onclick={nextStep.onClick}
 				></LinkButton>
 			{:else}
 				<span></span>

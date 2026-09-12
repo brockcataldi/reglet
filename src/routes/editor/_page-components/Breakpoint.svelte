@@ -8,19 +8,19 @@
 	type BreakpointProps = {
 		canDelete: boolean;
 		breakpoint: Breakpoint;
-		onnamechange: (newName: string) => void;
-		onwidthchange: (newWidth: number) => void;
-		ondelete: () => void;
-		onduplicate: () => void;
+		onNameChange: (newName: string) => void;
+		onWidthChange: (newWidth: number) => void;
+		onDelete: () => void;
+		onDuplicate: () => void;
 	};
 
 	let {
 		canDelete,
 		breakpoint,
-		onnamechange,
-		onwidthchange,
-		ondelete,
-		onduplicate
+		onNameChange,
+		onWidthChange,
+		onDelete,
+		onDuplicate
 	}: BreakpointProps = $props();
 </script>
 
@@ -33,7 +33,7 @@
 					placeholder="ex. Mobile"
 					class="w-full text-4xl font-bold"
 					value={breakpoint.label}
-					oninput={(event) => onnamechange(event.currentTarget.value)}
+					oninput={(event) => onNameChange(event.currentTarget.value)}
 				/>
 				<label
 					class="font-mono text-sm text-neutral-600 uppercase"
@@ -52,7 +52,7 @@
 					step={1}
 					value={breakpoint.width}
 					oninput={(event) =>
-						onwidthchange(Number(event.currentTarget.value))}
+						onWidthChange(Number(event.currentTarget.value))}
 				/>
 
 				<label
@@ -69,7 +69,7 @@
 						<Button
 							class="w-full py-2"
 							label="Duplicate"
-							onclick={() => onduplicate()}
+							onclick={() => onDuplicate()}
 						/>
 					</li>
 					{#if canDelete}
@@ -78,7 +78,7 @@
 								class="w-full py-2"
 								variant="destructive"
 								label="Delete"
-								onclick={() => ondelete()}
+								onclick={() => onDelete()}
 							/>
 						</li>
 					{/if}

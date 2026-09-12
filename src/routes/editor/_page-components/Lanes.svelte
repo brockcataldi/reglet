@@ -34,8 +34,8 @@
 
 			<Button label="Add Lane" variant="primary" onclick={openCreator} />
 
-			<Dialog showModal={showCreator} onclose={closeCreator}>
-				<LaneCreator oncreate={handleCreate} oncancel={closeCreator} />
+			<Dialog showModal={showCreator} onClose={closeCreator}>
+				<LaneCreator onCreate={handleCreate} onCancel={closeCreator} />
 			</Dialog>
 		</header>
 		<ul class="flex w-full flex-col gap-4">
@@ -43,14 +43,14 @@
 				<li class="w-full">
 					<Lane
 						{lane}
-						onfamilychange={(newFamily) =>
+						onFamilyChange={(newFamily) =>
 							project.updateLaneFamily(lane.id, newFamily)}
-						onweightchange={(newWeight) =>
+						onWeightChange={(newWeight) =>
 							project.updateLaneWeight(lane.id, newWeight)}
-						onstylechange={(newStyle) =>
+						onStyleChange={(newStyle) =>
 							project.updateLaneStyle(lane.id, newStyle)}
-						ondelete={() => project.deleteLane(lane.id)}
-						onduplicate={() => project.duplicateLane(lane.id)}
+						onDelete={() => project.deleteLane(lane.id)}
+						onDuplicate={() => project.duplicateLane(lane.id)}
 					/>
 				</li>
 			{/each}

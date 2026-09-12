@@ -20,13 +20,13 @@
 	let errors = $state<CreateLaneErrors>({});
 
 	type LaneProps = {
-		oncreate: (newLane: OnCreateLaneData) => void;
-		oncancel: () => void;
+		onCreate: (newLane: OnCreateLaneData) => void;
+		onCancel: () => void;
 	};
 
-	let { oncreate, oncancel }: LaneProps = $props();
+	let { onCreate, onCancel }: LaneProps = $props();
 
-	const onclickcreate = () => {
+	const onClickCreate = () => {
 		const [_data, _errors] = createLaneValidator(lane);
 
 		errors = _errors;
@@ -35,7 +35,7 @@
 			return;
 		}
 
-		oncreate(lane);
+		onCreate(lane);
 
 		lane = {
 			family: 'Arial',
@@ -125,7 +125,7 @@
 				<Button
 					class="w-full py-2"
 					label="Create"
-					onclick={onclickcreate}
+					onclick={onClickCreate}
 				/>
 			</li>
 			<li>
@@ -133,7 +133,7 @@
 					class="w-full py-2"
 					variant="destructive"
 					label="Cancel"
-					onclick={() => oncancel()}
+					onclick={() => onCancel()}
 				/>
 			</li>
 		</ul>
