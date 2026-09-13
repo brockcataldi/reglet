@@ -1,6 +1,6 @@
 import type { Breakpoint, Unit } from '$lib/types';
 import { createId } from '$lib/utilities';
-import { createDefaultScale } from './create-default-scale';
+import { createDefaultBaseSize } from './create-default-base-size';
 
 export const createDefaultBreakpoint = ({
 	width,
@@ -17,6 +17,12 @@ export const createDefaultBreakpoint = ({
 		id: createId(),
 		width,
 		label,
-		defaultScale: createDefaultScale({ unit, modifier })
+		minStep: -1,
+		maxStep: 6,
+		defaultScale: {
+			baseSize: createDefaultBaseSize({ unit }) * modifier,
+			ratio: 1.2,
+		},
+		overrides: {}
 	};
 };

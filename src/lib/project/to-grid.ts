@@ -12,8 +12,8 @@ export const toGrid = (
 	const rows: GridCell[][] = [];
 
 	for (
-		let i = breakpoint.defaultScale.minStep;
-		i <= breakpoint.defaultScale.maxStep;
+		let i = breakpoint.minStep;
+		i <= breakpoint.maxStep;
 		i++
 	) {
 		const row: GridCell[] = [];
@@ -27,11 +27,13 @@ export const toGrid = (
 				i
 			);
 
+			const override = breakpoint.overrides[`${id}-${i}`];
+			
 			const cell = {
 				...lane,
 				step: i,
-				fontSize: adjustIntPrecision(fontSize, precision),
-				lineHeight: 1,
+				fontSize: override?.fontSize ?? adjustIntPrecision(fontSize, precision),
+				lineHeight: override?.lineHeight ?? 1,
 				laneId: id
 			};
 

@@ -6,12 +6,14 @@
 	import Separator from '$lib/ui/display/separator.svelte';
 	import Input from '$lib/ui/form/input.svelte';
 	import InputUnit from '$lib/ui/form/input-unit.svelte';
+	import project from '$lib/stores/project.svelte';
 
 	type CellProps = {
+		breakpointId: string;
 		cell: GridCell;
 	};
 
-	let { cell }: CellProps = $props();
+	let { breakpointId, cell }: CellProps = $props();
 </script>
 
 <li class="col-span-1 border border-black">
@@ -31,26 +33,28 @@
 		<li>
 			<Separator
 				as="label"
-				for={`input-line-height-${cell.step}-${cell.laneId}`}
+				for={`input-line-height-${cell.laneId}-${cell.step}`}
 				>Line Height</Separator
 			>
 			<Input
-				id={`input-line-height-${cell.step}-${cell.laneId}`}
+				id={`input-line-height-${cell.laneId}-${cell.step}`}
 				class="mt-1"
 				type="number"
 				value={cell.lineHeight}
+				oninput={(event) => project.updateBreakpointOverrideLineHeight(breakpointId, `${cell.laneId}-${cell.step}`, Number(event.currentTarget.value))}
 			/>
 		</li>
 		<li>
 			<Separator
 				as="label"
-				for={`input-font-size-${cell.step}-${cell.laneId}`}
+				for={`input-font-size-${cell.laneId}-${cell.step}`}
 				>Font Size</Separator
 			>
 			<InputUnit
-				id={`input-font-size-${cell.step}-${cell.laneId}`}
+				id={`input-font-size-${cell.laneId}-${cell.step}`}
 				value={cell.fontSize}
 				unit={settings.unit}
+				oninput={(event) => project.updateBreakpointOverrideFontSize(breakpointId, `${cell.laneId}-${cell.step}`, Number(event.currentTarget.value))}
 			/>
 		</li>
 	</ul>

@@ -17,7 +17,7 @@ export type CreateBreakpointSchema = z.infer<
 
 export type CreateBreakpointData = Omit<
 	Breakpoint,
-	'id' | 'defaultScale' | 'overrides'
+	'id' | 'defaultScale' | 'overrides' | 'maxStep' | 'minStep'
 >;
 
 export type OnCreateBreakpointData = Omit<Breakpoint, 'id'>;

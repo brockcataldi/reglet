@@ -1,8 +1,6 @@
 <script lang="ts">
 	import settings from '$lib/stores/settings.svelte';
 
-	import { createDefaultScale } from '$lib/project/create-default-scale';
-
 	import {
 		createBreakpointValidator,
 		type CreateBreakpointData,
@@ -14,6 +12,7 @@
 	import InputUnit from '$lib/ui/form/input-unit.svelte';
 	import Input from '$lib/ui/form/input.svelte';
 	import Separator from '$lib/ui/display/separator.svelte';
+	import { createDefaultBaseSize } from '$lib/project/create-default-base-size';
 
 	let breakpoint = $state<CreateBreakpointData>({
 		label: '',
@@ -40,10 +39,12 @@
 
 		onCreate({
 			..._data,
-			defaultScale: createDefaultScale({
-				unit: settings.unit,
-				modifier: 1.15
-			}),
+			defaultScale: {
+				baseSize: createDefaultBaseSize({unit: settings.unit}) * 1.2,
+				ratio: 1.2
+			},
+			minStep: -1,
+			maxStep: 6,
 			overrides: {}
 		});
 

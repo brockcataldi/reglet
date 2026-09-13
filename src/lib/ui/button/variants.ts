@@ -30,20 +30,20 @@ export const textButtonVariants = cva(
 export const iconButtonVariants = cva(
 	`
         inline-flex gap-2 items-center justify-center 
-        border border-1 p-3 text-sm font-semibold [&>svg]:size-5
+        border border-1 w-15 h-15 text-sm font-semibold [&>svg]:size-5
     `,
 	{
 		variants: {
 			variant: {
 				primary: `
-                    text-white bg-black
+                    text-black bg-white border-black
                     hover:bg-cobalt-500 hover:text-white
                     focus-visible:bg-cobalt-500 focus-visible:text-white
 				`,
 				destructive: `
-                    text-white bg-red-700
-                    hover:bg-red-800 hover:text-red-100
-                    focus-visible:bg-red-800 focus-visible:text-red-100
+                    text-white bg-white border-red-800 text-red-800
+                    hover:bg-red-700 hover:text-white
+                    focus-visible:bg-red-800 focus-visible:text-white
                 `
 			}
 		},

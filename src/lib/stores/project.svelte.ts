@@ -107,6 +107,62 @@ class Project {
 		breakpoint.width = value;
 	}
 
+	updateBreakpointMinStep(id: string, value: number){
+		const breakpoint = this.breakpoints.find(
+			(breakpoint) => breakpoint.id === id
+		);
+
+		if (!breakpoint) {
+			return;
+		}
+
+		breakpoint.minStep = value;
+	}
+
+	updateBreakpointMaxStep(id: string, value: number){
+		const breakpoint = this.breakpoints.find(
+			(breakpoint) => breakpoint.id === id
+		);
+
+		if (!breakpoint) {
+			return;
+		}
+
+		breakpoint.maxStep = value;
+	}
+
+	updateBreakpointOverrideFontSize(breakpointId: string, overrideId: string, value: number){
+		const breakpoint = this.breakpoints.find(
+			(breakpoint) => breakpoint.id === breakpointId
+		);
+
+		if (!breakpoint) {
+			return;
+		}
+
+		if(!(overrideId in breakpoint.overrides)){
+			breakpoint.overrides[overrideId] = {};
+		}
+
+		breakpoint.overrides[overrideId].fontSize = value;
+	}
+
+	updateBreakpointOverrideLineHeight(breakpointId: string, overrideId: string, value: number){
+		const breakpoint = this.breakpoints.find(
+			(breakpoint) => breakpoint.id === breakpointId
+		);
+
+		if (!breakpoint) {
+			return;
+		}
+
+		if(!(overrideId in breakpoint.overrides)){
+			breakpoint.overrides[overrideId] = {};
+		}
+
+		breakpoint.overrides[overrideId].lineHeight = value;
+	}
+
 	deleteBreakpoint(id: string) {
 		const index = this.breakpoints.findIndex(
 			(breakpoint) => breakpoint.id === id

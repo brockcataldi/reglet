@@ -12,19 +12,16 @@ type Breakpoint = {
 	id: string;
 	label: string;
 	width: number;
-	defaultScale: FullScaleSettings;
-	overrides: Record<string, number>;
+	maxStep: number;
+	minStep: number;
+	defaultScale: ScaleSettings;
+	overrides: Record<string, CellOverride>; // this should probably be renamed to cellOverrides (because I have a feeling I'll want to move in laneOverrides)
 };
 
 type ScaleSettings = {
 	baseSize: number;
 	ratio: number;
 };
-
-type FullScaleSettings = {
-	maxStep: number;
-	minStep: number;
-} & ScaleSettings;
 
 type Lane = {
 	id: string;
@@ -34,8 +31,7 @@ type Lane = {
 	variationSettings?: Record<string, number>;
 };
 
-type StepOverride = {
-	step: number;
+type CellOverride = {
 	lineHeight?: number;
 	fontSize?: number;
 };
@@ -54,6 +50,6 @@ export type {
 	Breakpoint,
 	Lane,
 	ScaleSettings,
-	StepOverride,
+	CellOverride,
 	GridCell
 };
