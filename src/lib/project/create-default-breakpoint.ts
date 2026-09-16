@@ -21,7 +21,7 @@ export const createDefaultBreakpoint = ({
 		maxStep: 6,
 		defaultScale: {
 			baseSize: createDefaultBaseSize({ unit }) * modifier,
-			ratio: 1.2,
+			ratio: 1.2
 		},
 		overrides: {}
 	};

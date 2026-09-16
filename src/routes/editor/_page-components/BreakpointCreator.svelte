@@ -40,7 +40,7 @@
 		onCreate({
 			..._data,
 			defaultScale: {
-				baseSize: createDefaultBaseSize({unit: settings.unit}) * 1.2,
+				baseSize: createDefaultBaseSize({ unit: settings.unit }) * 1.2,
 				ratio: 1.2
 			},
 			minStep: -1,

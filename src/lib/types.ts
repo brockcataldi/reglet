@@ -39,9 +39,17 @@ type CellOverride = {
 type GridCell = {
 	step: number;
 	fontSize: number;
+	fontSizeOverridden: boolean;
 	lineHeight: number;
-	laneId: string;
-} & Omit<Lane, 'id'>;
+	lineHeightOverridden: boolean;
+	// laneId: string;
+} & Lane;
+
+export interface ModularScaleRatio {
+  ratio: number;
+  label: string;
+}
+
 
 export type {
 	ProjectType,

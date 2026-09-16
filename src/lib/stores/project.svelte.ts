@@ -107,7 +107,7 @@ class Project {
 		breakpoint.width = value;
 	}
 
-	updateBreakpointMinStep(id: string, value: number){
+	updateBreakpointMinStep(id: string, value: number) {
 		const breakpoint = this.breakpoints.find(
 			(breakpoint) => breakpoint.id === id
 		);
@@ -119,7 +119,7 @@ class Project {
 		breakpoint.minStep = value;
 	}
 
-	updateBreakpointMaxStep(id: string, value: number){
+	updateBreakpointMaxStep(id: string, value: number) {
 		const breakpoint = this.breakpoints.find(
 			(breakpoint) => breakpoint.id === id
 		);
@@ -131,7 +131,11 @@ class Project {
 		breakpoint.maxStep = value;
 	}
 
-	updateBreakpointOverrideFontSize(breakpointId: string, overrideId: string, value: number){
+	updateBreakpointOverrideFontSize(
+		breakpointId: string,
+		overrideId: string,
+		value: number | undefined
+	) {
 		const breakpoint = this.breakpoints.find(
 			(breakpoint) => breakpoint.id === breakpointId
 		);
@@ -140,14 +144,18 @@ class Project {
 			return;
 		}
 
-		if(!(overrideId in breakpoint.overrides)){
+		if (!(overrideId in breakpoint.overrides)) {
 			breakpoint.overrides[overrideId] = {};
 		}
 
 		breakpoint.overrides[overrideId].fontSize = value;
 	}
 
-	updateBreakpointOverrideLineHeight(breakpointId: string, overrideId: string, value: number){
+	updateBreakpointOverrideLineHeight(
+		breakpointId: string,
+		overrideId: string,
+		value: number | undefined
+	) {
 		const breakpoint = this.breakpoints.find(
 			(breakpoint) => breakpoint.id === breakpointId
 		);
@@ -156,11 +164,35 @@ class Project {
 			return;
 		}
 
-		if(!(overrideId in breakpoint.overrides)){
+		if (!(overrideId in breakpoint.overrides)) {
 			breakpoint.overrides[overrideId] = {};
 		}
 
 		breakpoint.overrides[overrideId].lineHeight = value;
+	}
+
+	updateBreakpointDefaultScaleBase(breakpointId: string, value: number) {
+		const breakpoint = this.breakpoints.find(
+			(breakpoint) => breakpoint.id === breakpointId
+		);
+
+		if (!breakpoint) {
+			return;
+		}
+
+		breakpoint.defaultScale.baseSize = value;
+	}
+
+	updateBreakpointDefaultScaleRatio(breakpointId: string, value: number) {
+		const breakpoint = this.breakpoints.find(
+			(breakpoint) => breakpoint.id === breakpointId
+		);
+
+		if (!breakpoint) {
+			return;
+		}
+
+		breakpoint.defaultScale.ratio = value;
 	}
 
 	deleteBreakpoint(id: string) {
