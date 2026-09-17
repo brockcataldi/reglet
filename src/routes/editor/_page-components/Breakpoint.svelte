@@ -8,7 +8,7 @@
 	type BreakpointProps = {
 		canDelete: boolean;
 		breakpoint: Breakpoint;
-		onNameChange: (newName: string) => void;
+		onLabelChange: (newName: string) => void;
 		onWidthChange: (newWidth: number) => void;
 		onDelete: () => void;
 		onDuplicate: () => void;
@@ -17,7 +17,7 @@
 	let {
 		canDelete,
 		breakpoint,
-		onNameChange,
+		onLabelChange,
 		onWidthChange,
 		onDelete,
 		onDuplicate
@@ -33,7 +33,7 @@
 					placeholder="ex. Mobile"
 					class="w-full text-4xl font-bold"
 					value={breakpoint.label}
-					oninput={(event) => onNameChange(event.currentTarget.value)}
+					oninput={(event) => onLabelChange(event.currentTarget.value)}
 				/>
 				<label
 					class="font-mono text-sm text-neutral-600 uppercase"

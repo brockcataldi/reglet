@@ -1,4 +1,4 @@
-import type { ModularScaleRatio } from "./types";
+import type { ModularScaleRatio } from './types';
 
 export const KEY_SETTINGS = 'reglet-settings';
 export const KEY_PROJECT_BREAKPOINTS = 'reglet-breakpoints';
@@ -36,22 +36,22 @@ export const PROJECT_DEFAULTS_STANDARD = [
 ] as const;
 
 export const MODULAR_SCALE_RATIOS: ModularScaleRatio[] = [
-  { ratio: 1.067, label: "Minor Second" },
-  { ratio: 1.125, label: "Major Second" },
-  { ratio: 1.2, label: "Minor Third" },
-  { ratio: 1.25, label: "Major Third" },
-  { ratio: 1.333, label: "Perfect Fourth" },
-  { ratio: 1.414, label: "Augmented Fourth" },
-  { ratio: 1.5, label: "Perfect Fifth" },
-  { ratio: 1.618, label: "Golden Ratio" },
-  { ratio: 1.667, label: "Minor Sixth" },
-  { ratio: 1.778, label: "Major Sixth" },
-  { ratio: 1.875, label: "Minor Seventh" },
-  { ratio: 2, label: "Octave" },
-  { ratio: 2.5, label: "Major Tenth" },
-  { ratio: 2.667, label: "Major Eleventh" },
-  { ratio: 3, label: "Major Twelfth" },
-  { ratio: 4, label: "Double Octave" },
+	{ ratio: 1.067, label: 'Minor Second' },
+	{ ratio: 1.125, label: 'Major Second' },
+	{ ratio: 1.2, label: 'Minor Third' },
+	{ ratio: 1.25, label: 'Major Third' },
+	{ ratio: 1.333, label: 'Perfect Fourth' },
+	{ ratio: 1.414, label: 'Augmented Fourth' },
+	{ ratio: 1.5, label: 'Perfect Fifth' },
+	{ ratio: 1.618, label: 'Golden Ratio' },
+	{ ratio: 1.667, label: 'Minor Sixth' },
+	{ ratio: 1.778, label: 'Major Sixth' },
+	{ ratio: 1.875, label: 'Minor Seventh' },
+	{ ratio: 2, label: 'Octave' },
+	{ ratio: 2.5, label: 'Major Tenth' },
+	{ ratio: 2.667, label: 'Major Eleventh' },
+	{ ratio: 3, label: 'Major Twelfth' },
+	{ ratio: 4, label: 'Double Octave' }
 ];
 
 export type DeviceType = 'mobile' | 'tablet' | 'laptop' | 'desktop';
@@ -170,4 +170,3 @@ export const DEVICES = [
 		orienation: 'bb'
 	}
 ] as const;
-

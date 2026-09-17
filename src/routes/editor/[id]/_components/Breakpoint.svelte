@@ -25,6 +25,7 @@
 		`repeat(${project.lanes.length}, 600px)`
 	);
 </script>
+
 <ul
 	class="grid w-fit grid-cols-1 gap-8 py-8"
 	style:--columns={gridColumnsRepeat}
@@ -62,8 +63,9 @@
 						icon={Plus}
 						label="Add row above {breakpoint.maxStep - rowIndex}"
 						onclick={() =>
-							project.updateBreakpointMaxStep(
+							project.updateBreakpointValue(
 								breakpoint.id,
+								"maxStep",
 								breakpoint.maxStep + 1
 							)}
 					/>
@@ -75,8 +77,9 @@
 						variant="destructive"
 						label="Remove row {breakpoint.maxStep - rowIndex}"
 						onclick={() =>
-							project.updateBreakpointMinStep(
+							project.updateBreakpointValue(
 								breakpoint.id,
+								"minStep",
 								breakpoint.minStep + 1
 							)}
 					/>
@@ -93,8 +96,9 @@
 						variant="destructive"
 						label="Remove row {breakpoint.maxStep - rowIndex}"
 						onclick={() =>
-							project.updateBreakpointMaxStep(
+							project.updateBreakpointValue(
 								breakpoint.id,
+								"maxStep",
 								breakpoint.maxStep - 1
 							)}
 					/>
@@ -104,8 +108,9 @@
 						icon={Plus}
 						label="Add row below {breakpoint.maxStep - rowIndex}"
 						onclick={() =>
-							project.updateBreakpointMinStep(
+							project.updateBreakpointValue(
 								breakpoint.id,
+								"minStep",
 								breakpoint.minStep - 1
 							)}
 					/>

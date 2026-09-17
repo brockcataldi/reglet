@@ -55,7 +55,7 @@ class Project {
 		return this.#sortedBreakpoints;
 	}
 
-	readBreakpoint(id: string) {
+	getBreakpoint(id: string) {
 		return this.breakpoints.find((breakpoint) => breakpoint.id === id);
 	}
 
@@ -83,7 +83,11 @@ class Project {
 		});
 	}
 
-	updateBreakpointName(id: string, label: string) {
+	updateBreakpointValue<K extends keyof Breakpoint>(
+		id: string,
+		key: K,
+		value: Breakpoint[K]
+	) {
 		const breakpoint = this.breakpoints.find(
 			(breakpoint) => breakpoint.id === id
 		);
@@ -92,49 +96,17 @@ class Project {
 			return;
 		}
 
-		breakpoint.label = label;
+		breakpoint[key] = value;
 	}
 
-	updateBreakpointWidth(id: string, value: number) {
-		const breakpoint = this.breakpoints.find(
-			(breakpoint) => breakpoint.id === id
-		);
-
-		if (!breakpoint) {
-			return;
-		}
-
-		breakpoint.width = value;
-	}
-
-	updateBreakpointMinStep(id: string, value: number) {
-		const breakpoint = this.breakpoints.find(
-			(breakpoint) => breakpoint.id === id
-		);
-
-		if (!breakpoint) {
-			return;
-		}
-
-		breakpoint.minStep = value;
-	}
-
-	updateBreakpointMaxStep(id: string, value: number) {
-		const breakpoint = this.breakpoints.find(
-			(breakpoint) => breakpoint.id === id
-		);
-
-		if (!breakpoint) {
-			return;
-		}
-
-		breakpoint.maxStep = value;
-	}
-
-	updateBreakpointOverrideFontSize(
+	updateBreakpointOverrideValue<
+		O extends keyof Breakpoint['overrides'],
+		K extends keyof Breakpoint['overrides'][O]
+	>(
 		breakpointId: string,
-		overrideId: string,
-		value: number | undefined
+		overrideId: O,
+		overrideProperty: K,
+		value: Breakpoint['overrides'][O][K]
 	) {
 		const breakpoint = this.breakpoints.find(
 			(breakpoint) => breakpoint.id === breakpointId
@@ -148,13 +120,16 @@ class Project {
 			breakpoint.overrides[overrideId] = {};
 		}
 
-		breakpoint.overrides[overrideId].fontSize = value;
+		breakpoint.overrides[overrideId][overrideProperty] = value;
 	}
 
-	updateBreakpointOverrideLineHeight(
+
+	updateBreakpointDefaultScaleValue<
+		K extends keyof Breakpoint['defaultScale']
+	>(
 		breakpointId: string,
-		overrideId: string,
-		value: number | undefined
+		key: K,
+		value: Breakpoint['defaultScale'][K]
 	) {
 		const breakpoint = this.breakpoints.find(
 			(breakpoint) => breakpoint.id === breakpointId
@@ -164,35 +139,7 @@ class Project {
 			return;
 		}
 
-		if (!(overrideId in breakpoint.overrides)) {
-			breakpoint.overrides[overrideId] = {};
-		}
-
-		breakpoint.overrides[overrideId].lineHeight = value;
-	}
-
-	updateBreakpointDefaultScaleBase(breakpointId: string, value: number) {
-		const breakpoint = this.breakpoints.find(
-			(breakpoint) => breakpoint.id === breakpointId
-		);
-
-		if (!breakpoint) {
-			return;
-		}
-
-		breakpoint.defaultScale.baseSize = value;
-	}
-
-	updateBreakpointDefaultScaleRatio(breakpointId: string, value: number) {
-		const breakpoint = this.breakpoints.find(
-			(breakpoint) => breakpoint.id === breakpointId
-		);
-
-		if (!breakpoint) {
-			return;
-		}
-
-		breakpoint.defaultScale.ratio = value;
+		breakpoint.defaultScale[key] = value;
 	}
 
 	deleteBreakpoint(id: string) {
@@ -212,34 +159,14 @@ class Project {
 		});
 	}
 
-	updateLaneFamily(id: string, family: string) {
+	updateLaneValue<K extends keyof Lane>(id: string, key: K, value: Lane[K]) {
 		const lane = this.lanes.find((lane) => lane.id === id);
 
 		if (!lane) {
 			return;
 		}
 
-		lane.family = family;
-	}
-
-	updateLaneWeight(id: string, weight: string) {
-		const lane = this.lanes.find((lane) => lane.id === id);
-
-		if (!lane) {
-			return;
-		}
-
-		lane.weight = weight;
-	}
-
-	updateLaneStyle(id: string, style: 'normal' | 'italic' | 'oblique') {
-		const lane = this.lanes.find((lane) => lane.id === id);
-
-		if (!lane) {
-			return;
-		}
-
-		lane.style = style;
+		lane[key] = value;
 	}
 
 	duplicateLane(id: string) {

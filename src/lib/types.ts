@@ -46,10 +46,9 @@ type GridCell = {
 } & Lane;
 
 export interface ModularScaleRatio {
-  ratio: number;
-  label: string;
+	ratio: number;
+	label: string;
 }
-
 
 export type {
 	ProjectType,

@@ -18,7 +18,7 @@
 </script>
 
 <li class="col-span-1 border border-black">
-	<div class="border-b border-black p-4">
+	<div class="block overflow-hidden border-b border-black p-4">
 		<p
 			style:line-height={cell.lineHeight}
 			style:font-family={cell.family}
@@ -46,9 +46,10 @@
 				step={0.05}
 				value={cell.lineHeight}
 				oninput={(event) =>
-					project.updateBreakpointOverrideLineHeight(
+					project.updateBreakpointOverrideValue(
 						breakpointId,
 						cell.id,
+						"lineHeight",
 						Number(event.currentTarget.value)
 					)}
 			/>
@@ -58,9 +59,10 @@
 					label="Relink"
 					class="mt-4"
 					onclick={() =>
-						project.updateBreakpointOverrideLineHeight(
+						project.updateBreakpointOverrideValue(
 							breakpointId,
 							cell.id,
+							"lineHeight",
 							undefined
 						)}
 				/>
@@ -80,9 +82,10 @@
 				step={0.05}
 				unit={settings.unit}
 				oninput={(event) =>
-					project.updateBreakpointOverrideFontSize(
+					project.updateBreakpointOverrideValue(
 						breakpointId,
 						cell.id,
+						"fontSize",
 						Number(event.currentTarget.value)
 					)}
 			/>
@@ -92,9 +95,10 @@
 					label="Relink"
 					class="mt-4"
 					onclick={() =>
-						project.updateBreakpointOverrideFontSize(
+						project.updateBreakpointOverrideValue(
 							breakpointId,
 							cell.id,
+							"fontSize",
 							undefined
 						)}
 				/>
