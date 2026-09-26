@@ -6,7 +6,7 @@
 	import project from '$lib/stores/project.svelte';
 	import settings from '$lib/stores/settings.svelte';
 
-	import { toGrid } from '$lib/project/to-grid';
+	import { toGrid } from '$lib/domain/project/to-grid';
 
 	import IconButton from '$lib/ui/button/icon-button.svelte';
 
@@ -65,7 +65,7 @@
 						onclick={() =>
 							project.updateBreakpointValue(
 								breakpoint.id,
-								"maxStep",
+								'maxStep',
 								breakpoint.maxStep + 1
 							)}
 					/>
@@ -79,7 +79,7 @@
 						onclick={() =>
 							project.updateBreakpointValue(
 								breakpoint.id,
-								"minStep",
+								'minStep',
 								breakpoint.minStep + 1
 							)}
 					/>
@@ -98,7 +98,7 @@
 						onclick={() =>
 							project.updateBreakpointValue(
 								breakpoint.id,
-								"maxStep",
+								'maxStep',
 								breakpoint.maxStep - 1
 							)}
 					/>
@@ -110,7 +110,7 @@
 						onclick={() =>
 							project.updateBreakpointValue(
 								breakpoint.id,
-								"minStep",
+								'minStep',
 								breakpoint.minStep - 1
 							)}
 					/>

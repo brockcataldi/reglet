@@ -48,9 +48,17 @@
 						{breakpoint}
 						canDelete={project.sortedBreakpoints.length > 1}
 						onLabelChange={(newLabel) =>
-							project.updateBreakpointValue(breakpoint.id, 'label', newLabel)}
+							project.updateBreakpointValue(
+								breakpoint.id,
+								'label',
+								newLabel
+							)}
 						onWidthChange={(newWidth) =>
-							project.updateBreakpointValue(breakpoint.id, 'width', newWidth)}
+							project.updateBreakpointValue(
+								breakpoint.id,
+								'width',
+								newWidth
+							)}
 						onDelete={() => project.deleteBreakpoint(breakpoint.id)}
 						onDuplicate={() => project.duplicateBreakpoint(breakpoint.id)}
 					/>

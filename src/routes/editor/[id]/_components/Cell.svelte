@@ -49,7 +49,7 @@
 					project.updateBreakpointOverrideValue(
 						breakpointId,
 						cell.id,
-						"lineHeight",
+						'lineHeight',
 						Number(event.currentTarget.value)
 					)}
 			/>
@@ -62,7 +62,7 @@
 						project.updateBreakpointOverrideValue(
 							breakpointId,
 							cell.id,
-							"lineHeight",
+							'lineHeight',
 							undefined
 						)}
 				/>
@@ -85,7 +85,7 @@
 					project.updateBreakpointOverrideValue(
 						breakpointId,
 						cell.id,
-						"fontSize",
+						'fontSize',
 						Number(event.currentTarget.value)
 					)}
 			/>
@@ -98,7 +98,7 @@
 						project.updateBreakpointOverrideValue(
 							breakpointId,
 							cell.id,
-							"fontSize",
+							'fontSize',
 							undefined
 						)}
 				/>

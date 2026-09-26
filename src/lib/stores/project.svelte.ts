@@ -5,8 +5,8 @@ import {
 import type { Breakpoint, Lane } from '$lib/types';
 
 import { createId, read, write } from '$lib/utilities';
-import { createDefaultBreakpoints } from '$lib/project/create-default-breakpoints';
-import { createDefaultLane } from '$lib/project/create-default-lane';
+import { createDefaultBreakpoints } from '$lib/domain/project/create-default-breakpoints';
+import { createDefaultLane } from '$lib/domain/project/create-default-lane';
 
 import settings from '$lib/stores/settings.svelte';
 
@@ -123,14 +123,9 @@ class Project {
 		breakpoint.overrides[overrideId][overrideProperty] = value;
 	}
 
-
 	updateBreakpointDefaultScaleValue<
 		K extends keyof Breakpoint['defaultScale']
-	>(
-		breakpointId: string,
-		key: K,
-		value: Breakpoint['defaultScale'][K]
-	) {
+	>(breakpointId: string, key: K, value: Breakpoint['defaultScale'][K]) {
 		const breakpoint = this.breakpoints.find(
 			(breakpoint) => breakpoint.id === breakpointId
 		);
@@ -159,7 +154,11 @@ class Project {
 		});
 	}
 
-	updateLaneValue<K extends keyof Lane>(id: string, key: K, value: Lane[K]) {
+	updateLaneValue<K extends keyof Lane>(
+		id: string,
+		key: K,
+		value: Lane[K]
+	) {
 		const lane = this.lanes.find((lane) => lane.id === id);
 
 		if (!lane) {

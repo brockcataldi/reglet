@@ -44,11 +44,11 @@
 					<Lane
 						{lane}
 						onFamilyChange={(newFamily) =>
-							project.updateLaneValue(lane.id, "family", newFamily)}
+							project.updateLaneValue(lane.id, 'family', newFamily)}
 						onWeightChange={(newWeight) =>
-							project.updateLaneValue(lane.id, "weight", newWeight)}
+							project.updateLaneValue(lane.id, 'weight', newWeight)}
 						onStyleChange={(newStyle) =>
-							project.updateLaneValue(lane.id, "style", newStyle)}
+							project.updateLaneValue(lane.id, 'style', newStyle)}
 						onDelete={() => project.deleteLane(lane.id)}
 						onDuplicate={() => project.duplicateLane(lane.id)}
 					/>

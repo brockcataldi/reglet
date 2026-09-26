@@ -31,7 +31,7 @@
 					onchange={(event) =>
 						project.updateBreakpointDefaultScaleValue(
 							breakpoint.id,
-                            "baseSize",
+							'baseSize',
 							Number(event.currentTarget.value)
 						)}
 				/>
@@ -46,10 +46,12 @@
 					onchange={(event) =>
 						project.updateBreakpointDefaultScaleValue(
 							breakpoint.id,
-                            "ratio",
+							'ratio',
 							Number(event.currentTarget.value)
 						)}
 				>
+					<option value="custom">Custom</option>
+					<hr />
 					{#each MODULAR_SCALE_RATIOS as modularScaleRatio (`ratio-${modularScaleRatio.ratio}`)}
 						<option value={modularScaleRatio.ratio}
 							>{modularScaleRatio.ratio} - {modularScaleRatio.label}</option

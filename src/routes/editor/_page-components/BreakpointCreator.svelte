@@ -12,7 +12,7 @@
 	import InputUnit from '$lib/ui/form/input-unit.svelte';
 	import Input from '$lib/ui/form/input.svelte';
 	import Separator from '$lib/ui/display/separator.svelte';
-	import { createDefaultBaseSize } from '$lib/project/create-default-base-size';
+	import { createDefaultBaseSize } from '$lib/domain/project/create-default-base-size';
 
 	let breakpoint = $state<CreateBreakpointData>({
 		label: '',
