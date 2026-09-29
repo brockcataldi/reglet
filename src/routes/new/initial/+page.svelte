@@ -11,11 +11,11 @@
 
 <div class="w-full">
 	<Separator as="h2">Project Type</Separator>
-	<div class="grid grid-cols-2 gap-2">
+	<div class="grid grid-cols-3 gap-2">
 		<RadioCard value="standard" class="h-full" bind:group={settings.type}>
 			<span class="block text-2xl font-semibold">Standard</span>
 			<span class="text-sm"
-				>Type sizes change at specific screen widths using set breakpoints.</span
+				>Type scale sizes change at specific screen widths using set breakpoints.</span
 			>
 		</RadioCard>
 		<RadioCard value="fluid" class="h-full" bind:group={settings.type}>
@@ -23,6 +23,12 @@
 			<span class="text-sm"
 				>Type scales smoothly between sizes based on the viewport or
 				container.</span
+			>
+		</RadioCard>
+		<RadioCard value="static" class="h-full" bind:group={settings.type}>
+			<span class="block text-2xl font-semibold">Static</span>
+			<span class="text-sm"
+				>Type scale does not changed based on the size of breakpoints.</span
 			>
 		</RadioCard>
 	</div>

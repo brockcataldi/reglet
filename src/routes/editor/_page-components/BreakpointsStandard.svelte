@@ -42,11 +42,11 @@
 		</Dialog>
 
 		<ul class="flex w-full flex-col gap-4">
-			{#each project.sortedBreakpoints as breakpoint (`breakpoint-${breakpoint.id}`)}
+			{#each project.breakpointSorted as breakpoint (`breakpoint-${breakpoint.id}`)}
 				<li class="w-full">
 					<Breakpoint
 						{breakpoint}
-						canDelete={project.sortedBreakpoints.length > 1}
+						canDelete={project.breakpointSorted.length > 1}
 						onLabelChange={(newLabel) =>
 							project.updateBreakpointValue(
 								breakpoint.id,

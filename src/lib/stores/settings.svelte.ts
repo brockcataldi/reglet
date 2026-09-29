@@ -8,7 +8,7 @@ class Settings {
 	#unit = $state<Unit>('rem');
 	#precision = $state<number>(3);
 	#rawStylesheets = $state<string>('');
-
+	
 	#stylesheets = $derived(extractStylesheetUrls(this.rawStylesheets));
 
 	constructor() {

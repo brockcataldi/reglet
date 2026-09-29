@@ -7,7 +7,9 @@
 
 	let { children } = $props();
 
-	let id = $derived(page.params.id);
+	let pId = $derived(page.params.id);
+	let rId = $derived(page.route.id);
+
 </script>
 
 <div class="h-dvh w-full">
@@ -17,7 +19,7 @@
 		<div class="flex flex-row items-center justify-between">
 			<div class="flex flex-row items-center justify-start">
 				<div
-					class="w-40 border-r border-r-black bg-sunburst-500 px-2 py-1 text-black"
+					class="w-40 h-9 border-r border-r-black bg-sunburst-500 px-2 text-black"
 				>
 					<p class="text-3xl font-bold tracking-tighter">Reglet</p>
 				</div>
@@ -26,42 +28,57 @@
 						<li class="w-fit">
 							<NavigationItem
 								href={resolve('/editor/')}
-								active={id === undefined}
+								border="r"
+								active={rId === "/editor"}
 							>
 								<span class="block font-mono text-sm font-bold">
-									Index
+									Settings
 								</span>
-								<span class="block font-mono text-xs"
-									>Project Settings</span
-								>
 							</NavigationItem>
 						</li>
-						{#each project.sortedBreakpoints as breakpoint (breakpoint.id)}
+						{#each project.breakpointSorted as breakpoint (breakpoint.id)}
 							<li class="w-fit">
 								<NavigationItem
 									href={resolve(`/editor/${breakpoint.id}`)}
-									active={breakpoint.id === id}
+									border="r"
+									active={breakpoint.id === pId}
 								>
-									<span class="block font-mono text-sm font-bold">
-										{#if breakpoint.label === ''}
-											Needs Title
-										{:else}
-											{breakpoint.label}
-										{/if}
+									<span class="flex flex-row items-center gap-2">
+										<span class="block font-mono text-sm font-bold">
+											{#if breakpoint.label === ''}
+												Needs Title
+											{:else}
+												{breakpoint.label}
+											{/if}
+										</span>
+										<span class="block font-mono text-xs"
+											>{breakpoint.width}px</span
+										>
 									</span>
-									<span class="block font-mono text-xs"
-										>{breakpoint.width}px</span
-									>
+
 								</NavigationItem>
 							</li>
 						{/each}
 					</ul>
 				</nav>
 			</div>
+			<ul>
+				<li>
+					<NavigationItem
+						href={resolve(`/editor/export`)}
+						border="l"
+						active={rId === "/editor/export"}
+					>
+						<span class="block font-mono text-sm font-bold">
+							Export
+						</span>
+					</NavigationItem>
+				</li>
+			</ul>
 		</div>
 	</header>
 
-	<main class="relative min-h-dvh w-full pt-11.25">
+	<main class="relative min-h-dvh w-full mt-9">
 		{@render children?.()}
 	</main>
 </div>

@@ -1,15 +1,37 @@
 <script lang="ts">
 	import { cn } from '$lib/utilities';
+	import { cva, type VariantProps } from 'class-variance-authority';
 	import type { Snippet } from 'svelte';
 	import type { HTMLAnchorAttributes } from 'svelte/elements';
 
+//  border-r border-r-black
+
+	const navigationItemVariants = cva("min-w-30 h-9 block px-4 py-1 border-black flex items-center justify-start", {
+		variants: {
+			active: {
+				true: 'bg-black text-white',
+				false: 'bg-white text-black hover:bg-cobalt-500 hover:text-white focus-visible:bg-cobalt-500 focus-visible:text-white'
+			},
+			border: {
+				"none": "border-none",
+				"l": "border-l",
+				"r": "border-r"
+			}
+		},
+		defaultVariants: {
+			active: false,
+			border: "none"
+		}
+	})
+
+
 	type NavigationItem = {
-		active: boolean;
 		children?: Snippet;
-	} & HTMLAnchorAttributes;
+	} & HTMLAnchorAttributes & VariantProps<typeof navigationItemVariants>;
 
 	let {
 		active,
+		border,
 		children,
 		class: className,
 		...props
@@ -19,7 +41,7 @@
 {#if active}
 	<span
 		class={cn(
-			'block min-w-30 border-r border-r-black bg-black px-4 py-1 text-white',
+			navigationItemVariants({ active: true, border }),
 			className
 		)}
 	>
@@ -30,8 +52,8 @@
 		{...props}
 		// I don't like that I had to forward href in this way but whatever.
 		class={cn(
-			'block min-w-30 border-r border-r-black bg-white px-4 py-1 text-black hover:bg-cobalt-500 hover:text-white focus-visible:bg-cobalt-500 focus-visible:text-white',
-			cn
+			navigationItemVariants({ active: false, border }),
+			className
 		)}
 	>
 		{@render children?.()}

@@ -14,7 +14,9 @@ class Project {
 	#breakpoints = $state<Breakpoint[]>([]);
 	#lanes = $state<Lane[]>([]);
 
-	#sortedBreakpoints = $derived(
+	// #tags = $state<Tag[]>([]);
+
+	#breakpointSorted = $derived(
 		this.breakpoints.toSorted((a, b) => a.width - b.width)
 	);
 
@@ -51,8 +53,8 @@ class Project {
 		this.#lanes = value;
 	}
 
-	get sortedBreakpoints() {
-		return this.#sortedBreakpoints;
+	get breakpointSorted() {
+		return this.#breakpointSorted;
 	}
 
 	getBreakpoint(id: string) {

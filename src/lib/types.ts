@@ -1,4 +1,4 @@
-type ProjectType = 'standard' | 'fluid';
+type ProjectType = 'standard' | 'fluid' | 'static';
 type Unit = 'rem' | 'px' | 'pt';
 
 type SettingsState = {
@@ -45,7 +45,7 @@ type GridCell = {
 	// laneId: string;
 } & Lane;
 
-export interface ModularScaleRatio {
+interface ModularScaleRatio {
 	ratio: number;
 	label: string;
 }
@@ -58,5 +58,6 @@ export type {
 	Lane,
 	ScaleSettings,
 	CellOverride,
-	GridCell
+	GridCell,
+	ModularScaleRatio
 };

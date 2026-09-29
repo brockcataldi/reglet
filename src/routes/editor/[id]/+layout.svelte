@@ -17,7 +17,7 @@
 
 {#if breakpoint}
 	<aside
-		class="fixed top-11.25 left-0 box-border h-screen w-64 border-r border-black bg-white p-4"
+		class="fixed top-9 left-0 box-border h-screen w-64 border-r border-black bg-white p-4"
 	>
 		<div class="flex flex-col items-start justify-start gap-4">
 			<div class="flex w-full flex-col items-center justify-start">
