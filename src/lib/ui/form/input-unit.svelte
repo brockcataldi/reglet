@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { Unit } from '$lib/types';
-	import { cn } from '$lib/utilities';
+	import type { Unit } from '#lib/types.js';
+	import { cn } from '#lib/utilities.js';
 	import { cva, type VariantProps } from 'class-variance-authority';
 	import type { ClassValue, HTMLInputAttributes } from 'svelte/elements';
 

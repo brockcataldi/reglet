@@ -1,4 +1,4 @@
-import { isAbsoluteUrl } from '$lib/utilities';
+import { isAbsoluteUrl } from '#lib/utilities.js';
 
 export const extractStylesheetUrls = (raw: string): string[] => {
 	const parser = new DOMParser();

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn } from '$lib/utilities';
+	import { cn } from '#lib/utilities.js';
 	import type { Snippet } from 'svelte';
 	import type { ClassNameValue } from 'tailwind-merge';
 

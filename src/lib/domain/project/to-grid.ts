@@ -1,4 +1,4 @@
-import type { Breakpoint, GridCell, Lane } from '$lib/types';
+import type { Breakpoint, GridCell, Lane } from '#lib/types.js';
 
 import { adjustIntPrecision } from './adjust-int-precision';
 

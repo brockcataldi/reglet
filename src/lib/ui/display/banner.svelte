@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn } from '$lib/utilities';
+	import { cn } from '#lib/utilities.js';
 	import { cva, type VariantProps } from 'class-variance-authority';
 
 	import type { Component, Snippet } from 'svelte';

@@ -1,9 +1,9 @@
 <script>
-	import project from '$lib/stores/project.svelte';
+	import project from '#lib/stores/project.svelte.js';
 
-	import TextArea from '$lib/ui/form/text-area.svelte';
-	import Separator from '$lib/ui/display/separator.svelte';
-	import Banner from '$lib/ui/display/banner.svelte';
+	import TextArea from '#lib/ui/form/text-area.svelte';
+	import Separator from '#lib/ui/display/separator.svelte';
+	import Banner from '#lib/ui/display/banner.svelte';
 
 	const placeholder = `<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

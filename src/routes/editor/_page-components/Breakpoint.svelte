@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { Breakpoint } from '$lib/types';
+	import type { Breakpoint } from '#lib/types.js';
 
-	import Button from '$lib/ui/button/button.svelte';
-	import Input from '$lib/ui/form/input.svelte';
-	import InputUnit from '$lib/ui/form/input-unit.svelte';
+	import Button from '#lib/ui/button/button.svelte';
+	import Input from '#lib/ui/form/input.svelte';
+	import InputUnit from '#lib/ui/form/input-unit.svelte';
 
 	type BreakpointProps = {
 		canDelete: boolean;

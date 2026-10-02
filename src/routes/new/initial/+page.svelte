@@ -1,8 +1,8 @@
 <script lang="ts">
-	import project from '$lib/stores/project.svelte';
+	import project from '#lib/stores/project.svelte.js';
 
-	import Separator from '$lib/ui/display/separator.svelte';
-	import RadioCard from '$lib/ui/form/radio-card.svelte';
+	import Separator from '#lib/ui/display/separator.svelte';
+	import RadioCard from '#lib/ui/form/radio-card.svelte';
 </script>
 
 <svelte:head>

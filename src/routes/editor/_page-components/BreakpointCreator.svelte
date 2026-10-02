@@ -1,5 +1,5 @@
 <script lang="ts">
-	import project from '$lib/stores/project.svelte';
+	import project from '#lib/stores/project.svelte.js';
 
 	import {
 		createBreakpointValidator,
@@ -8,12 +8,12 @@
 		type OnCreateBreakpointData
 	} from './create-breakpoint';
 
-	import Button from '$lib/ui/button/button.svelte';
-	import InputUnit from '$lib/ui/form/input-unit.svelte';
-	import Input from '$lib/ui/form/input.svelte';
-	import Separator from '$lib/ui/display/separator.svelte';
+	import Button from '#lib/ui/button/button.svelte';
+	import InputUnit from '#lib/ui/form/input-unit.svelte';
+	import Input from '#lib/ui/form/input.svelte';
+	import Separator from '#lib/ui/display/separator.svelte';
 
-	import { createDefaultBaseSize } from '$lib/domain/project/create-default-base-size';
+	import { createDefaultBaseSize } from '#lib/domain/project/create-default-base-size.js';
 
 	let breakpoint = $state<CreateBreakpointData>({
 		label: '',

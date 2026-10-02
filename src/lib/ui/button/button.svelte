@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Component } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
-	import { cn } from '$lib/utilities';
+	import { cn } from '#lib/utilities.js';
 
 	import {
 		textButtonVariants,

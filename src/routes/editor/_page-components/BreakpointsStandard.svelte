@@ -1,11 +1,11 @@
 <script lang="ts">
-	import type { Breakpoint as TBreakpoint } from '$lib/types';
-	import project from '$lib/stores/project.svelte';
+	import type { Breakpoint as TBreakpoint } from '#lib/types.js';
+	import project from '#lib/stores/project.svelte.js';
 
 	import Breakpoint from './Breakpoint.svelte';
 	import BreakpointCreator from './BreakpointCreator.svelte';
-	import Button from '$lib/ui/button/button.svelte';
-	import Dialog from '$lib/ui/display/dialog.svelte';
+	import Button from '#lib/ui/button/button.svelte';
+	import Dialog from '#lib/ui/display/dialog.svelte';
 
 	let showCreator = $state(false);
 

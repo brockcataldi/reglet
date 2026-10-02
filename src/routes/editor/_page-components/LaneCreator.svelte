@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Button from '$lib/ui/button/button.svelte';
-	import Separator from '$lib/ui/display/separator.svelte';
-	import Input from '$lib/ui/form/input.svelte';
-	import Select from '$lib/ui/form/select.svelte';
+	import Button from '#lib/ui/button/button.svelte';
+	import Separator from '#lib/ui/display/separator.svelte';
+	import Input from '#lib/ui/form/input.svelte';
+	import Select from '#lib/ui/form/select.svelte';
 
 	import {
 		type CreateLaneErrors,

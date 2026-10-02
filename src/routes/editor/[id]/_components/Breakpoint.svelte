@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { Minus, Plus } from '@lucide/svelte';
 
-	import type { Breakpoint } from '$lib/types';
+	import type { Breakpoint } from '#lib/types.js';
 
-	import project from '$lib/stores/project.svelte';
+	import project from '#lib/stores/project.svelte.js';
 
-	import { toGrid } from '$lib/domain/project/to-grid';
+	import { toGrid } from '#lib/domain/project/to-grid.js';
 
-	import IconButton from '$lib/ui/button/icon-button.svelte';
+	import IconButton from '#lib/ui/button/icon-button.svelte';
 	import Cell from './Cell.svelte';
 
 	type BreakpointProps = {

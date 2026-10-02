@@ -1,6 +1,6 @@
-import { LOCAL_STORAGE_KEY_FONTS } from '$lib/constants';
-import { extractStylesheetUrls } from '$lib/domain/fonts/extract-stylesheet-urls';
-import { read, write } from '$lib/utilities';
+import { LOCAL_STORAGE_KEY_FONTS } from '#lib/constants.js';
+import { extractStylesheetUrls } from '#lib/domain/fonts/extract-stylesheet-urls.js';
+import { read, write } from '#lib/utilities.js';
 
 class FontsRepository {
 	#rawStylesheets = $state<string>('');

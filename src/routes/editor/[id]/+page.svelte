@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageProps } from './$types';
-	import project from '$lib/stores/project.svelte';
+	import project from '#lib/stores/project.svelte.js';
 	import Breakpoint from './_components/Breakpoint.svelte';
 
 	let { params }: PageProps = $props();

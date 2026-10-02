@@ -1,4 +1,4 @@
-import type { Breakpoint } from '$lib/types';
+import type { Breakpoint } from '#lib/types.js';
 import z from 'zod';
 
 export const createBreakpointSchema = z.object({

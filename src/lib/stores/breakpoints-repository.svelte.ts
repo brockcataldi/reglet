@@ -1,6 +1,6 @@
-import { LOCAL_STORAGE_KEY_BREAKPOINTS } from '$lib/constants';
-import type { Breakpoint } from '$lib/types';
-import { createId, read, write } from '$lib/utilities';
+import { LOCAL_STORAGE_KEY_BREAKPOINTS } from '#lib/constants.js';
+import type { Breakpoint } from '#lib/types.js';
+import { createId, read, write } from '#lib/utilities.js';
 
 class BreakpointRepository {
 	#breakpoints = $state<Breakpoint[]>([]);

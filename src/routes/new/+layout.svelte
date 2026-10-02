@@ -2,8 +2,8 @@
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import type { ResolvedPathname } from '$app/types';
-	import project from '$lib/stores/project.svelte';
-	import LinkButton from '$lib/ui/button/link-button.svelte';
+	import project from '#lib/stores/project.svelte.js';
+	import LinkButton from '#lib/ui/button/link-button.svelte';
 
 	let { children } = $props();
 
@@ -21,25 +21,25 @@
 			display: true,
 			slug: 'initial',
 			name: 'Initial',
-			href: resolve('/new/initial')
+			href: resolve('new/initial')
 		},
 		{
 			display: true,
 			slug: 'stylesheets',
 			name: 'Stylesheets',
-			href: resolve('/new/stylesheets')
+			href: resolve('new/stylesheets')
 		},
 		{
 			display: true,
 			slug: 'overview',
 			name: 'Overview',
-			href: resolve('/new/overview')
+			href: resolve('new/overview')
 		},
 		{
 			display: false,
 			slug: 'editor',
 			name: 'Editor',
-			href: resolve('/editor'),
+			href: resolve('editor'),
 			nextOverride: 'Create',
 			onClick: () => project.createNewProject()
 		}
@@ -132,7 +132,7 @@
 					href={nextStep.href}
 					label={nextStep.nextOverride ?? 'Next'}
 					onclick={nextStep.onClick}
-				></LinkButton>
+				/>
 			{:else}
 				<span></span>
 			{/if}

@@ -1,4 +1,4 @@
-import type { Unit } from '$lib/types';
+import type { Unit } from '#lib/types.js';
 
 export const createDefaultBaseSize = ({ unit }: { unit: Unit }) => {
 	if (unit === 'pt') {

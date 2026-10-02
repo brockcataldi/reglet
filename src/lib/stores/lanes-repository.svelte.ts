@@ -1,6 +1,6 @@
-import { LOCAL_STORAGE_KEY_LANES } from '$lib/constants';
-import type { Lane } from '$lib/types';
-import { createId, read, write } from '$lib/utilities';
+import { LOCAL_STORAGE_KEY_LANES } from '#lib/constants.js';
+import type { Lane } from '#lib/types.js';
+import { createId, read, write } from '#lib/utilities.js';
 
 class LanesRepository {
 	#lanes = $state<Lane[]>([]);

@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { MODULAR_SCALE_RATIOS } from '$lib/constants';
+	import { MODULAR_SCALE_RATIOS } from '#lib/constants.js';
 
-	import project from '$lib/stores/project.svelte';
+	import project from '#lib/stores/project.svelte.js';
 
-	import Separator from '$lib/ui/display/separator.svelte';
-	import InputUnit from '$lib/ui/form/input-unit.svelte';
-	import Select from '$lib/ui/form/select.svelte';
+	import Separator from '#lib/ui/display/separator.svelte';
+	import InputUnit from '#lib/ui/form/input-unit.svelte';
+	import Select from '#lib/ui/form/select.svelte';
 
 	let { children } = $props();
 

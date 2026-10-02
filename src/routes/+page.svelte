@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import LinkButton from '$lib/ui/button/link-button.svelte';
+	import LinkButton from '#lib/ui/button/link-button.svelte';
 </script>
 
 <svelte:head>
@@ -17,10 +17,8 @@
 				Reglet
 			</h1>
 			<div class="flex items-center justify-start gap-4">
-				<p class="text-2xl text-black">reg&middot;let</p>
-				<p class="text-2xl text-black">
-					<strong>noun</strong>
-				</p>
+				<p class="text-2xl text-black">reg·let</p>
+				<p class="text-2xl text-black"><strong>noun</strong></p>
 			</div>
 		</div>
 	</heading>
@@ -35,8 +33,9 @@
 					<strong>an app to build type systems</strong>
 				</li>
 			</ol>
+
 			<div>
-				<LinkButton href={resolve('/new/initial')} label="Get Started" />
+				<LinkButton href={resolve('new/initial')} label="Get Started" />
 			</div>
 		</div>
 	</section>

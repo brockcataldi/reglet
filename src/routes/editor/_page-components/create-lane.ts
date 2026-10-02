@@ -1,4 +1,4 @@
-import type { Lane } from '$lib/types';
+import type { Lane } from '#lib/types.js';
 import z from 'zod';
 
 export const createLaneSchema = z.object({

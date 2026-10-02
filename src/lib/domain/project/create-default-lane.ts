@@ -1,5 +1,5 @@
-import type { Lane } from '$lib/types';
-import { createId } from '$lib/utilities';
+import type { Lane } from '#lib/types.js';
+import { createId } from '#lib/utilities.js';
 
 export const createDefaultLane = (): Lane => {
 	return {

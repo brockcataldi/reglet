@@ -2,7 +2,7 @@
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 
-	import project from '$lib/stores/project.svelte';
+	import project from '#lib/stores/project.svelte.js';
 	import NavigationItem from './_layout-components/NavigationItem.svelte';
 
 	let { children } = $props();
@@ -26,7 +26,7 @@
 					<ul class="flex flex-row">
 						<li class="w-fit">
 							<NavigationItem
-								href={resolve('/editor/')}
+								href={resolve('editor/')}
 								border="r"
 								active={rId === '/editor'}
 							>
@@ -38,7 +38,7 @@
 						{#each project.breakpoints.sorted as breakpoint (breakpoint.id)}
 							<li class="w-fit">
 								<NavigationItem
-									href={resolve(`/editor/${breakpoint.id}`)}
+									href={resolve(`editor/${breakpoint.id}`)}
 									border="r"
 									active={breakpoint.id === pId}
 								>
@@ -63,7 +63,7 @@
 			<ul>
 				<li>
 					<NavigationItem
-						href={resolve(`/editor/export`)}
+						href={resolve(`editor/export`)}
 						border="l"
 						active={rId === '/editor/export'}
 					>

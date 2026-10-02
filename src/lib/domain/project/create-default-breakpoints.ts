@@ -1,9 +1,9 @@
 import {
 	PROJECT_DEFAULTS_FLUID,
 	PROJECT_DEFAULTS_STANDARD
-} from '$lib/constants';
+} from '#lib/constants.js';
 
-import type { Unit, ProjectType, Breakpoint } from '$lib/types';
+import type { Unit, ProjectType, Breakpoint } from '#lib/types.js';
 
 import { createDefaultBreakpoint } from './create-default-breakpoint';
 

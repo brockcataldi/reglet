@@ -1,7 +1,7 @@
-import { createDefaultBreakpoints } from '$lib/domain/project/create-default-breakpoints';
-import { createDefaultLane } from '$lib/domain/project/create-default-lane';
+import { createDefaultBreakpoints } from '#lib/domain/project/create-default-breakpoints.js';
+import { createDefaultLane } from '#lib/domain/project/create-default-lane.js';
 
-import type { ProjectType, Unit } from '$lib/types';
+import type { ProjectType, Unit } from '#lib/types.js';
 
 import BreakpointRepository from './breakpoints-repository.svelte';
 import FontsRepository from './fonts-repository.svelte';

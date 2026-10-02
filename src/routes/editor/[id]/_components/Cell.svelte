@@ -1,12 +1,12 @@
 <script lang="ts">
-	import type { GridCell } from '$lib/types';
+	import type { GridCell } from '#lib/types.js';
 
-	import project from '$lib/stores/project.svelte';
+	import project from '#lib/stores/project.svelte.js';
 
-	import Separator from '$lib/ui/display/separator.svelte';
-	import Input from '$lib/ui/form/input.svelte';
-	import InputUnit from '$lib/ui/form/input-unit.svelte';
-	import Button from '$lib/ui/button/button.svelte';
+	import Separator from '#lib/ui/display/separator.svelte';
+	import Input from '#lib/ui/form/input.svelte';
+	import InputUnit from '#lib/ui/form/input-unit.svelte';
+	import Button from '#lib/ui/button/button.svelte';
 
 	type CellProps = {
 		breakpointId: string;

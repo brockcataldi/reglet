@@ -1,5 +1,5 @@
 <script lang="ts">
-	import project from '$lib/stores/project.svelte';
+	import project from '#lib/stores/project.svelte.js';
 
 	import BreakpointsStandard from './_page-components/BreakpointsStandard.svelte';
 	import Lanes from './_page-components/Lanes.svelte';

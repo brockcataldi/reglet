@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { Lane } from '$lib/types';
-	import Button from '$lib/ui/button/button.svelte';
-	import Input from '$lib/ui/form/input.svelte';
-	import Select from '$lib/ui/form/select.svelte';
+	import type { Lane } from '#lib/types.js';
+	import Button from '#lib/ui/button/button.svelte';
+	import Input from '#lib/ui/form/input.svelte';
+	import Select from '#lib/ui/form/select.svelte';
 
 	type LaneProps = {
 		lane: Lane;
