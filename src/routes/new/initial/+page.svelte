@@ -1,5 +1,5 @@
 <script lang="ts">
-	import settings from '$lib/stores/settings.svelte';
+	import project from '$lib/stores/project.svelte';
 
 	import Separator from '$lib/ui/display/separator.svelte';
 	import RadioCard from '$lib/ui/form/radio-card.svelte';
@@ -12,20 +12,21 @@
 <div class="w-full">
 	<Separator as="h2">Project Type</Separator>
 	<div class="grid grid-cols-3 gap-2">
-		<RadioCard value="standard" class="h-full" bind:group={settings.type}>
+		<RadioCard value="standard" class="h-full" bind:group={project.type}>
 			<span class="block text-2xl font-semibold">Standard</span>
 			<span class="text-sm"
-				>Type scale sizes change at specific screen widths using set breakpoints.</span
+				>Type scale sizes change at specific screen widths using set
+				breakpoints.</span
 			>
 		</RadioCard>
-		<RadioCard value="fluid" class="h-full" bind:group={settings.type}>
+		<RadioCard value="fluid" class="h-full" bind:group={project.type}>
 			<span class="block text-2xl font-semibold">Fluid</span>
 			<span class="text-sm"
 				>Type scales smoothly between sizes based on the viewport or
 				container.</span
 			>
 		</RadioCard>
-		<RadioCard value="static" class="h-full" bind:group={settings.type}>
+		<RadioCard value="static" class="h-full" bind:group={project.type}>
 			<span class="block text-2xl font-semibold">Static</span>
 			<span class="text-sm"
 				>Type scale does not changed based on the size of breakpoints.</span
@@ -37,21 +38,21 @@
 <div class="mt-4 w-full">
 	<Separator as="h2">Unit</Separator>
 	<div class="grid grid-cols-3 gap-2">
-		<RadioCard value="rem" bind:group={settings.unit}>
+		<RadioCard value="rem" bind:group={project.unit}>
 			<span class="block text-2xl font-semibold">rem</span>
 			<span class="text-sm"
 				>Relative to the root font size; best for scalable, accessible
 				type.</span
 			>
 		</RadioCard>
-		<RadioCard value="px" bind:group={settings.unit}>
+		<RadioCard value="px" bind:group={project.unit}>
 			<span class="block text-2xl font-semibold">px</span>
 			<span class="text-sm"
 				>Fixed pixel units; best when you need exact, device-independent
 				sizing.
 			</span>
 		</RadioCard>
-		<RadioCard value="pt" bind:group={settings.unit}>
+		<RadioCard value="pt" bind:group={project.unit}>
 			<span class="block text-2xl font-semibold">pt</span>
 			<span class="text-sm"
 				>Print-oriented points; mainly for print styles, not typical screen

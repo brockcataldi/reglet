@@ -1,5 +1,5 @@
 <script lang="ts">
-	import settings from '$lib/stores/settings.svelte';
+	import project from '$lib/stores/project.svelte';
 
 	import BreakpointsStandard from './_page-components/BreakpointsStandard.svelte';
 	import Lanes from './_page-components/Lanes.svelte';
@@ -19,7 +19,7 @@
 
 <Lanes />
 
-{#if settings.type === 'standard'}
+{#if project.type === 'standard'}
 	<BreakpointsStandard />
 {:else}
 	<h1>Fluid Project</h1>

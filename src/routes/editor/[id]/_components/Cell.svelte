@@ -1,12 +1,11 @@
 <script lang="ts">
 	import type { GridCell } from '$lib/types';
 
-	import settings from '$lib/stores/settings.svelte';
+	import project from '$lib/stores/project.svelte';
 
 	import Separator from '$lib/ui/display/separator.svelte';
 	import Input from '$lib/ui/form/input.svelte';
 	import InputUnit from '$lib/ui/form/input-unit.svelte';
-	import project from '$lib/stores/project.svelte';
 	import Button from '$lib/ui/button/button.svelte';
 
 	type CellProps = {
@@ -22,7 +21,7 @@
 		<p
 			style:line-height={cell.lineHeight}
 			style:font-family={cell.family}
-			style:font-size={`${cell.fontSize.toFixed(3)}${settings.unit}`}
+			style:font-size={`${cell.fontSize.toFixed(3)}${project.unit}`}
 			style:font-weight={cell.weight}
 			style:font-style={cell.style}
 		>
@@ -46,7 +45,7 @@
 				step={0.05}
 				value={cell.lineHeight}
 				oninput={(event) =>
-					project.updateBreakpointOverrideValue(
+					project.breakpoints.updateOverrideValue(
 						breakpointId,
 						cell.id,
 						'lineHeight',
@@ -59,7 +58,7 @@
 					label="Relink"
 					class="mt-4"
 					onclick={() =>
-						project.updateBreakpointOverrideValue(
+						project.breakpoints.updateOverrideValue(
 							breakpointId,
 							cell.id,
 							'lineHeight',
@@ -80,9 +79,9 @@
 				value={cell.fontSize}
 				min={0}
 				step={0.05}
-				unit={settings.unit}
+				unit={project.unit}
 				oninput={(event) =>
-					project.updateBreakpointOverrideValue(
+					project.breakpoints.updateOverrideValue(
 						breakpointId,
 						cell.id,
 						'fontSize',
@@ -95,7 +94,7 @@
 					label="Relink"
 					class="mt-4"
 					onclick={() =>
-						project.updateBreakpointOverrideValue(
+						project.breakpoints.updateOverrideValue(
 							breakpointId,
 							cell.id,
 							'fontSize',

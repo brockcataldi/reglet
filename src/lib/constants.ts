@@ -1,8 +1,9 @@
 import type { ModularScaleRatio } from './types';
 
-export const KEY_SETTINGS = 'reglet-settings';
-export const KEY_PROJECT_BREAKPOINTS = 'reglet-breakpoints';
-export const KEY_PROJECT_LANES = 'reglet-lanes';
+export const LOCAL_STORAGE_KEY_FONTS = 'reglet-fonts';
+export const LOCAL_STORAGE_KEY_SETTINGS = 'reglet-settings';
+export const LOCAL_STORAGE_KEY_BREAKPOINTS = 'reglet-breakpoints';
+export const LOCAL_STORAGE_KEY_LANES = 'reglet-lanes';
 
 export const PROJECT_DEFAULTS_FLUID = {
 	min: {

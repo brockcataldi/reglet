@@ -4,13 +4,12 @@
 	import type { Breakpoint } from '$lib/types';
 
 	import project from '$lib/stores/project.svelte';
-	import settings from '$lib/stores/settings.svelte';
 
 	import { toGrid } from '$lib/domain/project/to-grid';
 
 	import IconButton from '$lib/ui/button/icon-button.svelte';
-
 	import Cell from './Cell.svelte';
+
 	type BreakpointProps = {
 		breakpoint: Breakpoint;
 	};
@@ -18,11 +17,11 @@
 	let { breakpoint }: BreakpointProps = $props();
 
 	let grid = $derived(
-		toGrid(breakpoint, project.lanes, settings.precision).reverse()
+		toGrid(breakpoint, project.lanes.lanes, project.precision).reverse()
 	);
 
 	let gridColumnsRepeat = $derived(
-		`repeat(${project.lanes.length}, 600px)`
+		`repeat(${project.lanes.lanes.length}, 600px)`
 	);
 </script>
 
@@ -33,7 +32,7 @@
 	<li class="grid w-fit grid-cols-[64px_1fr] gap-8 px-8">
 		<div></div>
 		<ul class="grid grid-cols-(--columns) gap-8">
-			{#each project.lanes as lane, laneIndex (`lane-${laneIndex}`)}
+			{#each project.lanes.lanes as lane, laneIndex (`lane-${laneIndex}`)}
 				<li>
 					<div
 						class="flex items-start justify-between border border-black p-4"
@@ -63,7 +62,7 @@
 						icon={Plus}
 						label="Add row above {breakpoint.maxStep - rowIndex}"
 						onclick={() =>
-							project.updateBreakpointValue(
+							project.breakpoints.updateValue(
 								breakpoint.id,
 								'maxStep',
 								breakpoint.maxStep + 1
@@ -77,7 +76,7 @@
 						variant="destructive"
 						label="Remove row {breakpoint.maxStep - rowIndex}"
 						onclick={() =>
-							project.updateBreakpointValue(
+							project.breakpoints.updateValue(
 								breakpoint.id,
 								'minStep',
 								breakpoint.minStep + 1
@@ -96,7 +95,7 @@
 						variant="destructive"
 						label="Remove row {breakpoint.maxStep - rowIndex}"
 						onclick={() =>
-							project.updateBreakpointValue(
+							project.breakpoints.updateValue(
 								breakpoint.id,
 								'maxStep',
 								breakpoint.maxStep - 1
@@ -108,7 +107,7 @@
 						icon={Plus}
 						label="Add row below {breakpoint.maxStep - rowIndex}"
 						onclick={() =>
-							project.updateBreakpointValue(
+							project.breakpoints.updateValue(
 								breakpoint.id,
 								'minStep',
 								breakpoint.minStep - 1

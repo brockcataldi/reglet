@@ -1,203 +1,52 @@
-import {
-	KEY_PROJECT_BREAKPOINTS,
-	KEY_PROJECT_LANES
-} from '$lib/constants';
-import type { Breakpoint, Lane } from '$lib/types';
-
-import { createId, read, write } from '$lib/utilities';
 import { createDefaultBreakpoints } from '$lib/domain/project/create-default-breakpoints';
 import { createDefaultLane } from '$lib/domain/project/create-default-lane';
 
-import settings from '$lib/stores/settings.svelte';
+import type { ProjectType, Unit } from '$lib/types';
+
+import BreakpointRepository from './breakpoints-repository.svelte';
+import FontsRepository from './fonts-repository.svelte';
+import LanesRepository from './lanes-repository.svelte';
 
 class Project {
-	#breakpoints = $state<Breakpoint[]>([]);
-	#lanes = $state<Lane[]>([]);
+	#type = $state<ProjectType>('standard');
+	#unit = $state<Unit>('rem');
+	#precision = $state<number>(3);
 
-	// #tags = $state<Tag[]>([]);
+	breakpoints = new BreakpointRepository();
+	lanes = new LanesRepository();
+	fonts = new FontsRepository();
 
-	#breakpointSorted = $derived(
-		this.breakpoints.toSorted((a, b) => a.width - b.width)
-	);
-
-	constructor() {
-		const cachedBreakpoints = read<Breakpoint[]>(KEY_PROJECT_BREAKPOINTS);
-		const cachedLanes = read<Lane[]>(KEY_PROJECT_LANES);
-
-		if (cachedBreakpoints && cachedLanes) {
-			this.breakpoints = cachedBreakpoints;
-			this.lanes = cachedLanes;
-		}
-
-		$effect.root(() => {
-			$effect(() => {
-				write(KEY_PROJECT_BREAKPOINTS, this.breakpoints);
-				write(KEY_PROJECT_LANES, this.lanes);
-			});
-		});
+	get type() {
+		return this.#type;
 	}
 
-	get breakpoints() {
-		return this.#breakpoints;
+	set type(value: ProjectType) {
+		this.#type = value;
 	}
 
-	set breakpoints(value: Breakpoint[]) {
-		this.#breakpoints = value;
+	get unit() {
+		return this.#unit;
 	}
 
-	get lanes() {
-		return this.#lanes;
+	set unit(value: Unit) {
+		this.#unit = value;
 	}
 
-	set lanes(value: Lane[]) {
-		this.#lanes = value;
+	get precision() {
+		return this.#precision;
 	}
 
-	get breakpointSorted() {
-		return this.#breakpointSorted;
+	set precision(value: number) {
+		this.#precision = value;
 	}
 
-	getBreakpoint(id: string) {
-		return this.breakpoints.find((breakpoint) => breakpoint.id === id);
-	}
-
-	createBreakpoint(newBreakpoint: Omit<Breakpoint, 'id'>) {
-		this.breakpoints.push({
-			...newBreakpoint,
-			id: createId()
-		});
-	}
-
-	duplicateBreakpoint(id: string) {
-		const breakpoint = this.breakpoints.find(
-			(breakpoint) => breakpoint.id === id
-		);
-
-		if (!breakpoint) {
-			return;
-		}
-
-		this.breakpoints.push({
-			...breakpoint,
-			id: createId(),
-			width: breakpoint.width + 1,
-			label: `${breakpoint.label} Copy`
-		});
-	}
-
-	updateBreakpointValue<K extends keyof Breakpoint>(
-		id: string,
-		key: K,
-		value: Breakpoint[K]
-	) {
-		const breakpoint = this.breakpoints.find(
-			(breakpoint) => breakpoint.id === id
-		);
-
-		if (!breakpoint) {
-			return;
-		}
-
-		breakpoint[key] = value;
-	}
-
-	updateBreakpointOverrideValue<
-		O extends keyof Breakpoint['overrides'],
-		K extends keyof Breakpoint['overrides'][O]
-	>(
-		breakpointId: string,
-		overrideId: O,
-		overrideProperty: K,
-		value: Breakpoint['overrides'][O][K]
-	) {
-		const breakpoint = this.breakpoints.find(
-			(breakpoint) => breakpoint.id === breakpointId
-		);
-
-		if (!breakpoint) {
-			return;
-		}
-
-		if (!(overrideId in breakpoint.overrides)) {
-			breakpoint.overrides[overrideId] = {};
-		}
-
-		breakpoint.overrides[overrideId][overrideProperty] = value;
-	}
-
-	updateBreakpointDefaultScaleValue<
-		K extends keyof Breakpoint['defaultScale']
-	>(breakpointId: string, key: K, value: Breakpoint['defaultScale'][K]) {
-		const breakpoint = this.breakpoints.find(
-			(breakpoint) => breakpoint.id === breakpointId
-		);
-
-		if (!breakpoint) {
-			return;
-		}
-
-		breakpoint.defaultScale[key] = value;
-	}
-
-	deleteBreakpoint(id: string) {
-		const index = this.breakpoints.findIndex(
-			(breakpoint) => breakpoint.id === id
-		);
-
-		if (index !== undefined) {
-			this.breakpoints = this.breakpoints.toSpliced(index, 1);
-		}
-	}
-
-	createLane(lane: Omit<Lane, 'id'>) {
-		this.lanes.push({
-			...lane,
-			id: createId()
-		});
-	}
-
-	updateLaneValue<K extends keyof Lane>(
-		id: string,
-		key: K,
-		value: Lane[K]
-	) {
-		const lane = this.lanes.find((lane) => lane.id === id);
-
-		if (!lane) {
-			return;
-		}
-
-		lane[key] = value;
-	}
-
-	duplicateLane(id: string) {
-		const lane = this.lanes.find((lane) => lane.id === id);
-
-		if (!lane) {
-			return;
-		}
-
-		this.lanes.push({
-			...lane,
-			id: createId()
-		});
-	}
-
-	deleteLane(id: string) {
-		const index = this.lanes.findIndex((lane) => lane.id === id);
-
-		if (index !== undefined) {
-			this.lanes = this.lanes.toSpliced(index, 1);
-		}
-	}
-
-	createNewProject() {
-		this.breakpoints = createDefaultBreakpoints({
-			type: settings.type,
-			unit: settings.unit
+	create() {
+		this.breakpoints.breakpoints = createDefaultBreakpoints({
+			type: this.type,
+			unit: this.unit
 		});
 
-		this.lanes = [createDefaultLane()];
+		this.lanes.lanes = [createDefaultLane()];
 	}
 }
 

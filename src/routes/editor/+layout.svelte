@@ -9,7 +9,6 @@
 
 	let pId = $derived(page.params.id);
 	let rId = $derived(page.route.id);
-
 </script>
 
 <div class="h-dvh w-full">
@@ -19,7 +18,7 @@
 		<div class="flex flex-row items-center justify-between">
 			<div class="flex flex-row items-center justify-start">
 				<div
-					class="w-40 h-9 border-r border-r-black bg-sunburst-500 px-2 text-black"
+					class="h-9 w-40 border-r border-r-black bg-sunburst-500 px-2 text-black"
 				>
 					<p class="text-3xl font-bold tracking-tighter">Reglet</p>
 				</div>
@@ -29,14 +28,14 @@
 							<NavigationItem
 								href={resolve('/editor/')}
 								border="r"
-								active={rId === "/editor"}
+								active={rId === '/editor'}
 							>
 								<span class="block font-mono text-sm font-bold">
 									Settings
 								</span>
 							</NavigationItem>
 						</li>
-						{#each project.breakpointSorted as breakpoint (breakpoint.id)}
+						{#each project.breakpoints.sorted as breakpoint (breakpoint.id)}
 							<li class="w-fit">
 								<NavigationItem
 									href={resolve(`/editor/${breakpoint.id}`)}
@@ -55,7 +54,6 @@
 											>{breakpoint.width}px</span
 										>
 									</span>
-
 								</NavigationItem>
 							</li>
 						{/each}
@@ -67,18 +65,16 @@
 					<NavigationItem
 						href={resolve(`/editor/export`)}
 						border="l"
-						active={rId === "/editor/export"}
+						active={rId === '/editor/export'}
 					>
-						<span class="block font-mono text-sm font-bold">
-							Export
-						</span>
+						<span class="block font-mono text-sm font-bold"> Export </span>
 					</NavigationItem>
 				</li>
 			</ul>
 		</div>
 	</header>
 
-	<main class="relative min-h-dvh w-full mt-9">
+	<main class="relative mt-9 min-h-dvh w-full">
 		{@render children?.()}
 	</main>
 </div>

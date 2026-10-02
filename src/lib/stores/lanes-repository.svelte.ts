@@ -1,0 +1,69 @@
+import { LOCAL_STORAGE_KEY_LANES } from '$lib/constants';
+import type { Lane } from '$lib/types';
+import { createId, read, write } from '$lib/utilities';
+
+class LanesRepository {
+	#lanes = $state<Lane[]>([]);
+
+	constructor() {
+		const cachedLanes = read<Lane[]>(LOCAL_STORAGE_KEY_LANES);
+
+		if (cachedLanes) {
+			this.lanes = cachedLanes;
+		}
+
+		$effect.root(() => {
+			$effect(() => {
+				write(LOCAL_STORAGE_KEY_LANES, this.lanes);
+			});
+		});
+	}
+
+	get lanes() {
+		return this.#lanes;
+	}
+
+	set lanes(lanes: Lane[]) {
+		this.#lanes = lanes;
+	}
+
+	create(lane: Omit<Lane, 'id'>) {
+		this.lanes.push({
+			...lane,
+			id: createId()
+		});
+	}
+
+	updateValue<K extends keyof Lane>(id: string, key: K, value: Lane[K]) {
+		const lane = this.lanes.find((lane) => lane.id === id);
+
+		if (!lane) {
+			return;
+		}
+
+		lane[key] = value;
+	}
+
+	duplicate(id: string) {
+		const lane = this.lanes.find((lane) => lane.id === id);
+
+		if (!lane) {
+			return;
+		}
+
+		this.lanes.push({
+			...lane,
+			id: createId()
+		});
+	}
+
+	delete(id: string) {
+		const index = this.lanes.findIndex((lane) => lane.id === id);
+
+		if (index !== undefined) {
+			this.lanes = this.lanes.toSpliced(index, 1);
+		}
+	}
+}
+
+export default LanesRepository;

@@ -18,7 +18,7 @@
 	};
 
 	const handleCreate = (newBreakpoint: Omit<TBreakpoint, 'id'>) => {
-		project.createBreakpoint(newBreakpoint);
+		project.breakpoints.create(newBreakpoint);
 		showCreator = false;
 	};
 </script>
@@ -42,25 +42,26 @@
 		</Dialog>
 
 		<ul class="flex w-full flex-col gap-4">
-			{#each project.breakpointSorted as breakpoint (`breakpoint-${breakpoint.id}`)}
+			{#each project.breakpoints.sorted as breakpoint (`breakpoint-${breakpoint.id}`)}
 				<li class="w-full">
 					<Breakpoint
 						{breakpoint}
-						canDelete={project.breakpointSorted.length > 1}
+						canDelete={project.breakpoints.sorted.length > 1}
 						onLabelChange={(newLabel) =>
-							project.updateBreakpointValue(
+							project.breakpoints.updateValue(
 								breakpoint.id,
 								'label',
 								newLabel
 							)}
 						onWidthChange={(newWidth) =>
-							project.updateBreakpointValue(
+							project.breakpoints.updateValue(
 								breakpoint.id,
 								'width',
 								newWidth
 							)}
-						onDelete={() => project.deleteBreakpoint(breakpoint.id)}
-						onDuplicate={() => project.duplicateBreakpoint(breakpoint.id)}
+						onDelete={() => project.breakpoints.delete(breakpoint.id)}
+						onDuplicate={() =>
+							project.breakpoints.duplicate(breakpoint.id)}
 					/>
 				</li>
 			{/each}

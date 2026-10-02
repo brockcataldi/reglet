@@ -11,7 +11,7 @@
 	let { children } = $props();
 
 	let breakpoint = $derived(
-		page.params.id ? project.getBreakpoint(page.params.id) : undefined
+		page.params.id ? project.breakpoints.get(page.params.id) : undefined
 	);
 </script>
 
@@ -29,7 +29,7 @@
 					variant="default"
 					unit="rem"
 					onchange={(event) =>
-						project.updateBreakpointDefaultScaleValue(
+						project.breakpoints.updateDefaultScaleValue(
 							breakpoint.id,
 							'baseSize',
 							Number(event.currentTarget.value)
@@ -44,7 +44,7 @@
 					value={breakpoint.defaultScale.ratio}
 					variant="default"
 					onchange={(event) =>
-						project.updateBreakpointDefaultScaleValue(
+						project.breakpoints.updateDefaultScaleValue(
 							breakpoint.id,
 							'ratio',
 							Number(event.currentTarget.value)

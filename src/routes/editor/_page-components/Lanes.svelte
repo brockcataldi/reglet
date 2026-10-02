@@ -20,7 +20,7 @@
 	};
 
 	const handleCreate = (newLane: Omit<TLane, 'id'>) => {
-		project.createLane(newLane);
+		project.lanes.create(newLane);
 		showCreator = false;
 	};
 </script>
@@ -39,18 +39,18 @@
 			</Dialog>
 		</header>
 		<ul class="flex w-full flex-col gap-4">
-			{#each project.lanes as lane (`lane-${lane.id}`)}
+			{#each project.lanes.lanes as lane (`lane-${lane.id}`)}
 				<li class="w-full">
 					<Lane
 						{lane}
 						onFamilyChange={(newFamily) =>
-							project.updateLaneValue(lane.id, 'family', newFamily)}
+							project.lanes.updateValue(lane.id, 'family', newFamily)}
 						onWeightChange={(newWeight) =>
-							project.updateLaneValue(lane.id, 'weight', newWeight)}
+							project.lanes.updateValue(lane.id, 'weight', newWeight)}
 						onStyleChange={(newStyle) =>
-							project.updateLaneValue(lane.id, 'style', newStyle)}
-						onDelete={() => project.deleteLane(lane.id)}
-						onDuplicate={() => project.duplicateLane(lane.id)}
+							project.lanes.updateValue(lane.id, 'style', newStyle)}
+						onDelete={() => project.lanes.delete(lane.id)}
+						onDuplicate={() => project.lanes.duplicate(lane.id)}
 					/>
 				</li>
 			{/each}

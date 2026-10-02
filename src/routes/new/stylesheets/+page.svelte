@@ -1,5 +1,5 @@
 <script>
-	import settings from '$lib/stores/settings.svelte';
+	import project from '$lib/stores/project.svelte';
 
 	import TextArea from '$lib/ui/form/text-area.svelte';
 	import Separator from '$lib/ui/display/separator.svelte';
@@ -20,14 +20,14 @@
 
 	<TextArea
 		id="stylesheets"
-		bind:value={settings.rawStylesheets}
+		bind:value={project.fonts.rawStylesheets}
 		{placeholder}
 	/>
 
-	{#if settings.rawStylesheets.trim() !== ''}
-		{#if settings.stylesheets.length > 0}
+	{#if project.fonts.rawStylesheets.trim() !== ''}
+		{#if project.fonts.stylesheets.length > 0}
 			<Banner variant="success" class="mt-4">
-				Found {settings.stylesheets.length} stylesheets
+				Found {project.fonts.stylesheets.length} stylesheets
 			</Banner>
 		{:else}
 			<Banner variant="destructive" class="mt-4">

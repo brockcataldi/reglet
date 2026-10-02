@@ -5,7 +5,7 @@
 
 	let { params }: PageProps = $props();
 
-	let breakpoint = $derived(project.getBreakpoint(params.id));
+	let breakpoint = $derived(project.breakpoints.get(params.id));
 </script>
 
 <svelte:head>
