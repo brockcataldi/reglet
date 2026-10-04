@@ -19,8 +19,10 @@
 
 <Lanes />
 
-{#if project.type === 'standard'}
+{#if project.type === 'fluid'}
+	<h1>Fluid Project</h1>
+{:else if project.type === 'standard'}
 	<BreakpointsStandard />
 {:else}
-	<h1>Fluid Project</h1>
+	<h1>Static Project</h1>
 {/if}

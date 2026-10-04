@@ -45,7 +45,7 @@
 				step={0.05}
 				value={cell.lineHeight}
 				oninput={(event) =>
-					project.breakpoints.updateOverrideValue(
+					project.breakpoints.updateCellOverrideValue(
 						breakpointId,
 						cell.id,
 						'lineHeight',
@@ -58,7 +58,7 @@
 					label="Relink"
 					class="mt-4"
 					onclick={() =>
-						project.breakpoints.updateOverrideValue(
+						project.breakpoints.updateCellOverrideValue(
 							breakpointId,
 							cell.id,
 							'lineHeight',
@@ -81,7 +81,7 @@
 				step={0.05}
 				unit={project.unit}
 				oninput={(event) =>
-					project.breakpoints.updateOverrideValue(
+					project.breakpoints.updateCellOverrideValue(
 						breakpointId,
 						cell.id,
 						'fontSize',
@@ -94,7 +94,7 @@
 					label="Relink"
 					class="mt-4"
 					onclick={() =>
-						project.breakpoints.updateOverrideValue(
+						project.breakpoints.updateCellOverrideValue(
 							breakpointId,
 							cell.id,
 							'fontSize',

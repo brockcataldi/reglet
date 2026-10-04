@@ -1,7 +1,7 @@
-import { createDefaultBreakpoints } from '#lib/domain/project/create-default-breakpoints.js';
-import { createDefaultLane } from '#lib/domain/project/create-default-lane.js';
+import { LOCAL_STORAGE_KEY_SETTINGS } from '#lib/constants.js';
 
-import type { ProjectType, Unit } from '#lib/types.js';
+import type { ProjectSettings, ProjectType, Unit } from '#lib/types.js';
+import { read, write } from '#lib/utilities.js';
 
 import BreakpointRepository from './breakpoints-repository.svelte';
 import FontsRepository from './fonts-repository.svelte';
@@ -15,6 +15,26 @@ class Project {
 	breakpoints = new BreakpointRepository();
 	lanes = new LanesRepository();
 	fonts = new FontsRepository();
+
+	constructor() {
+		const cached = read<ProjectSettings>(LOCAL_STORAGE_KEY_SETTINGS);
+
+		if (cached) {
+			this.type = cached.type;
+			this.unit = cached.unit;
+			this.precision = cached.precision;
+		}
+
+		$effect.root(() => {
+			$effect(() => {
+				write<ProjectSettings>(LOCAL_STORAGE_KEY_SETTINGS, {
+					type: this.type,
+					unit: this.unit,
+					precision: this.precision
+				});
+			});
+		});
+	}
 
 	get type() {
 		return this.#type;
@@ -41,12 +61,8 @@ class Project {
 	}
 
 	create() {
-		this.breakpoints.breakpoints = createDefaultBreakpoints({
-			type: this.type,
-			unit: this.unit
-		});
-
-		this.lanes.lanes = [createDefaultLane()];
+		this.breakpoints.reset(this.unit, this.type);
+		this.lanes.reset();
 	}
 }
 

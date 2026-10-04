@@ -1,11 +1,16 @@
 type ProjectType = 'standard' | 'fluid' | 'static';
 type Unit = 'rem' | 'px' | 'pt';
 
-type SettingsState = {
+type ProjectSettings = {
 	type: ProjectType;
 	unit: Unit;
 	precision: number;
-	rawStylesheets: string;
+};
+
+type ProjectDefault = {
+	width: number;
+	modifier: number;
+	label: string;
 };
 
 type Breakpoint = {
@@ -15,7 +20,7 @@ type Breakpoint = {
 	maxStep: number;
 	minStep: number;
 	defaultScale: ScaleSettings;
-	overrides: Record<string, CellOverride>; // this should probably be renamed to cellOverrides (because I have a feeling I'll want to move in laneOverrides)
+	cellOverrides: Record<string, CellOverride>;
 };
 
 type ScaleSettings = {
@@ -52,8 +57,9 @@ interface ModularScaleRatio {
 
 export type {
 	ProjectType,
+	ProjectDefault,
 	Unit,
-	SettingsState,
+	ProjectSettings,
 	Breakpoint,
 	Lane,
 	ScaleSettings,

@@ -23,7 +23,7 @@ export const toGrid = (
 				i
 			);
 
-			const override = breakpoint.overrides[`${id}-${i}`];
+			const override = breakpoint.cellOverrides[`${id}-${i}`];
 
 			const cell = {
 				...lane,

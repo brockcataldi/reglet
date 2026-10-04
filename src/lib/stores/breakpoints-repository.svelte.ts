@@ -1,5 +1,9 @@
-import { LOCAL_STORAGE_KEY_BREAKPOINTS } from '#lib/constants.js';
-import type { Breakpoint } from '#lib/types.js';
+import {
+	LOCAL_STORAGE_KEY_BREAKPOINTS,
+	PROJECT_DEFAULTS
+} from '#lib/constants.js';
+import { createDefaultBaseSize } from '#lib/domain/project/create-default-base-size.js';
+import type { Breakpoint, ProjectType, Unit } from '#lib/types.js';
 import { createId, read, write } from '#lib/utilities.js';
 
 class BreakpointRepository {
@@ -34,6 +38,10 @@ class BreakpointRepository {
 		return this.#sorted;
 	}
 
+	reset(unit: Unit, type: ProjectType) {
+		this.breakpoints = BreakpointRepository.defaultBreakpoints(unit, type);
+	}
+
 	get(id: string) {
 		return this.breakpoints.find((breakpoint) => breakpoint.id === id);
 	}
@@ -61,14 +69,14 @@ class BreakpointRepository {
 		breakpoint[key] = value;
 	}
 
-	updateOverrideValue<
-		O extends keyof Breakpoint['overrides'],
-		K extends keyof Breakpoint['overrides'][O]
+	updateCellOverrideValue<
+		O extends keyof Breakpoint['cellOverrides'],
+		K extends keyof Breakpoint['cellOverrides'][O]
 	>(
 		breakpointId: string,
 		overrideId: O,
 		overrideProperty: K,
-		value: Breakpoint['overrides'][O][K]
+		value: Breakpoint['cellOverrides'][O][K]
 	) {
 		const breakpoint = this.breakpoints.find(
 			(breakpoint) => breakpoint.id === breakpointId
@@ -78,11 +86,11 @@ class BreakpointRepository {
 			return;
 		}
 
-		if (!(overrideId in breakpoint.overrides)) {
-			breakpoint.overrides[overrideId] = {};
+		if (!(overrideId in breakpoint.cellOverrides)) {
+			breakpoint.cellOverrides[overrideId] = {};
 		}
 
-		breakpoint.overrides[overrideId][overrideProperty] = value;
+		breakpoint.cellOverrides[overrideId][overrideProperty] = value;
 	}
 
 	updateDefaultScaleValue<K extends keyof Breakpoint['defaultScale']>(
@@ -126,6 +134,32 @@ class BreakpointRepository {
 		if (index !== undefined) {
 			this.breakpoints = this.breakpoints.toSpliced(index, 1);
 		}
+	}
+
+	static defaultBreakpoint(
+		width: number,
+		label: string,
+		unit: Unit,
+		modifier: number
+	): Breakpoint {
+		return {
+			id: createId(),
+			width,
+			label,
+			minStep: -1,
+			maxStep: 6,
+			defaultScale: {
+				baseSize: createDefaultBaseSize({ unit }) * modifier,
+				ratio: 1.2
+			},
+			cellOverrides: {}
+		};
+	}
+
+	static defaultBreakpoints(unit: Unit, type: ProjectType): Breakpoint[] {
+		return PROJECT_DEFAULTS[type].map(({ width, label, modifier }) =>
+			BreakpointRepository.defaultBreakpoint(width, label, unit, modifier)
+		);
 	}
 }
 

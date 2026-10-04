@@ -17,7 +17,7 @@ export type CreateBreakpointSchema = z.infer<
 
 export type CreateBreakpointData = Omit<
 	Breakpoint,
-	'id' | 'defaultScale' | 'overrides' | 'maxStep' | 'minStep'
+	'id' | 'defaultScale' | 'cellOverrides' | 'maxStep' | 'minStep'
 >;
 
 export type OnCreateBreakpointData = Omit<Breakpoint, 'id'>;
@@ -36,7 +36,6 @@ export const createBreakpointValidator = (
 	}
 
 	const fieldErrors = z.flattenError(validation.error).fieldErrors;
-
 	return [
 		undefined,
 		{

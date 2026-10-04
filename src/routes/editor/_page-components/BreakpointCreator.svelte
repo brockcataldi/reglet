@@ -46,7 +46,7 @@
 			},
 			minStep: -1,
 			maxStep: 6,
-			overrides: {}
+			cellOverrides: {}
 		});
 
 		breakpoint = {

@@ -27,6 +27,10 @@ class LanesRepository {
 		this.#lanes = lanes;
 	}
 
+	reset() {
+		this.lanes = LanesRepository.defaultLanes();
+	}
+
 	create(lane: Omit<Lane, 'id'>) {
 		this.lanes.push({
 			...lane,
@@ -63,6 +67,19 @@ class LanesRepository {
 		if (index !== undefined) {
 			this.lanes = this.lanes.toSpliced(index, 1);
 		}
+	}
+
+	static defaultLane(): Lane {
+		return {
+			id: createId(),
+			family: 'Arial',
+			weight: '400',
+			style: 'normal'
+		};
+	}
+
+	static defaultLanes(): Lane[] {
+		return [LanesRepository.defaultLane()];
 	}
 }
 

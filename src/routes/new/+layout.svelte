@@ -41,7 +41,7 @@
 			name: 'Editor',
 			href: resolve('editor'),
 			nextOverride: 'Create',
-			onClick: () => project.createNewProject()
+			onClick: () => project.create()
 		}
 	];
 

@@ -1,40 +1,52 @@
-import type { ModularScaleRatio } from './types';
+import type {
+	ModularScaleRatio,
+	ProjectDefault,
+	ProjectType
+} from './types';
 
 export const LOCAL_STORAGE_KEY_FONTS = 'reglet-fonts';
 export const LOCAL_STORAGE_KEY_SETTINGS = 'reglet-settings';
 export const LOCAL_STORAGE_KEY_BREAKPOINTS = 'reglet-breakpoints';
 export const LOCAL_STORAGE_KEY_LANES = 'reglet-lanes';
 
-export const PROJECT_DEFAULTS_FLUID = {
-	min: {
-		width: 300,
-		modifier: 1,
-		label: 'Min'
-	},
-	max: {
-		width: 1000,
-		modifier: 1.2,
-		label: 'Max'
-	}
+export const PROJECT_DEFAULTS: Record<ProjectType, ProjectDefault[]> = {
+	static: [
+		{
+			width: 0,
+			modifier: 1,
+			label: 'Lanes'
+		}
+	],
+	fluid: [
+		{
+			width: 300,
+			modifier: 1,
+			label: 'Min'
+		},
+		{
+			width: 1000,
+			modifier: 1.2,
+			label: 'Max'
+		}
+	],
+	standard: [
+		{
+			width: 0,
+			modifier: 1,
+			label: 'Root'
+		},
+		{
+			width: 768,
+			modifier: 1.1,
+			label: 'Tablet'
+		},
+		{
+			width: 1200,
+			modifier: 1.2,
+			label: 'Desktop'
+		}
+	]
 } as const;
-
-export const PROJECT_DEFAULTS_STANDARD = [
-	{
-		width: 0,
-		modifier: 1,
-		label: 'Root'
-	},
-	{
-		width: 768,
-		modifier: 1.1,
-		label: 'Tablet'
-	},
-	{
-		width: 1200,
-		modifier: 1.2,
-		label: 'Desktop'
-	}
-] as const;
 
 export const MODULAR_SCALE_RATIOS: ModularScaleRatio[] = [
 	{ ratio: 1.067, label: 'Minor Second' },
