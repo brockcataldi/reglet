@@ -14,7 +14,11 @@
 	let lane = $state<CreateLaneData>({
 		family: 'Arial',
 		weight: '400',
-		style: 'normal'
+		style: 'normal',
+		baseSize: 1,
+		ratio: 1.2,
+		minStep: -1,
+		maxStep: 6
 	});
 
 	let errors = $state<CreateLaneErrors>({});
@@ -40,7 +44,11 @@
 		lane = {
 			family: 'Arial',
 			weight: '400',
-			style: 'normal'
+			style: 'normal',
+			baseSize: 1,
+			ratio: 1.2,
+			minStep: -1,
+			maxStep: 6
 		};
 
 		return;

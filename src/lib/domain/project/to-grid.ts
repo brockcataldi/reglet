@@ -1,46 +1,59 @@
-import type { Breakpoint, GridCell, Lane } from '#lib/types.js';
+import type { GridCell, Lane } from '#lib/types.js';
 
 import { adjustIntPrecision } from './adjust-int-precision';
 
 import { scale } from './scale';
 
-export const toGrid = (
-	breakpoint: Breakpoint,
-	lanes: Lane[],
-	precision: number
-): GridCell[][] => {
-	const rows: GridCell[][] = [];
+type Grid = {
+	cells: (GridCell | null)[][];
+	columns: number;
+	rows: number;
+};
 
-	for (let i = breakpoint.minStep; i <= breakpoint.maxStep; i++) {
-		const row: GridCell[] = [];
+export const toGrid = (lanes: Lane[], precision: number): Grid => {
+	const grid: (GridCell | null)[][] = [];
 
-		for (let j = 0; j < lanes.length; j++) {
-			const { id, ...lane } = lanes[j];
+	const max = lanes.reduce(
+		(max, lane) => (lane.maxStep > max ? lane.maxStep : max),
+		lanes[0].maxStep
+	);
+	const min = lanes.reduce(
+		(min, lane) => (lane.maxStep < min ? lane.maxStep : min),
+		lanes[0].minStep
+	);
 
-			const fontSize = scale(
-				breakpoint.defaultScale.baseSize,
-				breakpoint.defaultScale.ratio,
-				i
-			);
+	for (const lane of lanes) {
+		const column: (GridCell | null)[] = [];
 
-			const override = breakpoint.cellOverrides[`${id}-${i}`];
+		for (let i = min; i <= max; i++) {
+			if (i < lane.minStep || i > lane.maxStep) {
+				column.push(null);
+				continue;
+			}
 
-			const cell = {
-				...lane,
+			const fontSize = scale(lane.baseSize, lane.ratio, i);
+
+			const cell: GridCell = {
 				step: i,
-				fontSize:
-					override?.fontSize ?? adjustIntPrecision(fontSize, precision),
-				fontSizeOverridden: override?.fontSize !== undefined,
-				lineHeight: override?.lineHeight ?? 1,
-				lineHeightOverridden: override?.lineHeight !== undefined,
-				id: `${id}-${i}`
+				fontSize: adjustIntPrecision(fontSize, precision),
+				fontSizeOverridden: false,
+				lineHeight: 1.5,
+				lineHeightOverridden: false,
+				weight: lane.weight,
+				family: lane.family,
+				style: lane.style,
+				laneId: lane.id
 			};
 
-			row.push(cell);
+			column.push(cell);
 		}
 
-		rows.push(row);
+		grid.push(column);
 	}
 
-	return rows;
+	return {
+		cells: grid,
+		columns: lanes.length,
+		rows: Math.abs(max - min)
+	};
 };

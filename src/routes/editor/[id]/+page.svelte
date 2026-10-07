@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import type { PageProps } from './$types';
 	import project from '#lib/stores/project.svelte.js';
 	import Breakpoint from './_components/Breakpoint.svelte';
@@ -17,4 +17,4 @@
 {#if breakpoint}
 	<Breakpoint {breakpoint} />
 {/if}
-
+ -->

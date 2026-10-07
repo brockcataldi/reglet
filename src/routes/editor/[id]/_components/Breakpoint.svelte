@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { Minus, Plus } from '@lucide/svelte';
 
 	import type { Breakpoint } from '#lib/types.js';
@@ -123,4 +123,4 @@
 			</ul>
 		</li>
 	{/each}
-</ul>
+</ul> -->

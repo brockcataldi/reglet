@@ -46,17 +46,20 @@
 	<span
 		class={cn(navigationItemVariants({ active: true, border }), className)}
 	>
-		{@render children?.()}
+		<span class="block font-mono text-sm font-bold">
+			{@render children?.()}
+		</span>
 	</span>
 {:else}
 	<a
 		{...props}
-		// I don't like that I had to forward href in this way but whatever.
 		class={cn(
 			navigationItemVariants({ active: false, border }),
 			className
 		)}
 	>
-		{@render children?.()}
+		<span class="block font-mono text-sm font-bold">
+			{@render children?.()}
+		</span>
 	</a>
 {/if}

@@ -34,6 +34,12 @@ type Lane = {
 	weight: string | number;
 	style: 'normal' | 'italic' | 'oblique';
 	variationSettings?: Record<string, number>;
+
+	// the individual scale for this one
+	maxStep: number;
+	minStep: number;
+	baseSize: number;
+	ratio: number;
 };
 
 type CellOverride = {
@@ -47,8 +53,12 @@ type GridCell = {
 	fontSizeOverridden: boolean;
 	lineHeight: number;
 	lineHeightOverridden: boolean;
-	// laneId: string;
-} & Lane;
+	family: string;
+	weight: string | number;
+	style: 'normal' | 'italic' | 'oblique';
+	variationSettings?: Record<string, number>;
+	laneId: string;
+};
 
 interface ModularScaleRatio {
 	ratio: number;

@@ -2,13 +2,13 @@
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 
-	import project from '#lib/stores/project.svelte.js';
+	// import project from '#lib/stores/project.svelte.js';
 	import NavigationItem from './_layout-components/NavigationItem.svelte';
 
 	let { children } = $props();
 
-	let pId = $derived(page.params.id);
-	let rId = $derived(page.route.id);
+	// let pId = $derived(page.params.id);
+	let routeId = $derived(page.route.id);
 </script>
 
 <div class="h-dvh w-full">
@@ -26,48 +26,42 @@
 					<ul class="flex flex-row">
 						<li class="w-fit">
 							<NavigationItem
-								href={resolve('editor/')}
+								href={resolve('/editor/grid')}
 								border="r"
-								active={rId === '/editor'}
+								active={routeId === '/editor/grid'}
 							>
-								<span class="block font-mono text-sm font-bold">
-									Settings
-								</span>
+								Grid View
 							</NavigationItem>
 						</li>
-						{#each project.breakpoints.sorted as breakpoint (breakpoint.id)}
-							<li class="w-fit">
-								<NavigationItem
-									href={resolve(`editor/${breakpoint.id}`)}
-									border="r"
-									active={breakpoint.id === pId}
-								>
-									<span class="flex flex-row items-center gap-2">
-										<span class="block font-mono text-sm font-bold">
-											{#if breakpoint.label === ''}
-												Needs Title
-											{:else}
-												{breakpoint.label}
-											{/if}
-										</span>
-										<span class="block font-mono text-xs"
-											>{breakpoint.width}px</span
-										>
-									</span>
-								</NavigationItem>
-							</li>
-						{/each}
+						<li class="w-fit">
+							<NavigationItem
+								href={resolve('/editor/list')}
+								border="r"
+								active={routeId === '/editor/list'}
+							>
+								List View
+							</NavigationItem>
+						</li>
 					</ul>
 				</nav>
 			</div>
-			<ul>
-				<li>
+			<ul class="flex flex-row">
+				<li class="w-fit">
+					<NavigationItem
+						href={resolve('/editor')}
+						border="l"
+						active={routeId === '/editor'}
+					>
+						Settings
+					</NavigationItem>
+				</li>
+				<li class="w-fit">
 					<NavigationItem
 						href={resolve(`editor/export`)}
 						border="l"
-						active={rId === '/editor/export'}
+						active={routeId === '/editor/export'}
 					>
-						<span class="block font-mono text-sm font-bold"> Export </span>
+						Export
 					</NavigationItem>
 				</li>
 			</ul>

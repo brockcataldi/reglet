@@ -74,7 +74,11 @@ class LanesRepository {
 			id: createId(),
 			family: 'Arial',
 			weight: '400',
-			style: 'normal'
+			style: 'normal',
+			baseSize: 1,
+			ratio: 1.2,
+			minStep: -1,
+			maxStep: 6
 		};
 	}
 

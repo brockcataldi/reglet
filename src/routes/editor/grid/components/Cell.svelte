@@ -1,19 +1,17 @@
-<!-- <script lang="ts">
+<script lang="ts">
 	import type { GridCell } from '#lib/types.js';
-
 	import project from '#lib/stores/project.svelte.js';
 
-	import Separator from '#lib/ui/display/separator.svelte';
 	import Input from '#lib/ui/form/input.svelte';
+	import Separator from '#lib/ui/display/separator.svelte';
 	import InputUnit from '#lib/ui/form/input-unit.svelte';
 	import Button from '#lib/ui/button/button.svelte';
 
 	type CellProps = {
-		breakpointId: string;
 		cell: GridCell;
 	};
 
-	let { breakpointId, cell }: CellProps = $props();
+	let { cell }: CellProps = $props();
 </script>
 
 <li class="col-span-1 border border-black">
@@ -33,75 +31,41 @@
 		<li>
 			<Separator
 				as="label"
-				for={`input-line-height-${cell.id}`}
+				for={`input-line-height-${cell.laneId}-${cell.step}`}
 				description={cell.lineHeightOverridden ? 'Unlinked' : ''}
 				>Line Height
 			</Separator>
 			<Input
-				id={`input-line-height-${cell.id}`}
+				id={`input-line-heigh-${cell.laneId}-${cell.step}`}
 				class="mt-1"
 				type="number"
 				min={0}
 				step={0.05}
 				value={cell.lineHeight}
-				oninput={(event) =>
-					project.breakpoints.updateCellOverrideValue(
-						breakpointId,
-						cell.id,
-						'lineHeight',
-						Number(event.currentTarget.value)
-					)}
 			/>
 
 			{#if cell.lineHeightOverridden}
-				<Button
-					label="Relink"
-					class="mt-4"
-					onclick={() =>
-						project.breakpoints.updateCellOverrideValue(
-							breakpointId,
-							cell.id,
-							'lineHeight',
-							undefined
-						)}
-				/>
+				<Button label="Relink" class="mt-4" />
 			{/if}
 		</li>
 		<li>
 			<Separator
 				as="label"
-				for={`input-font-size-${cell.id}`}
+				for={`input-font-size-${cell.laneId}-${cell.step}`}
 				description={cell.fontSizeOverridden ? 'Unlinked' : ''}
 				>Font Size
 			</Separator>
 			<InputUnit
-				id={`input-font-size-${cell.id}`}
+				id={`input-font-size-${cell.laneId}-${cell.step}`}
 				value={cell.fontSize}
 				min={0}
 				step={0.05}
 				unit={project.unit}
-				oninput={(event) =>
-					project.breakpoints.updateCellOverrideValue(
-						breakpointId,
-						cell.id,
-						'fontSize',
-						Number(event.currentTarget.value)
-					)}
 			/>
 
 			{#if cell.fontSizeOverridden}
-				<Button
-					label="Relink"
-					class="mt-4"
-					onclick={() =>
-						project.breakpoints.updateCellOverrideValue(
-							breakpointId,
-							cell.id,
-							'fontSize',
-							undefined
-						)}
-				/>
+				<Button label="Relink" class="mt-4" />
 			{/if}
 		</li>
 	</ul>
-</li> -->
+</li>

@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { page } from '$app/state';
 	import { MODULAR_SCALE_RATIOS } from '#lib/constants.js';
 
@@ -65,4 +65,4 @@
 	<article class="ml-64">
 		{@render children?.()}
 	</article>
-{/if}
+{/if} -->
