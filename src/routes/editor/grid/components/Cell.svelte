@@ -42,10 +42,27 @@
 				min={0}
 				step={0.05}
 				value={cell.lineHeight}
+				oninput={(event) =>
+					project.lanes.updateOverrideValue(
+						cell.laneId,
+						`${cell.step}`,
+						'lineHeight',
+						Number(event.currentTarget.value)
+					)}
 			/>
 
 			{#if cell.lineHeightOverridden}
-				<Button label="Relink" class="mt-4" />
+				<Button
+					label="Relink"
+					class="mt-4"
+					onclick={() =>
+						project.lanes.updateOverrideValue(
+							cell.laneId,
+							`${cell.step}`,
+							'lineHeight',
+							undefined
+						)}
+				/>
 			{/if}
 		</li>
 		<li>
@@ -61,10 +78,27 @@
 				min={0}
 				step={0.05}
 				unit={project.unit}
+				oninput={(event) =>
+					project.lanes.updateOverrideValue(
+						cell.laneId,
+						`${cell.step}`,
+						'fontSize',
+						Number(event.currentTarget.value)
+					)}
 			/>
 
 			{#if cell.fontSizeOverridden}
-				<Button label="Relink" class="mt-4" />
+				<Button
+					label="Relink"
+					class="mt-4"
+					onclick={() =>
+						project.lanes.updateOverrideValue(
+							cell.laneId,
+							`${cell.step}`,
+							'fontSize',
+							undefined
+						)}
+				/>
 			{/if}
 		</li>
 	</ul>

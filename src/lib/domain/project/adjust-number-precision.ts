@@ -1,4 +1,7 @@
-export const adjustIntPrecision = (value: number, precision: number) => {
+export const adjustNumberPrecision = (
+	value: number,
+	precision: number
+) => {
 	if (!Number.isFinite(value)) {
 		return value;
 	}

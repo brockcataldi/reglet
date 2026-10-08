@@ -1,6 +1,6 @@
 import type { GridCell, Lane } from '#lib/types.js';
 
-import { adjustIntPrecision } from './adjust-int-precision';
+import { adjustNumberPrecision } from './adjust-number-precision';
 
 import { scale } from './scale';
 
@@ -11,49 +11,64 @@ type Grid = {
 };
 
 export const toGrid = (lanes: Lane[], precision: number): Grid => {
-	const grid: (GridCell | null)[][] = [];
+	if (lanes.length === 0) {
+		return { cells: [], columns: 0, rows: 0 };
+	}
 
 	const max = lanes.reduce(
 		(max, lane) => (lane.maxStep > max ? lane.maxStep : max),
 		lanes[0].maxStep
 	);
+
 	const min = lanes.reduce(
 		(min, lane) => (lane.maxStep < min ? lane.maxStep : min),
 		lanes[0].minStep
 	);
 
-	for (const lane of lanes) {
-		const column: (GridCell | null)[] = [];
+	const rows = Math.abs(max - min) + 1;
+	const grid: (GridCell | null)[][] = Array.from(
+		{ length: rows },
+		() => []
+	);
+
+	for (let j = 0; j < lanes.length; j++) {
+		const lane = lanes[j];
+		let k = 0;
 
 		for (let i = min; i <= max; i++) {
 			if (i < lane.minStep || i > lane.maxStep) {
-				column.push(null);
+				grid[k].push(null);
+				k++;
 				continue;
 			}
 
-			const fontSize = scale(lane.baseSize, lane.ratio, i);
+			const override = lane.overrides[i];
 
 			const cell: GridCell = {
 				step: i,
-				fontSize: adjustIntPrecision(fontSize, precision),
-				fontSizeOverridden: false,
-				lineHeight: 1.5,
-				lineHeightOverridden: false,
+				fontSize:
+					override?.fontSize ??
+					adjustNumberPrecision(
+						scale(lane.baseSize, lane.ratio, i),
+						precision
+					),
+				fontSizeOverridden: override?.fontSize !== undefined,
+				lineHeight: override?.lineHeight ?? 1,
+				lineHeightOverridden: override?.lineHeight !== undefined,
 				weight: lane.weight,
 				family: lane.family,
 				style: lane.style,
 				laneId: lane.id
 			};
 
-			column.push(cell);
+			grid[k].push(cell);
+			k++;
 		}
-
-		grid.push(column);
 	}
 
 	return {
 		cells: grid,
 		columns: lanes.length,
-		rows: Math.abs(max - min)
+		rows
 	};
 };

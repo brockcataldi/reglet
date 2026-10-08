@@ -30,10 +30,13 @@ type ScaleSettings = {
 
 type Lane = {
 	id: string;
+
 	family: string;
 	weight: string | number;
 	style: 'normal' | 'italic' | 'oblique';
 	variationSettings?: Record<string, number>;
+
+	overrides: Record<string, CellOverride>;
 
 	// the individual scale for this one
 	maxStep: number;

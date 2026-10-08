@@ -38,6 +38,23 @@ class LanesRepository {
 		});
 	}
 
+	updateOverrideValue<
+		S extends keyof Lane['overrides'],
+		P extends keyof Lane['overrides'][S]
+	>(id: string, step: S, key: P, value: Lane['overrides'][S][P]) {
+		const lane = this.lanes.find((lane) => lane.id === id);
+
+		if (!lane) {
+			return;
+		}
+
+		if (!(step in lane.overrides)) {
+			lane.overrides[step] = {};
+		}
+
+		lane.overrides[step][key] = value;
+	}
+
 	updateValue<K extends keyof Lane>(id: string, key: K, value: Lane[K]) {
 		const lane = this.lanes.find((lane) => lane.id === id);
 
@@ -75,6 +92,7 @@ class LanesRepository {
 			family: 'Arial',
 			weight: '400',
 			style: 'normal',
+			overrides: {},
 			baseSize: 1,
 			ratio: 1.2,
 			minStep: -1,
