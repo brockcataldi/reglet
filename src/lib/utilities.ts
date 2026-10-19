@@ -28,6 +28,22 @@ export function read<T>(key: string): T | undefined {
 	}
 }
 
+
+export function toOrdinal(value: number){
+	if(!Number.isInteger(value)){
+		throw new Error('Needs to be an integer');
+	}
+
+	switch(Math.abs(value)){
+		case 1: return `${value}st`;
+		case 2: return `${value}nd`;
+		case 3: return `${value}rd`;
+		default: 
+			return `${value}th`;
+	}
+}
+
+
 export function formatMaybePlurals(
 	length: number,
 	singular: string,

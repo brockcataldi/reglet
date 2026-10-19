@@ -5,7 +5,6 @@
 	import project from '#lib/stores/project.svelte.js';
 	import Button from '#lib/ui/button/button.svelte';
 
-	// import BreakpointsStandard from './_page-components/BreakpointsStandard.svelte';
 	import Lanes from './_page-components/Lanes.svelte';
 
 	const handleDeleteClick = () => {
@@ -28,14 +27,6 @@
 </header>
 
 <Lanes />
-<!-- 
-{#if project.type === 'fluid'}
-	<h1>Fluid Project</h1>
-{:else if project.type === 'standard'}
-	<BreakpointsStandard />
-{:else}
-	<h1>Static Project</h1>
-{/if} -->
 
 <section class="w-full border-black bg-white py-8">
 	<div class="mx-auto my-0 max-w-200">

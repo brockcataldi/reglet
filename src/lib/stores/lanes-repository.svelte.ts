@@ -27,6 +27,10 @@ class LanesRepository {
 		this.#lanes = lanes;
 	}
 
+	get(id: string) {
+		return this.lanes.find((lane) => lane.id === id);
+	}
+
 	reset() {
 		this.lanes = LanesRepository.defaultLanes();
 	}
@@ -36,6 +40,42 @@ class LanesRepository {
 			...lane,
 			id: createId()
 		});
+	}
+
+	updateValue<K extends keyof Lane>(id: string, key: K, value: Lane[K]) {
+		const lane = this.lanes.find((lane) => lane.id === id);
+
+		if (!lane) {
+			return;
+		}
+
+		lane[key] = value;
+	}
+
+	increment<K extends Extract<keyof Lane, 'maxStep' | 'minStep'>>(
+		id: string,
+		key: K
+	) {
+		const lane = this.lanes.find((lane) => lane.id === id);
+
+		if (!lane) {
+			return;
+		}
+
+		lane[key] = lane[key] + 1;
+	}
+
+	decrement<K extends Extract<keyof Lane, 'maxStep' | 'minStep'>>(
+		id: string,
+		key: K
+	) {
+		const lane = this.lanes.find((lane) => lane.id === id);
+
+		if (!lane) {
+			return;
+		}
+
+		lane[key] = lane[key] - 1;
 	}
 
 	updateOverrideValue<
@@ -53,16 +93,6 @@ class LanesRepository {
 		}
 
 		lane.overrides[step][key] = value;
-	}
-
-	updateValue<K extends keyof Lane>(id: string, key: K, value: Lane[K]) {
-		const lane = this.lanes.find((lane) => lane.id === id);
-
-		if (!lane) {
-			return;
-		}
-
-		lane[key] = value;
 	}
 
 	duplicate(id: string) {

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { GridCell } from '#lib/types.js';
+	import type { SpecimenGridCell } from '#lib/types.js';
+
 	import project from '#lib/stores/project.svelte.js';
 
 	import Input from '#lib/ui/form/input.svelte';
@@ -8,20 +9,20 @@
 	import Button from '#lib/ui/button/button.svelte';
 
 	type CellProps = {
-		cell: GridCell;
+		cell: SpecimenGridCell;
 	};
 
 	let { cell }: CellProps = $props();
 </script>
 
-<li class="col-span-1 border border-black">
+<div class="col-span-1 border border-black bg-white">
 	<div class="block overflow-hidden border-b border-black p-4">
 		<p
-			style:line-height={cell.lineHeight}
-			style:font-family={cell.family}
-			style:font-size={`${cell.fontSize.toFixed(3)}${project.unit}`}
-			style:font-weight={cell.weight}
-			style:font-style={cell.style}
+			style:line-height={cell.value.lineHeight}
+			style:font-family={cell.value.family}
+			style:font-size={`${cell.value.fontSize.toFixed(3)}${project.unit}`}
+			style:font-weight={cell.value.weight}
+			style:font-style={cell.value.style}
 		>
 			Lorem ipsum dolor sit amet consectetur adipisicing elit.
 		</p>
@@ -32,16 +33,16 @@
 			<Separator
 				as="label"
 				for={`input-line-height-${cell.laneId}-${cell.step}`}
-				description={cell.lineHeightOverridden ? 'Unlinked' : ''}
+				description={cell.value.lineHeightOverridden ? 'Unlinked' : ''}
 				>Line Height
 			</Separator>
 			<Input
-				id={`input-line-heigh-${cell.laneId}-${cell.step}`}
+				id={`input-line-height-${cell.laneId}-${cell.step}`}
 				class="mt-1"
 				type="number"
 				min={0}
 				step={0.05}
-				value={cell.lineHeight}
+				value={cell.value.lineHeight}
 				oninput={(event) =>
 					project.lanes.updateOverrideValue(
 						cell.laneId,
@@ -51,7 +52,7 @@
 					)}
 			/>
 
-			{#if cell.lineHeightOverridden}
+			{#if cell.value.lineHeightOverridden}
 				<Button
 					label="Relink"
 					class="mt-4"
@@ -65,16 +66,17 @@
 				/>
 			{/if}
 		</li>
+
 		<li>
 			<Separator
 				as="label"
 				for={`input-font-size-${cell.laneId}-${cell.step}`}
-				description={cell.fontSizeOverridden ? 'Unlinked' : ''}
+				description={cell.value.fontSizeOverridden ? 'Unlinked' : ''}
 				>Font Size
 			</Separator>
 			<InputUnit
 				id={`input-font-size-${cell.laneId}-${cell.step}`}
-				value={cell.fontSize}
+				value={cell.value.fontSize}
 				min={0}
 				step={0.05}
 				unit={project.unit}
@@ -87,7 +89,7 @@
 					)}
 			/>
 
-			{#if cell.fontSizeOverridden}
+			{#if cell.value.fontSizeOverridden}
 				<Button
 					label="Relink"
 					class="mt-4"
@@ -102,4 +104,5 @@
 			{/if}
 		</li>
 	</ul>
-</li>
+</div>
+

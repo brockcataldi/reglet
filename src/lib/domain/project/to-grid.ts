@@ -1,18 +1,27 @@
-import type { GridCell, Lane } from '#lib/types.js';
+import type {
+	Grid,
+	GridCell,
+	GridCellLocation,
+	Lane,
+	Specimen
+} from '#lib/types.js';
 
 import { adjustNumberPrecision } from './adjust-number-precision';
 
 import { scale } from './scale';
 
-type Grid = {
-	cells: (GridCell | null)[][];
-	columns: number;
-	rows: number;
-};
-
 export const toGrid = (lanes: Lane[], precision: number): Grid => {
+
 	if (lanes.length === 0) {
-		return { cells: [], columns: 0, rows: 0 };
+		return {
+			cells: [],
+			columns: 0,
+			rows: 0,
+			max: 0,
+			maxBuffer: 0,
+			min: 0,
+			minBuffer: 0
+		};
 	}
 
 	const max = lanes.reduce(
@@ -20,32 +29,61 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 		lanes[0].maxStep
 	);
 
+	const maxBuffer = max + 1;
+
 	const min = lanes.reduce(
-		(min, lane) => (lane.maxStep < min ? lane.maxStep : min),
+		(min, lane) => (lane.minStep < min ? lane.minStep : min),
 		lanes[0].minStep
 	);
 
-	const rows = Math.abs(max - min) + 1;
-	const grid: (GridCell | null)[][] = Array.from(
-		{ length: rows },
-		() => []
-	);
+	const minBuffer = min - 1;
+
+	const rows = Math.abs(maxBuffer - minBuffer) + 1;
+	const grid: GridCell[][] = Array.from({ length: rows }, () => []);
 
 	for (let j = 0; j < lanes.length; j++) {
 		const lane = lanes[j];
 		let k = 0;
 
-		for (let i = min; i <= max; i++) {
-			if (i < lane.minStep || i > lane.maxStep) {
-				grid[k].push(null);
+		for (let i = minBuffer; i <= maxBuffer; i++) {
+			const location: GridCellLocation = {
+				laneId: lane.id,
+				step: i
+			};
+
+			if (i === lane.minStep - 1) {
+				grid[k].push({
+					...location,
+					type: 'controls',
+					value: 'lower'
+				});
+				k++;
+				continue;
+			}
+
+			if (i === lane.maxStep + 1) {
+				grid[k].push({
+					...location,
+					type: 'controls',
+					value: 'upper'
+				});
+				k++;
+				continue;
+			}
+
+			if (i < lane.minStep - 1 || i > lane.maxStep + 1) {
+				grid[k].push({
+					...location,
+					type: 'empty',
+					value: null
+				});
 				k++;
 				continue;
 			}
 
 			const override = lane.overrides[i];
 
-			const cell: GridCell = {
-				step: i,
+			const value: Specimen = {
 				fontSize:
 					override?.fontSize ??
 					adjustNumberPrecision(
@@ -57,11 +95,15 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 				lineHeightOverridden: override?.lineHeight !== undefined,
 				weight: lane.weight,
 				family: lane.family,
-				style: lane.style,
-				laneId: lane.id
+				style: lane.style
 			};
 
-			grid[k].push(cell);
+			grid[k].push({
+				...location,
+				type: 'specimen',
+				value
+			});
+
 			k++;
 		}
 	}
@@ -69,6 +111,10 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 	return {
 		cells: grid,
 		columns: lanes.length,
-		rows
+		rows,
+		max,
+		maxBuffer,
+		min,
+		minBuffer
 	};
 };
