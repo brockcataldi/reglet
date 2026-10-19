@@ -30,25 +30,32 @@
         }
     })
 </script>
+
 <div class={controlsCellVariants({ variant: cell.value })}>
-    <Button
-        label={`Add the ${toOrdinal(cell.step)} Row`}
-        onclick={() => {
-            if (cell.value === 'upper') {
-                project.lanes.increment(cell.laneId, target);
-            } else {
-                project.lanes.decrement(cell.laneId, target);
-            }
-        }}
-    />
-    <Button
-        label={`Remove the ${toOrdinal(cell.value === 'upper' ? cell.step - 1 : cell.step + 1)} Row`}
-        onclick={() => {
-            if (cell.value === 'upper') {
-                project.lanes.decrement(cell.laneId, target);
-            } else {
-                project.lanes.increment(cell.laneId, target);
-            }
-        }}
-    />
+    <div class="w-full h-fit bg-white box-border p-2 border border-black">
+        <Button
+            label={`Add the ${toOrdinal(cell.step)} Row`}
+            onclick={() => {
+                if (cell.value === 'upper') {
+                    project.lanes.increment(cell.laneId, target);
+                } else {
+                    project.lanes.decrement(cell.laneId, target);
+                }
+            }}
+        />
+
+        {#if cell.delete}
+            <Button
+                label={`Delete the ${toOrdinal(cell.value === 'upper' ? cell.step - 1 : cell.step + 1)} Row`}
+                variant="destructive"
+                onclick={() => {
+                    if (cell.value === 'upper') {
+                        project.lanes.decrement(cell.laneId, target);
+                    } else {
+                        project.lanes.increment(cell.laneId, target);
+                    }
+                }}
+            />
+       {/if}
+    </div>
 </div>

@@ -2,12 +2,10 @@
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 
-	// import project from '#lib/stores/project.svelte.js';
 	import NavigationItem from './_layout-components/NavigationItem.svelte';
 
 	let { children } = $props();
 
-	// let pId = $derived(page.params.id);
 	let routeId = $derived(page.route.id);
 </script>
 
@@ -48,9 +46,9 @@
 			<ul class="flex flex-row">
 				<li class="w-fit">
 					<NavigationItem
-						href={resolve('/editor')}
+						href={resolve('/editor/settings')}
 						border="l"
-						active={routeId === '/editor'}
+						active={routeId === '/editor/settings'}
 					>
 						Settings
 					</NavigationItem>

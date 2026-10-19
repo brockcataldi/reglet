@@ -17,7 +17,7 @@
 	<title>Grid View - Reglet</title>
 </svelte:head>
 
-<ul style:--columns={columnsCSS}>
+<ul style:--columns={columnsCSS} class="w-fit">
 	{#each cells.reverse() as row, rowIndex (rowIndex)}
 		<li class="odd:bg-neutral-100">
 			<ul class="grid grid-cols-(--columns)">

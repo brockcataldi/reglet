@@ -51,27 +51,33 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 				step: i
 			};
 
-			if (i === lane.minStep - 1) {
+			const min = lane.minStep - 1;
+			const max = lane.maxStep + 1;
+			const del = Math.abs(max - min) !== 1;
+
+			if (i === min) {
 				grid[k].push({
 					...location,
 					type: 'controls',
-					value: 'lower'
+					value: 'lower',
+					delete: del
 				});
 				k++;
 				continue;
 			}
 
-			if (i === lane.maxStep + 1) {
+			if (i === max) {
 				grid[k].push({
 					...location,
 					type: 'controls',
-					value: 'upper'
+					value: 'upper',
+					delete: del
 				});
 				k++;
 				continue;
 			}
 
-			if (i < lane.minStep - 1 || i > lane.maxStep + 1) {
+			if (i < min || i > max) {
 				grid[k].push({
 					...location,
 					type: 'empty',

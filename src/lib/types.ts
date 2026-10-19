@@ -140,7 +140,7 @@ export const isGridCellLocation = (
 export type GridCell = GridCellLocation &
 	(
 		| { type: 'specimen'; value: Specimen }
-		| { type: 'controls'; value: 'upper' | 'lower' }
+		| { type: 'controls'; value: 'upper' | 'lower', delete: boolean }
 		| { type: 'empty'; value: null }
 	);
 
