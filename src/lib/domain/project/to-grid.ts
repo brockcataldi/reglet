@@ -42,20 +42,22 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 	const grid: GridCell[][] = Array.from({ length: rows }, () => []);
 
 	for (let j = 0; j < lanes.length; j++) {
+
 		const lane = lanes[j];
+		const laneMin = lane.minStep - 1;
+		const laneMax = lane.maxStep + 1;
+		const del = Math.abs(laneMax - laneMin) !== 1;
+
 		let k = 0;
 
 		for (let i = minBuffer; i <= maxBuffer; i++) {
+
 			const location: GridCellLocation = {
 				laneId: lane.id,
 				step: i
 			};
 
-			const min = lane.minStep - 1;
-			const max = lane.maxStep + 1;
-			const del = Math.abs(max - min) !== 1;
-
-			if (i === min) {
+			if (i === laneMin) {
 				grid[k].push({
 					...location,
 					type: 'controls',
@@ -66,7 +68,7 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 				continue;
 			}
 
-			if (i === max) {
+			if (i === laneMax) {
 				grid[k].push({
 					...location,
 					type: 'controls',
@@ -77,7 +79,7 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 				continue;
 			}
 
-			if (i < min || i > max) {
+			if (i < laneMin || i > laneMax) {
 				grid[k].push({
 					...location,
 					type: 'empty',
@@ -88,7 +90,6 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 			}
 
 			const override = lane.overrides[i];
-
 			const value: Specimen = {
 				fontSize:
 					override?.fontSize ??
@@ -109,7 +110,6 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 				type: 'specimen',
 				value
 			});
-
 			k++;
 		}
 	}
