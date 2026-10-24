@@ -5,7 +5,7 @@
 	import project from '#lib/stores/project.svelte.js';
 	import Button from '#lib/ui/button/button.svelte';
 
-	import Lanes from '../_page-components/Lanes.svelte';
+	import Lanes from './_components/Lanes.svelte';
 
 	const handleDeleteClick = () => {
 		project.create();

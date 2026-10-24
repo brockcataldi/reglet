@@ -14,13 +14,12 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 
 	if (lanes.length === 0) {
 		return {
+			typeSettings: [],
 			cells: [],
 			columns: 0,
 			rows: 0,
 			max: 0,
-			maxBuffer: 0,
 			min: 0,
-			minBuffer: 0
 		};
 	}
 
@@ -100,9 +99,9 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 				fontSizeOverridden: override?.fontSize !== undefined,
 				lineHeight: override?.lineHeight ?? 1,
 				lineHeightOverridden: override?.lineHeight !== undefined,
-				weight: lane.weight,
-				family: lane.family,
-				style: lane.style
+				// weight: lane.weight,
+				// family: lane.family,
+				// style: lane.style
 			};
 
 			grid[k].push({
@@ -115,12 +114,11 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 	}
 
 	return {
+		typeSettings: lanes,
 		cells: grid,
 		columns: lanes.length,
 		rows,
 		max,
-		maxBuffer,
 		min,
-		minBuffer
 	};
 };

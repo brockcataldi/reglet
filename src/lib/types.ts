@@ -1,3 +1,4 @@
+
 export type ProjectType = 'standard' | 'fluid' | 'static';
 export type Unit = 'rem' | 'px' | 'pt';
 
@@ -13,67 +14,24 @@ export type ProjectDefault = {
 	label: string;
 };
 
-// type Breakpoint = {
-// 	id: string;
-// 	label: string;
-// 	width: number;
-// 	maxStep: number;
-// 	minStep: number;
-// 	defaultScale: ScaleSettings;
-// 	cellOverrides: Record<string, CellOverride>;
-// };
-
 export type ScaleSettings = {
 	baseSize: number;
 	ratio: number;
 };
 
-export type Lane = {
-	id: string;
+// Rework some of the types now that we added this.
 
+export type TypeSetting = {
 	family: string;
 	weight: string | number;
 	style: 'normal' | 'italic' | 'oblique';
 	variationSettings?: Record<string, number>;
+}
 
-	overrides: Record<string, SpecimenOverride>;
-
-	// the individual scale for this one
-	maxStep: number;
-	minStep: number;
-	baseSize: number;
-	ratio: number;
-};
-
-export type SpecimenOverride = {
-	lineHeight?: number;
-	fontSize?: number;
-	// letterSpacing
-};
-
-export type Specimen = {
-	fontSize: number;
-	fontSizeOverridden: boolean;
-	lineHeight: number;
-	lineHeightOverridden: boolean;
-	family: string;
-	weight: string | number;
-	style: 'normal' | 'italic' | 'oblique';
-	variationSettings?: Record<string, number>;
-};
-
-export function isSpecimen(value: unknown): value is Specimen {
-	if (typeof value !== 'object' || value === null) {
-		return false;
-	}
-
-	const candidate = value as Record<string, unknown>;
+export function isTypeSetting(value: unknown): value is TypeSetting{
+		const candidate = value as Record<string, unknown>;
 
 	if (
-		typeof candidate.fontSize !== 'number' ||
-		typeof candidate.fontSizeOverridden !== 'boolean' ||
-		typeof candidate.lineHeight !== 'number' ||
-		typeof candidate.lineHeightOverridden !== 'boolean' ||
 		typeof candidate.family !== 'string'
 	) {
 		return false;
@@ -112,6 +70,52 @@ export function isSpecimen(value: unknown): value is Specimen {
 				return false;
 			}
 		}
+	}
+
+	return true;
+}
+
+export type Lane = TypeSetting & {
+	id: string;
+
+	//
+	overrides: Record<string, SpecimenOverride>;
+
+	// the individual scale per lane
+	maxStep: number;
+	minStep: number;
+	baseSize: number;
+	ratio: number;
+};
+
+export type SpecimenOverride = {
+	lineHeight?: number;
+	fontSize?: number;
+	// letterSpacing - soon 
+};
+
+
+export type Specimen = {
+	fontSize: number;
+	fontSizeOverridden: boolean;
+	lineHeight: number;
+	lineHeightOverridden: boolean;
+};
+
+export function isSpecimen(value: unknown): value is Specimen {
+	if (typeof value !== 'object' || value === null) {
+		return false;
+	}
+
+	const candidate = value as Record<string, unknown>;
+
+	if (
+		typeof candidate.fontSize !== 'number' ||
+		typeof candidate.fontSizeOverridden !== 'boolean' ||
+		typeof candidate.lineHeight !== 'number' ||
+		typeof candidate.lineHeightOverridden !== 'boolean'
+	) {
+		return false;
 	}
 
 	return true;
@@ -170,6 +174,7 @@ export const isSpecimenGridCell = (
 	return true;
 };
 
+
 export type ControlsGridCell = Extract<GridCell, { type: 'controls' }>;
 
 export const isControlsGridCell = (
@@ -223,12 +228,11 @@ export const isEmptyGridCell = (
 };
 
 export type Grid = {
+	typeSettings: TypeSetting[];
 	cells: GridCell[][];
 	columns: number;
 	rows: number;
-	maxBuffer: number;
 	max: number;
-	minBuffer: number;
 	min: number;
 };
 

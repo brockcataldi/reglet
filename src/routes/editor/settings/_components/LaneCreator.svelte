@@ -9,17 +9,12 @@
 		createLaneValidator,
 		type CreateLaneData,
 		type OnCreateLaneData
-	} from './create-lane';
+	} from './LaneCreator';
 
 	let lane = $state<CreateLaneData>({
 		family: 'Arial',
 		weight: '400',
 		style: 'normal',
-		overrides: {},
-		baseSize: 1,
-		ratio: 1.2,
-		minStep: -1,
-		maxStep: 6
 	});
 
 	let errors = $state<CreateLaneErrors>({});
@@ -40,19 +35,20 @@
 			return;
 		}
 
-		onCreate(lane);
-
-		lane = {
-			family: 'Arial',
-			weight: '400',
-			style: 'normal',
+		onCreate({
+			...lane,
 			overrides: {},
 			baseSize: 1,
 			ratio: 1.2,
 			minStep: -1,
 			maxStep: 6
-		};
+		});
 
+		lane = {
+			family: 'Arial',
+			weight: '400',
+			style: 'normal',
+		};
 		return;
 	};
 </script>

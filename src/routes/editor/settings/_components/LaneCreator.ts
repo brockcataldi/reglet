@@ -9,7 +9,7 @@ export const createLaneSchema = z.object({
 
 export type CreateLaneSchema = z.infer<typeof createLaneSchema>;
 
-export type CreateLaneData = Omit<Lane, 'id'>;
+export type CreateLaneData = Omit<Lane, 'id' | 'overrides' | 'maxStep' | 'minStep' | 'baseSize' | 'ratio'>;
 export type OnCreateLaneData = Omit<Lane, 'id'>;
 export type CreateLaneErrors = Partial<
 	Record<keyof CreateLaneSchema, string>
