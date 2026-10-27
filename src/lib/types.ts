@@ -19,8 +19,6 @@ export type ScaleSettings = {
 	ratio: number;
 };
 
-// Rework some of the types now that we added this.
-
 export type TypeSetting = {
 	family: string;
 	weight: string | number;
@@ -228,7 +226,6 @@ export const isEmptyGridCell = (
 };
 
 export type Grid = {
-	typeSettings: TypeSetting[];
 	cells: GridCell[][];
 	columns: number;
 	rows: number;

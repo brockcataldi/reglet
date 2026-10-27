@@ -7,7 +7,7 @@
 	import ControlsCell from './_components/ControlsCell.svelte';
 	import SpecimenCell from './_components/SpecimenCell.svelte';
 
-	let { typeSettings, cells, columns, max, rows } = $derived(
+	let { cells, columns, max, rows } = $derived(
 		toGrid(project.lanes.lanes, project.precision)
 	);
 
@@ -24,18 +24,18 @@
 			<ul class="grid grid-cols-(--columns)">
 				<li class="p-2 py-2 pl-4 pr-2">
 					{#if rowIndex !== 0 && rowIndex !== rows - 1}
-						<p class="size-16 grid place-items-center border font-mono font-bold text-2xl bg-sunburst-500">{(max + 1) - rowIndex}</p>
+						<p class="size-17 grid place-items-center border font-bold text-2xl bg-sunburst-500">{(max + 1) - rowIndex}</p>
 					{/if}
 				</li>
 
 				{#each row as cell, columnIndex (columnIndex)}
-					{@const typeSetting = typeSettings[columnIndex]}
+					{@const lane = project.lanes.lanes[columnIndex]}
 
 					<li class="p-2">
 						{#if isSpecimenGridCell(cell)}
-							<SpecimenCell {cell} {typeSetting} />
+							<SpecimenCell {cell} {lane} />
 						{:else if isControlsGridCell(cell)}
-							<ControlsCell {cell} {typeSetting} />
+							<ControlsCell {cell} {lane} />
 						{/if}
 					</li>
 				{/each}

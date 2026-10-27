@@ -14,7 +14,6 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 
 	if (lanes.length === 0) {
 		return {
-			typeSettings: [],
 			cells: [],
 			columns: 0,
 			rows: 0,
@@ -114,7 +113,6 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 	}
 
 	return {
-		typeSettings: lanes,
 		cells: grid,
 		columns: lanes.length,
 		rows,

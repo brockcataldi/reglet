@@ -137,7 +137,7 @@
 			<li>
 				<Button
 					class="w-full py-2"
-					variant="destructive"
+					scheme="destructive"
 					label="Cancel"
 					onclick={() => onCancel()}
 				/>

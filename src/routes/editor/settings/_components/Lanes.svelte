@@ -32,7 +32,7 @@
 				Lanes
 			</h2>
 
-			<Button label="Add Lane" variant="primary" onclick={openCreator} />
+			<Button label="Add Lane" scheme="primary" onclick={openCreator} />
 
 			<Dialog showModal={showCreator} onClose={closeCreator}>
 				<LaneCreator onCreate={handleCreate} onCancel={closeCreator} />

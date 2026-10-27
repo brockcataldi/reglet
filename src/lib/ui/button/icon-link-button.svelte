@@ -17,12 +17,12 @@
 		label,
 		class: className,
 		icon: Icon,
-		variant,
+		scheme,
 		...props
 	}: IconLinkButtonProps = $props();
 </script>
 
-<a class={cn(iconButtonVariants({ variant }), className)} {...props}>
+<a class={cn(iconButtonVariants({ scheme }), className)} {...props}>
 	<Icon strokeWidth={1.5} />
 	<span class="sr-only">{label}</span>
 </a>

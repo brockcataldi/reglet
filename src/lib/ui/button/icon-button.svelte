@@ -16,13 +16,13 @@
 	let {
 		label,
 		class: className,
-		variant,
+		scheme,
 		icon: Icon,
 		...props
 	}: IconButtonProps = $props();
 </script>
 
-<button class={cn(iconButtonVariants({ variant }), className)} {...props}>
+<button class={cn(iconButtonVariants({ scheme }), className)} {...props}>
 	<Icon strokeWidth={1.5} />
 	<span class="sr-only">{label}</span>
 </button>

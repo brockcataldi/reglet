@@ -101,7 +101,7 @@
 					<li class="w-full">
 						<Button
 							class="w-full py-2"
-							variant="destructive"
+							scheme="destructive"
 							label="Delete"
 							onclick={() => onDelete()}
 						/>

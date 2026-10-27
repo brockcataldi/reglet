@@ -7,14 +7,14 @@
 
 	const bannerVariants = cva('py-2 px-4 font-mono text-sm', {
 		variants: {
-			variant: {
+			scheme: {
 				primary: 'border-cobalt-500 text-cobalt-500 bg-cobalt-50',
 				success: 'text-black bg-lime-300',
 				destructive: 'border-red-700 text-red-700 bg-red-100'
 			}
 		},
 		defaultVariants: {
-			variant: 'primary'
+			scheme: 'primary'
 		}
 	});
 
@@ -30,12 +30,12 @@
 		class: className,
 		children,
 		icon: Icon,
-		variant,
+		scheme,
 		...props
 	}: BannerProps = $props();
 </script>
 
-<div class={cn(bannerVariants({ variant }), className)} {...props}>
+<div class={cn(bannerVariants({ scheme }), className)} {...props}>
 	{#if Icon}
 		<Icon />
 	{/if}

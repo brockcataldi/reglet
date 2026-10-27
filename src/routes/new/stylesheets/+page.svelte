@@ -26,11 +26,11 @@
 
 	{#if project.fonts.rawStylesheets.trim() !== ''}
 		{#if project.fonts.stylesheets.length > 0}
-			<Banner variant="success" class="mt-4">
+			<Banner scheme="success" class="mt-4">
 				Found {project.fonts.stylesheets.length} stylesheets
 			</Banner>
 		{:else}
-			<Banner variant="destructive" class="mt-4">
+			<Banner scheme="destructive" class="mt-4">
 				Couldn't find any stylesheets
 			</Banner>
 		{/if}

@@ -16,7 +16,7 @@
 
 	let {
 		class: className,
-		variant,
+		scheme,
 		icon: Icon,
 		iconPosition = 'prepend',
 		label,
@@ -24,7 +24,7 @@
 	}: LinkButtonProps = $props();
 </script>
 
-<a class={cn(textButtonVariants({ variant }), className)} {...props}>
+<a class={cn(textButtonVariants({ scheme }), className)} {...props}>
 	{#if Icon && iconPosition === 'prepend'}
 		<Icon strokeWidth={1.5} />
 	{/if}

@@ -8,7 +8,7 @@ export const textButtonVariants = cva(
     `,
 	{
 		variants: {
-			variant: {
+			scheme: {
 				primary: `
                     text-black bg-white border-black
                     hover:bg-cobalt-500 hover:text-white
@@ -22,7 +22,7 @@ export const textButtonVariants = cva(
 			}
 		},
 		defaultVariants: {
-			variant: 'primary'
+			scheme: 'primary'
 		}
 	}
 );
@@ -30,11 +30,11 @@ export const textButtonVariants = cva(
 export const iconButtonVariants = cva(
 	`
         inline-flex gap-2 items-center justify-center 
-        border border-1 w-15 h-15 text-sm font-semibold [&>svg]:size-5
+        border border-1 w-8 h-8 text-sm font-semibold [&>svg]:size-5
     `,
 	{
 		variants: {
-			variant: {
+			scheme: {
 				primary: `
                     text-black bg-white border-black
                     hover:bg-cobalt-500 hover:text-white
@@ -48,7 +48,7 @@ export const iconButtonVariants = cva(
 			}
 		},
 		defaultVariants: {
-			variant: 'primary'
+			scheme: 'primary'
 		}
 	}
 );

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SpecimenGridCell, TypeSetting } from '#lib/types.js';
+	import type { SpecimenGridCell, Lane } from '#lib/types.js';
 
 	import project from '#lib/stores/project.svelte.js';
 
@@ -10,18 +10,18 @@
 
 	type CellProps = {
 		cell: SpecimenGridCell;
-		typeSetting: TypeSetting;
+		lane: Lane;
 	};
 
-	let { cell, typeSetting }: CellProps = $props();
+	let { cell, lane }: CellProps = $props();
 </script>
 
 <div class="col-span-1 border border-black bg-white">
 	<div class="block overflow-hidden border-b border-black p-4">
 		<p
-			style:font-family={typeSetting.family}
-			style:font-weight={typeSetting.weight}
-			style:font-style={typeSetting.style}
+			style:font-family={lane.family}
+			style:font-weight={lane.weight}
+			style:font-style={lane.style}
 
 			style:line-height={cell.value.lineHeight}
 			style:font-size={`${cell.value.fontSize.toFixed(3)}${project.unit}`}

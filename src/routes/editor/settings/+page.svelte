@@ -37,7 +37,7 @@
 		<article class="flex flex-row items-center justify-between">
 			<h3 class="text-4xl">Clear Project</h3>
 			<Button
-				variant="destructive"
+				scheme="destructive"
 				label="Start Over"
 				onclick={handleDeleteClick}
 			/>
