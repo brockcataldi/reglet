@@ -35,7 +35,7 @@
 		</header>
 
 		<article class="flex flex-row items-center justify-between">
-			<h3 class="text-4xl">Clear Project</h3>
+			<h3 class="text-4xl text-red-800 font-bold">Clear Project</h3>
 			<Button
 				scheme="destructive"
 				label="Start Over"

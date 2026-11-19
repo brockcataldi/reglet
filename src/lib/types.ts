@@ -1,10 +1,14 @@
 
 export type ProjectType = 'standard' | 'fluid' | 'static';
-export type Unit = 'rem' | 'px' | 'pt';
+
+export type FontSizeUnit = 'rem' | 'px' | 'pt' | 'em';
+export type LetterSpacingUnit = 'em' | 'px' | 'rem' | 'ch'  | 'pt' | '%';
+
+export type Unit = FontSizeUnit | LetterSpacingUnit;
 
 export type ProjectSettings = {
-	type: ProjectType;
-	unit: Unit;
+	fontSizeUnit: FontSizeUnit;
+	letterSpacingUnit: LetterSpacingUnit;
 	precision: number;
 };
 
@@ -89,7 +93,7 @@ export type Lane = TypeSetting & {
 export type SpecimenOverride = {
 	lineHeight?: number;
 	fontSize?: number;
-	// letterSpacing - soon 
+	letterSpacing?: number;
 };
 
 
@@ -98,6 +102,8 @@ export type Specimen = {
 	fontSizeOverridden: boolean;
 	lineHeight: number;
 	lineHeightOverridden: boolean;
+	letterSpacing: number;
+	letterSpacingOverridden: boolean;
 };
 
 export function isSpecimen(value: unknown): value is Specimen {
@@ -111,7 +117,9 @@ export function isSpecimen(value: unknown): value is Specimen {
 		typeof candidate.fontSize !== 'number' ||
 		typeof candidate.fontSizeOverridden !== 'boolean' ||
 		typeof candidate.lineHeight !== 'number' ||
-		typeof candidate.lineHeightOverridden !== 'boolean'
+		typeof candidate.lineHeightOverridden !== 'boolean' ||
+		typeof candidate.letterSpacing !== 'number' ||
+		typeof candidate.letterSpacingOverridden !== 'boolean'
 	) {
 		return false;
 	}

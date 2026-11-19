@@ -98,6 +98,8 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 				fontSizeOverridden: override?.fontSize !== undefined,
 				lineHeight: override?.lineHeight ?? 1,
 				lineHeightOverridden: override?.lineHeight !== undefined,
+				letterSpacing: override?.letterSpacing ?? 0,
+				letterSpacingOverridden: override?.letterSpacing !== undefined,
 				// weight: lane.weight,
 				// family: lane.family,
 				// style: lane.style

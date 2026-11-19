@@ -1,63 +1,96 @@
 <script lang="ts">
 	import project from '#lib/stores/project.svelte.js';
+	import type { FontSizeUnit, LetterSpacingUnit } from '#lib/types.js';
 
 	import Separator from '#lib/ui/display/separator.svelte';
 	import RadioCard from '#lib/ui/form/radio-card.svelte';
+
+	type UnitOption<T extends string> = {
+		value: T;
+		description: string;
+	};
+
+	const fontSizeUnits: UnitOption<FontSizeUnit>[] = [
+		{
+			value: 'rem',
+			description:
+				'Relative to the root font size; best for scalable, accessible type.'
+		},
+		{
+			value: 'px',
+			description:
+				'Fixed pixel units; best when you need exact, device-independent sizing.'
+		},
+		{
+			value: 'pt',
+			description:
+				'Print-oriented points; mainly for print styles, not typical screen UI type.'
+		},
+		{
+			value: 'em',
+			description:
+				"Relative to the parent's font size; useful for components that scale with their context, but compounds when nested."
+		}
+	];
+
+	const letterSpacingUnits: UnitOption<LetterSpacingUnit>[] = [
+		{
+			value: 'em',
+			description:
+				"Relative to the element's own font size; tracking stays proportional at every size. The typical choice."
+		},
+		{
+			value: 'rem',
+			description:
+				'Relative to the root font size; consistent spacing regardless of the text size.'
+		},
+		{
+			value: 'ch',
+			description:
+				'Relative to the width of the "0" glyph; ties spacing to the typeface\'s proportions.'
+		},
+		{
+			value: '%',
+			description:
+				"Percentage of the element's font size; mirrors design-tool tracking values (e.g. Figma)."
+		},
+		{
+			value: 'px',
+			description:
+				'Fixed pixel units; exact spacing that does not scale with the text.'
+		},
+		{
+			value: 'pt',
+			description:
+				'Print-oriented points; mainly for print styles, not typical screen UI type.'
+		}
+	];
 </script>
 
 <svelte:head>
 	<title>Initial Settings - Reglet</title>
 </svelte:head>
 
-<div class="w-full">
-	<Separator as="h2">Project Type</Separator>
-	<div class="grid grid-cols-3 gap-2">
-		<RadioCard value="standard" class="h-full" bind:group={project.type}>
-			<span class="block text-2xl font-semibold">Standard</span>
-			<span class="text-sm"
-				>Type scale sizes change at specific screen widths using set
-				breakpoints.</span
-			>
-		</RadioCard>
-		<RadioCard value="fluid" class="h-full" bind:group={project.type}>
-			<span class="block text-2xl font-semibold">Fluid</span>
-			<span class="text-sm"
-				>Type scales smoothly between sizes based on the viewport or
-				container.</span
-			>
-		</RadioCard>
-		<RadioCard value="static" class="h-full" bind:group={project.type}>
-			<span class="block text-2xl font-semibold">Static</span>
-			<span class="text-sm"
-				>Type scale does not changed based on the size of breakpoints.</span
-			>
-		</RadioCard>
+<div class="w-full mb-4">
+	<Separator as="h2">Font Size Unit</Separator>
+	<div class="grid grid-cols-2 gap-2 md:grid-cols-2">
+		{#each fontSizeUnits as unit (unit.value)}
+			<RadioCard value={unit.value} bind:group={project.fontSizeUnit}>
+				<span class="block text-2xl font-semibold">{unit.value}</span>
+				<span class="text-sm">{unit.description}</span>
+			</RadioCard>
+		{/each}
 	</div>
 </div>
 
-<div class="mt-4 w-full">
-	<Separator as="h2">Unit</Separator>
+<div class="w-full">
+	<Separator as="h2">Letter Spacing Unit</Separator>
 	<div class="grid grid-cols-3 gap-2">
-		<RadioCard value="rem" bind:group={project.unit}>
-			<span class="block text-2xl font-semibold">rem</span>
-			<span class="text-sm"
-				>Relative to the root font size; best for scalable, accessible
-				type.</span
-			>
-		</RadioCard>
-		<RadioCard value="px" bind:group={project.unit}>
-			<span class="block text-2xl font-semibold">px</span>
-			<span class="text-sm"
-				>Fixed pixel units; best when you need exact, device-independent
-				sizing.
-			</span>
-		</RadioCard>
-		<RadioCard value="pt" bind:group={project.unit}>
-			<span class="block text-2xl font-semibold">pt</span>
-			<span class="text-sm"
-				>Print-oriented points; mainly for print styles, not typical screen
-				UI type.</span
-			>
-		</RadioCard>
+		{#each letterSpacingUnits as unit (unit.value)}
+			<RadioCard value={unit.value} bind:group={project.letterSpacingUnit}>
+				<span class="block text-2xl font-semibold">{unit.value}</span>
+				<span class="text-sm">{unit.description}</span>
+			</RadioCard>
+		{/each}
 	</div>
 </div>

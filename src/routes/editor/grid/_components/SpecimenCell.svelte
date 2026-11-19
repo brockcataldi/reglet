@@ -24,7 +24,8 @@
 			style:font-style={lane.style}
 
 			style:line-height={cell.value.lineHeight}
-			style:font-size={`${cell.value.fontSize.toFixed(3)}${project.unit}`}
+			style:font-size={`${cell.value.fontSize.toFixed(3)}${project.fontSizeUnit}`}
+			style:letter-spacing={`${cell.value.letterSpacing}${project.letterSpacingUnit}`}
 		>
 			Lorem ipsum dolor sit amet consectetur adipisicing elit.
 		</p>
@@ -81,7 +82,7 @@
 				value={cell.value.fontSize}
 				min={0}
 				step={0.05}
-				unit={project.unit}
+				unit={project.fontSizeUnit}
 				oninput={(event) =>
 					project.lanes.updateOverrideValue(
 						cell.laneId,
@@ -100,6 +101,42 @@
 							cell.laneId,
 							`${cell.step}`,
 							'fontSize',
+							undefined
+						)}
+				/>
+			{/if}
+		</li>
+
+		<li>
+			<Separator
+				as="label"
+				for={`input-letter-spacing-${cell.laneId}-${cell.step}`}
+				description={cell.value.letterSpacingOverridden ? 'Unlinked' : ''}
+				>Letter Spacing
+			</Separator>
+			<InputUnit
+				id={`input-letter-spacing-${cell.laneId}-${cell.step}`}
+				value={cell.value.letterSpacing}
+				step={0.01}
+				unit={project.letterSpacingUnit}
+				oninput={(event) =>
+					project.lanes.updateOverrideValue(
+						cell.laneId,
+						`${cell.step}`,
+						'letterSpacing',
+						Number(event.currentTarget.value)
+					)}
+			/>
+
+			{#if cell.value.letterSpacingOverridden}
+				<Button
+					label="Relink"
+					class="mt-4"
+					onclick={() =>
+						project.lanes.updateOverrideValue(
+							cell.laneId,
+							`${cell.step}`,
+							'letterSpacing',
 							undefined
 						)}
 				/>
