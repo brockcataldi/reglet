@@ -73,11 +73,13 @@
 
 <div class="w-full mb-4">
 	<Separator as="h2">Font Size Unit</Separator>
-	<div class="grid grid-cols-2 gap-2 md:grid-cols-2">
+	<div class="flex flex-col gap-2">
 		{#each fontSizeUnits as unit (unit.value)}
 			<RadioCard value={unit.value} bind:group={project.fontSizeUnit}>
-				<span class="block text-2xl font-semibold">{unit.value}</span>
-				<span class="text-sm">{unit.description}</span>
+				<span class="flex items-start gap-4">
+					<span class="w-12 shrink-0 text-2xl font-semibold">{unit.value}</span>
+					<span class="text-sm">{unit.description}</span>
+				</span>
 			</RadioCard>
 		{/each}
 	</div>
@@ -85,11 +87,13 @@
 
 <div class="w-full">
 	<Separator as="h2">Letter Spacing Unit</Separator>
-	<div class="grid grid-cols-3 gap-2">
+	<div class="flex flex-col gap-2">
 		{#each letterSpacingUnits as unit (unit.value)}
 			<RadioCard value={unit.value} bind:group={project.letterSpacingUnit}>
-				<span class="block text-2xl font-semibold">{unit.value}</span>
-				<span class="text-sm">{unit.description}</span>
+				<span class="flex items-start gap-4">
+					<span class="w-12 shrink-0 text-2xl font-semibold">{unit.value}</span>
+					<span class="text-sm">{unit.description}</span>
+				</span>
 			</RadioCard>
 		{/each}
 	</div>

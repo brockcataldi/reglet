@@ -8,6 +8,7 @@
 	type BaseProps = {
 		children: Snippet;
 		description?: string;
+		action?: Snippet;
 	};
 
 	type HeadingProps = BaseProps &
@@ -31,6 +32,7 @@
 		as = 'h2',
 		children,
 		description,
+		action,
 		class: className,
 		...props
 	}: SeparatorProps = $props();
@@ -46,7 +48,9 @@
 			{@render children?.()}
 		</svelte:element>
 
-		{#if description}
+		{#if action}
+			{@render action()}
+		{:else if description}
 			<p class="font-mono text-xs text-cobalt-500 uppercase">
 				{description}
 			</p>

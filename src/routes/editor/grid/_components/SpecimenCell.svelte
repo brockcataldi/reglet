@@ -22,7 +22,6 @@
 			style:font-family={lane.family}
 			style:font-weight={lane.weight}
 			style:font-style={lane.style}
-
 			style:line-height={cell.value.lineHeight}
 			style:font-size={`${cell.value.fontSize.toFixed(3)}${project.fontSizeUnit}`}
 			style:letter-spacing={`${cell.value.letterSpacing}${project.letterSpacingUnit}`}
@@ -36,8 +35,25 @@
 			<Separator
 				as="label"
 				for={`input-line-height-${cell.laneId}-${cell.step}`}
-				description={cell.value.lineHeightOverridden ? 'Unlinked' : ''}
-				>Line Height
+			>
+				Line Height
+				{#snippet action()}
+					{#if cell.value.lineHeightOverridden}
+						<Button
+							label="Relink"
+							aria-label="Relink line height to lane value"
+							size="sm"
+							class="-my-0.5"
+							onclick={() =>
+								project.lanes.updateOverrideValue(
+									cell.laneId,
+									`${cell.step}`,
+									'lineHeight',
+									undefined
+								)}
+						/>
+					{/if}
+				{/snippet}
 			</Separator>
 			<Input
 				id={`input-line-height-${cell.laneId}-${cell.step}`}
@@ -54,28 +70,31 @@
 						Number(event.currentTarget.value)
 					)}
 			/>
-
-			{#if cell.value.lineHeightOverridden}
-				<Button
-					label="Relink"
-					class="mt-4"
-					onclick={() =>
-						project.lanes.updateOverrideValue(
-							cell.laneId,
-							`${cell.step}`,
-							'lineHeight',
-							undefined
-						)}
-				/>
-			{/if}
 		</li>
 
 		<li>
 			<Separator
 				as="label"
 				for={`input-font-size-${cell.laneId}-${cell.step}`}
-				description={cell.value.fontSizeOverridden ? 'Unlinked' : ''}
-				>Font Size
+			>
+				Font Size
+				{#snippet action()}
+					{#if cell.value.fontSizeOverridden}
+						<Button
+							label="Relink"
+							aria-label="Relink font size to lane value"
+							size="sm"
+							class="-my-0.5"
+							onclick={() =>
+								project.lanes.updateOverrideValue(
+									cell.laneId,
+									`${cell.step}`,
+									'fontSize',
+									undefined
+								)}
+						/>
+					{/if}
+				{/snippet}
 			</Separator>
 			<InputUnit
 				id={`input-font-size-${cell.laneId}-${cell.step}`}
@@ -91,28 +110,31 @@
 						Number(event.currentTarget.value)
 					)}
 			/>
-
-			{#if cell.value.fontSizeOverridden}
-				<Button
-					label="Relink"
-					class="mt-4"
-					onclick={() =>
-						project.lanes.updateOverrideValue(
-							cell.laneId,
-							`${cell.step}`,
-							'fontSize',
-							undefined
-						)}
-				/>
-			{/if}
 		</li>
 
 		<li>
 			<Separator
 				as="label"
 				for={`input-letter-spacing-${cell.laneId}-${cell.step}`}
-				description={cell.value.letterSpacingOverridden ? 'Unlinked' : ''}
-				>Letter Spacing
+			>
+				Letter Spacing
+				{#snippet action()}
+					{#if cell.value.letterSpacingOverridden}
+						<Button
+							label="Relink"
+							aria-label="Relink letter spacing to lane value"
+							size="sm"
+							class="-my-0.5"
+							onclick={() =>
+								project.lanes.updateOverrideValue(
+									cell.laneId,
+									`${cell.step}`,
+									'letterSpacing',
+									undefined
+								)}
+						/>
+					{/if}
+				{/snippet}
 			</Separator>
 			<InputUnit
 				id={`input-letter-spacing-${cell.laneId}-${cell.step}`}
@@ -127,21 +149,6 @@
 						Number(event.currentTarget.value)
 					)}
 			/>
-
-			{#if cell.value.letterSpacingOverridden}
-				<Button
-					label="Relink"
-					class="mt-4"
-					onclick={() =>
-						project.lanes.updateOverrideValue(
-							cell.laneId,
-							`${cell.step}`,
-							'letterSpacing',
-							undefined
-						)}
-				/>
-			{/if}
 		</li>
 	</ul>
 </div>
-
