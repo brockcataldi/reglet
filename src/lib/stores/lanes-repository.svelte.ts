@@ -102,8 +102,9 @@ class LanesRepository {
 			return;
 		}
 
+		// snapshot so nested objects (overrides, variationSettings) aren't shared
 		this.lanes.push({
-			...lane,
+			...$state.snapshot(lane),
 			id: createId()
 		});
 	}
