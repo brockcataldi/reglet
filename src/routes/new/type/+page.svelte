@@ -36,7 +36,7 @@
 
 <div class="w-full">
 	<Separator as="h2">Project Type</Separator>
-	<div class="flex flex-col gap-2">
+	<div class="grid grid-cols-3 gap-2">
 		{#each projectTypes as type (type.value)}
 			<RadioCard value={type.value} bind:group={project.draft.type}>
 				<span class="flex flex-col gap-1">
