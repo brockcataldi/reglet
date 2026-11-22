@@ -20,7 +20,6 @@ export const BREAKPOINT_DEFAULTS: Record<
 	Omit<Breakpoint, 'id'>[]
 > = {
 	static: [{ name: 'Root', width: 0 }],
-	// utopia.fyi's defaults
 	fluid: [
 		{ name: 'Min', width: 320 },
 		{ name: 'Max', width: 1240 }
@@ -32,7 +31,7 @@ export const BREAKPOINT_DEFAULTS: Record<
 	]
 };
 
-// utopia.fyi's defaults (18px @ 1.2 → 20px @ 1.25), relative to a 1rem min base
+// 18px @ 1.2 at the min width → 20px @ 1.25 at the max, relative to a 1rem min base
 export const FLUID_SCALE_DEFAULT: FluidScale = {
 	maxBaseSize: 1.111,
 	maxRatio: 1.25,
