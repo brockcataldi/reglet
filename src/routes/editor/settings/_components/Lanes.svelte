@@ -34,7 +34,11 @@
 
 			<Button label="Add Lane" scheme="primary" onclick={openCreator} />
 
-			<Dialog showModal={showCreator} onClose={closeCreator}>
+			<Dialog
+				class="max-w-3xl"
+				showModal={showCreator}
+				onClose={closeCreator}
+			>
 				<LaneCreator onCreate={handleCreate} onCancel={closeCreator} />
 			</Dialog>
 		</header>

@@ -39,7 +39,7 @@
 </script>
 
 <div class="w-full">
-	<div class="flex w-full flex-row items-center justify-between">
+	<div class="flex w-full flex-row items-center justify-between gap-2">
 		<svelte:element
 			this={as}
 			class={cn('font-mono text-sm text-neutral-600 uppercase', className)}
@@ -49,9 +49,13 @@
 		</svelte:element>
 
 		{#if action}
-			{@render action()}
+			<div class="shrink-0 whitespace-nowrap">
+				{@render action()}
+			</div>
 		{:else if description}
-			<p class="font-mono text-xs text-cobalt-500 uppercase">
+			<p
+				class="shrink-0 font-mono text-xs whitespace-nowrap text-cobalt-500 uppercase"
+			>
 				{description}
 			</p>
 		{/if}

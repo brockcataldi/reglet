@@ -50,8 +50,10 @@
 
 <dialog
 	class={cn(
-		className,
-		'top-[50%] left-[50%] max-w-120 translate-x-[-50%] translate-y-[-50%] backdrop:bg-black/30'
+		// pinned to the top rather than centered, so it grows downward instead
+		// of jumping when its content changes height
+		'inset-x-0 top-[10vh] bottom-auto mx-auto my-0 max-h-[80vh] w-[calc(100vw-2rem)] max-w-120 overflow-y-auto backdrop:bg-black/30',
+		className
 	)}
 	bind:this={dialog}
 	onclose={handleclose}
