@@ -75,7 +75,7 @@
 			: `${where} via ${from.name.toLowerCase()}`;
 	};
 
-	// every breakpoint × tag pair not already placed here
+	// every breakpoint × tag pair not already on this specimen, inherited or not
 	const choices = $derived(
 		(prefixed ? breakpoints : breakpoints.slice(0, 1)).flatMap(
 			(breakpoint) =>
@@ -188,20 +188,32 @@
 			class="flex flex-row flex-wrap gap-2"
 			aria-label={`Tags on ${where}`}
 		>
-			{#each placements as { tag, breakpoint } (`${breakpoint.id}:${tag.id}`)}
-				<li
-					class="inline-flex items-center border border-black bg-black pl-2 font-mono text-sm text-white"
-				>
-					{labelOf(breakpoint, tag)}
-					<button
-						type="button"
-						class="ml-1 inline-flex size-6 items-center justify-center hover:bg-red-700 focus-visible:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-red-700 [&>svg]:size-4"
-						aria-label={`Remove ${labelOf(breakpoint, tag)} from ${where}`}
-						onclick={() => remove(tag, breakpoint)}
+			{#each placements as { tag, breakpoint, inherited, from } (`${breakpoint.id}:${tag.id}`)}
+				{#if inherited}
+					<li
+						class="inline-flex min-h-[26px] items-center border border-dashed border-neutral-400 px-2 font-mono text-sm text-neutral-500"
+						title={`Inherited from ${formatTagLabel(from.name, tag.name)}`}
 					>
-						<X strokeWidth={1.5} />
-					</button>
-				</li>
+						{labelOf(breakpoint, tag)}
+						<span class="sr-only">
+							(inherited from {from.name.toLowerCase()})
+						</span>
+					</li>
+				{:else}
+					<li
+						class="inline-flex items-center border border-black bg-black pl-2 font-mono text-sm text-white"
+					>
+						{labelOf(breakpoint, tag)}
+						<button
+							type="button"
+							class="ml-1 inline-flex size-6 items-center justify-center hover:bg-red-700 focus-visible:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-red-700 [&>svg]:size-4"
+							aria-label={`Remove ${labelOf(breakpoint, tag)} from ${where}`}
+							onclick={() => remove(tag, breakpoint)}
+						>
+							<X strokeWidth={1.5} />
+						</button>
+					</li>
+				{/if}
 			{/each}
 		</ul>
 	{/if}

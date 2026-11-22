@@ -33,7 +33,8 @@ const tags: Tag[] = [
 
 const summarize = (laneId: string, step: number) =>
 	placementsAtCell(tags, breakpoints, laneId, step).map(
-		({ tag, breakpoint }) => `${breakpoint.id}/${tag.id}`
+		({ tag, breakpoint, inherited, from }) =>
+			`${breakpoint.id}/${tag.id}${inherited ? ` via ${from.id}` : ''}`
 	);
 
 describe('placementsAtCell', () => {
@@ -41,11 +42,12 @@ describe('placementsAtCell', () => {
 		expect(summarize('a', 6)).toStrictEqual([
 			'root/h1',
 			'root/h2',
-			'desktop/display'
+			'desktop/display',
+			'desktop/h2 via root'
 		]);
 	});
 
-	it('does not repeat inherited placements', () => {
+	it('stops inheriting once a breakpoint places the tag elsewhere', () => {
 		expect(summarize('a', 8)).toStrictEqual(['desktop/h1']);
 	});
 
