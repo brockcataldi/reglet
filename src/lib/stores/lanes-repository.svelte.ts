@@ -42,14 +42,14 @@ class LanesRepository {
 		});
 	}
 
-	updateValue<K extends keyof Lane>(id: string, key: K, value: Lane[K]) {
+	update(id: string, patch: Partial<Omit<Lane, 'id'>>) {
 		const lane = this.lanes.find((lane) => lane.id === id);
 
 		if (!lane) {
 			return;
 		}
 
-		lane[key] = value;
+		Object.assign(lane, patch);
 	}
 
 	increment<K extends Extract<keyof Lane, 'maxStep' | 'minStep'>>(
@@ -102,8 +102,9 @@ class LanesRepository {
 			return;
 		}
 
+		// snapshot so nested objects (overrides, variationSettings) aren't shared
 		this.lanes.push({
-			...lane,
+			...$state.snapshot(lane),
 			id: createId()
 		});
 	}
