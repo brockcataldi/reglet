@@ -47,7 +47,8 @@
 		project.fonts.available.map((entry) => entry.family)
 	);
 
-	const weights = $derived(family?.weights ?? []);
+	// weights depend on the style: a family may have 700 but not 700 italic
+	const weights = $derived(family?.weights[setting.style] ?? []);
 	const isVariableWeight = $derived(
 		weights.some(({ min, max }) => min !== max)
 	);
@@ -184,7 +185,12 @@
 			variant={errors.style ? 'error' : 'default'}
 			value={setting.style}
 			onchange={(event) =>
-				onChange({ style: event.currentTarget.value as Style })}
+				onChange(
+					fitTypeSetting(
+						{ ...setting, style: event.currentTarget.value as Style },
+						family
+					)
+				)}
 		>
 			{#each styles as style (style)}
 				<option value={style}>{style}</option>

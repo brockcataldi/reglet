@@ -22,8 +22,8 @@ describe('group-font-faces', () => {
 		expect(groupFontFaces([face('Roboto')])).toStrictEqual([
 			{
 				family: 'Roboto',
-				weights: [{ min: 400, max: 400 }],
 				styles: ['normal'],
+				weights: { normal: [{ min: 400, max: 400 }] },
 				axes: {}
 			}
 		]);
@@ -32,10 +32,11 @@ describe('group-font-faces', () => {
 	it('maps the bold keyword to 700', () => {
 		expect(
 			groupFontFaces([face('Roboto', { weight: 'bold' })])[0].weights
+				.normal
 		).toStrictEqual([{ min: 700, max: 700 }]);
 	});
 
-	it('groups discrete weights and styles into one family, sorted', () => {
+	it('groups weights per style into one family, sorted', () => {
 		expect(
 			groupFontFaces([
 				face('Roboto', { weight: '700', style: 'italic' }),
@@ -46,25 +47,62 @@ describe('group-font-faces', () => {
 		).toStrictEqual([
 			{
 				family: 'Roboto',
-				weights: [
-					{ min: 400, max: 400 },
-					{ min: 700, max: 700 }
-				],
 				styles: ['normal', 'italic'],
+				weights: {
+					normal: [
+						{ min: 400, max: 400 },
+						{ min: 700, max: 700 }
+					],
+					italic: [
+						{ min: 400, max: 400 },
+						{ min: 700, max: 700 }
+					]
+				},
 				axes: {}
 			}
 		]);
 	});
 
+	it('keeps weights a style lacks out of that style', () => {
+		// ex. mr-eaves-sans on Typekit: 400, 700 and 400 italic, no 700 italic
+		expect(
+			groupFontFaces([
+				face('mr-eaves-sans', { weight: '400' }),
+				face('mr-eaves-sans', { weight: '400', style: 'italic' }),
+				face('mr-eaves-sans', { weight: '700' })
+			])[0].weights
+		).toStrictEqual({
+			normal: [
+				{ min: 400, max: 400 },
+				{ min: 700, max: 700 }
+			],
+			italic: [{ min: 400, max: 400 }]
+		});
+	});
+
+	it('keeps a style whose faces have no parseable weight', () => {
+		expect(
+			groupFontFaces([
+				face('Roboto', { weight: '400' }),
+				face('Roboto', { weight: 'auto', style: 'italic' })
+			])[0]
+		).toMatchObject({
+			styles: ['normal', 'italic'],
+			weights: { normal: [{ min: 400, max: 400 }], italic: [] }
+		});
+	});
+
 	it('variable weight range', () => {
 		expect(
 			groupFontFaces([face('Inter', { weight: '100 900' })])[0].weights
+				.normal
 		).toStrictEqual([{ min: 100, max: 900 }]);
 	});
 
 	it('normalises reversed weight ranges', () => {
 		expect(
 			groupFontFaces([face('Inter', { weight: '900 100' })])[0].weights
+				.normal
 		).toStrictEqual([{ min: 100, max: 900 }]);
 	});
 
@@ -75,7 +113,7 @@ describe('group-font-faces', () => {
 				face('Inter', { weight: '100 900' }),
 				face('Inter', { weight: '100 900' }),
 				face('Inter', { weight: '100 900' })
-			])[0].weights
+			])[0].weights.normal
 		).toStrictEqual([{ min: 100, max: 900 }]);
 	});
 
@@ -86,7 +124,7 @@ describe('group-font-faces', () => {
 				face('Roboto', { weight: 'bolder' }),
 				face('Roboto', { weight: '100 400 900' }),
 				face('Roboto', { weight: '' })
-			])[0].weights
+			])[0].weights.normal
 		).toStrictEqual([]);
 	});
 
@@ -107,11 +145,13 @@ describe('group-font-faces', () => {
 		).toStrictEqual([
 			{
 				family: 'proxima-nova',
-				weights: [
-					{ min: 400, max: 400 },
-					{ min: 700, max: 700 }
-				],
 				styles: ['normal'],
+				weights: {
+					normal: [
+						{ min: 400, max: 400 },
+						{ min: 700, max: 700 }
+					]
+				},
 				axes: {}
 			}
 		]);
@@ -187,11 +227,11 @@ describe('group-font-faces', () => {
 		expect(groupFontFaces(faces)).toStrictEqual([
 			{
 				family: 'Bodoni Moda',
-				weights: [
-					{ min: 400, max: 900 },
-					{ min: 700, max: 700 }
-				],
 				styles: ['normal', 'italic'],
+				weights: {
+					normal: [{ min: 700, max: 700 }],
+					italic: [{ min: 400, max: 900 }]
+				},
 				axes: { wdth: { min: 75, max: 100 } }
 			}
 		]);

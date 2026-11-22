@@ -123,7 +123,9 @@
 		: undefined}
 	oninput={(event) => {
 		filtering = true;
-		open = true;
+		// a hidden input (ex. inside a closed <dialog>) has nothing to anchor
+		// the popover to, so it would render in the top-left corner
+		open = event.currentTarget.checkVisibility();
 		activeIndex = -1;
 		onValueChange(event.currentTarget.value);
 	}}

@@ -83,15 +83,15 @@ const parseStyle = (raw: string): AvailableFontStyle => {
 
 type FamilyAccumulator = {
 	family: string;
-	weights: Map<string, AxisRange>;
-	styles: Set<AvailableFontStyle>;
+	// style -> deduped weight ranges keyed by `min-max`
+	styles: Map<AvailableFontStyle, Map<string, AxisRange>>;
 	stretch: AxisRange | null;
 };
 
 /**
  * Groups individual @font-face descriptors (ex. from `document.fonts`)
- * into one entry per family, describing which weights, styles and
- * variation axes are available.
+ * into one entry per family, describing which styles exist, which
+ * weights each style comes in, and which variation axes are available.
  */
 export const groupFontFaces = (
 	faces: Iterable<FontFaceDescriptors>
@@ -112,19 +112,24 @@ export const groupFontFaces = (
 		if (!accumulator) {
 			accumulator = {
 				family,
-				weights: new Map(),
-				styles: new Set(),
+				styles: new Map(),
 				stretch: null
 			};
 			families.set(key, accumulator);
 		}
 
-		const weight = parseWeight(face.weight);
-		if (weight) {
-			accumulator.weights.set(`${weight.min}-${weight.max}`, weight);
+		const style = parseStyle(face.style);
+		let weights = accumulator.styles.get(style);
+
+		if (!weights) {
+			weights = new Map();
+			accumulator.styles.set(style, weights);
 		}
 
-		accumulator.styles.add(parseStyle(face.style));
+		const weight = parseWeight(face.weight);
+		if (weight) {
+			weights.set(`${weight.min}-${weight.max}`, weight);
+		}
 
 		const stretch = parseStretch(face.stretch);
 		if (stretch) {
@@ -145,12 +150,21 @@ export const groupFontFaces = (
 			axes.wdth = stretch;
 		}
 
+		const styles = STYLE_ORDER.filter((style) =>
+			accumulator.styles.has(style)
+		);
+		const weights: AvailableFamily['weights'] = {};
+
+		for (const style of styles) {
+			weights[style] = Array.from(
+				accumulator.styles.get(style)?.values() ?? []
+			).sort((a, b) => a.min - b.min || a.max - b.max);
+		}
+
 		return {
 			family: accumulator.family,
-			weights: Array.from(accumulator.weights.values()).sort(
-				(a, b) => a.min - b.min || a.max - b.max
-			),
-			styles: STYLE_ORDER.filter((style) => accumulator.styles.has(style)),
+			styles,
+			weights,
 			axes
 		};
 	});

@@ -36,9 +36,9 @@ const fitWeight = (
 };
 
 /**
- * Snaps a type setting to what the family actually provides: nearest
- * available weight, an available style, and only the family's axes,
- * clamped to their ranges. Unknown families are left untouched.
+ * Snaps a type setting to what the family actually provides: an available
+ * style, then the nearest weight that style comes in, and only the family's
+ * axes, clamped to their ranges. Unknown families are left untouched.
  */
 export const fitTypeSetting = (
 	setting: TypeSetting,
@@ -69,7 +69,7 @@ export const fitTypeSetting = (
 
 	return {
 		...setting,
-		weight: fitWeight(setting.weight, family.weights),
+		weight: fitWeight(setting.weight, family.weights[style] ?? []),
 		style,
 		variationSettings
 	};

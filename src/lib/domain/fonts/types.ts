@@ -17,9 +17,11 @@ export type AvailableFontStyle = 'normal' | 'italic' | 'oblique';
 
 export type AvailableFamily = {
 	family: string;
-	// discrete weights have min === max, variable weights are a range
-	weights: AxisRange[];
+	// ordered normal, italic, oblique
 	styles: AvailableFontStyle[];
+	// weights available in each style; discrete weights have min === max,
+	// variable weights are a range. An empty list means any weight.
+	weights: Partial<Record<AvailableFontStyle, AxisRange[]>>;
 	// variation axes beyond weight, keyed by tag (ex. wdth, opsz)
 	axes: Record<string, AxisRange>;
 };

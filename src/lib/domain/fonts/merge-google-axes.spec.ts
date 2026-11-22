@@ -7,8 +7,8 @@ const family = (
 	axes: AvailableFamily['axes'] = {}
 ): AvailableFamily => ({
 	family: name,
-	weights: [{ min: 400, max: 900 }],
 	styles: ['normal'],
+	weights: { normal: [{ min: 400, max: 900 }] },
 	axes
 });
 
