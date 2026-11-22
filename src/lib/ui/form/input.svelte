@@ -26,12 +26,15 @@
 		class: className,
 		variant,
 		value = $bindable(),
+		ref = $bindable(),
 		...props
-	}: HTMLInputAttributes & InputVariants = $props();
+	}: HTMLInputAttributes &
+		InputVariants & { ref?: HTMLInputElement } = $props();
 </script>
 
 <input
 	class={cn(inputVariants({ variant }), className)}
 	{...props}
 	bind:value
+	bind:this={ref}
 />

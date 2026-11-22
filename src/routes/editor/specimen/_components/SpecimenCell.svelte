@@ -7,7 +7,11 @@
 	import Input from '#lib/ui/form/input.svelte';
 	import Separator from '#lib/ui/display/separator.svelte';
 	import InputUnit from '#lib/ui/form/input-unit.svelte';
+	import { Link } from '@lucide/svelte';
+
 	import Button from '#lib/ui/button/button.svelte';
+
+	import CellTags from './CellTags.svelte';
 
 	type CellProps = {
 		cell: SpecimenGridCell;
@@ -18,6 +22,7 @@
 </script>
 
 <div class="col-span-1 border border-black bg-white">
+	<CellTags {cell} />
 	<div class="block overflow-hidden border-b border-black p-4">
 		<p
 			style:font-family={lane.family}
@@ -45,6 +50,7 @@
 					{#if cell.value.lineHeightOverridden}
 						<Button
 							label="Relink"
+							icon={Link}
 							aria-label="Relink line height to lane value"
 							size="sm"
 							class="-my-0.5"
@@ -86,6 +92,7 @@
 					{#if cell.value.fontSizeOverridden}
 						<Button
 							label="Relink"
+							icon={Link}
 							aria-label="Relink font size to lane value"
 							size="sm"
 							class="-my-0.5"
@@ -126,6 +133,7 @@
 					{#if cell.value.letterSpacingOverridden}
 						<Button
 							label="Relink"
+							icon={Link}
 							aria-label="Relink letter spacing to lane value"
 							size="sm"
 							class="-my-0.5"

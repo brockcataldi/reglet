@@ -9,8 +9,10 @@
 	} from './variants';
 
 	type ButtonProps = {
-		icon?: Component;
+		// buttons pair an icon with their text unless `iconOnly` is set
+		icon: Component;
 		iconPosition?: 'prepend' | 'append';
+		// with `iconOnly`, read by screen readers and shown on hover
 		label: string;
 	} & TextButtonVariantsProps &
 		Omit<HTMLButtonAttributes, 'children'>;
@@ -22,16 +24,26 @@
 		label,
 		scheme,
 		size,
+		iconOnly = false,
 		...props
 	}: ButtonProps = $props();
 </script>
 
-<button class={cn(textButtonVariants({ scheme, size }), className)} {...props}>
-	{#if Icon && iconPosition === 'prepend'}
-		<Icon strokeWidth={1.5} />
-	{/if}
-	{label}
-	{#if Icon && iconPosition === 'append'}
-		<Icon strokeWidth={1.5} />
+<button
+	class={cn(textButtonVariants({ scheme, size, iconOnly }), className)}
+	title={iconOnly ? label : undefined}
+	{...props}
+>
+	{#if iconOnly}
+		<Icon strokeWidth={1.5} aria-hidden="true" />
+		<span class="sr-only">{label}</span>
+	{:else}
+		{#if iconPosition === 'prepend'}
+			<Icon strokeWidth={1.5} />
+		{/if}
+		{label}
+		{#if iconPosition === 'append'}
+			<Icon strokeWidth={1.5} />
+		{/if}
 	{/if}
 </button>

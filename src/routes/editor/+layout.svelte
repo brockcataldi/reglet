@@ -24,20 +24,20 @@
 					<ul class="flex flex-row">
 						<li class="w-fit">
 							<NavigationItem
-								href={resolve('/editor/grid')}
+								href={resolve('/editor/specimen')}
 								border="r"
-								active={routeId === '/editor/grid'}
+								active={routeId === '/editor/specimen'}
 							>
-								Grid View
+								Specimen View
 							</NavigationItem>
 						</li>
 						<li class="w-fit">
 							<NavigationItem
-								href={resolve('/editor/list')}
+								href={resolve('/editor/tag')}
 								border="r"
-								active={routeId === '/editor/list'}
+								active={routeId === '/editor/tag'}
 							>
-								List View
+								Tag View
 							</NavigationItem>
 						</li>
 					</ul>

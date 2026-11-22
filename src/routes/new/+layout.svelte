@@ -3,6 +3,9 @@
 	import { page } from '$app/state';
 	import type { ResolvedPathname } from '$app/types';
 	import project from '#lib/stores/project.svelte.js';
+	import { ArrowLeft, ArrowRight, Check } from '@lucide/svelte';
+
+	import Button from '#lib/ui/button/button.svelte';
 	import LinkButton from '#lib/ui/button/link-button.svelte';
 
 	let { children } = $props();
@@ -16,12 +19,24 @@
 		onClick?: () => void;
 	};
 
-	const steps: NavigationStep[] = [
+	const allSteps: NavigationStep[] = [
 		{
 			display: true,
 			slug: 'initial',
 			name: 'Initial',
 			href: resolve('new/initial')
+		},
+		{
+			display: true,
+			slug: 'breakpoints',
+			name: 'Breakpoints',
+			href: resolve('new/breakpoints')
+		},
+		{
+			display: true,
+			slug: 'tags',
+			name: 'Tags',
+			href: resolve('new/tags')
 		},
 		{
 			display: true,
@@ -44,6 +59,16 @@
 			onClick: () => project.create()
 		}
 	];
+
+	// projects without breakpoints have nothing to set up there
+	const steps = $derived(
+		allSteps.filter(
+			(step) =>
+				step.slug !== 'breakpoints' || project.draft.type !== 'static'
+		)
+	);
+
+	const displayedSteps = $derived(steps.filter((step) => step.display));
 
 	const currentIndex = $derived(
 		steps.findIndex((step) => step.href === page.url.pathname)
@@ -77,10 +102,10 @@
 				New Project
 			</h1>
 			<nav class="w-full border-b border-b-black px-8">
-				<ul class="grid w-full grid-cols-4">
-					{#each steps as step, index (step.slug)}
+				<ul class="grid w-full auto-cols-auto grid-flow-col">
+					{#each displayedSteps as step (step.slug)}
 						{#if step.display}
-							{#if currentIndex === index}
+							{#if steps[currentIndex]?.slug === step.slug}
 								<li class=" border-t border-r border-black first:border-l">
 									<span
 										class="block bg-black px-2 py-1 font-mono text-sm text-white"
@@ -122,15 +147,30 @@
 			class="flex w-full flex-row items-center justify-between px-8 pt-4 pb-8"
 		>
 			{#if previousStep !== undefined}
-				<LinkButton href={previousStep.href} label="Previous" />
+				<LinkButton
+					href={previousStep.href}
+					label="Previous"
+					icon={ArrowLeft}
+				/>
 			{:else}
 				<span></span>
 			{/if}
 
-			{#if nextStep !== undefined}
+			{#if nextStep !== undefined && nextStep.onClick && !project.draft.valid}
+				<Button
+					label={nextStep.nextOverride ?? 'Next'}
+					icon={Check}
+					iconPosition="append"
+					disabled
+					title="Fix the issues in the overview first"
+					class="cursor-not-allowed opacity-60"
+				/>
+			{:else if nextStep !== undefined}
 				<LinkButton
 					href={nextStep.href}
 					label={nextStep.nextOverride ?? 'Next'}
+					icon={nextStep.onClick ? Check : ArrowRight}
+					iconPosition="append"
 					onclick={nextStep.onClick}
 				/>
 			{:else}

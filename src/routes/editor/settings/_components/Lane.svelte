@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { Lane, TypeSetting } from '#lib/types.js';
 	import { toFontVariationSettings } from '#lib/domain/fonts/to-font-variation-settings.js';
+	import { Copy, Trash2 } from '@lucide/svelte';
+
 	import Button from '#lib/ui/button/button.svelte';
 
 	import TypeSettingFields from './TypeSettingFields.svelte';
@@ -42,6 +44,7 @@
 						<Button
 							class="w-full py-2"
 							label="Duplicate"
+							icon={Copy}
 							onclick={() => onDuplicate()}
 						/>
 					</li>
@@ -50,6 +53,7 @@
 							class="w-full py-2"
 							scheme="destructive"
 							label="Delete"
+							icon={Trash2}
 							onclick={() => onDelete()}
 						/>
 					</li>

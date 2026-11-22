@@ -1,52 +1,111 @@
 import type {
+	Breakpoint,
+	FluidScale,
 	ModularScaleRatio,
-	ProjectDefault,
-	ProjectType
+	ProjectType,
+	TagTemplate
 } from './types';
 
 export const LOCAL_STORAGE_KEY_FONTS = 'reglet-fonts';
 export const LOCAL_STORAGE_KEY_SETTINGS = 'reglet-settings';
 export const LOCAL_STORAGE_KEY_BREAKPOINTS = 'reglet-breakpoints';
 export const LOCAL_STORAGE_KEY_LANES = 'reglet-lanes';
+export const LOCAL_STORAGE_KEY_TAGS = 'reglet-tags';
+export const LOCAL_STORAGE_KEY_DRAFT = 'reglet-draft';
 
-export const PROJECT_DEFAULTS: Record<ProjectType, ProjectDefault[]> = {
-	static: [
-		{
-			width: 0,
-			modifier: 1,
-			label: 'Lanes'
-		}
-	],
+export const DEFAULT_PROJECT_TYPE: ProjectType = 'standard';
+
+export const BREAKPOINT_DEFAULTS: Record<
+	ProjectType,
+	Omit<Breakpoint, 'id'>[]
+> = {
+	static: [{ name: 'Root', width: 0 }],
 	fluid: [
-		{
-			width: 300,
-			modifier: 1,
-			label: 'Min'
-		},
-		{
-			width: 1000,
-			modifier: 1.2,
-			label: 'Max'
-		}
+		{ name: 'Min', width: 320 },
+		{ name: 'Max', width: 1240 }
 	],
 	standard: [
-		{
-			width: 0,
-			modifier: 1,
-			label: 'Root'
-		},
-		{
-			width: 768,
-			modifier: 1.1,
-			label: 'Tablet'
-		},
-		{
-			width: 1200,
-			modifier: 1.2,
-			label: 'Desktop'
-		}
+		{ name: 'Root', width: 0 },
+		{ name: 'Tablet', width: 768 },
+		{ name: 'Desktop', width: 1200 }
 	]
-} as const;
+};
+
+// 18px @ 1.2 at the min width → 20px @ 1.25 at the max, relative to a 1rem min base
+export const FLUID_SCALE_DEFAULT: FluidScale = {
+	maxBaseSize: 1.111,
+	maxRatio: 1.25,
+	linkRatio: false
+};
+
+/**
+ * Steps assume the default lane (1rem base, 1.2 ratio) and land as close to
+ * each system's published sizes as that scale allows; several tags sharing a
+ * step is expected.
+ */
+export const TAG_TEMPLATES: TagTemplate[] = [
+	{
+		id: 'html',
+		name: 'HTML',
+		description: 'Headings, body copy and small print.',
+		tags: [
+			{ name: 'h1', step: 6 },
+			{ name: 'h2', step: 5 },
+			{ name: 'h3', step: 4 },
+			{ name: 'h4', step: 3 },
+			{ name: 'h5', step: 2 },
+			{ name: 'h6', step: 1 },
+			{ name: 'body', step: 0 },
+			{ name: 'small', step: -1 }
+		]
+	},
+	{
+		id: 'material',
+		name: 'Material 3',
+		description:
+			'Display, headline, title, body and label in three sizes.',
+		tags: [
+			{ name: 'display-large', step: 7 },
+			{ name: 'display-medium', step: 6 },
+			{ name: 'display-small', step: 5 },
+			{ name: 'headline-large', step: 4 },
+			{ name: 'headline-medium', step: 3 },
+			{ name: 'headline-small', step: 2 },
+			{ name: 'title-large', step: 1 },
+			{ name: 'title-medium', step: 0 },
+			{ name: 'title-small', step: -1 },
+			{ name: 'body-large', step: 0 },
+			{ name: 'body-medium', step: -1 },
+			{ name: 'body-small', step: -2 },
+			{ name: 'label-large', step: -1 },
+			{ name: 'label-medium', step: -2 },
+			{ name: 'label-small', step: -2 }
+		]
+	},
+	{
+		id: 'fluent',
+		name: 'Fluent 2',
+		description: 'The Fluent 2 web type ramp, from caption to display.',
+		tags: [
+			{ name: 'display', step: 8 },
+			{ name: 'large-title', step: 5 },
+			{ name: 'title-1', step: 4 },
+			{ name: 'title-2', step: 3 },
+			{ name: 'title-3', step: 2 },
+			{ name: 'subtitle-1', step: 1 },
+			{ name: 'subtitle-2', step: 0 },
+			{ name: 'body-1', step: -1 },
+			{ name: 'caption-1', step: -2 },
+			{ name: 'caption-2', step: -3 }
+		]
+	},
+	{
+		id: 'custom',
+		name: 'Custom',
+		description: 'Start empty and name your own tags.',
+		tags: []
+	}
+];
 
 export const MODULAR_SCALE_RATIOS: ModularScaleRatio[] = [
 	{ ratio: 1.067, label: 'Minor Second' },

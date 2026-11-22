@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { toFontVariationSettings } from '#lib/domain/fonts/to-font-variation-settings.js';
+	import { Check, X } from '@lucide/svelte';
+
 	import Button from '#lib/ui/button/button.svelte';
 
 	import TypeSettingFields from './TypeSettingFields.svelte';
@@ -77,6 +79,7 @@
 					<Button
 						class="w-full py-2"
 						label="Create"
+						icon={Check}
 						onclick={onClickCreate}
 					/>
 				</li>
@@ -85,6 +88,7 @@
 						class="w-full py-2"
 						scheme="destructive"
 						label="Cancel"
+						icon={X}
 						onclick={() => onCancel()}
 					/>
 				</li>
