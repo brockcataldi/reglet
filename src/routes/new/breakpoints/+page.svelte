@@ -5,7 +5,6 @@
 	import project from '#lib/stores/project.svelte.js';
 
 	import Button from '#lib/ui/button/button.svelte';
-	import IconButton from '#lib/ui/button/icon-button.svelte';
 	import Banner from '#lib/ui/display/banner.svelte';
 	import Separator from '#lib/ui/display/separator.svelte';
 	import Input from '#lib/ui/form/input.svelte';
@@ -67,8 +66,10 @@
 					/>
 				</div>
 				{#if draft.type === 'standard'}
-					<IconButton
-						label={`Remove ${breakpoint.name || 'breakpoint'}`}
+					<Button
+						label="Remove"
+						aria-label={`Remove ${breakpoint.name || 'breakpoint'}`}
+						size="sm"
 						icon={Trash2}
 						scheme="destructive"
 						disabled={root}

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { Plus } from '@lucide/svelte';
+
 	import type { Tag } from '#lib/types.js';
 
 	import project from '#lib/stores/project.svelte.js';
@@ -98,7 +100,7 @@
 					</p>
 				{/if}
 			</div>
-			<Button type="submit" label="Add Tag" class="mt-4" />
+			<Button type="submit" label="Add Tag" icon={Plus} class="mt-4" />
 		</form>
 
 		<p class="sr-only" aria-live="polite">{announcement}</p>

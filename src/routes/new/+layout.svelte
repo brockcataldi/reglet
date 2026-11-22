@@ -3,6 +3,8 @@
 	import { page } from '$app/state';
 	import type { ResolvedPathname } from '$app/types';
 	import project from '#lib/stores/project.svelte.js';
+	import { ArrowLeft, ArrowRight, Check } from '@lucide/svelte';
+
 	import Button from '#lib/ui/button/button.svelte';
 	import LinkButton from '#lib/ui/button/link-button.svelte';
 
@@ -145,7 +147,11 @@
 			class="flex w-full flex-row items-center justify-between px-8 pt-4 pb-8"
 		>
 			{#if previousStep !== undefined}
-				<LinkButton href={previousStep.href} label="Previous" />
+				<LinkButton
+					href={previousStep.href}
+					label="Previous"
+					icon={ArrowLeft}
+				/>
 			{:else}
 				<span></span>
 			{/if}
@@ -153,6 +159,8 @@
 			{#if nextStep !== undefined && nextStep.onClick && !project.draft.valid}
 				<Button
 					label={nextStep.nextOverride ?? 'Next'}
+					icon={Check}
+					iconPosition="append"
 					disabled
 					title="Fix the issues in the overview first"
 					class="cursor-not-allowed opacity-60"
@@ -161,6 +169,8 @@
 				<LinkButton
 					href={nextStep.href}
 					label={nextStep.nextOverride ?? 'Next'}
+					icon={nextStep.onClick ? Check : ArrowRight}
+					iconPosition="append"
 					onclick={nextStep.onClick}
 				/>
 			{:else}

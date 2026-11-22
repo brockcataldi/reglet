@@ -9,7 +9,8 @@
 	} from './variants';
 
 	type ButtonProps = {
-		icon?: Component;
+		// buttons always pair an icon with their text
+		icon: Component;
 		iconPosition?: 'prepend' | 'append';
 		label: string;
 	} & TextButtonVariantsProps &
@@ -26,12 +27,15 @@
 	}: ButtonProps = $props();
 </script>
 
-<button class={cn(textButtonVariants({ scheme, size }), className)} {...props}>
-	{#if Icon && iconPosition === 'prepend'}
+<button
+	class={cn(textButtonVariants({ scheme, size }), className)}
+	{...props}
+>
+	{#if iconPosition === 'prepend'}
 		<Icon strokeWidth={1.5} />
 	{/if}
 	{label}
-	{#if Icon && iconPosition === 'append'}
+	{#if iconPosition === 'append'}
 		<Icon strokeWidth={1.5} />
 	{/if}
 </button>

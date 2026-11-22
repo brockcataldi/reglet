@@ -3,11 +3,10 @@
 	import { ChevronDown, ChevronUp } from '@lucide/svelte';
 
 	import type { ControlsGridCell, Lane } from '#lib/types.js';
-	import { toOrdinal } from '#lib/utilities.js';
 
 	import project from '#lib/stores/project.svelte.js';
 
-	import IconButton from '#lib/ui/button/icon-button.svelte';
+	import Button from '#lib/ui/button/button.svelte';
 
 	type CellProps = {
 		cell: ControlsGridCell;
@@ -39,24 +38,25 @@
 		{
 			upper: {
 				top: {
-					label: `Add the ${toOrdinal(cell.step)} Row`,
+					label: `Add row ${cell.step}`,
 					destructive: false,
 					action: () => project.lanes.increment(cell.laneId, target)
 				},
 				bottom: {
-					label: `Delete the ${toOrdinal(cell.step - 1)} Row`,
+					label: `Remove row ${cell.step - 1}`,
 					destructive: true,
 					action: () => project.lanes.decrement(cell.laneId, target)
 				}
 			},
 			lower: {
+				// raising the minimum removes the lowest row
 				top: {
-					label: `Add the ${toOrdinal(cell.step)} Row`,
+					label: `Remove row ${cell.step + 1}`,
 					destructive: true,
 					action: () => project.lanes.increment(cell.laneId, target)
 				},
 				bottom: {
-					label: `Delete the ${toOrdinal(cell.step + 1)} Row`,
+					label: `Add row ${cell.step}`,
 					destructive: false,
 					action: () => project.lanes.decrement(cell.laneId, target)
 				}
@@ -76,8 +76,10 @@
 			>
 				<li>
 					{#if !(actions.top.destructive === true && cell.delete === false)}
-						<IconButton
+						<Button
 							label={actions.top.label}
+							size="sm"
+							class="w-full whitespace-nowrap"
 							icon={ChevronUp}
 							onclick={actions.top.action}
 							scheme={actions.top.destructive ? 'destructive' : 'primary'}
@@ -86,8 +88,10 @@
 				</li>
 				<li>
 					{#if !(actions.bottom.destructive === true && cell.delete === false)}
-						<IconButton
+						<Button
 							label={actions.bottom.label}
+							size="sm"
+							class="w-full whitespace-nowrap"
 							icon={ChevronDown}
 							onclick={actions.bottom.action}
 							scheme={actions.bottom.destructive

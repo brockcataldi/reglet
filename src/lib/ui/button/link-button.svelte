@@ -8,7 +8,8 @@
 	import type { Component } from 'svelte';
 
 	type LinkButtonProps = {
-		icon?: Component;
+		// buttons always pair an icon with their text
+		icon: Component;
 		iconPosition?: 'prepend' | 'append';
 		label: string;
 	} & TextButtonVariantsProps &
@@ -26,11 +27,11 @@
 </script>
 
 <a class={cn(textButtonVariants({ scheme, size }), className)} {...props}>
-	{#if Icon && iconPosition === 'prepend'}
+	{#if iconPosition === 'prepend'}
 		<Icon strokeWidth={1.5} />
 	{/if}
 	{label}
-	{#if Icon && iconPosition === 'append'}
+	{#if iconPosition === 'append'}
 		<Icon strokeWidth={1.5} />
 	{/if}
 </a>

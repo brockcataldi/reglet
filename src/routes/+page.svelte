@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { ArrowRight } from '@lucide/svelte';
+
 	import LinkButton from '#lib/ui/button/link-button.svelte';
 </script>
 
@@ -35,7 +37,12 @@
 			</ol>
 
 			<div>
-				<LinkButton href={resolve('new/initial')} label="Get Started" />
+				<LinkButton
+					href={resolve('new/initial')}
+					label="Get Started"
+					icon={ArrowRight}
+					iconPosition="append"
+				/>
 			</div>
 		</div>
 	</section>

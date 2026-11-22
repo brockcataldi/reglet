@@ -7,7 +7,6 @@
 	import project from '#lib/stores/project.svelte.js';
 
 	import Button from '#lib/ui/button/button.svelte';
-	import IconButton from '#lib/ui/button/icon-button.svelte';
 	import Banner from '#lib/ui/display/banner.svelte';
 	import Separator from '#lib/ui/display/separator.svelte';
 	import Input from '#lib/ui/form/input.svelte';
@@ -68,8 +67,10 @@
 				>
 					{tag.step === null ? 'Unplaced' : `Step ${tag.step}`}
 				</span>
-				<IconButton
-					label={`Remove ${tag.name || 'tag'}`}
+				<Button
+					label="Remove"
+					aria-label={`Remove ${tag.name || 'tag'}`}
+					size="sm"
 					icon={Trash2}
 					scheme="destructive"
 					onclick={() => draft.removeTag(tag.id)}

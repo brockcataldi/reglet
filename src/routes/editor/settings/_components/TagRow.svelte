@@ -5,7 +5,7 @@
 
 	import project from '#lib/stores/project.svelte.js';
 
-	import IconButton from '#lib/ui/button/icon-button.svelte';
+	import Button from '#lib/ui/button/button.svelte';
 	import Input from '#lib/ui/form/input.svelte';
 
 	type TagRowProps = {
@@ -79,8 +79,11 @@
 		{/if}
 	</p>
 
-	<IconButton
-		label={`Delete ${tag.name}`}
+	<Button
+		label="Delete"
+		aria-label={`Delete ${tag.name}`}
+		size="sm"
+		class="mt-1"
 		icon={Trash2}
 		scheme="destructive"
 		onclick={() => project.tags.delete(tag.id)}

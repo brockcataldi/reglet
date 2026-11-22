@@ -3,6 +3,8 @@
 
 	import project from '#lib/stores/project.svelte.js';
 
+	import { Plus } from '@lucide/svelte';
+
 	import Button from '#lib/ui/button/button.svelte';
 	import Dialog from '#lib/ui/display/dialog.svelte';
 
@@ -32,7 +34,12 @@
 				Lanes
 			</h2>
 
-			<Button label="Add Lane" scheme="primary" onclick={openCreator} />
+			<Button
+				label="Add Lane"
+				icon={Plus}
+				scheme="primary"
+				onclick={openCreator}
+			/>
 
 			<Dialog
 				class="max-w-3xl"

@@ -3,6 +3,8 @@
 	import { resolve } from '$app/paths';
 
 	import project from '#lib/stores/project.svelte.js';
+	import { RotateCcw } from '@lucide/svelte';
+
 	import Button from '#lib/ui/button/button.svelte';
 
 	import Lanes from './_components/Lanes.svelte';
@@ -38,10 +40,11 @@
 		</header>
 
 		<article class="flex flex-row items-center justify-between">
-			<h3 class="text-4xl text-red-800 font-bold">Clear Project</h3>
+			<h3 class="text-4xl font-bold text-red-800">Clear Project</h3>
 			<Button
 				scheme="destructive"
 				label="Start Over"
+				icon={RotateCcw}
 				onclick={handleDeleteClick}
 			/>
 		</article>
