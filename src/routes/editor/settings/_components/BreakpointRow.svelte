@@ -83,7 +83,7 @@
 		<div>
 			<label
 				for={`breakpoint-${breakpoint.id}-name`}
-				class="text-xs text-neutral-600 uppercase"
+				class="font-mono text-xs text-neutral-600 uppercase"
 				>Name<span class="sr-only"> of {breakpoint.name}</span></label
 			>
 			<Input
@@ -104,7 +104,7 @@
 		<div>
 			<label
 				for={`breakpoint-${breakpoint.id}-width`}
-				class="text-xs text-neutral-600 uppercase"
+				class="font-mono text-xs text-neutral-600 uppercase"
 				>Width<span class="sr-only"> of {breakpoint.name}</span> (px)</label
 			>
 			<Input

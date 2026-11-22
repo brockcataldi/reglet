@@ -78,7 +78,7 @@
 				<div class="flex-1">
 					<label
 						for="new-breakpoint-name"
-						class="text-xs text-neutral-600 uppercase"
+						class="font-mono text-xs text-neutral-600 uppercase"
 						>New breakpoint</label
 					>
 					<Input
@@ -100,7 +100,8 @@
 				<div class="w-32">
 					<label
 						for="new-breakpoint-width"
-						class="text-xs text-neutral-600 uppercase">Width (px)</label
+						class="font-mono text-xs text-neutral-600 uppercase"
+						>Width (px)</label
 					>
 					<Input
 						id="new-breakpoint-width"

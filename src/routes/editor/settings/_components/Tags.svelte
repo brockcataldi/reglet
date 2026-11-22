@@ -91,7 +91,8 @@
 			<div class="w-64">
 				<label
 					for="new-tag-name"
-					class="text-xs text-neutral-600 uppercase">New tag</label
+					class="font-mono text-xs text-neutral-600 uppercase"
+					>New tag</label
 				>
 				<Input
 					bind:ref={nameInput}

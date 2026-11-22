@@ -38,7 +38,8 @@
 				<div class="flex-1">
 					<label
 						for={`breakpoint-${breakpoint.id}-name`}
-						class="text-xs text-neutral-600 uppercase">Name</label
+						class="font-mono text-xs text-neutral-600 uppercase"
+						>Name</label
 					>
 					<Input
 						id={`breakpoint-${breakpoint.id}-name`}
@@ -51,7 +52,8 @@
 				<div class="w-32">
 					<label
 						for={`breakpoint-${breakpoint.id}-width`}
-						class="text-xs text-neutral-600 uppercase">Width (px)</label
+						class="font-mono text-xs text-neutral-600 uppercase"
+						>Width (px)</label
 					>
 					<Input
 						id={`breakpoint-${breakpoint.id}-width`}
