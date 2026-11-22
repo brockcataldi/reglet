@@ -51,7 +51,7 @@
 			<h2 class="mb-1 text-6xl font-bold tracking-tighter text-black">
 				Breakpoints
 			</h2>
-			<p class="mb-4 font-mono text-sm text-neutral-600">
+			<p class="mb-4 text-sm text-neutral-600">
 				{#if project.type === 'fluid'}
 					Sizes interpolate between the min and max widths.
 				{:else}
@@ -78,7 +78,7 @@
 				<div class="flex-1">
 					<label
 						for="new-breakpoint-name"
-						class="font-mono text-xs text-neutral-600 uppercase"
+						class="text-xs text-neutral-600 uppercase"
 						>New breakpoint</label
 					>
 					<Input
@@ -92,10 +92,7 @@
 						oninput={() => (error = undefined)}
 					/>
 					{#if error}
-						<p
-							id="new-breakpoint-error"
-							class="mt-1 font-mono text-xs text-red-800"
-						>
+						<p id="new-breakpoint-error" class="mt-1 text-xs text-red-800">
 							{error}
 						</p>
 					{/if}
@@ -103,8 +100,7 @@
 				<div class="w-32">
 					<label
 						for="new-breakpoint-width"
-						class="font-mono text-xs text-neutral-600 uppercase"
-						>Width (px)</label
+						class="text-xs text-neutral-600 uppercase">Width (px)</label
 					>
 					<Input
 						id="new-breakpoint-width"

@@ -29,9 +29,7 @@
 <div class="w-full">
 	<Separator as="h2">Overview</Separator>
 
-	<dl
-		class="grid grid-cols-[max-content_1fr] gap-x-8 gap-y-3 font-mono text-sm"
-	>
+	<dl class="grid grid-cols-[max-content_1fr] gap-x-8 gap-y-3 text-sm">
 		<dt class="text-neutral-600 uppercase">Project type</dt>
 		<dd>{typeNames[draft.type]}</dd>
 

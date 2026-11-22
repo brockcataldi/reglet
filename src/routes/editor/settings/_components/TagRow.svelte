@@ -70,7 +70,7 @@
 			/>
 		</div>
 
-		<p class="font-mono text-sm text-neutral-600">
+		<p class="text-sm text-neutral-600">
 			{#if placements.length === 0}
 				Unplaced
 			{:else}
@@ -87,7 +87,7 @@
 		/>
 	</div>
 	{#if error}
-		<p id={errorId} class="mt-1 font-mono text-xs text-red-800">
+		<p id={errorId} class="mt-1 text-xs text-red-800">
 			{error}
 		</p>
 	{/if}

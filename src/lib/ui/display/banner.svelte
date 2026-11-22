@@ -5,7 +5,7 @@
 	import type { Component, Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 
-	const bannerVariants = cva('py-2 px-4 font-mono text-sm', {
+	const bannerVariants = cva('py-2 px-4 text-sm', {
 		variants: {
 			scheme: {
 				primary: 'border-cobalt-500 text-cobalt-500 bg-cobalt-50',

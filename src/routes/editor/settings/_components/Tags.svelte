@@ -72,7 +72,7 @@
 		</header>
 
 		{#if project.tags.tags.length === 0}
-			<p class="mb-4 font-mono text-sm text-neutral-600">No tags yet.</p>
+			<p class="mb-4 text-sm text-neutral-600">No tags yet.</p>
 		{:else}
 			<ul class="mb-6 flex w-full flex-col gap-4">
 				{#each project.tags.tags as tag (tag.id)}
@@ -91,8 +91,7 @@
 			<div class="w-64">
 				<label
 					for="new-tag-name"
-					class="font-mono text-xs text-neutral-600 uppercase"
-					>New tag</label
+					class="text-xs text-neutral-600 uppercase">New tag</label
 				>
 				<Input
 					bind:ref={nameInput}
@@ -105,10 +104,7 @@
 					oninput={() => (error = undefined)}
 				/>
 				{#if error}
-					<p
-						id="new-tag-error"
-						class="mt-1 font-mono text-xs text-red-800"
-					>
+					<p id="new-tag-error" class="mt-1 text-xs text-red-800">
 						{error}
 					</p>
 				{/if}

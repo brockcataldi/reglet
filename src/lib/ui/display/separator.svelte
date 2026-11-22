@@ -42,7 +42,7 @@
 	<div class="flex w-full flex-row items-center justify-between gap-2">
 		<svelte:element
 			this={as}
-			class={cn('font-mono text-sm text-neutral-600 uppercase', className)}
+			class={cn('text-sm text-neutral-600 uppercase', className)}
 			{...props}
 		>
 			{@render children?.()}
@@ -54,7 +54,7 @@
 			</div>
 		{:else if description}
 			<p
-				class="shrink-0 font-mono text-xs whitespace-nowrap text-cobalt-500 uppercase"
+				class="shrink-0 text-xs whitespace-nowrap text-cobalt-500 uppercase"
 			>
 				{description}
 			</p>

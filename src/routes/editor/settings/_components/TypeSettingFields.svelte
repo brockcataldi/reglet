@@ -208,9 +208,7 @@
 				{AXIS_LABELS[tag] ?? tag}
 				{#snippet action()}
 					{#if value === undefined}
-						<p class="font-mono text-xs text-neutral-400 uppercase">
-							Default
-						</p>
+						<p class="text-xs text-neutral-400 uppercase">Default</p>
 					{:else}
 						<button
 							type="button"

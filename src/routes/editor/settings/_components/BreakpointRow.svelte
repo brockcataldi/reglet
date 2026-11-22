@@ -83,7 +83,7 @@
 		<div>
 			<label
 				for={`breakpoint-${breakpoint.id}-name`}
-				class="font-mono text-xs text-neutral-600 uppercase"
+				class="text-xs text-neutral-600 uppercase"
 				>Name<span class="sr-only"> of {breakpoint.name}</span></label
 			>
 			<Input
@@ -104,7 +104,7 @@
 		<div>
 			<label
 				for={`breakpoint-${breakpoint.id}-width`}
-				class="font-mono text-xs text-neutral-600 uppercase"
+				class="text-xs text-neutral-600 uppercase"
 				>Width<span class="sr-only"> of {breakpoint.name}</span> (px)</label
 			>
 			<Input
@@ -140,7 +140,7 @@
 		{/if}
 	</div>
 	{#if error}
-		<p id={errorId} class="mt-1 font-mono text-xs text-red-800">
+		<p id={errorId} class="mt-1 text-xs text-red-800">
 			{error}
 		</p>
 	{/if}

@@ -43,7 +43,7 @@
 	>
 
 	{#if draft.tags.length === 0}
-		<p class="font-mono text-sm text-neutral-600">
+		<p class="text-sm text-neutral-600">
 			No tags yet. You can add them now or later in the editor.
 		</p>
 	{/if}
@@ -62,9 +62,7 @@
 					variant={invalid ? 'error' : 'default'}
 					bind:value={tag.name}
 				/>
-				<span
-					class="w-20 shrink-0 font-mono text-xs text-neutral-600 uppercase"
-				>
+				<span class="w-20 shrink-0 text-xs text-neutral-600 uppercase">
 					{tag.step === null ? 'Unplaced' : `Step ${tag.step}`}
 				</span>
 				<Button
