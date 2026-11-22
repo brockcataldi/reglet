@@ -80,32 +80,72 @@ class TagsRepository {
 		return true;
 	}
 
-	setStartsAt(id: string, breakpointId: string) {
+	/**
+	 * Pins a tag to a specimen at a breakpoint, replacing any placement it had
+	 * there. `order` is every breakpoint id, smallest first.
+	 */
+	assign(
+		id: string,
+		breakpointId: string,
+		placement: TagPlacement,
+		order: string[]
+	) {
 		const tag = this.get(id);
 
-		if (tag) {
-			tag.startsAt = breakpointId;
+		if (!tag) {
+			return;
 		}
+
+		tag.placements[breakpointId] = { ...placement };
+		TagsRepository.#normalizeStart(tag, order);
 	}
 
-	place(id: string, breakpointId: string, placement: TagPlacement) {
+	/** Removes a tag's own placement at a breakpoint. */
+	unassign(id: string, breakpointId: string, order: string[]) {
 		const tag = this.get(id);
 
-		if (tag) {
-			tag.placements[breakpointId] = { ...placement };
+		if (!tag) {
+			return;
 		}
+
+		delete tag.placements[breakpointId];
+		TagsRepository.#normalizeStart(tag, order);
 	}
 
-	unplace(id: string, breakpointId: string) {
-		const tag = this.get(id);
+	/** Drops every placement on a lane, ex. after the lane is deleted. */
+	forgetLane(laneId: string, order: string[]) {
+		for (const tag of this.tags) {
+			for (const [breakpointId, placement] of Object.entries(
+				tag.placements
+			)) {
+				if (placement.laneId === laneId) {
+					delete tag.placements[breakpointId];
+				}
+			}
 
-		if (tag) {
-			delete tag.placements[breakpointId];
+			TagsRepository.#normalizeStart(tag, order);
 		}
 	}
 
 	delete(id: string) {
 		this.tags = this.tags.filter((tag) => tag.id !== id);
+	}
+
+	/**
+	 * A tag starts at the lowest breakpoint it's placed on, so placing it only
+	 * at Desktop makes it desktop-only. Unplaced tags rest on the root.
+	 */
+	static #normalizeStart(tag: Tag, order: string[]) {
+		const lowest = order.find((id) => id in tag.placements);
+
+		// placements on breakpoints that no longer exist can't be reached
+		for (const id of Object.keys(tag.placements)) {
+			if (!order.includes(id)) {
+				delete tag.placements[id];
+			}
+		}
+
+		tag.startsAt = lowest ?? order[0] ?? tag.startsAt;
 	}
 }
 

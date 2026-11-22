@@ -43,6 +43,13 @@ class Project {
 			this.precision = cached.precision;
 		}
 
+		// projects made before breakpoints existed still need a root to tag on
+		if (this.breakpoints.breakpoints.length === 0) {
+			this.breakpoints.reset(
+				DraftRepository.defaultBreakpoints(this.type)
+			);
+		}
+
 		$effect.root(() => {
 			$effect(() => {
 				write<ProjectSettings>(LOCAL_STORAGE_KEY_SETTINGS, {
@@ -82,6 +89,17 @@ class Project {
 
 	set precision(value: number) {
 		this.#precision = value;
+	}
+
+	/** Breakpoint ids, smallest first; what tag placement methods expect. */
+	get breakpointOrder() {
+		return this.breakpoints.breakpoints.map((bp) => bp.id);
+	}
+
+	/** Deletes a lane along with every tag placement on it. */
+	deleteLane(id: string) {
+		this.lanes.delete(id);
+		this.tags.forgetLane(id, this.breakpointOrder);
 	}
 
 	/** Replaces the project with the one described by the draft. */

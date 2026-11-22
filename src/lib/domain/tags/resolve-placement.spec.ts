@@ -27,7 +27,8 @@ describe('resolvePlacement', () => {
 
 		expect(resolvePlacement(h1, breakpoints, 'desktop')).toStrictEqual({
 			laneId: 'b',
-			step: 8
+			step: 8,
+			breakpointId: 'desktop'
 		});
 	});
 
@@ -36,7 +37,8 @@ describe('resolvePlacement', () => {
 
 		expect(resolvePlacement(h1, breakpoints, 'desktop')).toStrictEqual({
 			laneId: 'a',
-			step: 6
+			step: 6,
+			breakpointId: 'root'
 		});
 	});
 
@@ -53,7 +55,8 @@ describe('resolvePlacement', () => {
 			resolvePlacement(display, breakpoints, 'desktop')
 		).toStrictEqual({
 			laneId: 'a',
-			step: 9
+			step: 9,
+			breakpointId: 'desktop'
 		});
 	});
 

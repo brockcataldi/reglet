@@ -29,17 +29,51 @@ describe('tags-repository', () => {
 		expect(repository.get(h1.id)?.name).toBe('H1');
 	});
 
-	it('places and unplaces per breakpoint', () => {
+	it('starts each tag at the lowest breakpoint it is placed on', () => {
 		const repository = new TagsRepository();
+		const order = ['root', 'tablet', 'desktop'];
 		const h1 = repository.create('h1', 'root')!;
 
-		repository.place(h1.id, 'root', { laneId: 'a', step: 6 });
-		repository.place(h1.id, 'desktop', { laneId: 'b', step: 8 });
-		repository.unplace(h1.id, 'root');
+		repository.assign(h1.id, 'desktop', { laneId: 'a', step: 8 }, order);
+		expect(repository.get(h1.id)?.startsAt).toBe('desktop');
+
+		repository.assign(h1.id, 'tablet', { laneId: 'a', step: 7 }, order);
+		expect(repository.get(h1.id)?.startsAt).toBe('tablet');
+
+		repository.unassign(h1.id, 'tablet', order);
+		expect(repository.get(h1.id)?.startsAt).toBe('desktop');
+
+		repository.unassign(h1.id, 'desktop', order);
+		expect(repository.get(h1.id)?.startsAt).toBe('root');
+		expect(repository.get(h1.id)?.placements).toStrictEqual({});
+	});
+
+	it('replaces the placement at a breakpoint', () => {
+		const repository = new TagsRepository();
+		const order = ['root'];
+		const h1 = repository.create('h1', 'root')!;
+
+		repository.assign(h1.id, 'root', { laneId: 'a', step: 6 }, order);
+		repository.assign(h1.id, 'root', { laneId: 'b', step: 5 }, order);
+
+		expect(repository.get(h1.id)?.placements).toStrictEqual({
+			root: { laneId: 'b', step: 5 }
+		});
+	});
+
+	it('forgets placements on a deleted lane', () => {
+		const repository = new TagsRepository();
+		const order = ['root', 'desktop'];
+		const h1 = repository.create('h1', 'root')!;
+
+		repository.assign(h1.id, 'root', { laneId: 'a', step: 6 }, order);
+		repository.assign(h1.id, 'desktop', { laneId: 'b', step: 8 }, order);
+		repository.forgetLane('a', order);
 
 		expect(repository.get(h1.id)?.placements).toStrictEqual({
 			desktop: { laneId: 'b', step: 8 }
 		});
+		expect(repository.get(h1.id)?.startsAt).toBe('desktop');
 	});
 
 	it('persists to local storage', () => {

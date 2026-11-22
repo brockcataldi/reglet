@@ -48,7 +48,7 @@
 					<Lane
 						{lane}
 						onChange={(patch) => project.lanes.update(lane.id, patch)}
-						onDelete={() => project.lanes.delete(lane.id)}
+						onDelete={() => project.deleteLane(lane.id)}
 						onDuplicate={() => project.lanes.duplicate(lane.id)}
 					/>
 				</li>
