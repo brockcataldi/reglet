@@ -11,6 +11,11 @@ export const textButtonVariants = cva(
 				md: 'py-3 px-5 text-sm [&>svg]:size-5',
 				sm: 'min-h-6 px-2 py-0.5 text-xs [&>svg]:size-4'
 			},
+			// a square that only shows the icon; keep for tight spots
+			iconOnly: {
+				true: 'size-8 min-h-0 p-0 [&>svg]:size-5',
+				false: ''
+			},
 			scheme: {
 				primary: `
                     text-black bg-white border-black
@@ -26,7 +31,8 @@ export const textButtonVariants = cva(
 		},
 		defaultVariants: {
 			scheme: 'primary',
-			size: 'md'
+			size: 'md',
+			iconOnly: false
 		}
 	}
 );

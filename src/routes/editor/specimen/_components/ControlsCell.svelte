@@ -72,14 +72,13 @@
 		<div class="flex items-start justify-start gap-1">
 			<!-- <p class="size-17 grid place-items-center border font-bold text-2xl bg-sunburst-500">{columnIndex}</p> -->
 			<ul
-				class="grid grid-cols-[max-content] grid-rows-[repeat(2,32px)] items-start justify-start gap-1"
+				class="grid grid-cols-1 grid-rows-[repeat(2,32px)] items-start justify-start gap-1"
 			>
 				<li>
 					{#if !(actions.top.destructive === true && cell.delete === false)}
 						<Button
 							label={actions.top.label}
-							size="sm"
-							class="w-full whitespace-nowrap"
+							iconOnly
 							icon={ChevronUp}
 							onclick={actions.top.action}
 							scheme={actions.top.destructive ? 'destructive' : 'primary'}
@@ -90,8 +89,7 @@
 					{#if !(actions.bottom.destructive === true && cell.delete === false)}
 						<Button
 							label={actions.bottom.label}
-							size="sm"
-							class="w-full whitespace-nowrap"
+							iconOnly
 							icon={ChevronDown}
 							onclick={actions.bottom.action}
 							scheme={actions.bottom.destructive
