@@ -53,6 +53,7 @@
 		{#each draft.tags as tag (tag.id)}
 			{@const invalid =
 				tag.name.trim() === '' ||
+				tag.name.includes('/') ||
 				isTagNameTaken(draft.tags, tag.name, tag.id)}
 			<li class="flex flex-row items-center gap-4">
 				<label for={`tag-${tag.id}`} class="sr-only">Tag name</label>

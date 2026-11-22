@@ -1,5 +1,6 @@
 import type { Breakpoint, ProjectType } from '#lib/types.js';
 import { normalizeTagName } from '#lib/domain/tags/normalize-tag-name.js';
+import { TAG_SEPARATOR } from '#lib/domain/tags/parse-tag-query.js';
 
 export const validateBreakpoints = (
 	type: ProjectType,
@@ -54,6 +55,10 @@ export const validateTagNames = (tags: { name: string }[]): string[] => {
 
 	if (names.some((name) => name === '')) {
 		errors.push('Every tag needs a name.');
+	}
+
+	if (names.some((name) => name.includes(TAG_SEPARATOR))) {
+		errors.push(`Tag names can't contain "${TAG_SEPARATOR}".`);
 	}
 
 	const named = names.filter((name) => name !== '');

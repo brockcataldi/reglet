@@ -14,17 +14,13 @@
 	type CellProps = {
 		cell: SpecimenGridCell;
 		lane: Lane;
-		breakpointId: string | undefined;
-		showBreakpoint: boolean;
 	};
 
-	let { cell, lane, breakpointId, showBreakpoint }: CellProps = $props();
+	let { cell, lane }: CellProps = $props();
 </script>
 
 <div class="col-span-1 border border-black bg-white">
-	{#if breakpointId}
-		<CellTags {cell} {breakpointId} {showBreakpoint} />
-	{/if}
+	<CellTags {cell} />
 	<div class="block overflow-hidden border-b border-black p-4">
 		<p
 			style:font-family={lane.family}

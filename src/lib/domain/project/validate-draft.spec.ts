@@ -65,6 +65,12 @@ describe('validateTagNames', () => {
 		).toStrictEqual(['Tag names must be unique.']);
 	});
 
+	it('rejects names with the breakpoint separator', () => {
+		expect(validateTagNames([{ name: 'tablet/h1' }])).toStrictEqual([
+			'Tag names can\'t contain "/".'
+		]);
+	});
+
 	it('rejects blank names', () => {
 		expect(validateTagNames([{ name: '' }, { name: 'h1' }])).toStrictEqual(
 			['Every tag needs a name.']

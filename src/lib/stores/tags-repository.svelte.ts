@@ -1,8 +1,6 @@
 import { LOCAL_STORAGE_KEY_TAGS } from '#lib/constants.js';
-import {
-	isTagNameTaken,
-	normalizeTagName
-} from '#lib/domain/tags/normalize-tag-name.js';
+import { isTagNameTaken } from '#lib/domain/tags/normalize-tag-name.js';
+import { TAG_SEPARATOR } from '#lib/domain/tags/parse-tag-query.js';
 import type { Tag, TagPlacement } from '#lib/types.js';
 import { createId, read, write } from '#lib/utilities.js';
 
@@ -39,15 +37,26 @@ class TagsRepository {
 		return isTagNameTaken(this.tags, name, exceptId);
 	}
 
+	/** Blank names, names with the separator and taken names are refused. */
+	canUseName(name: string, exceptId?: string) {
+		const trimmed = name.trim();
+
+		return (
+			trimmed !== '' &&
+			!trimmed.includes(TAG_SEPARATOR) &&
+			!this.isNameTaken(trimmed, exceptId)
+		);
+	}
+
 	reset(tags: Tag[] = []) {
 		this.tags = tags;
 	}
 
-	/** Returns the new tag, or undefined when the name is blank or taken. */
+	/** Returns the new tag, or undefined when the name can't be used. */
 	create(name: string, startsAt: string): Tag | undefined {
 		const trimmed = name.trim();
 
-		if (normalizeTagName(trimmed) === '' || this.isNameTaken(trimmed)) {
+		if (!this.canUseName(trimmed)) {
 			return undefined;
 		}
 
@@ -63,16 +72,12 @@ class TagsRepository {
 		return this.get(tag.id);
 	}
 
-	/** Returns false when the name is blank or taken by another tag. */
+	/** Returns false when the name can't be used. */
 	rename(id: string, name: string) {
 		const tag = this.get(id);
 		const trimmed = name.trim();
 
-		if (
-			!tag ||
-			normalizeTagName(trimmed) === '' ||
-			this.isNameTaken(trimmed, id)
-		) {
+		if (!tag || !this.canUseName(trimmed, id)) {
 			return false;
 		}
 

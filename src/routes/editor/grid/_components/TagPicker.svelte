@@ -1,7 +1,8 @@
 <script lang="ts" module>
 	export type TagOption = {
 		id: string;
-		name: string;
+		// what's shown and matched, ex. "tablet/h1"
+		label: string;
 		// where the tag sits right now, ex. "Step 6 · Arial 400"
 		detail: string;
 	};
@@ -12,22 +13,27 @@
 	import { normalizeTagName } from '#lib/domain/tags/normalize-tag-name.js';
 
 	type Item =
-		{ type: 'tag'; option: TagOption } | { type: 'create'; name: string };
+		{ type: 'tag'; option: TagOption } | { type: 'create'; label: string };
 
 	type TagPickerProps = {
 		id: string;
 		label: string;
 		options: TagOption[];
-		canCreate: (name: string) => boolean;
+		// defaults to the label containing the query
+		match?: (option: TagOption, query: string) => boolean;
+		// what creating from the query would make, or undefined if it can't
+		createLabel: (query: string) => string | undefined;
 		onSelect: (id: string) => void;
-		onCreate: (name: string) => void;
+		onCreate: (query: string) => void;
 	};
 
 	let {
 		id,
 		label,
 		options,
-		canCreate,
+		match = (option, query) =>
+			normalizeTagName(option.label).includes(normalizeTagName(query)),
+		createLabel,
 		onSelect,
 		onCreate
 	}: TagPickerProps = $props();
@@ -45,13 +51,13 @@
 		const normalized = normalizeTagName(query);
 
 		const matches: Item[] = options
-			.filter((option) =>
-				normalizeTagName(option.name).includes(normalized)
-			)
+			.filter((option) => match(option, query))
 			.map((option) => ({ type: 'tag', option }));
 
-		if (normalized !== '' && canCreate(query)) {
-			matches.push({ type: 'create', name: query.trim() });
+		const create = normalized === '' ? undefined : createLabel(query);
+
+		if (create !== undefined) {
+			matches.push({ type: 'create', label: create });
 		}
 
 		return matches;
@@ -95,7 +101,7 @@
 		if (item.type === 'tag') {
 			onSelect(item.option.id);
 		} else {
-			onCreate(item.name);
+			onCreate(query);
 		}
 
 		query = '';
@@ -123,13 +129,11 @@
 				const exact = items.find(
 					(item) =>
 						item.type === 'tag' &&
-						normalizeTagName(item.option.name) === normalizeTagName(query)
+						normalizeTagName(item.option.label) === normalizeTagName(query)
 				);
-				// with nothing highlighted, an exact name wins over creating
+				// with nothing highlighted, an exact match wins, then the first
 				const item =
-					activeIndex >= 0
-						? items[activeIndex]
-						: (exact ?? (items.length === 1 ? items[0] : undefined));
+					activeIndex >= 0 ? items[activeIndex] : (exact ?? items[0]);
 
 				if (item) {
 					choose(item);
@@ -156,7 +160,7 @@
 	{id}
 	type="text"
 	placeholder="Add tag…"
-	class="w-36 border-0 border-b border-black bg-transparent px-1 py-0.5 font-mono text-sm hover:border-b-cobalt-500 focus-visible:border-b-cobalt-500"
+	class="w-40 border-0 border-b border-black bg-transparent px-1 py-0.5 font-mono text-sm hover:border-b-2 hover:border-b-cobalt-500 focus-visible:border-b-2 focus-visible:border-b-cobalt-500 focus-visible:outline-none"
 	style={`anchor-name: ${anchorName}`}
 	role="combobox"
 	autocomplete="off"
@@ -186,25 +190,29 @@
 	style={`position-anchor: ${anchorName}; inset: auto; top: anchor(bottom); left: anchor(left); min-width: max(anchor-size(width), 16rem);`}
 >
 	{#each items as item, index (item.type === 'tag' ? item.option.id : 'create')}
+		{@const active = index === activeIndex}
 		<!-- keyboard selection is handled by the input (combobox pattern) -->
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<li
 			id={`${listboxId}-${index}`}
 			role="option"
-			aria-selected={index === activeIndex}
+			aria-selected={active}
 			class={cn(
-				'flex cursor-pointer items-baseline justify-between gap-4 px-2 py-1 font-mono text-sm whitespace-nowrap',
-				index === activeIndex && 'bg-cobalt-50'
+				'group flex cursor-pointer items-baseline justify-between gap-4 px-2 py-1 font-mono text-sm whitespace-nowrap',
+				active && 'bg-cobalt-500 text-white'
 			)}
 			onmousedown={(event) => event.preventDefault()}
 			onclick={() => choose(item)}
 			onmousemove={() => (activeIndex = index)}
 		>
 			{#if item.type === 'tag'}
-				<span class="font-bold">{item.option.name}</span>
-				<span class="text-xs text-neutral-600">{item.option.detail}</span>
+				<span class="font-bold">{item.option.label}</span>
+				<span
+					class={cn('text-xs', active ? 'text-white' : 'text-neutral-600')}
+					>{item.option.detail}</span
+				>
 			{:else}
-				<span>Create “<strong>{item.name}</strong>”</span>
+				<span>Create “<strong>{item.label}</strong>”</span>
 			{/if}
 		</li>
 	{/each}

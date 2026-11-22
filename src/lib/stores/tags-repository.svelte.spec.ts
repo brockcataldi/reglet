@@ -16,6 +16,7 @@ describe('tags-repository', () => {
 		expect(h1?.startsAt).toBe('root');
 		expect(repository.create('H1', 'root')).toBeUndefined();
 		expect(repository.create('  ', 'root')).toBeUndefined();
+		expect(repository.create('tablet/h2', 'root')).toBeUndefined();
 		expect(repository.tags).toHaveLength(1);
 	});
 
