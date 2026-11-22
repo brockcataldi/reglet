@@ -5,6 +5,9 @@
 		label: string;
 		// where the tag sits right now, ex. "Step 6 · Arial 400"
 		detail: string;
+		// when set, choosing the option fills the input with this instead of
+		// selecting it, ex. "tablet/" to narrow the list to one breakpoint
+		complete?: string;
 	};
 </script>
 
@@ -98,6 +101,13 @@
 
 	// keeps focus in the input so several tags can be added in a row
 	const choose = (item: Item) => {
+		if (item.type === 'tag' && item.option.complete !== undefined) {
+			query = item.option.complete;
+			open = true;
+			activeIndex = -1;
+			return;
+		}
+
 		if (item.type === 'tag') {
 			onSelect(item.option.id);
 		} else {

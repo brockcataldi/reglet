@@ -96,13 +96,47 @@
 		)
 	);
 
-	const options = $derived(
-		choices.map(({ id, tag, breakpoint }): TagOption => ({
+	const BREAKPOINT_OPTION = 'breakpoint:';
+
+	// with several breakpoints, the list starts at the breakpoints and choosing
+	// one narrows it to that breakpoint's tags, rather than every pair at once
+	const breakpointOptions = $derived(
+		prefixed
+			? breakpoints.map((breakpoint): TagOption => {
+					const count = choices.filter(
+						(choice) => choice.breakpoint.id === breakpoint.id
+					).length;
+
+					return {
+						id: `${BREAKPOINT_OPTION}${breakpoint.id}`,
+						label: `${breakpoint.name.toLowerCase()}${TAG_SEPARATOR}`,
+						detail: `${count} ${count === 1 ? 'tag' : 'tags'}`,
+						complete: `${breakpoint.name.toLowerCase()}${TAG_SEPARATOR}`
+					};
+				})
+			: []
+	);
+
+	const options = $derived([
+		...breakpointOptions,
+		...choices.map(({ id, tag, breakpoint }): TagOption => ({
 			id,
 			label: labelOf(breakpoint, tag),
 			detail: describe(tag, breakpoint)
 		}))
-	);
+	]);
+
+	// still typing a breakpoint, ex. "tab" on the way to "tablet/"
+	const namesBreakpoint = (query: string) => {
+		const normalized = query.trim().toLowerCase();
+
+		return (
+			!normalized.includes(TAG_SEPARATOR) &&
+			breakpoints.some((breakpoint) =>
+				breakpoint.name.toLowerCase().startsWith(normalized)
+			)
+		);
+	};
 
 	const assign = (tag: Tag, breakpoint: Breakpoint) => {
 		project.tags.assign(
@@ -115,6 +149,15 @@
 	};
 
 	const match = (option: TagOption, query: string) => {
+		if (option.id.startsWith(BREAKPOINT_OPTION)) {
+			return namesBreakpoint(query);
+		}
+
+		// a bare tag name that isn't a breakpoint skips straight to tags
+		if (prefixed && namesBreakpoint(query)) {
+			return false;
+		}
+
 		const choice = choices.find((entry) => entry.id === option.id);
 
 		if (!choice) {
@@ -151,6 +194,10 @@
 	};
 
 	const createLabel = (query: string) => {
+		if (prefixed && namesBreakpoint(query)) {
+			return undefined;
+		}
+
 		const parsed = parseNew(query);
 
 		if (!parsed) {
