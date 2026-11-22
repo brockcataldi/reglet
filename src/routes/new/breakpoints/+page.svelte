@@ -36,10 +36,8 @@
 			{@const root = index === 0 && !fluid}
 			<li class="flex flex-row items-end gap-4">
 				<div class="flex-1">
-					<label
-						for={`breakpoint-${breakpoint.id}-name`}
-						class="font-mono text-xs text-neutral-600 uppercase"
-						>Name</label
+					<Separator as="label" for={`breakpoint-${breakpoint.id}-name`}
+						>Name</Separator
 					>
 					<Input
 						id={`breakpoint-${breakpoint.id}-name`}
@@ -50,10 +48,8 @@
 					/>
 				</div>
 				<div class="w-32">
-					<label
-						for={`breakpoint-${breakpoint.id}-width`}
-						class="font-mono text-xs text-neutral-600 uppercase"
-						>Width (px)</label
+					<Separator as="label" for={`breakpoint-${breakpoint.id}-width`}
+						>Width (px)</Separator
 					>
 					<Input
 						id={`breakpoint-${breakpoint.id}-width`}

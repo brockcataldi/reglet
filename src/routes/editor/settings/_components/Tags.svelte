@@ -6,6 +6,7 @@
 	import project from '#lib/stores/project.svelte.js';
 
 	import Button from '#lib/ui/button/button.svelte';
+	import Separator from '#lib/ui/display/separator.svelte';
 	import Input from '#lib/ui/form/input.svelte';
 
 	import TagRow from './TagRow.svelte';
@@ -87,13 +88,9 @@
 			</ul>
 		{/if}
 
-		<form class="flex flex-row items-start gap-4" onsubmit={add}>
+		<form class="flex flex-row items-end gap-4" onsubmit={add}>
 			<div class="w-64">
-				<label
-					for="new-tag-name"
-					class="font-mono text-xs text-neutral-600 uppercase"
-					>New tag</label
-				>
+				<Separator as="label" for="new-tag-name">New tag</Separator>
 				<Input
 					bind:ref={nameInput}
 					id="new-tag-name"
@@ -104,14 +101,14 @@
 					bind:value={name}
 					oninput={() => (error = undefined)}
 				/>
-				{#if error}
-					<p id="new-tag-error" class="mt-1 text-xs text-red-800">
-						{error}
-					</p>
-				{/if}
 			</div>
-			<Button type="submit" label="Add Tag" icon={Plus} class="mt-4" />
+			<Button type="submit" label="Add Tag" icon={Plus} />
 		</form>
+		{#if error}
+			<p id="new-tag-error" class="mt-1 text-xs text-red-800">
+				{error}
+			</p>
+		{/if}
 
 		<p class="sr-only" aria-live="polite">{announcement}</p>
 	</div>

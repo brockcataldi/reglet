@@ -4,6 +4,7 @@
 	import project from '#lib/stores/project.svelte.js';
 
 	import Button from '#lib/ui/button/button.svelte';
+	import Separator from '#lib/ui/display/separator.svelte';
 	import Input from '#lib/ui/form/input.svelte';
 
 	import BreakpointRow from './BreakpointRow.svelte';
@@ -74,12 +75,10 @@
 		</ol>
 
 		{#if project.type === 'standard'}
-			<form class="flex flex-row items-start gap-4" onsubmit={add}>
+			<form class="flex flex-row items-end gap-4" onsubmit={add}>
 				<div class="flex-1">
-					<label
-						for="new-breakpoint-name"
-						class="font-mono text-xs text-neutral-600 uppercase"
-						>New breakpoint</label
+					<Separator as="label" for="new-breakpoint-name"
+						>New breakpoint</Separator
 					>
 					<Input
 						bind:ref={nameInput}
@@ -91,17 +90,10 @@
 						bind:value={name}
 						oninput={() => (error = undefined)}
 					/>
-					{#if error}
-						<p id="new-breakpoint-error" class="mt-1 text-xs text-red-800">
-							{error}
-						</p>
-					{/if}
 				</div>
 				<div class="w-32">
-					<label
-						for="new-breakpoint-width"
-						class="font-mono text-xs text-neutral-600 uppercase"
-						>Width (px)</label
+					<Separator as="label" for="new-breakpoint-width"
+						>Width (px)</Separator
 					>
 					<Input
 						id="new-breakpoint-width"
@@ -116,13 +108,13 @@
 						oninput={() => (error = undefined)}
 					/>
 				</div>
-				<Button
-					type="submit"
-					label="Add Breakpoint"
-					icon={Plus}
-					class="mt-4"
-				/>
+				<Button type="submit" label="Add Breakpoint" icon={Plus} />
 			</form>
+			{#if error}
+				<p id="new-breakpoint-error" class="mt-1 text-xs text-red-800">
+					{error}
+				</p>
+			{/if}
 		{/if}
 
 		<p class="sr-only" aria-live="polite">{announcement}</p>
