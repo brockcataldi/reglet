@@ -100,9 +100,7 @@
 </svelte:head>
 
 <div class="mb-4 w-full">
-	<Separator as="h2" description="Can't change later"
-		>Project Type</Separator
-	>
+	<Separator as="h2">Project Type</Separator>
 	<div class="flex flex-col gap-2">
 		{#each projectTypes as type (type.value)}
 			<RadioCard value={type.value} bind:group={project.draft.type}>
