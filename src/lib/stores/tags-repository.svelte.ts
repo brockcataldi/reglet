@@ -103,7 +103,7 @@ class TagsRepository {
 		}
 
 		tag.placements[breakpointId] = { ...placement };
-		TagsRepository.#normalizeStart(tag, order);
+		TagsRepository.normalizeStart(tag, order);
 	}
 
 	/** Removes a tag's own placement at a breakpoint. */
@@ -115,7 +115,7 @@ class TagsRepository {
 		}
 
 		delete tag.placements[breakpointId];
-		TagsRepository.#normalizeStart(tag, order);
+		TagsRepository.normalizeStart(tag, order);
 	}
 
 	/** Drops every placement on a lane, ex. after the lane is deleted. */
@@ -129,7 +129,7 @@ class TagsRepository {
 				}
 			}
 
-			TagsRepository.#normalizeStart(tag, order);
+			TagsRepository.normalizeStart(tag, order);
 		}
 	}
 
@@ -141,7 +141,7 @@ class TagsRepository {
 	 * A tag starts at the lowest breakpoint it's placed on, so placing it only
 	 * at Desktop makes it desktop-only. Unplaced tags rest on the root.
 	 */
-	static #normalizeStart(tag: Tag, order: string[]) {
+	static normalizeStart(tag: Tag, order: string[]) {
 		const lowest = order.find((id) => id in tag.placements);
 
 		// placements on breakpoints that no longer exist can't be reached
