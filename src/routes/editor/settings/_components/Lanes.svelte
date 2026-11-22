@@ -43,12 +43,7 @@
 				<li class="w-full">
 					<Lane
 						{lane}
-						onFamilyChange={(newFamily) =>
-							project.lanes.updateValue(lane.id, 'family', newFamily)}
-						onWeightChange={(newWeight) =>
-							project.lanes.updateValue(lane.id, 'weight', newWeight)}
-						onStyleChange={(newStyle) =>
-							project.lanes.updateValue(lane.id, 'style', newStyle)}
+						onChange={(patch) => project.lanes.update(lane.id, patch)}
 						onDelete={() => project.lanes.delete(lane.id)}
 						onDuplicate={() => project.lanes.duplicate(lane.id)}
 					/>

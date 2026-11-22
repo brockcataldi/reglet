@@ -2,6 +2,7 @@
 	import type { SpecimenGridCell, Lane } from '#lib/types.js';
 
 	import project from '#lib/stores/project.svelte.js';
+	import { toFontVariationSettings } from '#lib/domain/fonts/to-font-variation-settings.js';
 
 	import Input from '#lib/ui/form/input.svelte';
 	import Separator from '#lib/ui/display/separator.svelte';
@@ -22,6 +23,9 @@
 			style:font-family={lane.family}
 			style:font-weight={lane.weight}
 			style:font-style={lane.style}
+			style:font-variation-settings={toFontVariationSettings(
+				lane.variationSettings
+			)}
 			style:line-height={cell.value.lineHeight}
 			style:font-size={`${cell.value.fontSize.toFixed(3)}${project.fontSizeUnit}`}
 			style:letter-spacing={`${cell.value.letterSpacing}${project.letterSpacingUnit}`}

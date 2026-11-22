@@ -4,12 +4,16 @@ import z from 'zod';
 export const createLaneSchema = z.object({
 	family: z.string().trim().min(1, { error: 'Family cannot be empty' }),
 	weight: z.string().trim().min(1, { error: 'Weight cannot be empty' }),
-	style: z.enum(['normal', 'italic', 'oblique'])
+	style: z.enum(['normal', 'italic', 'oblique']),
+	variationSettings: z.record(z.string(), z.number()).optional()
 });
 
 export type CreateLaneSchema = z.infer<typeof createLaneSchema>;
 
-export type CreateLaneData = Omit<Lane, 'id' | 'overrides' | 'maxStep' | 'minStep' | 'baseSize' | 'ratio'>;
+export type CreateLaneData = Omit<
+	Lane,
+	'id' | 'overrides' | 'maxStep' | 'minStep' | 'baseSize' | 'ratio'
+>;
 export type OnCreateLaneData = Omit<Lane, 'id'>;
 export type CreateLaneErrors = Partial<
 	Record<keyof CreateLaneSchema, string>
