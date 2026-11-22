@@ -22,15 +22,33 @@
 	const allSteps: NavigationStep[] = [
 		{
 			display: true,
-			slug: 'initial',
-			name: 'Initial',
-			href: resolve('new/initial')
+			slug: 'type',
+			name: 'Project Type',
+			href: resolve('new/type')
+		},
+		{
+			display: true,
+			slug: 'font-size',
+			name: 'Font Size',
+			href: resolve('new/font-size')
+		},
+		{
+			display: true,
+			slug: 'letter-spacing',
+			name: 'Letter Spacing',
+			href: resolve('new/letter-spacing')
 		},
 		{
 			display: true,
 			slug: 'breakpoints',
 			name: 'Breakpoints',
 			href: resolve('new/breakpoints')
+		},
+		{
+			display: true,
+			slug: 'template',
+			name: 'Template',
+			href: resolve('new/template')
 		},
 		{
 			display: true,
@@ -94,7 +112,7 @@
 <main class="min-h-dvh w-full">
 	<header class="w-full bg-sunburst-500 pt-8">
 		<div
-			class="mx-auto my-0 w-full max-w-140 border border-b-0 border-black"
+			class="mx-auto my-0 w-full max-w-240 border border-b-0 border-black"
 		>
 			<h1
 				class="w-full px-8 pt-8 pb-4 text-6xl font-bold tracking-tighter text-black"
@@ -137,7 +155,7 @@
 		</div>
 	</header>
 	<div
-		class="mx-auto flex w-full max-w-140 flex-col items-start justify-start gap-4 border border-t-0 border-black pt-4"
+		class="mx-auto flex w-full max-w-240 flex-col items-start justify-start gap-4 border border-t-0 border-black pt-4"
 	>
 		<section class="w-full px-8">
 			{@render children?.()}

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Plus, Trash2 } from '@lucide/svelte';
 
-	import { TAG_TEMPLATES } from '#lib/constants.js';
 	import { isTagNameTaken } from '#lib/domain/tags/normalize-tag-name.js';
 	import { validateTagNames } from '#lib/domain/project/validate-draft.js';
 	import project from '#lib/stores/project.svelte.js';
@@ -10,7 +9,6 @@
 	import Banner from '#lib/ui/display/banner.svelte';
 	import Separator from '#lib/ui/display/separator.svelte';
 	import Input from '#lib/ui/form/input.svelte';
-	import RadioCard from '#lib/ui/form/radio-card.svelte';
 
 	const draft = project.draft;
 
@@ -20,22 +18,6 @@
 <svelte:head>
 	<title>Tags - Reglet</title>
 </svelte:head>
-
-<div class="mb-4 w-full">
-	<Separator as="h2" description="Replaces the list below"
-		>Template</Separator
-	>
-	<div class="grid grid-cols-2 gap-2">
-		{#each TAG_TEMPLATES as template (template.id)}
-			<RadioCard value={template.id} bind:group={draft.template}>
-				<span class="flex flex-col gap-1">
-					<span class="text-xl font-semibold">{template.name}</span>
-					<span class="text-sm">{template.description}</span>
-				</span>
-			</RadioCard>
-		{/each}
-	</div>
-</div>
 
 <div class="w-full">
 	<Separator as="h2" description={`${draft.tags.length} tags`}
