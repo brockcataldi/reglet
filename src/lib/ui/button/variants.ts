@@ -2,12 +2,15 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 export const textButtonVariants = cva(
 	`
-        inline-flex gap-2 items-center justify-center 
-        py-3 px-5 text-sm [&>svg]:size-5
+        inline-flex gap-2 items-center justify-center
         uppercase font-mono border
     `,
 	{
 		variants: {
+			size: {
+				md: 'py-3 px-5 text-sm [&>svg]:size-5',
+				sm: 'min-h-6 px-2 py-0.5 text-xs [&>svg]:size-4'
+			},
 			scheme: {
 				primary: `
                     text-black bg-white border-black
@@ -22,7 +25,8 @@ export const textButtonVariants = cva(
 			}
 		},
 		defaultVariants: {
-			scheme: 'primary'
+			scheme: 'primary',
+			size: 'md'
 		}
 	}
 );

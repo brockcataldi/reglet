@@ -21,7 +21,7 @@
 
 	<span
 		class={cn(
-			'block h-full w-fit border border-black p-4 font-mono text-black',
+			'block h-full w-full border border-black p-4 font-mono text-black',
 			'hover:border-cobalt-500 hover:bg-cobalt-500 hover:text-white',
 			'peer-checked:border-black peer-checked:bg-black peer-checked:text-white',
 			'peer-focus-visible:border-cobalt-500 peer-focus-visible:bg-cobalt-500 peer-focus-visible:text-white peer-focus-visible:ring-2 peer-focus-visible:ring-cobalt-500 peer-focus-visible:ring-offset-2',

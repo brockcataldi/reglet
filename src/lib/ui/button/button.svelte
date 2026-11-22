@@ -21,11 +21,12 @@
 		iconPosition = 'prepend',
 		label,
 		scheme,
+		size,
 		...props
 	}: ButtonProps = $props();
 </script>
 
-<button class={cn(textButtonVariants({ scheme }), className)} {...props}>
+<button class={cn(textButtonVariants({ scheme, size }), className)} {...props}>
 	{#if Icon && iconPosition === 'prepend'}
 		<Icon strokeWidth={1.5} />
 	{/if}
