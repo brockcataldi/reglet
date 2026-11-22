@@ -1,6 +1,8 @@
 import { LOCAL_STORAGE_KEY_TAGS } from '#lib/constants.js';
-import { isTagNameTaken } from '#lib/domain/tags/normalize-tag-name.js';
-import { TAG_SEPARATOR } from '#lib/domain/tags/parse-tag-query.js';
+import {
+	isTagNameTaken,
+	tagNameError
+} from '#lib/domain/tags/normalize-tag-name.js';
 import type { Tag, TagPlacement } from '#lib/types.js';
 import { createId, read, write } from '#lib/utilities.js';
 
@@ -37,15 +39,14 @@ class TagsRepository {
 		return isTagNameTaken(this.tags, name, exceptId);
 	}
 
+	/** Why a name can't be used, or undefined when it can. */
+	nameError(name: string, exceptId?: string) {
+		return tagNameError(this.tags, name, exceptId);
+	}
+
 	/** Blank names, names with the separator and taken names are refused. */
 	canUseName(name: string, exceptId?: string) {
-		const trimmed = name.trim();
-
-		return (
-			trimmed !== '' &&
-			!trimmed.includes(TAG_SEPARATOR) &&
-			!this.isNameTaken(trimmed, exceptId)
-		);
+		return this.nameError(name, exceptId) === undefined;
 	}
 
 	reset(tags: Tag[] = []) {
