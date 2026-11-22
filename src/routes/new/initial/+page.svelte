@@ -29,7 +29,7 @@
 			value: 'fluid',
 			name: 'Fluid',
 			description:
-				'Sizes scale smoothly between a min and max width, utopia.fyi style. Each tag stays on its lane; exports clamp() classes.'
+				'Sizes scale smoothly between a min and max width. Each tag stays on its lane; exports clamp() classes.'
 		},
 		{
 			value: 'static',
