@@ -28,6 +28,12 @@
 		},
 		{
 			display: true,
+			slug: 'breakpoints',
+			name: 'Breakpoints',
+			href: resolve('new/breakpoints')
+		},
+		{
+			display: true,
 			slug: 'font-size',
 			name: 'Font Size',
 			href: resolve('new/font-size')
@@ -37,12 +43,6 @@
 			slug: 'letter-spacing',
 			name: 'Letter Spacing',
 			href: resolve('new/letter-spacing')
-		},
-		{
-			display: true,
-			slug: 'breakpoints',
-			name: 'Breakpoints',
-			href: resolve('new/breakpoints')
 		},
 		{
 			display: true,
