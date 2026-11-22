@@ -41,7 +41,7 @@ export const FLUID_SCALE_DEFAULT: FluidScale = {
 /**
  * Steps assume the default lane (1rem base, 1.2 ratio) and land as close to
  * each system's published sizes as that scale allows; several tags sharing a
- * step is expected.
+ * step is expected. Each step is round(log(px / 16) / log(1.2)).
  */
 export const TAG_TEMPLATES: TagTemplate[] = [
 	{
@@ -100,9 +100,117 @@ export const TAG_TEMPLATES: TagTemplate[] = [
 		]
 	},
 	{
+		id: 'bootstrap',
+		name: 'Bootstrap 5',
+		description: 'Display headings, h1–h6, lead and small text.',
+		tags: [
+			{ name: 'display-1', step: 9 },
+			{ name: 'display-2', step: 8 },
+			{ name: 'display-3', step: 8 },
+			{ name: 'display-4', step: 7 },
+			{ name: 'display-5', step: 6 },
+			{ name: 'display-6', step: 5 },
+			{ name: 'h1', step: 5 },
+			{ name: 'h2', step: 4 },
+			{ name: 'h3', step: 3 },
+			{ name: 'h4', step: 2 },
+			{ name: 'h5', step: 1 },
+			{ name: 'h6', step: 0 },
+			{ name: 'lead', step: 1 },
+			{ name: 'body', step: 0 },
+			{ name: 'small', step: -1 }
+		]
+	},
+	{
+		id: 'tailwind',
+		name: 'Tailwind CSS',
+		description: 'The text-xs to text-9xl size utilities.',
+		tags: [
+			{ name: 'text-9xl', step: 11 },
+			{ name: 'text-8xl', step: 10 },
+			{ name: 'text-7xl', step: 8 },
+			{ name: 'text-6xl', step: 7 },
+			{ name: 'text-5xl', step: 6 },
+			{ name: 'text-4xl', step: 4 },
+			{ name: 'text-3xl', step: 3 },
+			{ name: 'text-2xl', step: 2 },
+			{ name: 'text-xl', step: 1 },
+			{ name: 'text-lg', step: 1 },
+			{ name: 'text-base', step: 0 },
+			{ name: 'text-sm', step: -1 },
+			{ name: 'text-xs', step: -2 }
+		]
+	},
+	{
+		id: 'apple',
+		name: 'Apple (iOS)',
+		description: 'Dynamic Type text styles at the default size.',
+		tags: [
+			{ name: 'large-title', step: 4 },
+			{ name: 'title-1', step: 3 },
+			{ name: 'title-2', step: 2 },
+			{ name: 'title-3', step: 1 },
+			{ name: 'headline', step: 0 },
+			{ name: 'body', step: 0 },
+			{ name: 'callout', step: 0 },
+			{ name: 'subheadline', step: 0 },
+			{ name: 'footnote', step: -1 },
+			{ name: 'caption-1', step: -2 },
+			{ name: 'caption-2', step: -2 }
+		]
+	},
+	{
+		id: 'carbon',
+		name: 'IBM Carbon',
+		description: 'Productive heading, body and label type tokens.',
+		tags: [
+			{ name: 'heading-07', step: 7 },
+			{ name: 'heading-06', step: 5 },
+			{ name: 'heading-05', step: 4 },
+			{ name: 'heading-04', step: 3 },
+			{ name: 'heading-03', step: 1 },
+			{ name: 'heading-02', step: 0 },
+			{ name: 'heading-01', step: -1 },
+			{ name: 'body-02', step: 0 },
+			{ name: 'body-01', step: -1 },
+			{ name: 'label-01', step: -2 },
+			{ name: 'helper-text-01', step: -2 },
+			{ name: 'caption-01', step: -2 }
+		]
+	},
+	{
+		id: 'govuk',
+		name: 'GOV.UK',
+		description: 'Design System headings and body sizes on desktop.',
+		tags: [
+			{ name: 'heading-xl', step: 6 },
+			{ name: 'heading-l', step: 4 },
+			{ name: 'heading-m', step: 2 },
+			{ name: 'heading-s', step: 1 },
+			{ name: 'body-l', step: 2 },
+			{ name: 'body', step: 1 },
+			{ name: 'body-s', step: 0 }
+		]
+	},
+	{
+		id: 'utopia',
+		name: 'Utopia',
+		description: 'Numbered steps, for fluid type scales.',
+		tags: [
+			{ name: 'step-5', step: 5 },
+			{ name: 'step-4', step: 4 },
+			{ name: 'step-3', step: 3 },
+			{ name: 'step-2', step: 2 },
+			{ name: 'step-1', step: 1 },
+			{ name: 'step-0', step: 0 },
+			{ name: 'step--1', step: -1 },
+			{ name: 'step--2', step: -2 }
+		]
+	},
+	{
 		id: 'custom',
-		name: 'Custom',
-		description: 'Start empty and name your own tags.',
+		name: 'Blank',
+		description: 'No tags; name your own.',
 		tags: []
 	}
 ];

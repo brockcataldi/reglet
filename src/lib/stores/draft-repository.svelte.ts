@@ -82,9 +82,12 @@ class DraftRepository {
 		return this.#template;
 	}
 
-	/** Changing the template replaces the tag list with the template's tags. */
-	set template(id: string) {
-		if (id === this.#template) {
+	/**
+	 * Replaces the tag list with a template's tags, even when it's the one
+	 * already loaded, so it doubles as a reset.
+	 */
+	loadTemplate(id: string) {
+		if (!TAG_TEMPLATES.some((template) => template.id === id)) {
 			return;
 		}
 

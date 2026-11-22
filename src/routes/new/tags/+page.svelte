@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { Plus, Trash2 } from '@lucide/svelte';
+	import { Import, Plus, Trash2 } from '@lucide/svelte';
+
+	import { TAG_TEMPLATES } from '#lib/constants.js';
 
 	import { isTagNameTaken } from '#lib/domain/tags/normalize-tag-name.js';
 	import { validateTagNames } from '#lib/domain/project/validate-draft.js';
@@ -9,15 +11,59 @@
 	import Banner from '#lib/ui/display/banner.svelte';
 	import Separator from '#lib/ui/display/separator.svelte';
 	import Input from '#lib/ui/form/input.svelte';
+	import Select from '#lib/ui/form/select.svelte';
 
 	const draft = project.draft;
 
 	const errors = $derived(validateTagNames(draft.tags));
+
+	// what the select points at; nothing changes until it's loaded
+	let selected = $state(draft.template);
+
+	const selectedTemplate = $derived(
+		TAG_TEMPLATES.find((template) => template.id === selected)
+	);
+
+	let announcement = $state('');
+
+	const load = () => {
+		draft.loadTemplate(selected);
+		announcement = `Loaded ${selectedTemplate?.name}: ${draft.tags.length} tags.`;
+	};
 </script>
 
 <svelte:head>
 	<title>Tags - Reglet</title>
 </svelte:head>
+
+<div class="mb-4 w-full">
+	<Separator
+		as="label"
+		for="tag-template"
+		description="Replaces the tags below">Template</Separator
+	>
+	<div class="flex flex-row items-end gap-4">
+		<Select
+			id="tag-template"
+			aria-describedby="tag-template-description"
+			value={selected}
+			onchange={(event) => (selected = event.currentTarget.value)}
+		>
+			{#each TAG_TEMPLATES as template (template.id)}
+				<option value={template.id}>{template.name}</option>
+			{/each}
+		</Select>
+		<Button label="Load" icon={Import} onclick={load} />
+	</div>
+	{#if selectedTemplate}
+		<p id="tag-template-description" class="mt-2 text-sm text-neutral-600">
+			{selectedTemplate.description}
+			{selectedTemplate.tags.length}
+			{selectedTemplate.tags.length === 1 ? 'tag' : 'tags'}.
+		</p>
+	{/if}
+	<p class="sr-only" aria-live="polite">{announcement}</p>
+</div>
 
 <div class="w-full">
 	<Separator as="h2" description={`${draft.tags.length} tags`}

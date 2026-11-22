@@ -40,12 +40,6 @@
 		},
 		{
 			display: true,
-			slug: 'template',
-			name: 'Template',
-			href: resolve('new/template')
-		},
-		{
-			display: true,
 			slug: 'tags',
 			name: 'Tags',
 			href: resolve('new/tags')
