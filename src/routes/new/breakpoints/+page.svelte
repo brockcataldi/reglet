@@ -69,7 +69,6 @@
 					<Button
 						label="Remove"
 						aria-label={`Remove ${breakpoint.name || 'breakpoint'}`}
-						size="sm"
 						icon={Trash2}
 						scheme="destructive"
 						disabled={root}
@@ -84,7 +83,6 @@
 	{#if draft.type === 'standard'}
 		<Button
 			class="mt-4"
-			size="sm"
 			icon={Plus}
 			label="Add breakpoint"
 			onclick={() => draft.addBreakpoint()}

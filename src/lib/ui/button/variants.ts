@@ -9,6 +9,7 @@ export const textButtonVariants = cva(
 		variants: {
 			size: {
 				md: 'py-3 px-5 text-sm [&>svg]:size-5',
+				// only for actions inside a Separator; md everywhere else
 				sm: 'min-h-6 px-2 py-0.5 text-xs [&>svg]:size-4'
 			},
 			// a square that only shows the icon; keep for tight spots

@@ -78,68 +78,70 @@
 	};
 </script>
 
-<div class="grid grid-cols-[minmax(0,1fr)_8rem_auto] items-start gap-4">
-	<div>
-		<label
-			for={`breakpoint-${breakpoint.id}-name`}
-			class="font-mono text-xs text-neutral-600 uppercase"
-			>Name<span class="sr-only"> of {breakpoint.name}</span></label
-		>
-		<Input
-			id={`breakpoint-${breakpoint.id}-name`}
-			class="text-xl font-bold"
-			disabled={nameLocked}
-			variant={nameLocked ? 'disabled' : error ? 'error' : 'default'}
-			aria-invalid={error !== undefined}
-			aria-describedby={error ? errorId : undefined}
-			bind:value={() => name ?? breakpoint.name, (value) => (name = value)}
-			onblur={commit}
-			{onkeydown}
-		/>
-		{#if error}
-			<p id={errorId} class="mt-1 font-mono text-xs text-red-800">
-				{error}
-			</p>
+<div>
+	<div class="grid grid-cols-[minmax(0,1fr)_8rem_auto] items-end gap-4">
+		<div>
+			<label
+				for={`breakpoint-${breakpoint.id}-name`}
+				class="font-mono text-xs text-neutral-600 uppercase"
+				>Name<span class="sr-only"> of {breakpoint.name}</span></label
+			>
+			<Input
+				id={`breakpoint-${breakpoint.id}-name`}
+				class="text-xl font-bold"
+				disabled={nameLocked}
+				variant={nameLocked ? 'disabled' : error ? 'error' : 'default'}
+				aria-invalid={error !== undefined}
+				aria-describedby={error ? errorId : undefined}
+				bind:value={
+					() => name ?? breakpoint.name, (value) => (name = value)
+				}
+				onblur={commit}
+				{onkeydown}
+			/>
+		</div>
+
+		<div>
+			<label
+				for={`breakpoint-${breakpoint.id}-width`}
+				class="font-mono text-xs text-neutral-600 uppercase"
+				>Width<span class="sr-only"> of {breakpoint.name}</span> (px)</label
+			>
+			<Input
+				id={`breakpoint-${breakpoint.id}-width`}
+				type="number"
+				min="0"
+				step="1"
+				class="text-xl font-bold"
+				disabled={widthLocked}
+				variant={widthLocked ? 'disabled' : error ? 'error' : 'default'}
+				aria-invalid={error !== undefined}
+				aria-describedby={error ? errorId : undefined}
+				bind:value={
+					() => (width === undefined ? breakpoint.width : width),
+					(value) => (width = value)
+				}
+				onblur={commit}
+				{onkeydown}
+			/>
+		</div>
+
+		{#if standard}
+			<!-- the root's stays hidden to keep its fields lined up with the rows below -->
+			<Button
+				label="Remove"
+				aria-label={`Remove ${breakpoint.name}`}
+				icon={Trash2}
+				scheme="destructive"
+				disabled={root}
+				class={root ? 'invisible' : undefined}
+				onclick={onRemove}
+			/>
 		{/if}
 	</div>
-
-	<div>
-		<label
-			for={`breakpoint-${breakpoint.id}-width`}
-			class="font-mono text-xs text-neutral-600 uppercase"
-			>Width<span class="sr-only"> of {breakpoint.name}</span> (px)</label
-		>
-		<Input
-			id={`breakpoint-${breakpoint.id}-width`}
-			type="number"
-			min="0"
-			step="1"
-			class="text-xl font-bold"
-			disabled={widthLocked}
-			variant={widthLocked ? 'disabled' : error ? 'error' : 'default'}
-			aria-invalid={error !== undefined}
-			aria-describedby={error ? errorId : undefined}
-			bind:value={
-				() => (width === undefined ? breakpoint.width : width),
-				(value) => (width = value)
-			}
-			onblur={commit}
-			{onkeydown}
-		/>
-	</div>
-
-	{#if standard && !root}
-		<Button
-			label="Remove"
-			aria-label={`Remove ${breakpoint.name}`}
-			icon={Trash2}
-			scheme="destructive"
-			size="sm"
-			class="mt-5"
-			onclick={onRemove}
-		/>
-	{:else if standard}
-		<!-- keeps the root's fields lined up with the rows below -->
-		<span class="w-[5.5rem]" aria-hidden="true"></span>
+	{#if error}
+		<p id={errorId} class="mt-1 font-mono text-xs text-red-800">
+			{error}
+		</p>
 	{/if}
 </div>

@@ -70,7 +70,6 @@
 				<Button
 					label="Remove"
 					aria-label={`Remove ${tag.name || 'tag'}`}
-					size="sm"
 					icon={Trash2}
 					scheme="destructive"
 					onclick={() => draft.removeTag(tag.id)}
@@ -81,7 +80,6 @@
 
 	<Button
 		class="mt-4"
-		size="sm"
 		icon={Plus}
 		label="Add tag"
 		onclick={() => draft.addTag()}

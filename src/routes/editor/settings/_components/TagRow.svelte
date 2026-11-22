@@ -45,48 +45,50 @@
 	};
 </script>
 
-<div class="grid grid-cols-[minmax(0,16rem)_1fr_auto] items-start gap-4">
-	<div>
-		<label for={inputId} class="sr-only">Name of {tag.name}</label>
-		<Input
-			id={inputId}
-			class="text-xl font-bold"
-			variant={error ? 'error' : 'default'}
-			aria-invalid={error !== undefined}
-			aria-describedby={error ? errorId : undefined}
-			bind:value={() => draft ?? tag.name, (value) => (draft = value)}
-			onblur={commit}
-			onkeydown={(event) => {
-				if (event.key === 'Enter') {
-					event.preventDefault();
-					commit();
-				} else if (event.key === 'Escape') {
-					revert();
-				}
-			}}
+<div>
+	<div
+		class="grid grid-cols-[minmax(0,16rem)_1fr_auto] items-center gap-4"
+	>
+		<div>
+			<label for={inputId} class="sr-only">Name of {tag.name}</label>
+			<Input
+				id={inputId}
+				class="text-xl font-bold"
+				variant={error ? 'error' : 'default'}
+				aria-invalid={error !== undefined}
+				aria-describedby={error ? errorId : undefined}
+				bind:value={() => draft ?? tag.name, (value) => (draft = value)}
+				onblur={commit}
+				onkeydown={(event) => {
+					if (event.key === 'Enter') {
+						event.preventDefault();
+						commit();
+					} else if (event.key === 'Escape') {
+						revert();
+					}
+				}}
+			/>
+		</div>
+
+		<p class="font-mono text-sm text-neutral-600">
+			{#if placements.length === 0}
+				Unplaced
+			{:else}
+				{placements.join(', ')}
+			{/if}
+		</p>
+
+		<Button
+			label="Delete"
+			aria-label={`Delete ${tag.name}`}
+			icon={Trash2}
+			scheme="destructive"
+			onclick={onDelete}
 		/>
-		{#if error}
-			<p id={errorId} class="mt-1 font-mono text-xs text-red-800">
-				{error}
-			</p>
-		{/if}
 	</div>
-
-	<p class="pt-2 font-mono text-sm text-neutral-600">
-		{#if placements.length === 0}
-			Unplaced
-		{:else}
-			{placements.join(', ')}
-		{/if}
-	</p>
-
-	<Button
-		label="Delete"
-		aria-label={`Delete ${tag.name}`}
-		size="sm"
-		class="mt-1"
-		icon={Trash2}
-		scheme="destructive"
-		onclick={onDelete}
-	/>
+	{#if error}
+		<p id={errorId} class="mt-1 font-mono text-xs text-red-800">
+			{error}
+		</p>
+	{/if}
 </div>
