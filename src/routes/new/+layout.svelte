@@ -34,15 +34,9 @@
 		},
 		{
 			display: true,
-			slug: 'font-size',
-			name: 'Font Size',
-			href: resolve('new/font-size')
-		},
-		{
-			display: true,
-			slug: 'letter-spacing',
-			name: 'Letter Spacing',
-			href: resolve('new/letter-spacing')
+			slug: 'units',
+			name: 'Units',
+			href: resolve('new/units')
 		},
 		{
 			display: true,
