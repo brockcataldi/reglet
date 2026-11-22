@@ -133,6 +133,16 @@ class TagsRepository {
 		}
 	}
 
+	/**
+	 * Re-anchors every tag after the breakpoints change: placements on removed
+	 * breakpoints go, and each tag starts at its lowest remaining placement.
+	 */
+	syncBreakpoints(order: string[]) {
+		for (const tag of this.tags) {
+			TagsRepository.normalizeStart(tag, order);
+		}
+	}
+
 	delete(id: string) {
 		this.tags = this.tags.filter((tag) => tag.id !== id);
 	}

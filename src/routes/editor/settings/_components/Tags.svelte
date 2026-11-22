@@ -10,6 +10,7 @@
 
 	import TagRow from './TagRow.svelte';
 
+	let nameInput = $state<HTMLInputElement>();
 	let name = $state('');
 	let error = $state<string>();
 	let announcement = $state('');
@@ -35,6 +36,13 @@
 				prefixed ? `${breakpoint.name.toLowerCase()}: ${where}` : where
 			];
 		});
+
+	const remove = (tag: Tag) => {
+		project.tags.delete(tag.id);
+		announcement = `Deleted ${tag.name}.`;
+		// the row that had focus is gone
+		nameInput?.focus();
+	};
 
 	const add = (event: SubmitEvent) => {
 		event.preventDefault();
@@ -69,7 +77,11 @@
 			<ul class="mb-6 flex w-full flex-col gap-4">
 				{#each project.tags.tags as tag (tag.id)}
 					<li class="w-full">
-						<TagRow {tag} placements={describe(tag)} />
+						<TagRow
+							{tag}
+							placements={describe(tag)}
+							onDelete={() => remove(tag)}
+						/>
 					</li>
 				{/each}
 			</ul>
@@ -83,6 +95,7 @@
 					>New tag</label
 				>
 				<Input
+					bind:ref={nameInput}
 					id="new-tag-name"
 					placeholder="ex. caption"
 					variant={error ? 'error' : 'default'}

@@ -12,9 +12,10 @@
 		tag: Tag;
 		// where the tag is placed, ex. "root: step 6 · Arial 400"
 		placements: string[];
+		onDelete: () => void;
 	};
 
-	let { tag, placements }: TagRowProps = $props();
+	let { tag, placements, onDelete }: TagRowProps = $props();
 
 	// edits stay local until committed, so a half-typed clash isn't saved;
 	// undefined means not editing, so renames from elsewhere show through
@@ -86,6 +87,6 @@
 		class="mt-1"
 		icon={Trash2}
 		scheme="destructive"
-		onclick={() => project.tags.delete(tag.id)}
+		onclick={onDelete}
 	/>
 </div>

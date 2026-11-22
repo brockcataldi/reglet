@@ -77,6 +77,21 @@ describe('tags-repository', () => {
 		expect(repository.get(h1.id)?.startsAt).toBe('desktop');
 	});
 
+	it('drops placements on removed breakpoints when synced', () => {
+		const repository = new TagsRepository();
+		const h1 = repository.create('h1', 'root')!;
+		const order = ['root', 'tablet', 'desktop'];
+
+		repository.assign(h1.id, 'tablet', { laneId: 'a', step: 6 }, order);
+		repository.assign(h1.id, 'desktop', { laneId: 'a', step: 8 }, order);
+		repository.syncBreakpoints(['root', 'desktop']);
+
+		expect(repository.get(h1.id)?.placements).toStrictEqual({
+			desktop: { laneId: 'a', step: 8 }
+		});
+		expect(repository.get(h1.id)?.startsAt).toBe('desktop');
+	});
+
 	it('persists to local storage', () => {
 		const repository = new TagsRepository();
 		repository.create('h1', 'root');

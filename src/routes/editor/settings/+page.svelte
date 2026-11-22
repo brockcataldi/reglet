@@ -7,6 +7,7 @@
 
 	import Button from '#lib/ui/button/button.svelte';
 
+	import Breakpoints from './_components/Breakpoints.svelte';
 	import Lanes from './_components/Lanes.svelte';
 	import Tags from './_components/Tags.svelte';
 
@@ -28,6 +29,10 @@
 		</h1>
 	</div>
 </header>
+
+{#if project.type !== 'static'}
+	<Breakpoints />
+{/if}
 
 <Lanes />
 

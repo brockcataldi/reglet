@@ -11,6 +11,7 @@ import type {
 	ProjectType,
 	Tag
 } from '#lib/types.js';
+import { validateBreakpoints } from '#lib/domain/project/validate-draft.js';
 import { read, write } from '#lib/utilities.js';
 
 import BreakpointsRepository from './breakpoints-repository.svelte';
@@ -100,6 +101,46 @@ class Project {
 	deleteLane(id: string) {
 		this.lanes.delete(id);
 		this.tags.forgetLane(id, this.breakpointOrder);
+	}
+
+	/** Why a breakpoint change can't be made, or undefined when it can. */
+	breakpointError(
+		change: Parameters<BreakpointsRepository['preview']>[0]
+	): string | undefined {
+		return validateBreakpoints(
+			this.type,
+			this.breakpoints.preview(change)
+		)[0];
+	}
+
+	addBreakpoint(name: string, width: number) {
+		if (this.type !== 'standard') {
+			return undefined;
+		}
+
+		return this.breakpoints.add({ name: name.trim(), width });
+	}
+
+	updateBreakpoint(
+		id: string,
+		patch: Partial<{ name: string; width: number }>
+	) {
+		this.breakpoints.update(id, {
+			...patch,
+			...(patch.name !== undefined && { name: patch.name.trim() })
+		});
+		// a width change can reorder breakpoints and so where tags start
+		this.tags.syncBreakpoints(this.breakpointOrder);
+	}
+
+	/** Only standard projects remove breakpoints, and never the root. */
+	removeBreakpoint(id: string) {
+		if (this.type !== 'standard' || this.breakpoints.root?.id === id) {
+			return;
+		}
+
+		this.breakpoints.remove(id);
+		this.tags.syncBreakpoints(this.breakpointOrder);
 	}
 
 	/** Replaces the project with the one described by the draft. */
