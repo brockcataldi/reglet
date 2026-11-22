@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 export const textButtonVariants = cva(
 	`
         inline-flex gap-2 items-center justify-center
-        uppercase font-mono border
+        uppercase font-mono border [&>svg]:shrink-0
     `,
 	{
 		variants: {
