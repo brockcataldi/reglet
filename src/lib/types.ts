@@ -1,21 +1,59 @@
-
+// standard: root plus any number of breakpoints above it
+// fluid: a fixed min and max that sizes interpolate between
+// static: no breakpoints, just the root
 export type ProjectType = 'standard' | 'fluid' | 'static';
 
 export type FontSizeUnit = 'rem' | 'px' | 'pt' | 'em';
-export type LetterSpacingUnit = 'em' | 'px' | 'rem' | 'ch'  | 'pt' | '%';
+export type LetterSpacingUnit = 'em' | 'px' | 'rem' | 'ch' | 'pt' | '%';
 
 export type Unit = FontSizeUnit | LetterSpacingUnit;
 
 export type ProjectSettings = {
+	type: ProjectType;
 	fontSizeUnit: FontSizeUnit;
 	letterSpacingUnit: LetterSpacingUnit;
 	precision: number;
 };
 
-export type ProjectDefault = {
+/**
+ * Breakpoints are ordered by width, smallest first. The first one is the root:
+ * `standard` projects can add as many as they like above it, `static`
+ * projects only have the root, and `fluid` projects have exactly two (min and
+ * max) that fluid sizes interpolate between.
+ */
+export type Breakpoint = {
+	id: string;
+	name: string;
 	width: number;
-	modifier: number;
-	label: string;
+};
+
+export type TagPlacement = {
+	laneId: string;
+	step: number;
+};
+
+/**
+ * A named role (h1, body-l, caption…) pinned to specimens. A tag applies from
+ * `startsAt` upward; a breakpoint without its own placement inherits the
+ * closest one below it. Fluid and static projects only ever place on the root.
+ */
+export type Tag = {
+	id: string;
+	name: string;
+	startsAt: string;
+	placements: Record<string, TagPlacement>;
+};
+
+export type TagTemplateTag = {
+	name: string;
+	step: number;
+};
+
+export type TagTemplate = {
+	id: string;
+	name: string;
+	description: string;
+	tags: TagTemplateTag[];
 };
 
 export type ScaleSettings = {
@@ -28,14 +66,12 @@ export type TypeSetting = {
 	weight: string | number;
 	style: 'normal' | 'italic' | 'oblique';
 	variationSettings?: Record<string, number>;
-}
+};
 
-export function isTypeSetting(value: unknown): value is TypeSetting{
-		const candidate = value as Record<string, unknown>;
+export function isTypeSetting(value: unknown): value is TypeSetting {
+	const candidate = value as Record<string, unknown>;
 
-	if (
-		typeof candidate.family !== 'string'
-	) {
+	if (typeof candidate.family !== 'string') {
 		return false;
 	}
 
@@ -88,6 +124,16 @@ export type Lane = TypeSetting & {
 	minStep: number;
 	baseSize: number;
 	ratio: number;
+
+	// the far end of the scale in fluid projects; baseSize and ratio are the
+	// near end. When linkRatio is set, maxRatio is ignored in favour of ratio.
+	fluid?: FluidScale;
+};
+
+export type FluidScale = {
+	maxBaseSize: number;
+	maxRatio: number;
+	linkRatio: boolean;
 };
 
 export type SpecimenOverride = {
@@ -95,7 +141,6 @@ export type SpecimenOverride = {
 	fontSize?: number;
 	letterSpacing?: number;
 };
-
 
 export type Specimen = {
 	fontSize: number;
@@ -150,7 +195,7 @@ export const isGridCellLocation = (
 export type GridCell = GridCellLocation &
 	(
 		| { type: 'specimen'; value: Specimen }
-		| { type: 'controls'; value: 'upper' | 'lower', delete: boolean }
+		| { type: 'controls'; value: 'upper' | 'lower'; delete: boolean }
 		| { type: 'empty'; value: null }
 	);
 
@@ -179,7 +224,6 @@ export const isSpecimenGridCell = (
 
 	return true;
 };
-
 
 export type ControlsGridCell = Extract<GridCell, { type: 'controls' }>;
 
