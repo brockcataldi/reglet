@@ -15,7 +15,7 @@
 </script>
 
 <svelte:head>
-	<title>Grid View - Reglet</title>
+	<title>Specimen View - Reglet</title>
 </svelte:head>
 
 <ul style:--columns={columnsCSS} class="w-fit">
