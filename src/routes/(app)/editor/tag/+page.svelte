@@ -48,7 +48,7 @@
 	>
 		<!-- each cell's label names its breakpoint, so this row is visual -->
 		<ul
-			class="sticky top-9 z-[5] col-span-full grid grid-cols-subgrid bg-white"
+			class="sticky top-9 z-[5] col-span-full grid grid-cols-subgrid"
 			aria-hidden="true"
 		>
 			<li></li>
