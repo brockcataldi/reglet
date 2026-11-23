@@ -15,7 +15,7 @@
 </svelte:head>
 <div class="w-full">
 	<Separator as="label" for="stylesheets" description="Optional"
-		>Stylesheets</Separator
+		>Stylesheet URLs</Separator
 	>
 
 	<TextArea

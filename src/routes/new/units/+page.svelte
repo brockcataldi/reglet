@@ -73,7 +73,7 @@
 
 <div class="mb-4 w-full">
 	<Separator as="h2">Font Size Unit</Separator>
-	<div class="grid grid-cols-4 gap-2">
+	<div class="grid grid-cols-2 gap-2">
 		{#each fontSizeUnits as unit (unit.value)}
 			<RadioCard
 				name="font-size-unit"

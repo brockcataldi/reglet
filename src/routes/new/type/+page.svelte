@@ -2,7 +2,6 @@
 	import project from '#lib/stores/project.svelte.js';
 	import type { ProjectType } from '#lib/types.js';
 
-	import Separator from '#lib/ui/display/separator.svelte';
 	import RadioCard from '#lib/ui/form/radio-card.svelte';
 
 	const projectTypes: {
@@ -35,7 +34,6 @@
 </svelte:head>
 
 <div class="w-full">
-	<Separator as="h2">Project Type</Separator>
 	<div class="grid grid-cols-3 gap-2">
 		{#each projectTypes as type (type.value)}
 			<RadioCard value={type.value} bind:group={project.draft.type}>
