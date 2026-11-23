@@ -18,7 +18,10 @@
 
 	const named = $derived(columns.length > 1);
 
-	const columnsCSS = $derived(`200px repeat(${columns.length}, 420px)`);
+	// the first column fits the longest tag name; rows share it via subgrid
+	const columnsCSS = $derived(
+		`max-content repeat(${columns.length}, 420px)`
+	);
 
 	const laneLabel = (lane: Lane) => project.lanes.label(lane.id);
 </script>
@@ -39,10 +42,13 @@
 		</p>
 	</div>
 {:else}
-	<div style:--columns={columnsCSS} class="w-fit">
+	<div
+		style:--columns={columnsCSS}
+		class="grid w-fit grid-cols-(--columns)"
+	>
 		<!-- each cell's label names its breakpoint, so this row is visual -->
 		<ul
-			class="sticky top-9 z-[5] grid grid-cols-(--columns) border-b border-black bg-white"
+			class="sticky top-9 z-[5] col-span-full grid grid-cols-subgrid border-b border-black bg-white"
 			aria-hidden="true"
 		>
 			<li></li>
@@ -62,10 +68,10 @@
 			{/each}
 		</ul>
 
-		<ul aria-label="Tags">
+		<ul aria-label="Tags" class="col-span-full grid grid-cols-subgrid">
 			{#each project.tags.tags as tag (tag.id)}
-				<li>
-					<ul class="grid grid-cols-(--columns) items-start">
+				<li class="col-span-full grid grid-cols-subgrid">
+					<ul class="col-span-full grid grid-cols-subgrid items-start">
 						<li class="p-4">
 							<h2
 								class="grid min-h-17 w-fit place-items-center border bg-sunburst-500 px-3 text-2xl font-bold"
