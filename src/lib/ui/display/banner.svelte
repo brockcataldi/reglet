@@ -5,11 +5,11 @@
 	import type { Component, Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 
-	const bannerVariants = cva('py-2 px-4 font-mono text-sm', {
+	const bannerVariants = cva('py-2 px-4 text-sm', {
 		variants: {
 			scheme: {
 				primary: 'border-cobalt-500 text-cobalt-500 bg-cobalt-50',
-				success: 'text-black bg-lime-300',
+				success: 'border-green-700 text-green-700 bg-green-100',
 				destructive: 'border-red-700 text-red-700 bg-red-100'
 			}
 		},

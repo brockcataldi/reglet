@@ -1,10 +1,6 @@
 <script lang="ts">
 	import project from '#lib/stores/project.svelte.js';
-	import type {
-		FontSizeUnit,
-		LetterSpacingUnit,
-		ProjectType
-	} from '#lib/types.js';
+	import type { FontSizeUnit, LetterSpacingUnit } from '#lib/types.js';
 
 	import Separator from '#lib/ui/display/separator.svelte';
 	import RadioCard from '#lib/ui/form/radio-card.svelte';
@@ -13,30 +9,6 @@
 		value: T;
 		description: string;
 	};
-
-	const projectTypes: {
-		value: ProjectType;
-		name: string;
-		description: string;
-	}[] = [
-		{
-			value: 'standard',
-			name: 'Breakpoints',
-			description:
-				'Start from a root and add breakpoints above it. Tags can move to other steps and lanes at each breakpoint; exports classes with media queries.'
-		},
-		{
-			value: 'fluid',
-			name: 'Fluid',
-			description:
-				'Sizes scale smoothly between a min and max width. Each tag stays on its lane; exports clamp() classes.'
-		},
-		{
-			value: 'static',
-			name: 'No breakpoints',
-			description: 'One size per tag; exports plain classes.'
-		}
-	];
 
 	const fontSizeUnits: UnitOption<FontSizeUnit>[] = [
 		{
@@ -96,32 +68,20 @@
 </script>
 
 <svelte:head>
-	<title>Initial Settings - Reglet</title>
+	<title>Units - Reglet</title>
 </svelte:head>
 
 <div class="mb-4 w-full">
-	<Separator as="h2">Project Type</Separator>
-	<div class="flex flex-col gap-2">
-		{#each projectTypes as type (type.value)}
-			<RadioCard value={type.value} bind:group={project.draft.type}>
-				<span class="flex flex-col gap-1">
-					<span class="text-2xl font-semibold">{type.name}</span>
-					<span class="text-sm">{type.description}</span>
-				</span>
-			</RadioCard>
-		{/each}
-	</div>
-</div>
-
-<div class="mb-4 w-full">
 	<Separator as="h2">Font Size Unit</Separator>
-	<div class="flex flex-col gap-2">
+	<div class="grid grid-cols-2 gap-2">
 		{#each fontSizeUnits as unit (unit.value)}
-			<RadioCard value={unit.value} bind:group={project.fontSizeUnit}>
-				<span class="flex items-start gap-4">
-					<span class="w-12 shrink-0 text-2xl font-semibold"
-						>{unit.value}</span
-					>
+			<RadioCard
+				name="font-size-unit"
+				value={unit.value}
+				bind:group={project.fontSizeUnit}
+			>
+				<span class="flex flex-col gap-1">
+					<span class="text-2xl font-semibold">{unit.value}</span>
 					<span class="text-sm">{unit.description}</span>
 				</span>
 			</RadioCard>
@@ -131,13 +91,15 @@
 
 <div class="w-full">
 	<Separator as="h2">Letter Spacing Unit</Separator>
-	<div class="flex flex-col gap-2">
+	<div class="grid grid-cols-3 gap-2">
 		{#each letterSpacingUnits as unit (unit.value)}
-			<RadioCard value={unit.value} bind:group={project.letterSpacingUnit}>
-				<span class="flex items-start gap-4">
-					<span class="w-12 shrink-0 text-2xl font-semibold"
-						>{unit.value}</span
-					>
+			<RadioCard
+				name="letter-spacing-unit"
+				value={unit.value}
+				bind:group={project.letterSpacingUnit}
+			>
+				<span class="flex flex-col gap-1">
+					<span class="text-2xl font-semibold">{unit.value}</span>
 					<span class="text-sm">{unit.description}</span>
 				</span>
 			</RadioCard>

@@ -150,7 +150,7 @@
 			role="option"
 			aria-selected={index === activeIndex}
 			class={cn(
-				'cursor-pointer px-2 py-1 text-xl whitespace-nowrap',
+				'cursor-pointer px-2 py-1 font-mono text-xl whitespace-nowrap',
 				index === activeIndex && 'bg-cobalt-500 text-white',
 				entry === value && 'font-bold'
 			)}

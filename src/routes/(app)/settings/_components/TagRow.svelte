@@ -1,21 +1,20 @@
 <script lang="ts">
-	import { Trash2 } from '@lucide/svelte';
+	import { Trash } from '@lucide/svelte';
 
 	import type { Tag } from '#lib/types.js';
 
 	import project from '#lib/stores/project.svelte.js';
 
 	import Button from '#lib/ui/button/button.svelte';
+	import Separator from '#lib/ui/display/separator.svelte';
 	import Input from '#lib/ui/form/input.svelte';
 
 	type TagRowProps = {
 		tag: Tag;
-		// where the tag is placed, ex. "root: step 6 · Arial 400"
-		placements: string[];
 		onDelete: () => void;
 	};
 
-	let { tag, placements, onDelete }: TagRowProps = $props();
+	let { tag, onDelete }: TagRowProps = $props();
 
 	// edits stay local until committed, so a half-typed clash isn't saved;
 	// undefined means not editing, so renames from elsewhere show through
@@ -46,11 +45,11 @@
 </script>
 
 <div>
-	<div
-		class="grid grid-cols-[minmax(0,16rem)_1fr_auto] items-center gap-4"
-	>
+	<div class="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4">
 		<div>
-			<label for={inputId} class="sr-only">Name of {tag.name}</label>
+			<Separator as="label" for={inputId}
+				>Name<span class="sr-only"> of {tag.name}</span></Separator
+			>
 			<Input
 				id={inputId}
 				class="text-xl font-bold"
@@ -70,24 +69,16 @@
 			/>
 		</div>
 
-		<p class="font-mono text-sm text-neutral-600">
-			{#if placements.length === 0}
-				Unplaced
-			{:else}
-				{placements.join(', ')}
-			{/if}
-		</p>
-
 		<Button
 			label="Delete"
 			aria-label={`Delete ${tag.name}`}
-			icon={Trash2}
+			icon={Trash}
 			scheme="destructive"
 			onclick={onDelete}
 		/>
 	</div>
 	{#if error}
-		<p id={errorId} class="mt-1 font-mono text-xs text-red-800">
+		<p id={errorId} class="mt-1 text-xs text-red-800">
 			{error}
 		</p>
 	{/if}

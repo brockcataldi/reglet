@@ -11,14 +11,13 @@ import { adjustNumberPrecision } from './adjust-number-precision';
 import { scale } from './scale';
 
 export const toGrid = (lanes: Lane[], precision: number): Grid => {
-
 	if (lanes.length === 0) {
 		return {
 			cells: [],
 			columns: 0,
 			rows: 0,
 			max: 0,
-			min: 0,
+			min: 0
 		};
 	}
 
@@ -40,7 +39,6 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 	const grid: GridCell[][] = Array.from({ length: rows }, () => []);
 
 	for (let j = 0; j < lanes.length; j++) {
-
 		const lane = lanes[j];
 		const laneMin = lane.minStep - 1;
 		const laneMax = lane.maxStep + 1;
@@ -49,7 +47,6 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 		let k = 0;
 
 		for (let i = minBuffer; i <= maxBuffer; i++) {
-
 			const location: GridCellLocation = {
 				laneId: lane.id,
 				step: i
@@ -99,7 +96,7 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 				lineHeight: override?.lineHeight ?? 1,
 				lineHeightOverridden: override?.lineHeight !== undefined,
 				letterSpacing: override?.letterSpacing ?? 0,
-				letterSpacingOverridden: override?.letterSpacing !== undefined,
+				letterSpacingOverridden: override?.letterSpacing !== undefined
 				// weight: lane.weight,
 				// family: lane.family,
 				// style: lane.style
@@ -119,6 +116,6 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 		columns: lanes.length,
 		rows,
 		max,
-		min,
+		min
 	};
 };

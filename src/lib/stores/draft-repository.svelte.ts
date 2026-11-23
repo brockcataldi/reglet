@@ -20,7 +20,6 @@ export type TagDraft = {
 
 export type Draft = {
 	type: ProjectType;
-	template: string;
 	breakpoints: Breakpoint[];
 	tags: TagDraft[];
 };
@@ -31,7 +30,6 @@ export type Draft = {
  */
 class DraftRepository {
 	#type = $state<ProjectType>(DEFAULT_PROJECT_TYPE);
-	#template = $state<string>(TAG_TEMPLATES[0].id);
 	#breakpoints = $state<Breakpoint[]>([]);
 	#tags = $state<TagDraft[]>([]);
 
@@ -45,7 +43,6 @@ class DraftRepository {
 
 		if (cached) {
 			this.#type = cached.type;
-			this.#template = cached.template;
 			this.#breakpoints = cached.breakpoints;
 			this.#tags = cached.tags;
 		} else {
@@ -56,7 +53,6 @@ class DraftRepository {
 			$effect(() => {
 				write<Draft>(LOCAL_STORAGE_KEY_DRAFT, {
 					type: this.#type,
-					template: this.#template,
 					breakpoints: this.#breakpoints,
 					tags: this.#tags
 				});
@@ -78,17 +74,15 @@ class DraftRepository {
 		this.#breakpoints = DraftRepository.defaultBreakpoints(value);
 	}
 
-	get template() {
-		return this.#template;
-	}
-
-	/** Changing the template replaces the tag list with the template's tags. */
-	set template(id: string) {
-		if (id === this.#template) {
+	/**
+	 * Replaces the tag list with a template's tags. The template itself isn't
+	 * remembered: it's only a starting point for the list.
+	 */
+	loadTemplate(id: string) {
+		if (!TAG_TEMPLATES.some((template) => template.id === id)) {
 			return;
 		}
 
-		this.#template = id;
 		this.#tags = DraftRepository.templateTags(id);
 	}
 
@@ -142,9 +136,8 @@ class DraftRepository {
 
 	reset() {
 		this.#type = DEFAULT_PROJECT_TYPE;
-		this.#template = TAG_TEMPLATES[0].id;
 		this.#breakpoints = DraftRepository.defaultBreakpoints(this.#type);
-		this.#tags = DraftRepository.templateTags(this.#template);
+		this.#tags = DraftRepository.templateTags(TAG_TEMPLATES[0].id);
 	}
 
 	static defaultBreakpoints(type: ProjectType): Breakpoint[] {

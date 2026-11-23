@@ -22,15 +22,21 @@
 	const allSteps: NavigationStep[] = [
 		{
 			display: true,
-			slug: 'initial',
-			name: 'Initial',
-			href: resolve('new/initial')
+			slug: 'type',
+			name: 'Type',
+			href: resolve('new/type')
 		},
 		{
 			display: true,
 			slug: 'breakpoints',
 			name: 'Breakpoints',
 			href: resolve('new/breakpoints')
+		},
+		{
+			display: true,
+			slug: 'units',
+			name: 'Units',
+			href: resolve('new/units')
 		},
 		{
 			display: true,
@@ -93,89 +99,88 @@
 
 <main class="min-h-dvh w-full">
 	<header class="w-full bg-sunburst-500 pt-8">
-		<div
-			class="mx-auto my-0 w-full max-w-140 border border-b-0 border-black"
-		>
+		<div class="mx-auto my-0 w-full max-w-180 border border-black">
 			<h1
 				class="w-full px-8 pt-8 pb-4 text-6xl font-bold tracking-tighter text-black"
 			>
-				New Project
+				{steps[currentIndex]?.name}
 			</h1>
-			<nav class="w-full border-b border-b-black px-8">
-				<ul class="grid w-full auto-cols-auto grid-flow-col">
-					{#each displayedSteps as step (step.slug)}
-						{#if step.display}
-							{#if steps[currentIndex]?.slug === step.slug}
-								<li class=" border-t border-r border-black first:border-l">
-									<span
-										class="block bg-black px-2 py-1 font-mono text-sm text-white"
-									>
-										{step.name}
-									</span>
-								</li>
-							{:else}
-								<li
-									class="border-t border-r border-black bg-white first:border-l"
-								>
-									<a
-										href={step.href}
-										class="block px-2 py-1 font-mono text-sm
-										hover:bg-cobalt-500 hover:text-white
-										focus-visible:bg-cobalt-500 focus-visible:text-white
-									"
-									>
-										<span>
-											{step.name}
-										</span>
-									</a>
-								</li>
-							{/if}
-						{/if}
-					{/each}
-				</ul>
-			</nav>
 		</div>
 	</header>
 	<div
-		class="mx-auto flex w-full max-w-140 flex-col items-start justify-start gap-4 border border-t-0 border-black pt-4"
+		class="mx-auto flex w-full max-w-180 flex-col items-start justify-start gap-4 border border-t-0 border-black pt-4"
 	>
 		<section class="w-full px-8">
 			{@render children?.()}
 		</section>
 
 		<section
-			class="flex w-full flex-row items-center justify-between px-8 pt-4 pb-8"
+			class="grid w-full grid-cols-[1fr_auto_1fr] items-center gap-4 px-8 pt-4 pb-8"
 		>
-			{#if previousStep !== undefined}
-				<LinkButton
-					href={previousStep.href}
-					label="Previous"
-					icon={ArrowLeft}
-				/>
-			{:else}
-				<span></span>
-			{/if}
+			<div class="flex justify-start">
+				{#if previousStep !== undefined}
+					<LinkButton
+						href={previousStep.href}
+						label="Previous"
+						icon={ArrowLeft}
+					/>
+				{:else}
+					<span></span>
+				{/if}
+			</div>
 
-			{#if nextStep !== undefined && nextStep.onClick && !project.draft.valid}
-				<Button
-					label={nextStep.nextOverride ?? 'Next'}
-					icon={Check}
-					iconPosition="append"
-					disabled
-					title="Fix the issues in the overview first"
-					class="cursor-not-allowed opacity-60"
-				/>
-			{:else if nextStep !== undefined}
-				<LinkButton
-					href={nextStep.href}
-					label={nextStep.nextOverride ?? 'Next'}
-					icon={nextStep.onClick ? Check : ArrowRight}
-					iconPosition="append"
-					onclick={nextStep.onClick}
-				/>
-			{:else}
-				<span></span>
-			{/if}
+			<nav aria-label="Steps">
+				<ol class="flex flex-row">
+					{#each displayedSteps as step, index (step.slug)}
+						{@const number = String(index + 1).padStart(2, '0')}
+						<li class="border-y border-r border-black first:border-l">
+							{#if steps[currentIndex]?.slug === step.slug}
+								<span
+									aria-current="step"
+									title={step.name}
+									class="block bg-black px-2 py-1 font-mono text-sm text-white"
+								>
+									{number}
+								</span>
+							{:else}
+								<a
+									href={step.href}
+									title={step.name}
+									aria-label={step.name}
+									class="block bg-white px-2 py-1 font-mono text-sm
+									hover:bg-cobalt-500 hover:text-white
+									focus-visible:bg-cobalt-500 focus-visible:text-white"
+								>
+									{number}
+								</a>
+							{/if}
+						</li>
+					{/each}
+				</ol>
+			</nav>
+
+			<div class="flex justify-end">
+				{#if nextStep !== undefined && nextStep.onClick && !project.draft.valid}
+					<Button
+						label={nextStep.nextOverride ?? nextStep.name}
+						icon={Check}
+						iconPosition="append"
+						disabled
+						title="Fix the issues in the overview first"
+						class="cursor-not-allowed opacity-60"
+					/>
+				{:else if nextStep !== undefined}
+					<LinkButton
+						href={nextStep.href}
+						label={nextStep.nextOverride ?? nextStep.name}
+						icon={nextStep.onClick ? Check : ArrowRight}
+						iconPosition="append"
+						onclick={nextStep.onClick}
+					/>
+				{:else}
+					<span></span>
+				{/if}
+			</div>
 		</section>
 	</div>
 </main>

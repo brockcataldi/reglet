@@ -38,7 +38,7 @@
 
 			<div>
 				<LinkButton
-					href={resolve('new/initial')}
+					href={resolve('new/type')}
 					label="Get Started"
 					icon={ArrowRight}
 					iconPosition="append"

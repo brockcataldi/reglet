@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+import { TAG_TEMPLATES } from '#lib/constants.js';
 import DraftRepository from './draft-repository.svelte';
 
 describe('draft-repository', () => {
@@ -50,19 +51,50 @@ describe('draft-repository', () => {
 		expect(draft.breakpoints).toHaveLength(2);
 	});
 
-	it('replaces the tags when the template changes', () => {
+	it('replaces the tags when a template loads', () => {
 		const draft = new DraftRepository();
 
-		draft.template = 'custom';
+		draft.loadTemplate('custom');
 		expect(draft.tags).toStrictEqual([]);
 
-		draft.template = 'material';
+		draft.loadTemplate('material');
 		expect(draft.tags).toHaveLength(15);
+	});
+
+	it('reloading the same template resets edits to its tags', () => {
+		const draft = new DraftRepository();
+		draft.loadTemplate('html');
+		const count = draft.tags.length;
+
+		draft.tags[0].name = 'renamed';
+		draft.addTag();
+		draft.loadTemplate('html');
+
+		expect(draft.tags).toHaveLength(count);
+		expect(draft.tags[0].name).toBe('h1');
+	});
+
+	it.each(TAG_TEMPLATES.map((template) => [template.id]))(
+		'loads the %s template without errors',
+		(id) => {
+			const draft = new DraftRepository();
+
+			draft.loadTemplate(id);
+			expect(draft.errors).toStrictEqual([]);
+		}
+	);
+
+	it('ignores unknown templates', () => {
+		const draft = new DraftRepository();
+		draft.loadTemplate('html');
+
+		draft.loadTemplate('nope');
+		expect(draft.tags).toHaveLength(8);
 	});
 
 	it('reports blank and duplicate tags', () => {
 		const draft = new DraftRepository();
-		draft.template = 'custom';
+		draft.loadTemplate('custom');
 
 		draft.addTag();
 		expect(draft.errors).toContain('Every tag needs a name.');

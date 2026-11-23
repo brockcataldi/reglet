@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { Trash2 } from '@lucide/svelte';
+	import { Trash } from '@lucide/svelte';
 
 	import type { Breakpoint } from '#lib/types.js';
 
 	import project from '#lib/stores/project.svelte.js';
 
 	import Button from '#lib/ui/button/button.svelte';
+	import Separator from '#lib/ui/display/separator.svelte';
 	import Input from '#lib/ui/form/input.svelte';
 
 	type BreakpointRowProps = {
@@ -81,10 +82,8 @@
 <div>
 	<div class="grid grid-cols-[minmax(0,1fr)_8rem_auto] items-end gap-4">
 		<div>
-			<label
-				for={`breakpoint-${breakpoint.id}-name`}
-				class="font-mono text-xs text-neutral-600 uppercase"
-				>Name<span class="sr-only"> of {breakpoint.name}</span></label
+			<Separator as="label" for={`breakpoint-${breakpoint.id}-name`}
+				>Name<span class="sr-only"> of {breakpoint.name}</span></Separator
 			>
 			<Input
 				id={`breakpoint-${breakpoint.id}-name`}
@@ -102,10 +101,8 @@
 		</div>
 
 		<div>
-			<label
-				for={`breakpoint-${breakpoint.id}-width`}
-				class="font-mono text-xs text-neutral-600 uppercase"
-				>Width<span class="sr-only"> of {breakpoint.name}</span> (px)</label
+			<Separator as="label" for={`breakpoint-${breakpoint.id}-width`}
+				>Width<span class="sr-only"> of {breakpoint.name}</span> (px)</Separator
 			>
 			<Input
 				id={`breakpoint-${breakpoint.id}-width`}
@@ -131,7 +128,7 @@
 			<Button
 				label="Remove"
 				aria-label={`Remove ${breakpoint.name}`}
-				icon={Trash2}
+				icon={Trash}
 				scheme="destructive"
 				disabled={root}
 				class={root ? 'invisible' : undefined}
@@ -140,7 +137,7 @@
 		{/if}
 	</div>
 	{#if error}
-		<p id={errorId} class="mt-1 font-mono text-xs text-red-800">
+		<p id={errorId} class="mt-1 text-xs text-red-800">
 			{error}
 		</p>
 	{/if}

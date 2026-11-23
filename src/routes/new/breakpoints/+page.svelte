@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Plus, Trash2 } from '@lucide/svelte';
+	import { Plus, Trash } from '@lucide/svelte';
 
 	import { validateBreakpoints } from '#lib/domain/project/validate-draft.js';
 	import project from '#lib/stores/project.svelte.js';
@@ -22,24 +22,15 @@
 </svelte:head>
 
 <div class="w-full">
-	<Separator
-		as="h2"
-		description={fluid
-			? 'Sizes interpolate between these'
-			: 'Mobile first'}
-	>
-		Breakpoints
-	</Separator>
-
-	<ol class="flex flex-col gap-2">
+	<ol class="flex flex-col gap-4">
 		{#each draft.breakpoints as breakpoint, index (breakpoint.id)}
 			{@const root = index === 0 && !fluid}
-			<li class="flex flex-row items-end gap-4">
+			<li
+				class="flex flex-row items-end gap-4 border border-black bg-white p-4"
+			>
 				<div class="flex-1">
-					<label
-						for={`breakpoint-${breakpoint.id}-name`}
-						class="font-mono text-xs text-neutral-600 uppercase"
-						>Name</label
+					<Separator as="label" for={`breakpoint-${breakpoint.id}-name`}
+						>Name</Separator
 					>
 					<Input
 						id={`breakpoint-${breakpoint.id}-name`}
@@ -50,10 +41,8 @@
 					/>
 				</div>
 				<div class="w-32">
-					<label
-						for={`breakpoint-${breakpoint.id}-width`}
-						class="font-mono text-xs text-neutral-600 uppercase"
-						>Width (px)</label
+					<Separator as="label" for={`breakpoint-${breakpoint.id}-width`}
+						>Width (px)</Separator
 					>
 					<Input
 						id={`breakpoint-${breakpoint.id}-width`}
@@ -69,7 +58,7 @@
 					<Button
 						label="Remove"
 						aria-label={`Remove ${breakpoint.name || 'breakpoint'}`}
-						icon={Trash2}
+						icon={Trash}
 						scheme="destructive"
 						disabled={root}
 						class={root ? 'invisible' : undefined}

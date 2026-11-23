@@ -96,13 +96,47 @@
 		)
 	);
 
-	const options = $derived(
-		choices.map(({ id, tag, breakpoint }): TagOption => ({
+	const BREAKPOINT_OPTION = 'breakpoint:';
+
+	// with several breakpoints, the list starts at the breakpoints and choosing
+	// one narrows it to that breakpoint's tags, rather than every pair at once
+	const breakpointOptions = $derived(
+		prefixed
+			? breakpoints.map((breakpoint): TagOption => {
+					const count = choices.filter(
+						(choice) => choice.breakpoint.id === breakpoint.id
+					).length;
+
+					return {
+						id: `${BREAKPOINT_OPTION}${breakpoint.id}`,
+						label: `${breakpoint.name.toLowerCase()}${TAG_SEPARATOR}`,
+						detail: `${count} ${count === 1 ? 'tag' : 'tags'}`,
+						complete: `${breakpoint.name.toLowerCase()}${TAG_SEPARATOR}`
+					};
+				})
+			: []
+	);
+
+	const options = $derived([
+		...breakpointOptions,
+		...choices.map(({ id, tag, breakpoint }): TagOption => ({
 			id,
 			label: labelOf(breakpoint, tag),
 			detail: describe(tag, breakpoint)
 		}))
-	);
+	]);
+
+	// still typing a breakpoint, ex. "tab" on the way to "tablet/"
+	const namesBreakpoint = (query: string) => {
+		const normalized = query.trim().toLowerCase();
+
+		return (
+			!normalized.includes(TAG_SEPARATOR) &&
+			breakpoints.some((breakpoint) =>
+				breakpoint.name.toLowerCase().startsWith(normalized)
+			)
+		);
+	};
 
 	const assign = (tag: Tag, breakpoint: Breakpoint) => {
 		project.tags.assign(
@@ -115,6 +149,15 @@
 	};
 
 	const match = (option: TagOption, query: string) => {
+		if (option.id.startsWith(BREAKPOINT_OPTION)) {
+			return namesBreakpoint(query);
+		}
+
+		// a bare tag name that isn't a breakpoint skips straight to tags
+		if (prefixed && namesBreakpoint(query)) {
+			return false;
+		}
+
 		const choice = choices.find((entry) => entry.id === option.id);
 
 		if (!choice) {
@@ -151,6 +194,10 @@
 	};
 
 	const createLabel = (query: string) => {
+		if (prefixed && namesBreakpoint(query)) {
+			return undefined;
+		}
+
 		const parsed = parseNew(query);
 
 		if (!parsed) {
@@ -178,6 +225,25 @@
 		// the button that had focus is gone
 		picker?.focus();
 	};
+
+	const chipId = (breakpoint: Breakpoint, tag: Tag) =>
+		`tag-chip-${cell.laneId}-${cell.step}-${breakpoint.id}-${tag.id}`;
+
+	// briefly marks the chip an inherited chip jumped to, so mouse users can
+	// see where focus landed
+	let highlighted = $state<string>();
+	let highlightTimer: ReturnType<typeof setTimeout> | undefined;
+
+	// an inherited chip's source is the same tag placed directly at a lower
+	// breakpoint, which always sits on this specimen too
+	const jumpToSource = (tag: Tag, from: Breakpoint) => {
+		const id = chipId(from, tag);
+		document.getElementById(id)?.focus();
+
+		clearTimeout(highlightTimer);
+		highlighted = id;
+		highlightTimer = setTimeout(() => (highlighted = undefined), 1200);
+	};
 </script>
 
 <div
@@ -190,27 +256,32 @@
 		>
 			{#each placements as { tag, breakpoint, inherited, from } (`${breakpoint.id}:${tag.id}`)}
 				{#if inherited}
-					<li
-						class="inline-flex min-h-[26px] items-center border border-dashed border-neutral-400 px-2 font-mono text-sm text-neutral-500"
-						title={`Inherited from ${formatTagLabel(from.name, tag.name)}`}
-					>
-						{labelOf(breakpoint, tag)}
-						<span class="sr-only">
-							(inherited from {from.name.toLowerCase()})
-						</span>
-					</li>
-				{:else}
-					<li
-						class="inline-flex items-center border border-black bg-black pl-2 font-mono text-sm text-white"
-					>
-						{labelOf(breakpoint, tag)}
+					<li class="inline-flex">
 						<button
 							type="button"
-							class="ml-1 inline-flex size-6 items-center justify-center hover:bg-red-700 focus-visible:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-red-700 [&>svg]:size-4"
+							class="inline-flex min-h-[26px] cursor-pointer items-center border border-dashed border-neutral-400 px-2 font-mono text-sm text-neutral-500 hover:border-cobalt-500 hover:text-cobalt-500 focus-visible:border-cobalt-500 focus-visible:text-cobalt-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cobalt-500"
+							title={`Inherited from ${formatTagLabel(from.name, tag.name)}`}
+							aria-label={`${labelOf(breakpoint, tag)}, inherited from ${formatTagLabel(from.name, tag.name)}. Go to ${formatTagLabel(from.name, tag.name)}`}
+							onclick={() => jumpToSource(tag, from)}
+						>
+							{labelOf(breakpoint, tag)}
+						</button>
+					</li>
+				{:else}
+					<li class="inline-flex">
+						<button
+							id={chipId(breakpoint, tag)}
+							type="button"
+							class:ring-2={highlighted === chipId(breakpoint, tag)}
+							class:ring-cobalt-500={highlighted ===
+								chipId(breakpoint, tag)}
+							class:ring-offset-2={highlighted === chipId(breakpoint, tag)}
+							class="inline-flex min-h-[26px] cursor-pointer items-center gap-1 border border-black bg-black pr-1 pl-2 font-mono text-sm text-white hover:border-red-700 hover:bg-red-700 focus-visible:border-red-700 focus-visible:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 [&>svg]:size-4 [&>svg]:shrink-0"
 							aria-label={`Remove ${labelOf(breakpoint, tag)} from ${where}`}
 							onclick={() => remove(tag, breakpoint)}
 						>
-							<X strokeWidth={1.5} />
+							{labelOf(breakpoint, tag)}
+							<X strokeWidth={1.5} aria-hidden="true" />
 						</button>
 					</li>
 				{/if}
