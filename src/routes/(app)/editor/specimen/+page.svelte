@@ -22,7 +22,7 @@
 	{#each cells.reverse() as row, rowIndex (rowIndex)}
 		<li>
 			<ul class="grid grid-cols-(--columns)">
-				<li class="p-2 py-2 pr-2 pl-4">
+				<li class="p-4">
 					{#if rowIndex !== 0 && rowIndex !== rows - 1}
 						<p
 							class="grid size-17 place-items-center border bg-sunburst-500 text-2xl font-bold"
@@ -35,7 +35,7 @@
 				{#each row as cell, columnIndex (columnIndex)}
 					{@const lane = project.lanes.lanes[columnIndex]}
 
-					<li class="p-2">
+					<li class="p-4">
 						{#if isSpecimenGridCell(cell)}
 							<SpecimenCell {cell} {lane} />
 						{:else if isControlsGridCell(cell)}

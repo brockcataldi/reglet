@@ -8,6 +8,8 @@
 
 	import Button from '#lib/ui/button/button.svelte';
 
+	import LaneScaleFields from './LaneScaleFields.svelte';
+
 	type CellProps = {
 		cell: ControlsGridCell;
 		lane: Lane;
@@ -65,59 +67,70 @@
 	);
 </script>
 
-<div class={controlsCellVariants({ variant: cell.value })}>
-	<div
-		class="box-border flex h-fit w-full border border-black bg-white p-2"
+{#snippet bounds()}
+	<ul
+		class="grid grid-cols-1 grid-rows-[repeat(2,32px)] items-start justify-start gap-1"
 	>
-		<div class="flex items-start justify-start gap-1">
-			<!-- <p class="size-17 grid place-items-center border font-bold text-2xl bg-sunburst-500">{columnIndex}</p> -->
-			<ul
-				class="grid grid-cols-1 grid-rows-[repeat(2,32px)] items-start justify-start gap-1"
-			>
-				<li>
-					{#if !(actions.top.destructive === true && cell.delete === false)}
-						<Button
-							label={actions.top.label}
-							iconOnly
-							icon={ChevronUp}
-							onclick={actions.top.action}
-							scheme={actions.top.destructive ? 'destructive' : 'primary'}
-						/>
-					{/if}
-				</li>
-				<li>
-					{#if !(actions.bottom.destructive === true && cell.delete === false)}
-						<Button
-							label={actions.bottom.label}
-							iconOnly
-							icon={ChevronDown}
-							onclick={actions.bottom.action}
-							scheme={actions.bottom.destructive
-								? 'destructive'
-								: 'primary'}
-						/>
-					{/if}
-				</li>
-			</ul>
-		</div>
+		<li>
+			{#if !(actions.top.destructive === true && cell.delete === false)}
+				<Button
+					label={actions.top.label}
+					iconOnly
+					icon={ChevronUp}
+					onclick={actions.top.action}
+					scheme={actions.top.destructive ? 'destructive' : 'primary'}
+				/>
+			{/if}
+		</li>
+		<li>
+			{#if !(actions.bottom.destructive === true && cell.delete === false)}
+				<Button
+					label={actions.bottom.label}
+					iconOnly
+					icon={ChevronDown}
+					onclick={actions.bottom.action}
+					scheme={actions.bottom.destructive ? 'destructive' : 'primary'}
+				/>
+			{/if}
+		</li>
+	</ul>
+{/snippet}
 
-		{#if cell.value === 'upper'}
+<div class={controlsCellVariants({ variant: cell.value })}>
+	{#if cell.value === 'upper'}
+		<div class="flex w-full flex-col gap-2">
 			<ul
-				class="ml-4 flex w-full flex-row items-center justify-start gap-4"
+				class="flex flex-row flex-wrap items-center justify-start gap-4 border border-black bg-white p-4"
 			>
 				<li>
 					<p class="text-xs">Family</p>
 					<p class="text-xl font-bold">{lane.family}</p>
 				</li>
-				<li class="p-1">
+				<li>
 					<p class="text-xs">Weight</p>
 					<p class="text-xl font-bold">{lane.weight}</p>
 				</li>
-				<li class="p-1">
+				<li>
 					<p class="text-xs">Style</p>
 					<p class="text-xl font-bold">{lane.style}</p>
 				</li>
+				{#each Object.entries(lane.variationSettings ?? {}) as [tag, value] (tag)}
+					<li>
+						<p class="text-xs">{tag}</p>
+						<p class="text-xl font-bold">{value}</p>
+					</li>
+				{/each}
 			</ul>
-		{/if}
-	</div>
+
+			<!-- gap + the box's padding keep the buttons 2rem clear of the scale -->
+			<div class="flex flex-row items-start gap-4">
+				{@render bounds()}
+				<div class="flex-1 border border-black bg-white p-4">
+					<LaneScaleFields {lane} />
+				</div>
+			</div>
+		</div>
+	{:else}
+		{@render bounds()}
+	{/if}
 </div>
