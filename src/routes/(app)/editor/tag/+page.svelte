@@ -23,7 +23,13 @@
 		`max-content repeat(${columns.length}, 420px)`
 	);
 
-	const laneLabel = (lane: Lane) => project.lanes.label(lane.id);
+	// "Lane 2 (Roboto 400 italic)": lanes can share a family and weight, so
+	// the number tells them apart
+	const laneLabel = (lane: Lane) => {
+		const style = lane.style === 'normal' ? '' : ` ${lane.style}`;
+
+		return `${project.lanes.name(lane.id)} (${lane.family} ${lane.weight}${style})`;
+	};
 </script>
 
 <svelte:head>
@@ -42,6 +48,7 @@
 		</p>
 	</div>
 {:else}
+	<h1 class="sr-only">Tag View</h1>
 	<div
 		style:--columns={columnsCSS}
 		class="grid w-fit grid-cols-(--columns)"

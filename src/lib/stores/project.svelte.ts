@@ -103,6 +103,21 @@ class Project {
 		this.tags.forgetLane(id, this.breakpointOrder);
 	}
 
+	/** Widens or narrows a lane's step range, keeping tags on real steps. */
+	stepLane(
+		id: string,
+		key: 'maxStep' | 'minStep',
+		direction: 'increment' | 'decrement'
+	) {
+		this.lanes[direction](id, key);
+
+		const lane = this.lanes.get(id);
+
+		if (lane) {
+			this.tags.clampLane(id, lane.minStep, lane.maxStep);
+		}
+	}
+
 	/** Why a breakpoint change can't be made, or undefined when it can. */
 	breakpointError(
 		change: Parameters<BreakpointsRepository['preview']>[0]

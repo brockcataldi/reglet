@@ -42,12 +42,12 @@
 				top: {
 					label: `Add row ${cell.step}`,
 					destructive: false,
-					action: () => project.lanes.increment(cell.laneId, target)
+					action: () => project.stepLane(cell.laneId, target, 'increment')
 				},
 				bottom: {
 					label: `Remove row ${cell.step - 1}`,
 					destructive: true,
-					action: () => project.lanes.decrement(cell.laneId, target)
+					action: () => project.stepLane(cell.laneId, target, 'decrement')
 				}
 			},
 			lower: {
@@ -55,12 +55,12 @@
 				top: {
 					label: `Remove row ${cell.step + 1}`,
 					destructive: true,
-					action: () => project.lanes.increment(cell.laneId, target)
+					action: () => project.stepLane(cell.laneId, target, 'increment')
 				},
 				bottom: {
 					label: `Add row ${cell.step}`,
 					destructive: false,
-					action: () => project.lanes.decrement(cell.laneId, target)
+					action: () => project.stepLane(cell.laneId, target, 'decrement')
 				}
 			}
 		}[cell.value]

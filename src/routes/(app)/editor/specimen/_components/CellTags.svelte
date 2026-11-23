@@ -1,12 +1,7 @@
 <script lang="ts">
 	import { X } from '@lucide/svelte';
 
-	import type {
-		Breakpoint,
-		Lane,
-		SpecimenGridCell,
-		Tag
-	} from '#lib/types.js';
+	import type { Breakpoint, SpecimenGridCell, Tag } from '#lib/types.js';
 
 	import {
 		formatTagLabel,
@@ -49,9 +44,6 @@
 		)
 	);
 
-	const laneLabel = (lane: Lane | undefined) =>
-		lane ? project.lanes.label(lane.id) : 'Deleted lane';
-
 	// steps repeat across lanes, so name the lane when there's more than one
 	const where = $derived(
 		project.lanes.lanes.length > 1
@@ -67,7 +59,10 @@
 			return 'Unplaced';
 		}
 
-		const where = `Step ${resolved.step} · ${laneLabel(project.lanes.get(resolved.laneId))}`;
+		const where = project.lanes.describeStep(
+			resolved.laneId,
+			resolved.step
+		);
 		const from = project.breakpoints.get(resolved.breakpointId);
 
 		return resolved.breakpointId === breakpoint.id || !from

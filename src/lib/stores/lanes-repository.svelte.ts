@@ -58,6 +58,15 @@ class LanesRepository {
 		return `${this.name(id)} · ${lane.family} ${lane.weight}${style}`;
 	}
 
+	/**
+	 * "Step 3 · Lane 2 · Roboto 400": how the specimen view names a placement.
+	 * Lane numbers shift when an earlier lane is deleted, so the family and
+	 * weight keep it recognizable.
+	 */
+	describeStep(id: string, step: number) {
+		return `Step ${step} · ${this.label(id)}`;
+	}
+
 	reset() {
 		this.lanes = LanesRepository.defaultLanes();
 	}
