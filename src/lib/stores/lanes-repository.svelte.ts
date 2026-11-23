@@ -31,6 +31,33 @@ class LanesRepository {
 		return this.lanes.find((lane) => lane.id === id);
 	}
 
+	/** Lanes are numbered by position, from 1; 0 when the lane is gone. */
+	number(id: string) {
+		return this.lanes.findIndex((lane) => lane.id === id) + 1;
+	}
+
+	/** "Lane 2" */
+	name(id: string) {
+		const number = this.number(id);
+		return number === 0 ? 'Deleted lane' : `Lane ${number}`;
+	}
+
+	/**
+	 * "Lane 2 · Roboto 400 italic": lanes can share a family and weight, so
+	 * the number tells them apart.
+	 */
+	label(id: string) {
+		const lane = this.get(id);
+
+		if (!lane) {
+			return this.name(id);
+		}
+
+		const style = lane.style === 'normal' ? '' : ` ${lane.style}`;
+
+		return `${this.name(id)} · ${lane.family} ${lane.weight}${style}`;
+	}
+
 	reset() {
 		this.lanes = LanesRepository.defaultLanes();
 	}

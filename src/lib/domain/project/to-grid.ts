@@ -6,9 +6,7 @@ import type {
 	Specimen
 } from '#lib/types.js';
 
-import { adjustNumberPrecision } from './adjust-number-precision';
-
-import { scale } from './scale';
+import { toSpecimen } from './to-specimen';
 
 export const toGrid = (lanes: Lane[], precision: number): Grid => {
 	if (lanes.length === 0) {
@@ -84,23 +82,7 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 				continue;
 			}
 
-			const override = lane.overrides[i];
-			const value: Specimen = {
-				fontSize:
-					override?.fontSize ??
-					adjustNumberPrecision(
-						scale(lane.baseSize, lane.ratio, i),
-						precision
-					),
-				fontSizeOverridden: override?.fontSize !== undefined,
-				lineHeight: override?.lineHeight ?? 1,
-				lineHeightOverridden: override?.lineHeight !== undefined,
-				letterSpacing: override?.letterSpacing ?? 0,
-				letterSpacingOverridden: override?.letterSpacing !== undefined
-				// weight: lane.weight,
-				// family: lane.family,
-				// style: lane.style
-			};
+			const value: Specimen = toSpecimen(lane, i, precision);
 
 			grid[k].push({
 				...location,
