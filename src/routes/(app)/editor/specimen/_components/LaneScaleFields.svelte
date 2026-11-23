@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { tick } from 'svelte';
+
 	import type { FluidScale, Lane } from '#lib/types.js';
 
 	import { MODULAR_SCALE_RATIOS } from '#lib/constants.js';
@@ -25,6 +27,29 @@
 		MODULAR_SCALE_RATIOS.find(
 			(entry) => entry.ratio === ratio
 		)?.ratio.toString() ?? CUSTOM;
+
+	// ratio fields switched to Custom by hand, so a typed value that happens to
+	// match a named interval keeps its input open instead of snapping back
+	let customFields = $state<Record<string, boolean>>({});
+
+	const isCustom = (id: string, ratio: number) =>
+		customFields[id] === true || presetOf(ratio) === CUSTOM;
+
+	const choosePreset = async (
+		id: string,
+		value: string,
+		onRatio: (value: string) => void
+	) => {
+		if (value === CUSTOM) {
+			customFields[id] = true;
+			await tick();
+			document.getElementById(`${id}-value`)?.focus();
+			return;
+		}
+
+		customFields[id] = false;
+		onRatio(value);
+	};
 
 	// half-typed or cleared inputs aren't sizes, so they leave the lane alone
 	const toPositive = (value: string) => {
@@ -70,37 +95,41 @@
 	disabled: boolean,
 	onRatio: (value: string) => void
 )}
+	{@const custom = isCustom(id, ratio)}
 	<li>
 		<Separator as="label" for={`${id}-preset`}>{label}</Separator>
-		<div class="mt-1 grid grid-cols-[1fr_80px] gap-2">
+		<div class={['mt-1 grid gap-2', custom && 'grid-cols-[1fr_80px]']}>
 			<Select
 				id={`${id}-preset`}
-				value={presetOf(ratio)}
+				value={custom ? CUSTOM : presetOf(ratio)}
 				{disabled}
 				variant={disabled ? 'disabled' : 'default'}
-				onchange={(event) => {
-					if (event.currentTarget.value !== CUSTOM) {
-						onRatio(event.currentTarget.value);
-					}
-				}}
+				onchange={(event) =>
+					choosePreset(id, event.currentTarget.value, onRatio)}
 			>
-				{#each MODULAR_SCALE_RATIOS as entry (entry.ratio)}
-					<option value={entry.ratio.toString()}>{entry.label}</option>
-				{/each}
-				<option value={CUSTOM} disabled>Custom</option>
+				<option value={CUSTOM}>Custom</option>
+				<optgroup label="Intervals">
+					{#each MODULAR_SCALE_RATIOS as entry (entry.ratio)}
+						<option value={entry.ratio.toString()}
+							>{entry.label} ({entry.ratio})</option
+						>
+					{/each}
+				</optgroup>
 			</Select>
-			<Input
-				id={`${id}-value`}
-				aria-label={`${label} value`}
-				class="text-right"
-				type="number"
-				min={0.001}
-				step={0.001}
-				value={ratio}
-				{disabled}
-				variant={disabled ? 'disabled' : 'default'}
-				oninput={(event) => onRatio(event.currentTarget.value)}
-			/>
+			{#if custom}
+				<Input
+					id={`${id}-value`}
+					aria-label={`${label} value`}
+					class="text-right"
+					type="number"
+					min={0.001}
+					step={0.001}
+					value={ratio}
+					{disabled}
+					variant={disabled ? 'disabled' : 'default'}
+					oninput={(event) => onRatio(event.currentTarget.value)}
+				/>
+			{/if}
 		</div>
 	</li>
 {/snippet}

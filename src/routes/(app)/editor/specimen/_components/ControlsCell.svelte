@@ -67,26 +67,33 @@
 	);
 </script>
 
-{#snippet bounds()}
+{#snippet bounds(fill: boolean)}
+	{@const buttonClass = fill ? 'size-full [&>svg]:size-8' : undefined}
+	<!-- filling, the rows come from the scale box beside it and each item
+	     squares itself off that height -->
 	<ul
-		class="grid grid-cols-1 grid-rows-[repeat(2,32px)] items-start justify-start gap-1"
+		class={fill
+			? 'row-span-2 grid grid-rows-subgrid gap-y-1'
+			: 'grid grid-cols-1 grid-rows-[repeat(2,32px)] items-start justify-start gap-1'}
 	>
-		<li>
+		<li class={fill ? 'aspect-square h-full' : undefined}>
 			{#if !(actions.top.destructive === true && cell.delete === false)}
 				<Button
 					label={actions.top.label}
 					iconOnly
+					class={buttonClass}
 					icon={ChevronUp}
 					onclick={actions.top.action}
 					scheme={actions.top.destructive ? 'destructive' : 'primary'}
 				/>
 			{/if}
 		</li>
-		<li>
+		<li class={fill ? 'aspect-square h-full' : undefined}>
 			{#if !(actions.bottom.destructive === true && cell.delete === false)}
 				<Button
 					label={actions.bottom.label}
 					iconOnly
+					class={buttonClass}
 					icon={ChevronDown}
 					onclick={actions.bottom.action}
 					scheme={actions.bottom.destructive ? 'destructive' : 'primary'}
@@ -133,14 +140,14 @@
 			</ul>
 
 			<!-- gap + the box's padding keep the buttons 2rem clear of the scale -->
-			<div class="flex flex-row items-start gap-4">
-				{@render bounds()}
-				<div class="flex-1 border border-black bg-white p-4">
+			<div class="grid grid-cols-[auto_1fr] grid-rows-2 gap-x-4 gap-y-1">
+				{@render bounds(true)}
+				<div class="row-span-2 border border-black bg-white p-4">
 					<LaneScaleFields {lane} />
 				</div>
 			</div>
 		</div>
 	{:else}
-		{@render bounds()}
+		{@render bounds(false)}
 	{/if}
 </div>
