@@ -50,12 +50,12 @@
 	);
 
 	const laneLabel = (lane: Lane | undefined) =>
-		lane ? `${lane.family} ${lane.weight}` : 'Deleted lane';
+		lane ? project.lanes.label(lane.id) : 'Deleted lane';
 
 	// steps repeat across lanes, so name the lane when there's more than one
 	const where = $derived(
 		project.lanes.lanes.length > 1
-			? `step ${cell.step} of ${laneLabel(project.lanes.get(cell.laneId))}`
+			? `step ${cell.step} of ${project.lanes.name(cell.laneId)}`
 			: `step ${cell.step}`
 	);
 

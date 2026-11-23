@@ -102,6 +102,16 @@
 			<ul
 				class="flex flex-row flex-wrap items-center justify-start gap-4 border border-black bg-white p-4"
 			>
+				<!-- numbered like the step markers down the side -->
+				<li>
+					<h2
+						class="grid size-11 place-items-center border bg-sunburst-500 text-2xl font-bold"
+					>
+						<span class="sr-only">Lane </span>{project.lanes.number(
+							lane.id
+						)}
+					</h2>
+				</li>
 				<li>
 					<p class="text-xs">Family</p>
 					<p class="text-xl font-bold">{lane.family}</p>
