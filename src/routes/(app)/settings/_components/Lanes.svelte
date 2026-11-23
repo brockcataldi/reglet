@@ -29,10 +29,8 @@
 
 <section class="w-full border-black bg-white py-8">
 	<div class="mx-auto my-0 max-w-200">
-		<header class="flex flex-row items-center justify-between">
-			<h2 class="mb-4 text-6xl font-bold tracking-tighter text-black">
-				Lanes
-			</h2>
+		<header class="mb-4 flex flex-row items-center justify-between">
+			<h2 class="text-6xl font-bold tracking-tighter text-black">Lanes</h2>
 
 			<Button
 				label="Add Lane"

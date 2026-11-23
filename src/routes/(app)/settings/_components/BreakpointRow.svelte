@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Trash2 } from '@lucide/svelte';
+	import { Trash } from '@lucide/svelte';
 
 	import type { Breakpoint } from '#lib/types.js';
 
@@ -128,7 +128,7 @@
 			<Button
 				label="Remove"
 				aria-label={`Remove ${breakpoint.name}`}
-				icon={Trash2}
+				icon={Trash}
 				scheme="destructive"
 				disabled={root}
 				class={root ? 'invisible' : undefined}

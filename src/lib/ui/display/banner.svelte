@@ -9,7 +9,7 @@
 		variants: {
 			scheme: {
 				primary: 'border-cobalt-500 text-cobalt-500 bg-cobalt-50',
-				success: 'text-black bg-lime-300',
+				success: 'border-green-700 text-green-700 bg-green-100',
 				destructive: 'border-red-700 text-red-700 bg-red-100'
 			}
 		},
