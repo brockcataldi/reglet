@@ -3,6 +3,7 @@
 
 	import project from '#lib/stores/project.svelte.js';
 	import { toFontVariationSettings } from '#lib/domain/fonts/to-font-variation-settings.js';
+	import { adjustNumberPrecision } from '#lib/domain/project/adjust-number-precision.js';
 
 	import Input from '#lib/ui/form/input.svelte';
 	import Separator from '#lib/ui/display/separator.svelte';
@@ -32,7 +33,7 @@
 				lane.variationSettings
 			)}
 			style:line-height={cell.value.lineHeight}
-			style:font-size={`${cell.value.fontSize.toFixed(3)}${project.fontSizeUnit}`}
+			style:font-size={`${adjustNumberPrecision(cell.value.fontSize, project.precision)}${project.fontSizeUnit}`}
 			style:letter-spacing={`${cell.value.letterSpacing}${project.letterSpacingUnit}`}
 		>
 			Lorem ipsum dolor sit amet consectetur adipisicing elit.

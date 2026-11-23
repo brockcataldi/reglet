@@ -77,6 +77,23 @@ describe('tags-repository', () => {
 		expect(repository.get(h1.id)?.startsAt).toBe('desktop');
 	});
 
+	it('clamps placements on a lane into its step range', () => {
+		const repository = new TagsRepository();
+		const h1 = repository.create('h1', 'root')!;
+		const order = ['root', 'tablet', 'desktop'];
+
+		repository.assign(h1.id, 'root', { laneId: 'a', step: -2 }, order);
+		repository.assign(h1.id, 'tablet', { laneId: 'a', step: 6 }, order);
+		repository.assign(h1.id, 'desktop', { laneId: 'b', step: 8 }, order);
+		repository.clampLane('a', -1, 5);
+
+		expect(repository.get(h1.id)?.placements).toStrictEqual({
+			root: { laneId: 'a', step: -1 },
+			tablet: { laneId: 'a', step: 5 },
+			desktop: { laneId: 'b', step: 8 }
+		});
+	});
+
 	it('drops placements on removed breakpoints when synced', () => {
 		const repository = new TagsRepository();
 		const h1 = repository.create('h1', 'root')!;

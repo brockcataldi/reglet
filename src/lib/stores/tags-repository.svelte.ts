@@ -134,6 +134,23 @@ class TagsRepository {
 	}
 
 	/**
+	 * Moves placements on a lane back inside its step range, ex. after the
+	 * range shrinks, so none point at a step the lane no longer has.
+	 */
+	clampLane(laneId: string, minStep: number, maxStep: number) {
+		for (const tag of this.tags) {
+			for (const placement of Object.values(tag.placements)) {
+				if (placement.laneId === laneId) {
+					placement.step = Math.min(
+						Math.max(placement.step, minStep),
+						maxStep
+					);
+				}
+			}
+		}
+	}
+
+	/**
 	 * Re-anchors every tag after the breakpoints change: placements on removed
 	 * breakpoints go, and each tag starts at its lowest remaining placement.
 	 */

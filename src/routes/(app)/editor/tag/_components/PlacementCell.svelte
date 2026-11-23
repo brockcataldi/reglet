@@ -4,6 +4,7 @@
 	import type { Breakpoint, Lane, Tag } from '#lib/types.js';
 
 	import { toFontVariationSettings } from '#lib/domain/fonts/to-font-variation-settings.js';
+	import { adjustNumberPrecision } from '#lib/domain/project/adjust-number-precision.js';
 	import { toSpecimen } from '#lib/domain/project/to-specimen.js';
 	import { resolvePlacement } from '#lib/domain/tags/resolve-placement.js';
 	import project from '#lib/stores/project.svelte.js';
@@ -30,6 +31,11 @@
 	const selectId = $derived(`placement-${tag.id}-${breakpoint.id}`);
 	const where = $derived(
 		named ? `${tag.name} at ${breakpoint.name}` : tag.name
+	);
+
+	// the header row with min widths is hidden from screen readers
+	const labelWhere = $derived(
+		named ? `${where}, ${breakpoint.width}px and up` : where
 	);
 
 	const breakpoints = $derived(project.breakpoints.breakpoints);
@@ -60,6 +66,13 @@
 			: undefined
 	);
 
+	// overrides skip toSpecimen's rounding, so round for display here
+	const fontSize = $derived(
+		specimen
+			? adjustNumberPrecision(specimen.fontSize, project.precision)
+			: undefined
+	);
+
 	const inheritedFrom = $derived(
 		resolved && !own
 			? project.breakpoints.get(resolved.breakpointId)
@@ -82,7 +95,7 @@
 
 	// an empty value drops this breakpoint's own placement
 	const emptyLabel = $derived(
-		below ? `Inherit · ${describe(below.laneId, below.step)}` : 'None'
+		below ? `Inherit (${describe(below.laneId, below.step)})` : 'None'
 	);
 
 	const change = (next: string) => {
@@ -132,15 +145,15 @@
 					lane.variationSettings
 				)}
 				style:line-height={specimen.lineHeight}
-				style:font-size={`${specimen.fontSize}${project.fontSizeUnit}`}
+				style:font-size={`${fontSize}${project.fontSizeUnit}`}
 				style:letter-spacing={`${specimen.letterSpacing}${project.letterSpacingUnit}`}
 			>
 				Lorem ipsum dolor sit amet consectetur adipisicing elit.
 			</p>
 			<p class="mt-2 text-xs text-neutral-600">
-				{specimen.fontSize}{project.fontSizeUnit} / {specimen.lineHeight}
+				{fontSize}{project.fontSizeUnit} / {specimen.lineHeight}
 				{#if inheritedFrom}
-					· inherited from {inheritedFrom.name}
+					(inherited from {inheritedFrom.name})
 				{/if}
 			</p>
 		{:else}
@@ -150,7 +163,7 @@
 
 	<div class="p-4">
 		<Separator as="label" for={selectId}>
-			Specimen<span class="sr-only"> for {where}</span>
+			Specimen<span class="sr-only"> for {labelWhere}</span>
 			{#snippet action()}
 				{#if own}
 					<Button
