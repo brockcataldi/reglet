@@ -74,7 +74,7 @@
 					<ul class="col-span-full grid grid-cols-subgrid items-start">
 						<li class="p-4">
 							<h2
-								class="grid min-h-17 w-fit place-items-center border bg-sunburst-500 px-3 text-2xl font-bold"
+								class="w-fit border bg-sunburst-500 px-5 py-3 text-2xl font-bold"
 							>
 								{tag.name}
 							</h2>
