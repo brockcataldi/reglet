@@ -43,7 +43,7 @@ class LanesRepository {
 	}
 
 	/**
-	 * "Lane 2 · Roboto 400 italic": lanes can share a family and weight, so
+	 * "Lane 2 (Roboto 400 italic)": lanes can share a family and weight, so
 	 * the number tells them apart.
 	 */
 	label(id: string) {
@@ -55,16 +55,7 @@ class LanesRepository {
 
 		const style = lane.style === 'normal' ? '' : ` ${lane.style}`;
 
-		return `${this.name(id)} · ${lane.family} ${lane.weight}${style}`;
-	}
-
-	/**
-	 * "Step 3 · Lane 2 · Roboto 400": how the specimen view names a placement.
-	 * Lane numbers shift when an earlier lane is deleted, so the family and
-	 * weight keep it recognizable.
-	 */
-	describeStep(id: string, step: number) {
-		return `Step ${step} · ${this.label(id)}`;
+		return `${this.name(id)} (${lane.family} ${lane.weight}${style})`;
 	}
 
 	reset() {
