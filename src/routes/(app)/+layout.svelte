@@ -24,18 +24,18 @@
 					<ul class="flex flex-row">
 						<li class="w-fit">
 							<NavigationItem
-								href={resolve('/editor/specimen')}
+								href={resolve('/(app)/editor/specimen')}
 								border="r"
-								active={routeId === '/editor/specimen'}
+								active={routeId === '/(app)/editor/specimen'}
 							>
 								Specimen View
 							</NavigationItem>
 						</li>
 						<li class="w-fit">
 							<NavigationItem
-								href={resolve('/editor/tag')}
+								href={resolve('/(app)/editor/tag')}
 								border="r"
-								active={routeId === '/editor/tag'}
+								active={routeId === '/(app)/editor/tag'}
 							>
 								Tag View
 							</NavigationItem>
@@ -46,18 +46,18 @@
 			<ul class="flex flex-row">
 				<li class="w-fit">
 					<NavigationItem
-						href={resolve('/editor/settings')}
+						href={resolve('/(app)/settings')}
 						border="l"
-						active={routeId === '/editor/settings'}
+						active={routeId === '/(app)/settings'}
 					>
 						Settings
 					</NavigationItem>
 				</li>
 				<li class="w-fit">
 					<NavigationItem
-						href={resolve(`editor/export`)}
+						href={resolve('/(app)/export')}
 						border="l"
-						active={routeId === '/editor/export'}
+						active={routeId === '/(app)/export'}
 					>
 						Export
 					</NavigationItem>
