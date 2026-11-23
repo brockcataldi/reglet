@@ -215,7 +215,7 @@
 							class="font-mono text-xs text-cobalt-500 uppercase hover:underline"
 							onclick={() => setAxis(tag, undefined)}
 						>
-							{value} · Reset
+							Reset ({value})
 						</button>
 					{/if}
 				{/snippet}

@@ -3,7 +3,7 @@
 		id: string;
 		// what's shown and matched, ex. "tablet/h1"
 		label: string;
-		// where the tag sits right now, ex. "Step 6 · Arial 400"
+		// where the tag sits right now, ex. "Step 6, Lane 1 (Arial 400)"
 		detail: string;
 		// when set, choosing the option fills the input with this instead of
 		// selecting it, ex. "tablet/" to narrow the list to one breakpoint

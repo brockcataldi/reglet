@@ -19,12 +19,10 @@
 		breakpoint: Breakpoint;
 		// name the breakpoint in labels; off when there's only one column
 		named: boolean;
-		laneLabel: (lane: Lane) => string;
 		onChange: (message: string) => void;
 	};
 
-	let { tag, breakpoint, named, laneLabel, onChange }: PlacementCellProps =
-		$props();
+	let { tag, breakpoint, named, onChange }: PlacementCellProps = $props();
 
 	const SEPARATOR = '|';
 
@@ -187,7 +185,7 @@
 		>
 			<option value="">{emptyLabel}</option>
 			{#each project.lanes.lanes as option (option.id)}
-				<optgroup label={laneLabel(option)}>
+				<optgroup label={project.lanes.label(option.id)}>
 					{#each steps(option) as step (step)}
 						<option value={`${option.id}${SEPARATOR}${step}`}>
 							{describe(option.id, step)}

@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 
-	import type { Lane } from '#lib/types.js';
-
 	import project from '#lib/stores/project.svelte.js';
 
 	import PlacementCell from './_components/PlacementCell.svelte';
@@ -22,14 +20,6 @@
 	const columnsCSS = $derived(
 		`max-content repeat(${columns.length}, 420px)`
 	);
-
-	// "Lane 2 (Roboto 400 italic)": lanes can share a family and weight, so
-	// the number tells them apart
-	const laneLabel = (lane: Lane) => {
-		const style = lane.style === 'normal' ? '' : ` ${lane.style}`;
-
-		return `${project.lanes.name(lane.id)} (${lane.family} ${lane.weight}${style})`;
-	};
 </script>
 
 <svelte:head>
@@ -100,7 +90,6 @@
 									{tag}
 									{breakpoint}
 									{named}
-									{laneLabel}
 									onChange={(message) => (announcement = message)}
 								/>
 							</li>
