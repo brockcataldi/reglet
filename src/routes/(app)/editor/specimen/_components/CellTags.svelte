@@ -59,10 +59,7 @@
 			return 'Unplaced';
 		}
 
-		const where = project.lanes.describeStep(
-			resolved.laneId,
-			resolved.step
-		);
+		const where = `Step ${resolved.step}, ${project.lanes.label(resolved.laneId)}`;
 		const from = project.breakpoints.get(resolved.breakpointId);
 
 		return resolved.breakpointId === breakpoint.id || !from
