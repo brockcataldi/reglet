@@ -39,56 +39,56 @@
 		</p>
 	</div>
 {:else}
-	<table style:--columns={columnsCSS} class="block w-fit">
-		<caption class="sr-only">
-			Specimens attached to each tag{named ? ' at each breakpoint' : ''}
-		</caption>
-		<thead class="sticky top-9 z-[5] block bg-white">
-			<tr class="grid grid-cols-(--columns) border-b border-black">
-				<th scope="col" class="p-4 text-left">
-					<span class="sr-only">Tag</span>
-				</th>
-				{#each columns as breakpoint (breakpoint.id)}
-					<th scope="col" class="p-4 text-left">
-						<span class="block text-2xl font-bold">{breakpoint.name}</span>
-						<span class="block text-xs font-normal text-neutral-600">
-							{#if project.type === 'standard'}
-								{breakpoint.width}px and up
-							{:else if project.type === 'fluid'}
-								Every width
-							{:else}
-								No breakpoints
-							{/if}
-						</span>
-					</th>
-				{/each}
-			</tr>
-		</thead>
-		<tbody class="block">
-			{#each project.tags.tags as tag (tag.id)}
-				<tr class="grid grid-cols-(--columns) items-start">
-					<th scope="row" class="p-4 text-left align-top">
-						<span
-							class="grid min-h-17 w-fit place-items-center border bg-sunburst-500 px-3 text-2xl font-bold"
-						>
-							{tag.name}
-						</span>
-					</th>
-					{#each columns as breakpoint (breakpoint.id)}
-						<td class="p-4">
-							<PlacementCell
-								{tag}
-								{breakpoint}
-								{named}
-								{laneLabel}
-								onChange={(message) => (announcement = message)}
-							/>
-						</td>
-					{/each}
-				</tr>
+	<div style:--columns={columnsCSS} class="w-fit">
+		<!-- each cell's label names its breakpoint, so this row is visual -->
+		<ul
+			class="sticky top-9 z-[5] grid grid-cols-(--columns) border-b border-black bg-white"
+			aria-hidden="true"
+		>
+			<li></li>
+			{#each columns as breakpoint (breakpoint.id)}
+				<li class="p-4">
+					<p class="text-2xl font-bold">{breakpoint.name}</p>
+					<p class="text-xs text-neutral-600">
+						{#if project.type === 'standard'}
+							{breakpoint.width}px and up
+						{:else if project.type === 'fluid'}
+							Every width
+						{:else}
+							No breakpoints
+						{/if}
+					</p>
+				</li>
 			{/each}
-		</tbody>
-	</table>
+		</ul>
+
+		<ul aria-label="Tags">
+			{#each project.tags.tags as tag (tag.id)}
+				<li>
+					<ul class="grid grid-cols-(--columns) items-start">
+						<li class="p-4">
+							<h2
+								class="grid min-h-17 w-fit place-items-center border bg-sunburst-500 px-3 text-2xl font-bold"
+							>
+								{tag.name}
+							</h2>
+						</li>
+						{#each columns as breakpoint (breakpoint.id)}
+							<li class="p-4">
+								<PlacementCell
+									{tag}
+									{breakpoint}
+									{named}
+									{laneLabel}
+									onChange={(message) => (announcement = message)}
+								/>
+							</li>
+						{/each}
+					</ul>
+				</li>
+			{/each}
+		</ul>
+	</div>
 {/if}
 
 <p class="sr-only" aria-live="polite">{announcement}</p>
