@@ -48,22 +48,26 @@
 	>
 		<!-- each cell's label names its breakpoint, so this row is visual -->
 		<ul
-			class="sticky top-9 z-[5] col-span-full grid grid-cols-subgrid border-b border-black bg-white"
+			class="sticky top-9 z-[5] col-span-full grid grid-cols-subgrid bg-white"
 			aria-hidden="true"
 		>
 			<li></li>
 			{#each columns as breakpoint (breakpoint.id)}
 				<li class="p-4">
-					<p class="text-2xl font-bold">{breakpoint.name}</p>
-					<p class="text-xs text-neutral-600">
+					<ul
+						class="flex flex-row flex-wrap items-center justify-start gap-4 border border-black bg-white p-4"
+					>
+						<li>
+							<p class="text-xs">Breakpoint</p>
+							<p class="text-xl font-bold">{breakpoint.name}</p>
+						</li>
 						{#if project.type === 'standard'}
-							{breakpoint.width}px and up
-						{:else if project.type === 'fluid'}
-							Every width
-						{:else}
-							No breakpoints
+							<li>
+								<p class="text-xs">Min Width</p>
+								<p class="text-xl font-bold">{breakpoint.width}px</p>
+							</li>
 						{/if}
-					</p>
+					</ul>
 				</li>
 			{/each}
 		</ul>
