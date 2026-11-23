@@ -56,11 +56,9 @@ describe('draft-repository', () => {
 
 		draft.loadTemplate('custom');
 		expect(draft.tags).toStrictEqual([]);
-		expect(draft.template).toBe('custom');
 
 		draft.loadTemplate('material');
 		expect(draft.tags).toHaveLength(15);
-		expect(draft.template).toBe('material');
 	});
 
 	it('reloading the same template resets edits to its tags', () => {
@@ -82,7 +80,6 @@ describe('draft-repository', () => {
 			const draft = new DraftRepository();
 
 			draft.loadTemplate(id);
-			expect(draft.template).toBe(id);
 			expect(draft.errors).toStrictEqual([]);
 		}
 	);
@@ -92,7 +89,6 @@ describe('draft-repository', () => {
 		draft.loadTemplate('html');
 
 		draft.loadTemplate('nope');
-		expect(draft.template).toBe('html');
 		expect(draft.tags).toHaveLength(8);
 	});
 

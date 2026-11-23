@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { TAG_TEMPLATES } from '#lib/constants.js';
 	import project from '#lib/stores/project.svelte.js';
 
 	import Banner from '#lib/ui/display/banner.svelte';
-	import Separator from '#lib/ui/display/separator.svelte';
 
 	const draft = project.draft;
 
@@ -12,10 +10,6 @@
 		fluid: 'Fluid',
 		static: 'No breakpoints'
 	};
-
-	const template = $derived(
-		TAG_TEMPLATES.find((t) => t.id === draft.template)?.name ?? 'Custom'
-	);
 
 	const tagNames = $derived(
 		draft.tags.map((tag) => tag.name.trim()).filter((name) => name !== '')
@@ -27,8 +21,6 @@
 </svelte:head>
 
 <div class="w-full">
-	<Separator as="h2">Overview</Separator>
-
 	<dl class="grid grid-cols-[max-content_1fr] gap-x-8 gap-y-3 text-sm">
 		<dt class="text-neutral-600 uppercase">Project type</dt>
 		<dd>{typeNames[draft.type]}</dd>
@@ -52,7 +44,7 @@
 
 		<dt class="text-neutral-600 uppercase">Tags</dt>
 		<dd>
-			{template}, {draft.tags.length}
+			{draft.tags.length}
 			{draft.tags.length === 1 ? 'tag' : 'tags'}
 			{#if tagNames.length > 0}
 				<p class="text-neutral-600">{tagNames.join(', ')}</p>

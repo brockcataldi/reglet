@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Import, Plus, Trash2 } from '@lucide/svelte';
+	import { Import, Plus, Trash } from '@lucide/svelte';
 
 	import { TAG_TEMPLATES } from '#lib/constants.js';
 
@@ -17,8 +17,8 @@
 
 	const errors = $derived(validateTagNames(draft.tags));
 
-	// what the select points at; nothing changes until it's loaded
-	let selected = $state(draft.template);
+	// only a way to fill the list; nothing changes until it's loaded
+	let selected = $state(TAG_TEMPLATES[0].id);
 
 	const selectedTemplate = $derived(
 		TAG_TEMPLATES.find((template) => template.id === selected)
@@ -36,12 +36,8 @@
 	<title>Tags - Reglet</title>
 </svelte:head>
 
-<div class="mb-4 w-full">
-	<Separator
-		as="label"
-		for="tag-template"
-		description="Replaces the tags below">Template</Separator
-	>
+<div class="mb-8 w-full">
+	<Separator as="label" for="tag-template">Load Template</Separator>
 	<div class="flex flex-row items-end gap-4">
 		<Select
 			id="tag-template"
@@ -66,37 +62,52 @@
 </div>
 
 <div class="w-full">
-	<Separator as="h2" description={`${draft.tags.length} tags`}
-		>Tags</Separator
-	>
-
 	{#if draft.tags.length === 0}
 		<p class="text-sm text-neutral-600">
 			No tags yet. You can add them now or later in the editor.
 		</p>
 	{/if}
 
-	<ul class="flex flex-col gap-2">
+	<ul class="flex flex-col gap-4">
 		{#each draft.tags as tag (tag.id)}
 			{@const invalid =
 				tag.name.trim() === '' ||
 				tag.name.includes('/') ||
 				isTagNameTaken(draft.tags, tag.name, tag.id)}
-			<li class="flex flex-row items-center gap-4">
-				<label for={`tag-${tag.id}`} class="sr-only">Tag name</label>
-				<Input
-					id={`tag-${tag.id}`}
-					placeholder="ex. h1"
-					variant={invalid ? 'error' : 'default'}
-					bind:value={tag.name}
-				/>
-				<span class="w-20 shrink-0 text-xs text-neutral-600 uppercase">
-					{tag.step === null ? 'Unplaced' : `Step ${tag.step}`}
-				</span>
+			<li
+				class="grid grid-cols-[1fr_8rem_auto] items-end gap-4 border border-black bg-white p-4"
+			>
+				<div>
+					<Separator as="label" for={`tag-${tag.id}-name`}>Name</Separator>
+					<Input
+						id={`tag-${tag.id}-name`}
+						placeholder="ex. h1"
+						variant={invalid ? 'error' : 'default'}
+						aria-invalid={invalid}
+						bind:value={tag.name}
+					/>
+				</div>
+				<div>
+					<Separator as="label" for={`tag-${tag.id}-step`}>Step</Separator>
+					<Input
+						id={`tag-${tag.id}-step`}
+						type="number"
+						step="1"
+						placeholder="Unplaced"
+						bind:value={
+							() => tag.step ?? '',
+							(value) =>
+								(tag.step =
+									value === '' || value === null || value === undefined
+										? null
+										: Math.round(Number(value)))
+						}
+					/>
+				</div>
 				<Button
 					label="Remove"
 					aria-label={`Remove ${tag.name || 'tag'}`}
-					icon={Trash2}
+					icon={Trash}
 					scheme="destructive"
 					onclick={() => draft.removeTag(tag.id)}
 				/>
