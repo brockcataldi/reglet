@@ -57,9 +57,13 @@
 					<ul
 						class="flex flex-row flex-wrap items-center justify-start gap-4 border border-black bg-white p-4"
 					>
+						<!-- badged like the lane numbers on the specimen view -->
 						<li>
-							<p class="text-xs">Breakpoint</p>
-							<p class="text-xl font-bold">{breakpoint.name}</p>
+							<p
+								class="grid h-11 place-items-center border bg-sunburst-500 px-3 text-2xl font-bold"
+							>
+								{breakpoint.name}
+							</p>
 						</li>
 						{#if project.type === 'standard'}
 							<li>
