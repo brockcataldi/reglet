@@ -1,6 +1,5 @@
 import type {
 	Breakpoint,
-	FluidScale,
 	ModularScaleRatio,
 	ProjectType,
 	TagTemplate
@@ -29,13 +28,6 @@ export const BREAKPOINT_DEFAULTS: Record<
 		{ name: 'Tablet', width: 768 },
 		{ name: 'Desktop', width: 1200 }
 	]
-};
-
-// 18px @ 1.2 at the min width → 20px @ 1.25 at the max, relative to a 1rem min base
-export const FLUID_SCALE_DEFAULT: FluidScale = {
-	maxBaseSize: 1.111,
-	maxRatio: 1.25,
-	linkRatio: false
 };
 
 /**

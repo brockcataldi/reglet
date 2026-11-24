@@ -66,12 +66,6 @@
 			.join(', ')
 	);
 
-	const maxRatio = $derived(
-		lane.fluid?.linkRatio
-			? lane.ratio
-			: (lane.fluid?.maxRatio ?? lane.ratio)
-	);
-
 	const ratioName = (ratio: number) =>
 		MODULAR_SCALE_RATIOS.find((entry) => entry.ratio === ratio)?.label;
 
@@ -135,22 +129,9 @@
 						{/if}
 					</div>
 
-					{#if lane.fluid}
-						<dl
-							class="grid grid-cols-[2.5rem_1fr] items-baseline gap-x-2 gap-y-1 text-sm"
-						>
-							<dt class="text-xs">Min</dt>
-							<dd>{@render scaleLine(lane.baseSize, lane.ratio)}</dd>
-							<dt class="text-xs">Max</dt>
-							<dd>
-								{@render scaleLine(lane.fluid.maxBaseSize, maxRatio)}
-							</dd>
-						</dl>
-					{:else}
-						<p class="text-sm">
-							{@render scaleLine(lane.baseSize, lane.ratio)}
-						</p>
-					{/if}
+					<p class="text-sm">
+						{@render scaleLine(lane.baseSize, lane.ratio)}
+					</p>
 				</div>
 
 				<Button

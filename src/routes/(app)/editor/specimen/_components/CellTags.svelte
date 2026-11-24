@@ -26,11 +26,13 @@
 
 	const breakpoints = $derived(project.breakpoints.breakpoints);
 
-	// fluid and static projects only place tags on the root, so naming the
-	// breakpoint would be noise
+	// static projects only place tags on the root, so naming the breakpoint
+	// would be noise; fluid projects place on min and max
 	const prefixed = $derived(
-		project.type === 'standard' && breakpoints.length > 1
+		project.type !== 'static' && breakpoints.length > 1
 	);
+
+	const here = $derived({ laneId: cell.laneId, step: cell.step });
 
 	const labelOf = (breakpoint: Breakpoint, tag: Tag) =>
 		prefixed ? formatTagLabel(breakpoint.name, tag.name) : tag.name;
@@ -78,7 +80,10 @@
 								(entry) =>
 									entry.tag.id === tag.id &&
 									entry.breakpoint.id === breakpoint.id
-							)
+							) &&
+							// fluid tags can't place a max before a min, or one
+							// smaller than it or in another font
+							!project.placementError(tag.id, breakpoint.id, here)
 					)
 					.map((tag) => ({
 						id: `${breakpoint.id}:${tag.id}`,
@@ -131,13 +136,9 @@
 	};
 
 	const assign = (tag: Tag, breakpoint: Breakpoint) => {
-		project.tags.assign(
-			tag.id,
-			breakpoint.id,
-			{ laneId: cell.laneId, step: cell.step },
-			project.breakpointOrder
-		);
-		announcement = `Tagged ${where} as ${labelOf(breakpoint, tag)}.`;
+		if (project.assignTag(tag.id, breakpoint.id, here)) {
+			announcement = `Tagged ${where} as ${labelOf(breakpoint, tag)}.`;
+		}
 	};
 
 	const match = (option: TagOption, query: string) => {
@@ -182,6 +183,11 @@
 			return undefined;
 		}
 
+		// a new fluid tag has no min yet, so it can only start there
+		if (project.type === 'fluid' && breakpoint.id !== breakpoints[0]?.id) {
+			return undefined;
+		}
+
 		return { breakpoint, name };
 	};
 
@@ -212,8 +218,18 @@
 	};
 
 	const remove = (tag: Tag, breakpoint: Breakpoint) => {
-		project.tags.unassign(tag.id, breakpoint.id, project.breakpointOrder);
-		announcement = `Removed ${labelOf(breakpoint, tag)} from ${where}.`;
+		const max = breakpoints[1];
+		// removing a fluid min takes its max with it
+		const alsoMax =
+			project.type === 'fluid' &&
+			breakpoint.id === breakpoints[0]?.id &&
+			max !== undefined &&
+			max.id in tag.placements;
+
+		project.unassignTag(tag.id, breakpoint.id);
+		announcement = alsoMax
+			? `Removed ${labelOf(breakpoint, tag)} from ${where}, and ${labelOf(max, tag)} with it.`
+			: `Removed ${labelOf(breakpoint, tag)} from ${where}.`;
 		// the button that had focus is gone
 		picker?.focus();
 	};

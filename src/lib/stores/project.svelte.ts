@@ -1,6 +1,5 @@
 import {
 	DEFAULT_PROJECT_TYPE,
-	FLUID_SCALE_DEFAULT,
 	LOCAL_STORAGE_KEY_SETTINGS
 } from '#lib/constants.js';
 
@@ -9,9 +8,14 @@ import type {
 	LetterSpacingUnit,
 	ProjectSettings,
 	ProjectType,
-	Tag
+	Tag,
+	TagPlacement
 } from '#lib/types.js';
 import { validateBreakpoints } from '#lib/domain/project/validate-draft.js';
+import {
+	fluidPlacementError,
+	type FluidEnd
+} from '#lib/domain/tags/fluid-placement.js';
 import { read, write } from '#lib/utilities.js';
 
 import BreakpointsRepository from './breakpoints-repository.svelte';
@@ -101,6 +105,67 @@ class Project {
 	deleteLane(id: string) {
 		this.lanes.delete(id);
 		this.tags.forgetLane(id, this.breakpointOrder);
+		this.#dropStrandedMax();
+	}
+
+	/**
+	 * Why a tag can't be placed on a specimen at a breakpoint, or undefined
+	 * when it can. Only fluid projects have rules: see fluidPlacementError.
+	 */
+	placementError(
+		tagId: string,
+		breakpointId: string,
+		placement: TagPlacement
+	): string | undefined {
+		const tag = this.tags.get(tagId);
+		const [min, max] = this.breakpoints.breakpoints;
+
+		if (this.type !== 'fluid' || !tag || !min || !max) {
+			return undefined;
+		}
+
+		const end = (id: string): FluidEnd | undefined => {
+			const at = id === breakpointId ? placement : tag.placements[id];
+			const lane = at && this.lanes.get(at.laneId);
+
+			return lane && at ? { lane, step: at.step } : undefined;
+		};
+
+		return fluidPlacementError(end(min.id), end(max.id), this.precision);
+	}
+
+	/** Places a tag, unless the placement breaks the project's rules. */
+	assignTag(tagId: string, breakpointId: string, placement: TagPlacement) {
+		if (this.placementError(tagId, breakpointId, placement)) {
+			return false;
+		}
+
+		this.tags.assign(tagId, breakpointId, placement, this.breakpointOrder);
+		return true;
+	}
+
+	/**
+	 * Removes a tag's own placement at a breakpoint. In a fluid project a max
+	 * can't stand without its min, so removing the min removes both.
+	 */
+	unassignTag(tagId: string, breakpointId: string) {
+		this.tags.unassign(tagId, breakpointId, this.breakpointOrder);
+		this.#dropStrandedMax();
+	}
+
+	// fluid tags slide from min to max, so a max with no min goes
+	#dropStrandedMax() {
+		const [min, max] = this.breakpoints.breakpoints;
+
+		if (this.type !== 'fluid' || !min || !max) {
+			return;
+		}
+
+		for (const tag of this.tags.tags) {
+			if (!(min.id in tag.placements) && max.id in tag.placements) {
+				this.tags.unassign(tag.id, max.id, this.breakpointOrder);
+			}
+		}
 	}
 
 	/** Widens or narrows a lane's step range, keeping tags on real steps. */
@@ -170,10 +235,6 @@ class Project {
 		this.breakpoints.reset(draft.breakpoints);
 
 		const lane = LanesRepository.defaultLane();
-
-		if (draft.type === 'fluid') {
-			lane.fluid = { ...FLUID_SCALE_DEFAULT };
-		}
 
 		// widen the lane so every templated tag lands on a real step
 		for (const tag of draft.tags) {

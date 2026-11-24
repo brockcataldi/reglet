@@ -1,5 +1,5 @@
 // standard: root plus any number of breakpoints above it
-// fluid: a fixed min and max that sizes interpolate between
+// fluid: a fixed min and max; tags are placed at both and sizes slide between
 // static: no breakpoints, just the root
 export type ProjectType = 'standard' | 'fluid' | 'static';
 
@@ -35,7 +35,8 @@ export type TagPlacement = {
 /**
  * A named role (h1, body-l, caption…) pinned to specimens. A tag applies from
  * `startsAt` upward; a breakpoint without its own placement inherits the
- * closest one below it. Fluid and static projects only ever place on the root.
+ * closest one below it. Static projects only ever place on the root. Fluid
+ * projects place on min and max, and the size slides between the two.
  */
 export type Tag = {
 	id: string;
@@ -124,16 +125,6 @@ export type Lane = TypeSetting & {
 	minStep: number;
 	baseSize: number;
 	ratio: number;
-
-	// the far end of the scale in fluid projects; baseSize and ratio are the
-	// near end. When linkRatio is set, maxRatio is ignored in favour of ratio.
-	fluid?: FluidScale;
-};
-
-export type FluidScale = {
-	maxBaseSize: number;
-	maxRatio: number;
-	linkRatio: boolean;
 };
 
 export type SpecimenOverride = {
