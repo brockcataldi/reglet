@@ -2,7 +2,7 @@
 	import type { Lane, TypeSetting } from '#lib/types.js';
 	import { toFontVariationSettings } from '#lib/domain/fonts/to-font-variation-settings.js';
 	import project from '#lib/stores/project.svelte.js';
-	import { Copy, Trash } from '@lucide/svelte';
+	import { Copy, Link, Link2Off, Trash } from '@lucide/svelte';
 
 	import Button from '#lib/ui/button/button.svelte';
 
@@ -19,6 +19,9 @@
 
 	const number = $derived(project.lanes.number(lane.id));
 	const name = $derived(project.lanes.name(lane.id));
+	const source = $derived(
+		lane.linkedTo ? project.lanes.name(lane.linkedTo) : undefined
+	);
 </script>
 
 <div class="w-full border border-black bg-white">
@@ -65,10 +68,26 @@
 		</p>
 	</header>
 	<div class="p-4">
-		<TypeSettingFields
-			idPrefix={`lane-${lane.id}`}
-			setting={lane}
-			{onChange}
-		/>
+		<!-- a linked lane's font is its source's, so it's changed there -->
+		{#if source}
+			<div class="flex items-center justify-between gap-4">
+				<p class="flex items-center gap-2">
+					<Link class="size-4 shrink-0" aria-hidden="true" />
+					Linked to {source}, so its font follows {source}.
+				</p>
+				<Button
+					label="Unlink"
+					aria-label={`Unlink ${name}`}
+					icon={Link2Off}
+					onclick={() => project.unlinkLane(lane.id)}
+				/>
+			</div>
+		{:else}
+			<TypeSettingFields
+				idPrefix={`lane-${lane.id}`}
+				setting={lane}
+				{onChange}
+			/>
+		{/if}
 	</div>
 </div>

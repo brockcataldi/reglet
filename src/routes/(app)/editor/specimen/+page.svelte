@@ -34,14 +34,23 @@
 
 				{#each row as cell, columnIndex (columnIndex)}
 					{@const lane = project.lanes.lanes[columnIndex]}
+					{@const group = project.lanes.group(lane.id)}
 
-					<li class="p-4">
-						{#if isSpecimenGridCell(cell)}
-							<SpecimenCell {cell} {lane} />
-						{:else if isControlsGridCell(cell)}
-							<ControlsCell {cell} {lane} />
-						{/if}
-					</li>
+					<!-- a group's controls span its columns, from the source's cell -->
+					{#if !(isControlsGridCell(cell) && lane.linkedTo)}
+						<li
+							class="p-4"
+							style:grid-column={isControlsGridCell(cell) && group
+								? `span ${group.members.length}`
+								: undefined}
+						>
+							{#if isSpecimenGridCell(cell)}
+								<SpecimenCell {cell} {lane} />
+							{:else if isControlsGridCell(cell)}
+								<ControlsCell {cell} {lane} />
+							{/if}
+						</li>
+					{/if}
 				{/each}
 			</ul>
 		</li>

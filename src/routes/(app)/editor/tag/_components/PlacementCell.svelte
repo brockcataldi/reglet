@@ -6,6 +6,7 @@
 	import { toFontVariationSettings } from '#lib/domain/fonts/to-font-variation-settings.js';
 	import { adjustNumberPrecision } from '#lib/domain/project/adjust-number-precision.js';
 	import { toSpecimen } from '#lib/domain/project/to-specimen.js';
+	import { fluidLineHeightChanges } from '#lib/domain/tags/fluid-placement.js';
 	import { resolvePlacement } from '#lib/domain/tags/resolve-placement.js';
 	import project from '#lib/stores/project.svelte.js';
 	import { cn } from '#lib/utilities.js';
@@ -33,7 +34,11 @@
 
 	// the header row with min widths is hidden from screen readers
 	const labelWhere = $derived(
-		named ? `${where}, ${breakpoint.width}px and up` : where
+		named
+			? project.type === 'fluid'
+				? `${where}, at ${breakpoint.width}px`
+				: `${where}, ${breakpoint.width}px and up`
+			: where
 	);
 
 	const breakpoints = $derived(project.breakpoints.breakpoints);
@@ -81,6 +86,42 @@
 	const describe = (laneId: string, step: number) =>
 		`${project.lanes.name(laneId)} / Step ${step}`;
 
+	const fluid = $derived(project.type === 'fluid');
+	const isMax = $derived(fluid && breakpoint.id === breakpoints[1]?.id);
+
+	// a fluid max slides from the min, so there's nothing to pick until then
+	const needsMin = $derived(
+		isMax && !(breakpoints[0]?.id in tag.placements)
+	);
+
+	const optionError = (laneId: string, step: number) =>
+		project.placementError(tag.id, breakpoint.id, { laneId, step });
+
+	// unitless line heights can't go in a clamp(), so say when it'll change
+	const lineHeightChanges = $derived.by(() => {
+		if (!isMax || !own) {
+			return false;
+		}
+
+		const end = (laneId: string, step: number) => {
+			const target = project.lanes.get(laneId);
+			return target ? { lane: target, step } : undefined;
+		};
+		const min = tag.placements[breakpoints[0].id];
+
+		return fluidLineHeightChanges(
+			min && end(min.laneId, min.step),
+			end(own.laneId, own.step),
+			project.precision
+		);
+	});
+
+	// a placement that was fine can break later, ex. after the lane's scale
+	// or font changes, so the cell says so rather than hiding it
+	const currentError = $derived(
+		own ? optionError(own.laneId, own.step) : undefined
+	);
+
 	const steps = (target: Lane) =>
 		Array.from(
 			{ length: target.maxStep - target.minStep + 1 },
@@ -93,33 +134,41 @@
 
 	// an empty value drops this breakpoint's own placement
 	const emptyLabel = $derived(
-		below ? `Inherit (${describe(below.laneId, below.step)})` : 'None'
+		needsMin
+			? 'Place it at min first'
+			: below
+				? `Inherit (${describe(below.laneId, below.step)})`
+				: 'None'
 	);
 
 	const change = (next: string) => {
 		if (next === '') {
-			project.tags.unassign(
-				tag.id,
-				breakpoint.id,
-				project.breakpointOrder
-			);
+			const max = breakpoints[1];
+			// removing a fluid min takes its max with it
+			const alsoMax =
+				fluid && !isMax && max !== undefined && max.id in tag.placements;
+
+			project.unassignTag(tag.id, breakpoint.id);
 			onChange(
 				below
 					? `${where} now inherits ${describe(below.laneId, below.step)}.`
-					: `Removed the specimen from ${where}.`
+					: alsoMax
+						? `Removed the specimen from ${where}, and from ${max.name} with it.`
+						: `Removed the specimen from ${where}.`
 			);
 			return;
 		}
 
 		const [laneId, step] = next.split(SEPARATOR);
 
-		project.tags.assign(
-			tag.id,
-			breakpoint.id,
-			{ laneId, step: Number(step) },
-			project.breakpointOrder
-		);
-		onChange(`Attached ${describe(laneId, Number(step))} to ${where}.`);
+		if (
+			project.assignTag(tag.id, breakpoint.id, {
+				laneId,
+				step: Number(step)
+			})
+		) {
+			onChange(`Attached ${describe(laneId, Number(step))} to ${where}.`);
+		}
 	};
 </script>
 
@@ -181,18 +230,36 @@
 		<Select
 			id={selectId}
 			{value}
+			disabled={needsMin}
+			variant={needsMin ? 'disabled' : 'default'}
 			onchange={(event) => change(event.currentTarget.value)}
 		>
 			<option value="">{emptyLabel}</option>
 			{#each project.lanes.lanes as option (option.id)}
 				<optgroup label={project.lanes.label(option.id)}>
 					{#each steps(option) as step (step)}
-						<option value={`${option.id}${SEPARATOR}${step}`}>
-							{describe(option.id, step)}
+						{@const error = optionError(option.id, step)}
+						<!-- the current pick stays selectable so a broken one still shows -->
+						<option
+							value={`${option.id}${SEPARATOR}${step}`}
+							disabled={error !== undefined &&
+								value !== `${option.id}${SEPARATOR}${step}`}
+						>
+							{describe(option.id, step)}{error
+								? ` (${error.replace(/\.$/, '')})`
+								: ''}
 						</option>
 					{/each}
 				</optgroup>
 			{/each}
 		</Select>
+		{#if currentError}
+			<p class="mt-2 text-sm text-red-800">{currentError}</p>
+		{:else if lineHeightChanges}
+			<p class="mt-2 text-sm text-neutral-600">
+				Line height changes between min and max, so it'll export as a fluid
+				length instead of unitless.
+			</p>
+		{/if}
 	</div>
 </div>

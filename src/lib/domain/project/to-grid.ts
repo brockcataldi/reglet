@@ -40,7 +40,9 @@ export const toGrid = (lanes: Lane[], precision: number): Grid => {
 		const lane = lanes[j];
 		const laneMin = lane.minStep - 1;
 		const laneMax = lane.maxStep + 1;
-		const del = Math.abs(laneMax - laneMin) !== 1;
+		// the controls sit one step past each end, so a single-step lane spans 2
+		// and has nothing left to remove
+		const del = laneMax - laneMin > 2;
 
 		let k = 0;
 

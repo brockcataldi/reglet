@@ -19,7 +19,7 @@
 			value: 'fluid',
 			name: 'Fluid',
 			description:
-				'Sizes scale smoothly between a min and max width. Each tag stays on its lane; exports clamp() classes.'
+				'Place each tag at a min and a max width and its size slides between them; exports clamp() classes.'
 		},
 		{
 			value: 'static',

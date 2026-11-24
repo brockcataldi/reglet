@@ -1,16 +1,15 @@
 <script lang="ts">
 	import { tick } from 'svelte';
 
-	import type { FluidScale, Lane } from '#lib/types.js';
+	import type { Lane } from '#lib/types.js';
 
 	import { MODULAR_SCALE_RATIOS } from '#lib/constants.js';
 	import project from '#lib/stores/project.svelte.js';
 
-	import Separator from '#lib/ui/display/separator.svelte';
-	import Checkbox from '#lib/ui/form/checkbox.svelte';
-	import Input from '#lib/ui/form/input.svelte';
-	import InputUnit from '#lib/ui/form/input-unit.svelte';
-	import Select from '#lib/ui/form/select.svelte';
+	import InlineField, {
+		inlineControlClass,
+		inlineSegmentClass
+	} from '#lib/ui/form/inline-field.svelte';
 
 	type LaneScaleFieldsProps = {
 		lane: Lane;
@@ -20,7 +19,8 @@
 
 	const CUSTOM = 'custom';
 
-	const idPrefix = $derived(`lane-scale-${lane.id}`);
+	const baseId = $derived(`lane-scale-${lane.id}-base`);
+	const ratioId = $derived(`lane-scale-${lane.id}-ratio`);
 
 	// a typed ratio that isn't a named interval shows as custom
 	const presetOf = (ratio: number) =>
@@ -28,84 +28,59 @@
 			(entry) => entry.ratio === ratio
 		)?.ratio.toString() ?? CUSTOM;
 
-	// ratio fields switched to Custom by hand, so a typed value that happens to
-	// match a named interval keeps its input open instead of snapping back
-	let customFields = $state<Record<string, boolean>>({});
+	// switched to Custom by hand, so a typed value that happens to match a
+	// named interval keeps its input open instead of snapping back
+	let pickedCustom = $state(false);
 
-	const isCustom = (id: string, ratio: number) =>
-		customFields[id] === true || presetOf(ratio) === CUSTOM;
-
-	const choosePreset = async (
-		id: string,
-		value: string,
-		onRatio: (value: string) => void
-	) => {
-		if (value === CUSTOM) {
-			customFields[id] = true;
-			await tick();
-			document.getElementById(`${id}-value`)?.focus();
-			return;
-		}
-
-		customFields[id] = false;
-		onRatio(value);
-	};
+	const custom = $derived(pickedCustom || presetOf(lane.ratio) === CUSTOM);
 
 	// half-typed or cleared inputs aren't sizes, so they leave the lane alone
-	const toPositive = (value: string) => {
+	const update = (key: 'baseSize' | 'ratio', value: string) => {
 		const number = Number(value);
 
-		return value !== '' && Number.isFinite(number) && number > 0
-			? number
-			: undefined;
-	};
-
-	const update = (key: 'baseSize' | 'ratio', value: string) => {
-		const number = toPositive(value);
-
-		if (number !== undefined) {
+		if (value !== '' && Number.isFinite(number) && number > 0) {
 			project.lanes.update(lane.id, { [key]: number });
 		}
 	};
 
-	const updateFluid = (patch: Partial<FluidScale>) => {
-		if (lane.fluid) {
-			project.lanes.update(lane.id, {
-				fluid: { ...lane.fluid, ...patch }
-			});
+	const choosePreset = async (value: string) => {
+		if (value === CUSTOM) {
+			pickedCustom = true;
+			await tick();
+			document.getElementById(`${ratioId}-value`)?.focus();
+			return;
 		}
-	};
 
-	const updateFluidNumber = (
-		key: 'maxBaseSize' | 'maxRatio',
-		value: string
-	) => {
-		const number = toPositive(value);
-
-		if (number !== undefined) {
-			updateFluid({ [key]: number });
-		}
+		pickedCustom = false;
+		update('ratio', value);
 	};
 </script>
 
-{#snippet ratioFields(
-	id: string,
-	label: string,
-	ratio: number,
-	disabled: boolean,
-	onRatio: (value: string) => void
-)}
-	{@const custom = isCustom(id, ratio)}
+<ul class="flex flex-col gap-2">
 	<li>
-		<Separator as="label" for={`${id}-preset`}>{label}</Separator>
-		<div class={['mt-1 grid gap-2', custom && 'grid-cols-[1fr_80px]']}>
-			<Select
-				id={`${id}-preset`}
-				value={custom ? CUSTOM : presetOf(ratio)}
-				{disabled}
-				variant={disabled ? 'disabled' : 'default'}
-				onchange={(event) =>
-					choosePreset(id, event.currentTarget.value, onRatio)}
+		<InlineField
+			for={baseId}
+			label="Base Size"
+			suffix={project.fontSizeUnit}
+		>
+			<input
+				id={baseId}
+				class={[inlineControlClass, 'text-right']}
+				type="number"
+				value={lane.baseSize}
+				min={0.001}
+				step={0.05}
+				oninput={(event) => update('baseSize', event.currentTarget.value)}
+			/>
+		</InlineField>
+	</li>
+	<li>
+		<InlineField for={`${ratioId}-preset`} label="Ratio">
+			<select
+				id={`${ratioId}-preset`}
+				class={[inlineControlClass, 'pr-8']}
+				value={custom ? CUSTOM : presetOf(lane.ratio)}
+				onchange={(event) => choosePreset(event.currentTarget.value)}
 			>
 				<option value={CUSTOM}>Custom</option>
 				<optgroup label="Intervals">
@@ -115,83 +90,19 @@
 						>
 					{/each}
 				</optgroup>
-			</Select>
+			</select>
 			{#if custom}
-				<Input
-					id={`${id}-value`}
-					aria-label={`${label} value`}
-					class="text-right"
+				<input
+					id={`${ratioId}-value`}
+					aria-label="Ratio value"
+					class={[inlineControlClass, inlineSegmentClass, 'text-right']}
 					type="number"
 					min={0.001}
 					step={0.001}
-					value={ratio}
-					{disabled}
-					variant={disabled ? 'disabled' : 'default'}
-					oninput={(event) => onRatio(event.currentTarget.value)}
+					value={lane.ratio}
+					oninput={(event) => update('ratio', event.currentTarget.value)}
 				/>
 			{/if}
-		</div>
+		</InlineField>
 	</li>
-{/snippet}
-
-{#snippet baseField(
-	id: string,
-	label: string,
-	value: number,
-	onBase: (value: string) => void
-)}
-	<li class="col-start-1">
-		<Separator as="label" for={id}>{label}</Separator>
-		<InputUnit
-			{id}
-			containerClass="mt-1"
-			{value}
-			min={0.001}
-			step={0.05}
-			unit={project.fontSizeUnit}
-			oninput={(event) => onBase(event.currentTarget.value)}
-		/>
-	</li>
-{/snippet}
-
-<ul class="grid grid-cols-[180px_1fr] gap-4">
-	{@render baseField(
-		`${idPrefix}-base`,
-		lane.fluid ? 'Min Base Size' : 'Base Size',
-		lane.baseSize,
-		(value) => update('baseSize', value)
-	)}
-	{@render ratioFields(
-		`${idPrefix}-ratio`,
-		lane.fluid ? 'Min Ratio' : 'Ratio',
-		lane.ratio,
-		false,
-		(value) => update('ratio', value)
-	)}
-
-	{#if lane.fluid}
-		{@const fluid = lane.fluid}
-		{@render baseField(
-			`${idPrefix}-max-base`,
-			'Max Base Size',
-			fluid.maxBaseSize,
-			(value) => updateFluidNumber('maxBaseSize', value)
-		)}
-		{@render ratioFields(
-			`${idPrefix}-max-ratio`,
-			'Max Ratio',
-			fluid.linkRatio ? lane.ratio : fluid.maxRatio,
-			fluid.linkRatio,
-			(value) => updateFluidNumber('maxRatio', value)
-		)}
-		<li class="col-start-2">
-			<Checkbox
-				id={`${idPrefix}-link-ratio`}
-				label="Use min ratio at max"
-				checked={fluid.linkRatio}
-				onchange={(event) =>
-					updateFluid({ linkRatio: event.currentTarget.checked })}
-			/>
-		</li>
-	{/if}
 </ul>

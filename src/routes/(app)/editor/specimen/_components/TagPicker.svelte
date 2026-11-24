@@ -28,6 +28,9 @@
 		createLabel: (query: string) => string | undefined;
 		onSelect: (id: string) => void;
 		onCreate: (query: string) => void;
+		// the picker is done with: it lost focus, or Escape had nothing left
+		// to close or clear; `escaped` tells the two apart
+		onDismiss?: (escaped: boolean) => void;
 	};
 
 	let {
@@ -38,7 +41,8 @@
 			normalizeTagName(option.label).includes(normalizeTagName(query)),
 		createLabel,
 		onSelect,
-		onCreate
+		onCreate,
+		onDismiss
 	}: TagPickerProps = $props();
 
 	let input = $state<HTMLInputElement>();
@@ -157,6 +161,9 @@
 				} else if (query !== '') {
 					event.preventDefault();
 					query = '';
+				} else if (onDismiss) {
+					event.preventDefault();
+					onDismiss(true);
 				}
 				break;
 		}
@@ -186,7 +193,14 @@
 		activeIndex = -1;
 	}}
 	onclick={() => (open = true)}
-	onblur={close}
+	onblur={() => {
+		close();
+
+		// a half-typed tag stays put; an empty picker gets out of the way
+		if (query === '') {
+			onDismiss?.(false);
+		}
+	}}
 	{onkeydown}
 />
 

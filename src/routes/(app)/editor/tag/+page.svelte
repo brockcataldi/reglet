@@ -7,11 +7,11 @@
 
 	let announcement = $state('');
 
-	// fluid and static projects only place tags on the root
+	// static projects only place tags on the root
 	const columns = $derived(
-		project.type === 'standard'
-			? project.breakpoints.breakpoints
-			: project.breakpoints.breakpoints.slice(0, 1)
+		project.type === 'static'
+			? project.breakpoints.breakpoints.slice(0, 1)
+			: project.breakpoints.breakpoints
 	);
 
 	const named = $derived(columns.length > 1);
@@ -62,9 +62,12 @@
 								{breakpoint.name}
 							</p>
 						</li>
-						{#if project.type === 'standard'}
+						{#if project.type !== 'static'}
 							<li>
-								<p class="text-xs">Min Width</p>
+								<!-- fluid sizes are pinned at these widths, not from them up -->
+								<p class="text-xs">
+									{project.type === 'fluid' ? 'Width' : 'Min Width'}
+								</p>
 								<p class="text-xl font-bold">{breakpoint.width}px</p>
 							</li>
 						{/if}

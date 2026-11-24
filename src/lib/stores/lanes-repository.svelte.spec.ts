@@ -32,4 +32,41 @@ describe('lanes-repository', () => {
 			wdth: 80
 		});
 	});
+
+	it('carries font changes from a source to its linked lanes only', () => {
+		const repository = new LanesRepository();
+		repository.lanes = [LanesRepository.defaultLane()];
+
+		const [source] = repository.lanes;
+		const linked = repository.link(source.id)!;
+
+		repository.update(source.id, { family: 'Inter', weight: 700 });
+		repository.update(linked.id, { family: 'Roboto', baseSize: 1.25 });
+
+		expect(repository.get(linked.id)).toMatchObject({
+			family: 'Inter',
+			weight: 700,
+			baseSize: 1.25
+		});
+		expect(repository.get(source.id)?.baseSize).toBe(1);
+	});
+
+	it('moves an unlinked lane out after its group with its font', () => {
+		const repository = new LanesRepository();
+		repository.lanes = [LanesRepository.defaultLane()];
+
+		const [source] = repository.lanes;
+		const first = repository.link(source.id)!;
+		const second = repository.link(source.id)!;
+
+		repository.unlink(first.id);
+
+		expect(repository.lanes.map((lane) => lane.id)).toStrictEqual([
+			source.id,
+			second.id,
+			first.id
+		]);
+		expect(repository.number(first.id)).toBe('2');
+		expect(repository.get(first.id)?.family).toBe(source.family);
+	});
 });
