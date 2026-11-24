@@ -136,9 +136,23 @@
 	};
 
 	const assign = (tag: Tag, breakpoint: Breakpoint) => {
-		if (project.assignTag(tag.id, breakpoint.id, here)) {
-			announcement = `Tagged ${where} as ${labelOf(breakpoint, tag)}.`;
+		const result = project.assignTag(tag.id, breakpoint.id, here);
+
+		if (!result) {
+			return;
 		}
+
+		// matching steps can place the tag on linked lanes too, so say where
+		const matched = result.matched.flatMap(({ laneId, breakpointId }) => {
+			const at = project.breakpoints.get(breakpointId);
+			return at
+				? [`${labelOf(at, tag)} on ${project.lanes.name(laneId)}`]
+				: [];
+		});
+
+		announcement = `Tagged ${where} as ${labelOf(breakpoint, tag)}${
+			matched.length > 0 ? `, and ${matched.join(' and ')}` : ''
+		}.`;
 	};
 
 	const match = (option: TagOption, query: string) => {

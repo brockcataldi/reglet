@@ -120,6 +120,13 @@ export type Lane = TypeSetting & {
 	//
 	overrides: Record<string, SpecimenOverride>;
 
+	// a linked lane follows its source lane's font but keeps its own scale;
+	// links are one level deep, and linked lanes sit right after their source
+	linkedTo?: string;
+	// on a source lane: a tag placed on it at the first breakpoint is also
+	// placed on the nth linked lane at the nth breakpoint, at the same step
+	matchSteps?: boolean;
+
 	// the individual scale per lane
 	maxStep: number;
 	minStep: number;

@@ -11,6 +11,7 @@ import type {
 	Tag,
 	TagPlacement
 } from '#lib/types.js';
+import { matchedTargets } from '#lib/domain/project/lane-links.js';
 import { validateBreakpoints } from '#lib/domain/project/validate-draft.js';
 import {
 	fluidPlacementError,
@@ -101,11 +102,123 @@ class Project {
 		return this.breakpoints.breakpoints.map((bp) => bp.id);
 	}
 
-	/** Deletes a lane along with every tag placement on it. */
+	/**
+	 * Deletes a lane along with every tag placement on it. A source's first
+	 * linked lane takes over as the source.
+	 */
 	deleteLane(id: string) {
 		this.lanes.delete(id);
 		this.tags.forgetLane(id, this.breakpointOrder);
 		this.#dropStrandedMax();
+	}
+
+	/**
+	 * Whether another lane can be linked to a source: each linked lane lines
+	 * up with a breakpoint after the first, so a group can't outgrow them.
+	 */
+	canLink(sourceId: string) {
+		const group = this.lanes.group(sourceId);
+
+		return (
+			group !== undefined &&
+			group.source.id === sourceId &&
+			group.members.length < this.breakpoints.breakpoints.length
+		);
+	}
+
+	/** Links a new lane to a source and matches its tags onto it. */
+	linkLane(sourceId: string) {
+		if (!this.canLink(sourceId)) {
+			return undefined;
+		}
+
+		const lane = this.lanes.link(sourceId);
+
+		if (lane && this.lanes.get(sourceId)?.matchSteps) {
+			this.#matchGroup(sourceId, false);
+		}
+
+		return lane;
+	}
+
+	/** The lane keeps its font and its tags, and stands alone. */
+	unlinkLane(id: string) {
+		this.lanes.unlink(id);
+	}
+
+	/**
+	 * Turns matching steps on or off for a group. Turning it on fills in the
+	 * breakpoints a tag isn't placed on yet, without moving any it is.
+	 */
+	setMatchSteps(sourceId: string, on: boolean) {
+		this.lanes.update(sourceId, { matchSteps: on });
+
+		if (on) {
+			this.#matchGroup(sourceId, false);
+		}
+	}
+
+	// matching steps, for every tag placed on the source at the first
+	// breakpoint; `replace` moves placements the tag already has there
+	#matchGroup(sourceId: string, replace: boolean) {
+		const first = this.breakpointOrder[0];
+
+		for (const tag of this.tags.tags) {
+			const placement = tag.placements[first];
+
+			if (placement?.laneId === sourceId) {
+				this.#placeMatched(tag.id, sourceId, placement.step, replace);
+			}
+		}
+	}
+
+	#placeMatched(
+		tagId: string,
+		sourceId: string,
+		step: number,
+		replace: boolean
+	) {
+		const group = this.lanes.group(sourceId);
+		const tag = this.tags.get(tagId);
+		const placed: { laneId: string; breakpointId: string }[] = [];
+
+		if (!group || !tag || group.source.id !== sourceId) {
+			return placed;
+		}
+
+		for (const target of matchedTargets(group, this.breakpointOrder)) {
+			if (!replace && target.breakpointId in tag.placements) {
+				continue;
+			}
+
+			const placement = { laneId: target.laneId, step };
+
+			if (this.placementError(tagId, target.breakpointId, placement)) {
+				continue;
+			}
+
+			this.tags.assign(
+				tagId,
+				target.breakpointId,
+				placement,
+				this.breakpointOrder
+			);
+			placed.push(target);
+		}
+
+		return placed;
+	}
+
+	// the group a placement matches from, when matching steps is on for it
+	#matchingSource(breakpointId: string, laneId: string) {
+		const group = this.lanes.group(laneId);
+
+		return breakpointId === this.breakpointOrder[0] &&
+			group?.source.id === laneId &&
+			group.members.length > 1 &&
+			group.source.matchSteps
+			? group
+			: undefined;
 	}
 
 	/**
@@ -134,14 +247,22 @@ class Project {
 		return fluidPlacementError(end(min.id), end(max.id), this.precision);
 	}
 
-	/** Places a tag, unless the placement breaks the project's rules. */
+	/**
+	 * Places a tag, unless the placement breaks the project's rules. Returns
+	 * false when it can't, or the placements matching steps made with it.
+	 */
 	assignTag(tagId: string, breakpointId: string, placement: TagPlacement) {
 		if (this.placementError(tagId, breakpointId, placement)) {
 			return false;
 		}
 
 		this.tags.assign(tagId, breakpointId, placement, this.breakpointOrder);
-		return true;
+
+		const matched = this.#matchingSource(breakpointId, placement.laneId)
+			? this.#placeMatched(tagId, placement.laneId, placement.step, true)
+			: [];
+
+		return { matched };
 	}
 
 	/**
@@ -149,7 +270,31 @@ class Project {
 	 * can't stand without its min, so removing the min removes both.
 	 */
 	unassignTag(tagId: string, breakpointId: string) {
+		const removed = this.tags.get(tagId)?.placements[breakpointId];
+		const group =
+			removed && this.#matchingSource(breakpointId, removed.laneId);
+
 		this.tags.unassign(tagId, breakpointId, this.breakpointOrder);
+
+		// matched placements go with it, unless they were moved by hand
+		if (group && removed) {
+			for (const target of matchedTargets(group, this.breakpointOrder)) {
+				const placed =
+					this.tags.get(tagId)?.placements[target.breakpointId];
+
+				if (
+					placed?.laneId === target.laneId &&
+					placed.step === removed.step
+				) {
+					this.tags.unassign(
+						tagId,
+						target.breakpointId,
+						this.breakpointOrder
+					);
+				}
+			}
+		}
+
 		this.#dropStrandedMax();
 	}
 
@@ -168,18 +313,20 @@ class Project {
 		}
 	}
 
-	/** Widens or narrows a lane's step range, keeping tags on real steps. */
+	/**
+	 * Widens or narrows a lane's step range, keeping tags on real steps. A
+	 * group shares one range, so every lane in it moves together.
+	 */
 	stepLane(
 		id: string,
 		key: 'maxStep' | 'minStep',
 		direction: 'increment' | 'decrement'
 	) {
-		this.lanes[direction](id, key);
+		const members = this.lanes.group(id)?.members ?? [];
 
-		const lane = this.lanes.get(id);
-
-		if (lane) {
-			this.tags.clampLane(id, lane.minStep, lane.maxStep);
+		for (const member of members) {
+			this.lanes[direction](member.id, key);
+			this.tags.clampLane(member.id, member.minStep, member.maxStep);
 		}
 	}
 
