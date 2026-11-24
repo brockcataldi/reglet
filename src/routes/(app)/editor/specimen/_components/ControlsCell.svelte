@@ -1,9 +1,16 @@
 <script lang="ts">
-	import { cva } from 'class-variance-authority';
-	import { ChevronDown, ChevronUp } from '@lucide/svelte';
+	import {
+		ChevronDown,
+		ChevronUp,
+		SlidersHorizontal,
+		X
+	} from '@lucide/svelte';
 
 	import type { ControlsGridCell, Lane } from '#lib/types.js';
 
+	import { MODULAR_SCALE_RATIOS } from '#lib/constants.js';
+	import { toFontVariationSettings } from '#lib/domain/fonts/to-font-variation-settings.js';
+	import { toStyleName } from '#lib/domain/fonts/to-style-name.js';
 	import project from '#lib/stores/project.svelte.js';
 
 	import Button from '#lib/ui/button/button.svelte';
@@ -17,137 +24,153 @@
 
 	let { cell, lane }: CellProps = $props();
 
-	let target: 'maxStep' | 'minStep' = $derived(
-		cell.value === 'upper' ? 'maxStep' : 'minStep'
-	);
+	// the scale fields stay out of the way until asked for
+	let open = $state(false);
 
-	let controlsCellVariants = cva(
-		'flex justify-start gap-4 h-full w-full',
-		{
-			variants: {
-				variant: {
-					upper: 'items-end',
-					lower: 'items-start'
-				}
-			},
-			defaultVariants: {
-				variant: 'upper'
-			}
-		}
-	);
+	const target = $derived(cell.value === 'upper' ? 'maxStep' : 'minStep');
 
+	// the upper cell sits one past the lane's top step, the lower one past its
+	// bottom, so adding moves that end outwards and removing pulls it in
 	const actions = $derived(
 		{
 			upper: {
-				top: {
-					label: `Add row ${cell.step}`,
-					destructive: false,
+				add: {
+					label: `Add step ${cell.step}`,
+					icon: ChevronUp,
 					action: () => project.stepLane(cell.laneId, target, 'increment')
 				},
-				bottom: {
-					label: `Remove row ${cell.step - 1}`,
-					destructive: true,
+				remove: {
+					label: `Remove step ${cell.step - 1}`,
+					icon: ChevronDown,
 					action: () => project.stepLane(cell.laneId, target, 'decrement')
 				}
 			},
 			lower: {
-				// raising the minimum removes the lowest row
-				top: {
-					label: `Remove row ${cell.step + 1}`,
-					destructive: true,
-					action: () => project.stepLane(cell.laneId, target, 'increment')
-				},
-				bottom: {
-					label: `Add row ${cell.step}`,
-					destructive: false,
+				add: {
+					label: `Add step ${cell.step}`,
+					icon: ChevronDown,
 					action: () => project.stepLane(cell.laneId, target, 'decrement')
+				},
+				remove: {
+					label: `Remove step ${cell.step + 1}`,
+					icon: ChevronUp,
+					action: () => project.stepLane(cell.laneId, target, 'increment')
 				}
 			}
 		}[cell.value]
 	);
+
+	const axes = $derived(
+		Object.entries(lane.variationSettings ?? {})
+			.map(([tag, value]) => `${tag} ${value}`)
+			.join(', ')
+	);
+
+	const maxRatio = $derived(
+		lane.fluid?.linkRatio
+			? lane.ratio
+			: (lane.fluid?.maxRatio ?? lane.ratio)
+	);
+
+	const ratioName = (ratio: number) =>
+		MODULAR_SCALE_RATIOS.find((entry) => entry.ratio === ratio)?.label;
+
+	const fieldsId = $derived(`lane-${lane.id}-scale-fields`);
 </script>
 
-{#snippet bounds(fill: boolean)}
-	{@const buttonClass = fill ? 'size-full [&>svg]:size-8' : undefined}
-	<!-- filling, the rows come from the scale box beside it and each item
-	     squares itself off that height -->
-	<ul
-		class={fill
-			? 'row-span-2 grid grid-rows-subgrid gap-y-1'
-			: 'grid grid-cols-1 grid-rows-[repeat(2,32px)] items-start justify-start gap-1'}
-	>
-		<li class={fill ? 'aspect-square h-full' : undefined}>
-			{#if !(actions.top.destructive === true && cell.delete === false)}
-				<Button
-					label={actions.top.label}
-					iconOnly
-					class={buttonClass}
-					icon={ChevronUp}
-					onclick={actions.top.action}
-					scheme={actions.top.destructive ? 'destructive' : 'primary'}
-				/>
-			{/if}
-		</li>
-		<li class={fill ? 'aspect-square h-full' : undefined}>
-			{#if !(actions.bottom.destructive === true && cell.delete === false)}
-				<Button
-					label={actions.bottom.label}
-					iconOnly
-					class={buttonClass}
-					icon={ChevronDown}
-					onclick={actions.bottom.action}
-					scheme={actions.bottom.destructive ? 'destructive' : 'primary'}
-				/>
-			{/if}
-		</li>
-	</ul>
+{#snippet scaleLine(size: number, ratio: number)}
+	{@const name = ratioName(ratio)}
+	<b>{size}{project.fontSizeUnit}</b> at ratio <b>{ratio}</b>{name
+		? ` (${name})`
+		: ''}
 {/snippet}
 
-<div class={controlsCellVariants({ variant: cell.value })}>
-	{#if cell.value === 'upper'}
-		<div class="flex w-full flex-col gap-2">
-			<ul
-				class="flex flex-row flex-wrap items-center justify-start gap-4 border border-black bg-white p-4"
-			>
-				<!-- numbered like the step markers down the side -->
-				<li>
-					<h2
-						class="grid size-11 place-items-center border bg-sunburst-500 text-2xl font-bold"
-					>
-						<span class="sr-only">Lane </span>{project.lanes.number(
-							lane.id
-						)}
-					</h2>
-				</li>
-				<li>
-					<p class="text-xs">Family</p>
-					<p class="text-xl font-bold">{lane.family}</p>
-				</li>
-				<li>
-					<p class="text-xs">Weight</p>
-					<p class="text-xl font-bold">{lane.weight}</p>
-				</li>
-				<li>
-					<p class="text-xs">Style</p>
-					<p class="text-xl font-bold">{lane.style}</p>
-				</li>
-				{#each Object.entries(lane.variationSettings ?? {}) as [tag, value] (tag)}
-					<li>
-						<p class="text-xs">{tag}</p>
-						<p class="text-xl font-bold">{value}</p>
-					</li>
-				{/each}
-			</ul>
+{#snippet steps()}
+	<div class="grid grid-cols-2 gap-2">
+		<Button
+			label={actions.add.label}
+			icon={actions.add.icon}
+			onclick={actions.add.action}
+		/>
+		<!-- a lane keeps at least one step -->
+		{#if cell.delete}
+			<Button
+				label={actions.remove.label}
+				icon={actions.remove.icon}
+				scheme="destructive"
+				onclick={actions.remove.action}
+			/>
+		{/if}
+	</div>
+{/snippet}
 
-			<!-- gap + the box's padding keep the buttons 2rem clear of the scale -->
-			<div class="grid grid-cols-[auto_1fr] grid-rows-2 gap-x-4 gap-y-1">
-				{@render bounds(true)}
-				<div class="row-span-2 border border-black bg-white p-4">
+{#if cell.value === 'upper'}
+	<div class="flex h-full flex-col justify-end gap-2">
+		<div class="border border-black bg-white">
+			<div class="flex items-start gap-4 p-4">
+				<!-- numbered like the step markers down the side -->
+				<h2
+					class="grid size-11 shrink-0 place-items-center border bg-sunburst-500 text-2xl font-bold"
+				>
+					<span class="sr-only">Lane </span>{project.lanes.number(lane.id)}
+				</h2>
+
+				<div class="flex min-w-0 flex-1 flex-col gap-3">
+					<div>
+						<!-- set in the lane's own font, so the name previews it -->
+						<p
+							class="truncate text-2xl leading-tight"
+							style:font-family={lane.family}
+							style:font-weight={lane.weight}
+							style:font-style={lane.style}
+							style:font-variation-settings={toFontVariationSettings(
+								lane.variationSettings
+							)}
+						>
+							{lane.family}
+							{toStyleName(lane)}
+						</p>
+						{#if axes}
+							<p class="text-sm">{axes}</p>
+						{/if}
+					</div>
+
+					{#if lane.fluid}
+						<dl
+							class="grid grid-cols-[2.5rem_1fr] items-baseline gap-x-2 gap-y-1 text-sm"
+						>
+							<dt class="text-xs">Min</dt>
+							<dd>{@render scaleLine(lane.baseSize, lane.ratio)}</dd>
+							<dt class="text-xs">Max</dt>
+							<dd>
+								{@render scaleLine(lane.fluid.maxBaseSize, maxRatio)}
+							</dd>
+						</dl>
+					{:else}
+						<p class="text-sm">
+							{@render scaleLine(lane.baseSize, lane.ratio)}
+						</p>
+					{/if}
+				</div>
+
+				<Button
+					label={open ? 'Close' : 'Scale'}
+					icon={open ? X : SlidersHorizontal}
+					aria-expanded={open}
+					aria-controls={open ? fieldsId : undefined}
+					onclick={() => (open = !open)}
+				/>
+			</div>
+
+			{#if open}
+				<div id={fieldsId} class="border-t border-black p-4">
 					<LaneScaleFields {lane} />
 				</div>
-			</div>
+			{/if}
 		</div>
-	{:else}
-		{@render bounds(false)}
-	{/if}
-</div>
+
+		{@render steps()}
+	</div>
+{:else}
+	{@render steps()}
+{/if}
