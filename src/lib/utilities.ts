@@ -33,7 +33,13 @@ export function toOrdinal(value: number) {
 		throw new Error('Needs to be an integer');
 	}
 
-	switch (Math.abs(value)) {
+	const abs = Math.abs(value);
+
+	if (abs % 100 >= 11 && abs % 100 <= 13) {
+		return `${value}th`;
+	}
+
+	switch (abs % 10) {
 		case 1:
 			return `${value}st`;
 		case 2:
