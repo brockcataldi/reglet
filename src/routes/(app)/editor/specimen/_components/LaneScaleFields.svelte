@@ -6,11 +6,11 @@
 	import { MODULAR_SCALE_RATIOS } from '#lib/constants.js';
 	import project from '#lib/stores/project.svelte.js';
 
-	import Separator from '#lib/ui/display/separator.svelte';
 	import Checkbox from '#lib/ui/form/checkbox.svelte';
-	import Input from '#lib/ui/form/input.svelte';
-	import InputUnit from '#lib/ui/form/input-unit.svelte';
-	import Select from '#lib/ui/form/select.svelte';
+	import InlineField, {
+		inlineControlClass,
+		inlineSegmentClass
+	} from '#lib/ui/form/inline-field.svelte';
 
 	type LaneScaleFieldsProps = {
 		lane: Lane;
@@ -88,22 +88,45 @@
 	};
 </script>
 
-{#snippet ratioFields(
+<!-- compact fields sit in the fluid min and max columns: a short label, and a
+     custom ratio's typed value on its own row since the column is narrow -->
+{#snippet ratioField(
 	id: string,
 	label: string,
 	ratio: number,
 	disabled: boolean,
-	onRatio: (value: string) => void
+	onRatio: (value: string) => void,
+	compact: boolean = false,
+	name: string = label
 )}
 	{@const custom = isCustom(id, ratio)}
+	{@const variant = disabled ? 'disabled' : 'default'}
+	{@const labelClass = compact ? 'w-14' : undefined}
+	{#snippet valueInput()}
+		<input
+			id={`${id}-value`}
+			aria-label={`${name} value`}
+			class={[
+				inlineControlClass,
+				!compact && inlineSegmentClass,
+				'text-right'
+			]}
+			type="number"
+			min={0.001}
+			step={0.001}
+			value={ratio}
+			{disabled}
+			oninput={(event) => onRatio(event.currentTarget.value)}
+		/>
+	{/snippet}
 	<li>
-		<Separator as="label" for={`${id}-preset`}>{label}</Separator>
-		<div class={['mt-1 grid gap-2', custom && 'grid-cols-[1fr_80px]']}>
-			<Select
+		<InlineField for={`${id}-preset`} {label} {labelClass} {variant}>
+			<select
 				id={`${id}-preset`}
+				aria-label={compact ? name : undefined}
+				class={[inlineControlClass, 'pr-8']}
 				value={custom ? CUSTOM : presetOf(ratio)}
 				{disabled}
-				variant={disabled ? 'disabled' : 'default'}
 				onchange={(event) =>
 					choosePreset(id, event.currentTarget.value, onRatio)}
 			>
@@ -115,83 +138,144 @@
 						>
 					{/each}
 				</optgroup>
-			</Select>
-			{#if custom}
-				<Input
-					id={`${id}-value`}
-					aria-label={`${label} value`}
-					class="text-right"
-					type="number"
-					min={0.001}
-					step={0.001}
-					value={ratio}
-					{disabled}
-					variant={disabled ? 'disabled' : 'default'}
-					oninput={(event) => onRatio(event.currentTarget.value)}
-				/>
+			</select>
+			{#if custom && !compact}
+				{@render valueInput()}
 			{/if}
-		</div>
+		</InlineField>
 	</li>
+	{#if custom && compact}
+		<li>
+			<InlineField
+				for={`${id}-value`}
+				label="Value"
+				{labelClass}
+				{variant}
+			>
+				{@render valueInput()}
+			</InlineField>
+		</li>
+	{/if}
 {/snippet}
 
 {#snippet baseField(
 	id: string,
 	label: string,
 	value: number,
-	onBase: (value: string) => void
+	onBase: (value: string) => void,
+	compact: boolean = false,
+	name: string = label
 )}
-	<li class="col-start-1">
-		<Separator as="label" for={id}>{label}</Separator>
-		<InputUnit
-			{id}
-			containerClass="mt-1"
-			{value}
-			min={0.001}
-			step={0.05}
-			unit={project.fontSizeUnit}
-			oninput={(event) => onBase(event.currentTarget.value)}
-		/>
+	<li>
+		<InlineField
+			for={id}
+			{label}
+			labelClass={compact ? 'w-14' : undefined}
+			suffix={project.fontSizeUnit}
+		>
+			<input
+				{id}
+				aria-label={compact ? name : undefined}
+				class={[inlineControlClass, 'text-right']}
+				type="number"
+				{value}
+				min={0.001}
+				step={0.05}
+				oninput={(event) => onBase(event.currentTarget.value)}
+			/>
+		</InlineField>
 	</li>
 {/snippet}
 
-<ul class="grid grid-cols-[180px_1fr] gap-4">
-	{@render baseField(
-		`${idPrefix}-base`,
-		lane.fluid ? 'Min Base Size' : 'Base Size',
-		lane.baseSize,
-		(value) => update('baseSize', value)
-	)}
-	{@render ratioFields(
-		`${idPrefix}-ratio`,
-		lane.fluid ? 'Min Ratio' : 'Ratio',
-		lane.ratio,
-		false,
-		(value) => update('ratio', value)
-	)}
+{#if lane.fluid}
+	{@const fluid = lane.fluid}
+	<!-- min and max side by side, each a self-contained column -->
+	<div class="grid grid-cols-2 gap-6">
+		<section
+			class="flex min-w-0 flex-col gap-2"
+			aria-labelledby={`${idPrefix}-min`}
+		>
+			<h3
+				id={`${idPrefix}-min`}
+				class="px-1 font-mono text-xs text-neutral-600 uppercase"
+			>
+				Min
+			</h3>
+			<ul class="flex flex-col gap-2">
+				{@render baseField(
+					`${idPrefix}-base`,
+					'Size',
+					lane.baseSize,
+					(value) => update('baseSize', value),
+					true,
+					'Min base size'
+				)}
+				{@render ratioField(
+					`${idPrefix}-ratio`,
+					'Ratio',
+					lane.ratio,
+					false,
+					(value) => update('ratio', value),
+					true,
+					'Min ratio'
+				)}
+			</ul>
+		</section>
 
-	{#if lane.fluid}
-		{@const fluid = lane.fluid}
+		<section
+			class="flex min-w-0 flex-col gap-2"
+			aria-labelledby={`${idPrefix}-max`}
+		>
+			<h3
+				id={`${idPrefix}-max`}
+				class="px-1 font-mono text-xs text-neutral-600 uppercase"
+			>
+				Max
+			</h3>
+			<ul class="flex flex-col gap-2">
+				{@render baseField(
+					`${idPrefix}-max-base`,
+					'Size',
+					fluid.maxBaseSize,
+					(value) => updateFluidNumber('maxBaseSize', value),
+					true,
+					'Max base size'
+				)}
+				{@render ratioField(
+					`${idPrefix}-max-ratio`,
+					'Ratio',
+					fluid.linkRatio ? lane.ratio : fluid.maxRatio,
+					fluid.linkRatio,
+					(value) => updateFluidNumber('maxRatio', value),
+					true,
+					'Max ratio'
+				)}
+				<li class="pt-1 pl-1">
+					<Checkbox
+						id={`${idPrefix}-link-ratio`}
+						label="Use min ratio at max"
+						checked={fluid.linkRatio}
+						onchange={(event) =>
+							updateFluid({ linkRatio: event.currentTarget.checked })}
+					/>
+				</li>
+			</ul>
+		</section>
+	</div>
+{:else}
+	<ul class="flex flex-col gap-2">
 		{@render baseField(
-			`${idPrefix}-max-base`,
-			'Max Base Size',
-			fluid.maxBaseSize,
-			(value) => updateFluidNumber('maxBaseSize', value)
+			`${idPrefix}-base`,
+			'Base Size',
+			lane.baseSize,
+			(value) => update('baseSize', value)
 		)}
-		{@render ratioFields(
-			`${idPrefix}-max-ratio`,
-			'Max Ratio',
-			fluid.linkRatio ? lane.ratio : fluid.maxRatio,
-			fluid.linkRatio,
-			(value) => updateFluidNumber('maxRatio', value)
+		{@render ratioField(
+			`${idPrefix}-ratio`,
+			'Ratio',
+			lane.ratio,
+			false,
+			(value) => update('ratio', value)
 		)}
-		<li class="col-start-2">
-			<Checkbox
-				id={`${idPrefix}-link-ratio`}
-				label="Use min ratio at max"
-				checked={fluid.linkRatio}
-				onchange={(event) =>
-					updateFluid({ linkRatio: event.currentTarget.checked })}
-			/>
-		</li>
-	{/if}
-</ul>
+	</ul>
+{/if}
