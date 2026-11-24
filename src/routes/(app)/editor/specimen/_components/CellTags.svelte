@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { X } from '@lucide/svelte';
+	import { tick } from 'svelte';
+	import { Plus, X } from '@lucide/svelte';
 
 	import type { Breakpoint, SpecimenGridCell, Tag } from '#lib/types.js';
 
@@ -22,7 +23,27 @@
 	let { cell }: CellTagsProps = $props();
 
 	let picker = $state<TagPicker>();
+	let addButton = $state<HTMLButtonElement>();
 	let announcement = $state('');
+
+	// the picker stays behind a + Tag button until it's wanted
+	let adding = $state(false);
+
+	const startAdding = async () => {
+		adding = true;
+		await tick();
+		picker?.focus();
+	};
+
+	const stopAdding = async (escaped: boolean) => {
+		adding = false;
+
+		// Escape keeps focus here; a blur already moved it somewhere else
+		if (escaped) {
+			await tick();
+			addButton?.focus();
+		}
+	};
 
 	const breakpoints = $derived(project.breakpoints.breakpoints);
 
@@ -245,7 +266,11 @@
 			? `Removed ${labelOf(breakpoint, tag)} from ${where}, and ${labelOf(max, tag)} with it.`
 			: `Removed ${labelOf(breakpoint, tag)} from ${where}.`;
 		// the button that had focus is gone
-		picker?.focus();
+		if (adding) {
+			picker?.focus();
+		} else {
+			addButton?.focus();
+		}
 	};
 
 	const chipId = (breakpoint: Breakpoint, tag: Tag) =>
@@ -311,16 +336,29 @@
 		</ul>
 	{/if}
 
-	<TagPicker
-		bind:this={picker}
-		id={`tag-picker-${cell.laneId}-${cell.step}`}
-		label={`Add a tag to ${where}`}
-		{options}
-		{match}
-		{createLabel}
-		onSelect={select}
-		onCreate={create}
-	/>
+	{#if adding}
+		<TagPicker
+			bind:this={picker}
+			id={`tag-picker-${cell.laneId}-${cell.step}`}
+			label={`Add a tag to ${where}`}
+			{options}
+			{match}
+			{createLabel}
+			onSelect={select}
+			onCreate={create}
+			onDismiss={stopAdding}
+		/>
+	{:else}
+		<button
+			bind:this={addButton}
+			type="button"
+			class="inline-flex min-h-[26px] cursor-pointer items-center gap-1 border border-dashed border-black px-2 font-mono text-sm uppercase hover:border-solid hover:border-cobalt-500 hover:bg-cobalt-500 hover:text-white focus-visible:border-solid focus-visible:border-cobalt-500 focus-visible:bg-cobalt-500 focus-visible:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cobalt-500 [&>svg]:size-4"
+			aria-label={`Add a tag to ${where}`}
+			onclick={startAdding}
+		>
+			<Plus strokeWidth={1.5} aria-hidden="true" /> Tag
+		</button>
+	{/if}
 
 	<p class="sr-only" aria-live="polite">{announcement}</p>
 </div>
