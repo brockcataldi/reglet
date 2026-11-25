@@ -20,6 +20,7 @@
 - **Accessibility first.** Prefer keyboard-accessible patterns (comboboxes, selects) over drag and drop. Colour is never the only indicator.
 - **Field labels.** Text inputs, comboboxes and selects are labelled with `<Separator as="label" for={id}>` (stacked) or `InlineField` (horizontal, shared underline; preferred where vertical space is tight). Never a hand-styled `<label>`. Stacked rows align with `items-end`; inline errors go below the row.
 - **Editable lists.** Each row is a card: `border border-black bg-white p-4`, with `gap-4` between rows.
+- **Sunburst is for static marks only**: number badges, name badges, the custom-value marker and other accents. Never fill an editable field or control (input, select, button) with sunburst; controls follow the regular black/white style with cobalt states.
 - **Lane and step numbers** are bare numbers in a square `border bg-sunburst-500 font-bold` box (steps `size-17`, lanes `size-11 text-2xl`). The word "Lane"/"Step" is `sr-only`. Keep badges big and the buttons beside them md.
 - **Customised values** (overriding a computed value) are italic, followed by a small bordered sunburst box holding lucide `PencilLine` (title "Custom value"; screen readers get "(custom)"). Never mark them with colour alone or the word "Custom".
 - **No eyebrows.** Never put eyebrow/kicker text above a heading.
