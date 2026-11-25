@@ -11,6 +11,11 @@ import type {
 	Tag,
 	TagPlacement
 } from '#lib/types.js';
+import {
+	guessFallback,
+	isFallback,
+	type Fallback
+} from '#lib/domain/export/fallback.js';
 import { matchedTargets } from '#lib/domain/project/lane-links.js';
 import { validateBreakpoints } from '#lib/domain/project/validate-draft.js';
 import {
@@ -31,6 +36,9 @@ class Project {
 	#letterSpacingUnit = $state<LetterSpacingUnit>('rem');
 
 	#precision = $state<number>(3);
+	#fallbacks = $state<Record<string, Fallback>>({});
+	#prefix = $state<string>('');
+	#shorthand = $state(false);
 
 	lanes = new LanesRepository();
 	fonts = new FontsRepository();
@@ -47,6 +55,13 @@ class Project {
 			this.fontSizeUnit = cached.fontSizeUnit;
 			this.letterSpacingUnit = cached.letterSpacingUnit;
 			this.precision = cached.precision;
+			this.#prefix =
+				typeof cached.prefix === 'string' ? cached.prefix : '';
+			this.#fallbacks = Object.fromEntries(
+				Object.entries(cached.fallbacks ?? {}).filter(([, value]) =>
+					isFallback(value)
+				)
+			) as Record<string, Fallback>;
 		}
 
 		// projects made before breakpoints existed still need a root to tag on
@@ -62,7 +77,10 @@ class Project {
 					type: this.type,
 					fontSizeUnit: this.fontSizeUnit,
 					letterSpacingUnit: this.letterSpacingUnit,
-					precision: this.precision
+					precision: this.precision,
+					fallbacks: this.#fallbacks,
+					prefix: this.#prefix,
+					shorthand: this.#shorthand
 				});
 			});
 		});
@@ -95,6 +113,34 @@ class Project {
 
 	set precision(value: number) {
 		this.#precision = value;
+	}
+
+	/** Put before every exported name, such as `type-` for `.type-h1`. */
+	get prefix() {
+		return this.#prefix;
+	}
+
+	set prefix(value: string) {
+		this.#prefix = value;
+	}
+
+	/** Exports write the `font` shorthand instead of its longhands. */
+	get shorthand() {
+		return this.#shorthand;
+	}
+
+	set shorthand(value: boolean) {
+		this.#shorthand = value;
+	}
+
+	/** The generic family a font falls back to in exports. */
+	fallbackFor(family: string): Fallback {
+		const key = family.trim();
+		return this.#fallbacks[key] ?? guessFallback(key);
+	}
+
+	setFallback(family: string, fallback: Fallback) {
+		this.#fallbacks[family.trim()] = fallback;
 	}
 
 	/** Breakpoint ids, smallest first; what tag placement methods expect. */
@@ -379,6 +425,9 @@ class Project {
 		});
 
 		this.#type = draft.type;
+		this.#fallbacks = {};
+		this.#prefix = '';
+		this.#shorthand = false;
 		this.breakpoints.reset(draft.breakpoints);
 
 		const lane = LanesRepository.defaultLane();

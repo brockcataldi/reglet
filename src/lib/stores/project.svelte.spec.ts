@@ -107,3 +107,20 @@ describe('linked lanes', () => {
 		expect(project.lanes.name(linked.id)).toBe('Lane 1b');
 	});
 });
+
+describe('fallbacks', () => {
+	beforeEach(() => {
+		localStorage.clear();
+	});
+
+	it('guesses until one is picked, and forgets picks on a new project', () => {
+		setup();
+		expect(project.fallbackFor('Fira Code')).toBe('monospace');
+
+		project.setFallback(' Fira Code ', '');
+		expect(project.fallbackFor('Fira Code')).toBe('');
+
+		project.create();
+		expect(project.fallbackFor('Fira Code')).toBe('monospace');
+	});
+});
