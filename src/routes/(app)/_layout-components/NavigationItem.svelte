@@ -4,8 +4,6 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLAnchorAttributes } from 'svelte/elements';
 
-	//  border-r border-r-black
-
 	const navigationItemVariants = cva(
 		'min-w-30 h-9 block px-4 py-1 border-black flex items-center justify-start',
 		{
@@ -30,11 +28,15 @@
 
 	type NavigationItem = {
 		children?: Snippet;
+		// the page being shown; plain text rather than a link. Defaults to
+		// `active`, so a section can be active while still linking home
+		current?: boolean;
 	} & HTMLAnchorAttributes &
 		VariantProps<typeof navigationItemVariants>;
 
 	let {
 		active,
+		current = !!active,
 		border,
 		children,
 		class: className,
@@ -42,9 +44,10 @@
 	}: NavigationItem = $props();
 </script>
 
-{#if active}
+{#if current}
 	<span
 		class={cn(navigationItemVariants({ active: true, border }), className)}
+		aria-current="page"
 	>
 		<span class="block font-mono text-sm font-bold">
 			{@render children?.()}
@@ -54,9 +57,12 @@
 	<a
 		{...props}
 		class={cn(
-			navigationItemVariants({ active: false, border }),
+			navigationItemVariants({ active: !!active, border }),
+			active &&
+				'hover:bg-cobalt-500 focus-visible:bg-cobalt-500 focus-visible:outline-none',
 			className
 		)}
+		aria-current={active ? 'true' : undefined}
 	>
 		<span class="block font-mono text-sm font-bold">
 			{@render children?.()}
