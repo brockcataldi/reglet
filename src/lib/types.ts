@@ -13,6 +13,12 @@ export type ProjectSettings = {
 	fontSizeUnit: FontSizeUnit;
 	letterSpacingUnit: LetterSpacingUnit;
 	precision: number;
+	// generic family per font family, for export; missing ones are guessed
+	fallbacks?: Record<string, string>;
+	// put before every exported name, such as `type-`
+	prefix?: string;
+	// export the font shorthand instead of its longhands
+	shorthand?: boolean;
 };
 
 /**

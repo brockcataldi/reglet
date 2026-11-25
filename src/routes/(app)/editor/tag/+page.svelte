@@ -82,7 +82,8 @@
 					<ul class="col-span-full grid grid-cols-subgrid items-start">
 						<li class="p-4">
 							<h2
-								class="w-fit border bg-sunburst-500 px-5 py-3 text-2xl font-bold"
+								id={`tag-${tag.id}`}
+								class="w-fit scroll-mt-60 border bg-sunburst-500 px-5 py-3 text-2xl font-bold"
 							>
 								{tag.name}
 							</h2>
