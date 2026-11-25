@@ -15,7 +15,8 @@ export type PreviewContext = {
 	anchor: (role: Role) => Attachment<HTMLElement>;
 };
 
-const KEY = Symbol('preview');
+// a global symbol, so a module re-run by hot reload still finds the context
+const KEY = Symbol.for('reglet.preview');
 
 export const setPreview = (context: PreviewContext) =>
 	setContext(KEY, context);

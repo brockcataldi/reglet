@@ -50,9 +50,14 @@
 			: project.breakpoints.breakpoints
 	);
 
-	// a root of 0px still needs a page to draw
+	// a root of 0px still needs a page to draw; fluid min and max are real
+	// widths the sizes slide between, so they're drawn as they are
 	const pageWidth = (bp: Breakpoint) =>
-		project.type === 'static' ? 720 : Math.max(bp.width, 375);
+		project.type === 'static'
+			? 720
+			: project.type === 'fluid'
+				? bp.width
+				: Math.max(bp.width, 375);
 
 	const rootSize = (tag: Tag) => settingAt(tag, 0, context)?.fontSize ?? 0;
 	const guessed = $derived(guessRoles(project.tags.tags, rootSize));
@@ -125,6 +130,58 @@
 	</div>
 {:else}
 	<div class="p-6">
+		<!-- widths stay put above the page: the page below resizes and zooms with
+		the width, so controls inside it would slide out from under the pointer -->
+		<div
+			class="mb-6 flex flex-row flex-wrap items-center justify-center gap-x-6 gap-y-3"
+		>
+			<ul
+				class="flex w-fit flex-row border border-black bg-white"
+				aria-label="Page width"
+			>
+				{#each breakpoints as bp (bp.id)}
+					{@const label = `${bp.name} (${pageWidth(bp)}px)`}
+					<li class="contents">
+						{#if chosen.fluidWidth === undefined && current?.id === bp.id}
+							<span class={cn(widthItem, 'bg-black text-white')}>
+								{label}<span class="sr-only"> (current)</span>
+							</span>
+						{:else}
+							<button
+								type="button"
+								class={cn(
+									widthItem,
+									'bg-white text-black hover:bg-cobalt-500 hover:text-white focus-visible:bg-cobalt-500 focus-visible:text-white focus-visible:outline-none'
+								)}
+								onclick={() => selectWidth(bp)}
+							>
+								{label}
+							</button>
+						{/if}
+					</li>
+				{/each}
+			</ul>
+			{#if fluid}
+				<InlineField
+					for="preview-fluid-width"
+					label="Width"
+					suffix={`${width}px`}
+					class="w-100"
+					labelClass="w-16"
+				>
+					<input
+						id="preview-fluid-width"
+						type="range"
+						class="min-w-0 flex-1 accent-cobalt-500"
+						min={breakpoints[0].width}
+						max={breakpoints[1].width}
+						value={width}
+						oninput={(event) =>
+							(chosen.fluidWidth = Number(event.currentTarget.value))}
+					/>
+				</InlineField>
+			{/if}
+		</div>
 		<div bind:clientWidth={room}>
 			<div
 				class="mx-auto"
@@ -132,59 +189,6 @@
 				style:zoom
 				style:--page-pad={`${Math.round(width * 0.05)}px`}
 			>
-				<!-- widths sit along the top of the page, as the notes sit beside it -->
-				<div
-					class="mb-6 flex flex-row flex-wrap items-center gap-x-6 gap-y-3"
-					style:margin-left={`${MARGIN}px`}
-				>
-					<ul
-						class="flex w-fit flex-row border border-black bg-white"
-						aria-label="Page width"
-					>
-						{#each breakpoints as bp (bp.id)}
-							{@const label = `${bp.name} (${pageWidth(bp)}px)`}
-							<li class="contents">
-								{#if chosen.fluidWidth === undefined && current?.id === bp.id}
-									<span class={cn(widthItem, 'bg-black text-white')}>
-										{label}<span class="sr-only"> (current)</span>
-									</span>
-								{:else}
-									<button
-										type="button"
-										class={cn(
-											widthItem,
-											'bg-white text-black hover:bg-cobalt-500 hover:text-white focus-visible:bg-cobalt-500 focus-visible:text-white focus-visible:outline-none'
-										)}
-										onclick={() => selectWidth(bp)}
-									>
-										{label}
-									</button>
-								{/if}
-							</li>
-						{/each}
-					</ul>
-					{#if fluid}
-						<InlineField
-							for="preview-fluid-width"
-							label="Width"
-							suffix={`${width}px`}
-							class="w-100"
-							labelClass="w-16"
-						>
-							<input
-								id="preview-fluid-width"
-								type="range"
-								class="min-w-0 flex-1 accent-cobalt-500"
-								min={breakpoints[0].width}
-								max={breakpoints[1].width}
-								value={width}
-								oninput={(event) =>
-									(chosen.fluidWidth = Number(event.currentTarget.value))}
-							/>
-						</InlineField>
-					{/if}
-				</div>
-
 				<div class="relative py-12">
 					<!-- the page alone is framed; the notes sit outside it -->
 					<div
