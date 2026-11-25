@@ -16,7 +16,15 @@ import {
 	isFallback,
 	type Fallback
 } from '#lib/domain/export/fallback.js';
+import { adjustNumberPrecision } from '#lib/domain/project/adjust-number-precision.js';
+import {
+	convertFontSize,
+	convertLetterSpacing,
+	fontSizeInPx
+} from '#lib/domain/project/convert-units.js';
+import { createDefaultBaseSize } from '#lib/domain/project/create-default-base-size.js';
 import { matchedTargets } from '#lib/domain/project/lane-links.js';
+import { toSpecimen } from '#lib/domain/project/to-specimen.js';
 import { validateBreakpoints } from '#lib/domain/project/validate-draft.js';
 import {
 	fluidPlacementError,
@@ -52,8 +60,8 @@ class Project {
 		if (cached) {
 			// settings saved before project types existed have no type
 			this.#type = cached.type ?? DEFAULT_PROJECT_TYPE;
-			this.fontSizeUnit = cached.fontSizeUnit;
-			this.letterSpacingUnit = cached.letterSpacingUnit;
+			this.#fontSizeUnit = cached.fontSizeUnit;
+			this.#letterSpacingUnit = cached.letterSpacingUnit;
 			this.precision = cached.precision;
 			this.#prefix =
 				typeof cached.prefix === 'string' ? cached.prefix : '';
@@ -91,20 +99,101 @@ class Project {
 		return this.#type;
 	}
 
+	/** Change it with `changeFontSizeUnit`, which can convert sizes. */
 	get fontSizeUnit() {
 		return this.#fontSizeUnit;
 	}
 
-	set fontSizeUnit(value: FontSizeUnit) {
-		this.#fontSizeUnit = value;
-	}
-
+	/** Change it with `changeLetterSpacingUnit`, which can convert values. */
 	get letterSpacingUnit() {
 		return this.#letterSpacingUnit;
 	}
 
-	set letterSpacingUnit(value: LetterSpacingUnit) {
-		this.#letterSpacingUnit = value;
+	/**
+	 * Switches the font size unit. With `convert`, every base size and custom
+	 * font size is converted so the type stays the same size; without, the
+	 * numbers stay as they are and take on the new unit.
+	 */
+	changeFontSizeUnit(to: FontSizeUnit, convert: boolean) {
+		const from = this.#fontSizeUnit;
+
+		if (convert && from !== to) {
+			const round = (n: number) =>
+				adjustNumberPrecision(
+					convertFontSize(n, from, to),
+					this.precision
+				);
+
+			for (const lane of this.lanes.lanes) {
+				const overrides = $state.snapshot(lane.overrides);
+
+				for (const override of Object.values(overrides)) {
+					if (override.fontSize !== undefined) {
+						override.fontSize = round(override.fontSize);
+					}
+				}
+
+				this.lanes.update(lane.id, {
+					baseSize: round(lane.baseSize),
+					overrides
+				});
+			}
+		}
+
+		this.#fontSizeUnit = to;
+	}
+
+	/** Whether any specimen has its own letter spacing to convert. */
+	get hasCustomLetterSpacing() {
+		return this.lanes.lanes.some((lane) =>
+			Object.values(lane.overrides).some(
+				(override) => override.letterSpacing !== undefined
+			)
+		);
+	}
+
+	/**
+	 * Switches the letter spacing unit. With `convert`, custom letter spacing
+	 * is converted at each specimen's font size; values that can't be (to or
+	 * from ch) keep their numbers.
+	 */
+	changeLetterSpacingUnit(to: LetterSpacingUnit, convert: boolean) {
+		const from = this.#letterSpacingUnit;
+
+		if (convert && from !== to) {
+			for (const lane of this.lanes.lanes) {
+				const overrides = $state.snapshot(lane.overrides);
+
+				for (const [step, override] of Object.entries(overrides)) {
+					if (override.letterSpacing === undefined) {
+						continue;
+					}
+
+					const fontSize = toSpecimen(
+						lane,
+						Number(step),
+						this.precision
+					).fontSize;
+					const converted = convertLetterSpacing(
+						override.letterSpacing,
+						from,
+						to,
+						fontSizeInPx(fontSize, this.#fontSizeUnit)
+					);
+
+					if (converted !== undefined) {
+						override.letterSpacing = adjustNumberPrecision(
+							converted,
+							this.precision
+						);
+					}
+				}
+
+				this.lanes.update(lane.id, { overrides });
+			}
+		}
+
+		this.#letterSpacingUnit = to;
 	}
 
 	get precision() {
@@ -420,17 +509,22 @@ class Project {
 	create() {
 		const draft = $state.snapshot({
 			type: this.draft.type,
+			fontSizeUnit: this.draft.fontSizeUnit,
+			letterSpacingUnit: this.draft.letterSpacingUnit,
 			breakpoints: this.draft.breakpoints,
 			tags: this.draft.tags
 		});
 
 		this.#type = draft.type;
+		this.#fontSizeUnit = draft.fontSizeUnit;
+		this.#letterSpacingUnit = draft.letterSpacingUnit;
 		this.#fallbacks = {};
 		this.#prefix = '';
 		this.#shorthand = false;
 		this.breakpoints.reset(draft.breakpoints);
 
 		const lane = LanesRepository.defaultLane();
+		lane.baseSize = createDefaultBaseSize({ unit: draft.fontSizeUnit });
 
 		// widen the lane so every templated tag lands on a real step
 		for (const tag of draft.tags) {
