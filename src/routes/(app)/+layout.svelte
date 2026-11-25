@@ -40,6 +40,33 @@
 								Tag View
 							</NavigationItem>
 						</li>
+						<li class="w-fit">
+							<NavigationItem
+								href={resolve('/(app)/preview/article')}
+								border="r"
+								active={routeId === '/(app)/preview/article'}
+							>
+								Article Preview
+							</NavigationItem>
+						</li>
+						<li class="w-fit">
+							<NavigationItem
+								href={resolve('/(app)/preview/blog')}
+								border="r"
+								active={routeId === '/(app)/preview/blog'}
+							>
+								Blog Preview
+							</NavigationItem>
+						</li>
+						<li class="w-fit">
+							<NavigationItem
+								href={resolve('/(app)/preview/home')}
+								border="r"
+								active={routeId === '/(app)/preview/home'}
+							>
+								Home Preview
+							</NavigationItem>
+						</li>
 					</ul>
 				</nav>
 			</div>
