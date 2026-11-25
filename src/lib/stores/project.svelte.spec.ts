@@ -124,3 +124,58 @@ describe('fallbacks', () => {
 		expect(project.fallbackFor('Fira Code')).toBe('monospace');
 	});
 });
+
+describe('changing units', () => {
+	beforeEach(() => {
+		localStorage.clear();
+		project.draft.reset();
+		project.create();
+	});
+
+	it('starts a px project with a 16px base', () => {
+		project.draft.fontSizeUnit = 'px';
+		project.create();
+
+		expect(project.fontSizeUnit).toBe('px');
+		expect(project.lanes.lanes[0].baseSize).toBe(16);
+	});
+
+	it('converts base sizes and custom font sizes', () => {
+		const lane = project.lanes.lanes[0];
+		project.lanes.update(lane.id, {
+			baseSize: 1,
+			overrides: { 2: { fontSize: 1.5 } }
+		});
+
+		project.changeFontSizeUnit('px', true);
+
+		expect(project.fontSizeUnit).toBe('px');
+		expect(project.lanes.lanes[0].baseSize).toBe(16);
+		expect(project.lanes.lanes[0].overrides[2].fontSize).toBe(24);
+	});
+
+	it('keeps the numbers when asked to', () => {
+		project.changeFontSizeUnit('px', false);
+
+		expect(project.fontSizeUnit).toBe('px');
+		expect(project.lanes.lanes[0].baseSize).toBe(1);
+	});
+
+	it('converts letter spacing at each specimen font size', () => {
+		const lane = project.lanes.lanes[0];
+		project.lanes.update(lane.id, {
+			baseSize: 2,
+			ratio: 1,
+			overrides: { 0: { letterSpacing: 0.05 } }
+		});
+		project.changeLetterSpacingUnit('em', false);
+
+		// 0.05em at 2rem (32px)
+		project.changeLetterSpacingUnit('px', true);
+		expect(project.lanes.lanes[0].overrides[0].letterSpacing).toBe(1.6);
+
+		project.changeLetterSpacingUnit('ch', true);
+		expect(project.letterSpacingUnit).toBe('ch');
+		expect(project.lanes.lanes[0].overrides[0].letterSpacing).toBe(1.6);
+	});
+});

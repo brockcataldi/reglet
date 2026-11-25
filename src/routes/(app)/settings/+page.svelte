@@ -9,7 +9,9 @@
 
 	import Breakpoints from './_components/Breakpoints.svelte';
 	import Lanes from './_components/Lanes.svelte';
+	import Stylesheets from './_components/Stylesheets.svelte';
 	import Tags from './_components/Tags.svelte';
+	import Units from './_components/Units.svelte';
 
 	const handleDeleteClick = () => {
 		project.create();
@@ -37,6 +39,10 @@
 <Lanes />
 
 <Tags />
+
+<Units />
+
+<Stylesheets />
 
 <section class="w-full border-black bg-white py-8">
 	<div class="mx-auto my-0 max-w-200">

@@ -37,10 +37,10 @@
 		{/if}
 
 		<dt class="text-neutral-600 uppercase">Font size unit</dt>
-		<dd>{project.fontSizeUnit}</dd>
+		<dd>{project.draft.fontSizeUnit}</dd>
 
 		<dt class="text-neutral-600 uppercase">Letter spacing unit</dt>
-		<dd>{project.letterSpacingUnit}</dd>
+		<dd>{project.draft.letterSpacingUnit}</dd>
 
 		<dt class="text-neutral-600 uppercase">Tags</dt>
 		<dd>

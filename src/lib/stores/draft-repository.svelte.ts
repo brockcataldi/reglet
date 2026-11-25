@@ -8,7 +8,12 @@ import {
 	validateBreakpoints,
 	validateTagNames
 } from '#lib/domain/project/validate-draft.js';
-import type { Breakpoint, ProjectType } from '#lib/types.js';
+import type {
+	Breakpoint,
+	FontSizeUnit,
+	LetterSpacingUnit,
+	ProjectType
+} from '#lib/types.js';
 import { createId, read, write } from '#lib/utilities.js';
 
 export type TagDraft = {
@@ -20,6 +25,8 @@ export type TagDraft = {
 
 export type Draft = {
 	type: ProjectType;
+	fontSizeUnit: FontSizeUnit;
+	letterSpacingUnit: LetterSpacingUnit;
 	breakpoints: Breakpoint[];
 	tags: TagDraft[];
 };
@@ -30,6 +37,8 @@ export type Draft = {
  */
 class DraftRepository {
 	#type = $state<ProjectType>(DEFAULT_PROJECT_TYPE);
+	fontSizeUnit = $state<FontSizeUnit>('rem');
+	letterSpacingUnit = $state<LetterSpacingUnit>('rem');
 	#breakpoints = $state<Breakpoint[]>([]);
 	#tags = $state<TagDraft[]>([]);
 
@@ -43,6 +52,9 @@ class DraftRepository {
 
 		if (cached) {
 			this.#type = cached.type;
+			// drafts saved before units moved into the draft have none
+			this.fontSizeUnit = cached.fontSizeUnit ?? 'rem';
+			this.letterSpacingUnit = cached.letterSpacingUnit ?? 'rem';
 			this.#breakpoints = cached.breakpoints;
 			this.#tags = cached.tags;
 		} else {
@@ -53,6 +65,8 @@ class DraftRepository {
 			$effect(() => {
 				write<Draft>(LOCAL_STORAGE_KEY_DRAFT, {
 					type: this.#type,
+					fontSizeUnit: this.fontSizeUnit,
+					letterSpacingUnit: this.letterSpacingUnit,
 					breakpoints: this.#breakpoints,
 					tags: this.#tags
 				});
@@ -136,6 +150,8 @@ class DraftRepository {
 
 	reset() {
 		this.#type = DEFAULT_PROJECT_TYPE;
+		this.fontSizeUnit = 'rem';
+		this.letterSpacingUnit = 'rem';
 		this.#breakpoints = DraftRepository.defaultBreakpoints(this.#type);
 		this.#tags = DraftRepository.templateTags(TAG_TEMPLATES[0].id);
 	}
