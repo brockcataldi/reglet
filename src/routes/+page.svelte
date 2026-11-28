@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { ArrowRight } from '@lucide/svelte';
+	import project from '#lib/stores/project.svelte.js';
+	import { ArrowRight, Plus } from '@lucide/svelte';
 
 	import LinkButton from '#lib/ui/button/link-button.svelte';
 </script>
@@ -36,13 +37,27 @@
 				</li>
 			</ol>
 
-			<div>
-				<LinkButton
-					href={resolve('new/type')}
-					label="Get Started"
-					icon={ArrowRight}
-					iconPosition="append"
-				/>
+			<div class="flex flex-wrap gap-2">
+				{#if project.exists}
+					<LinkButton
+						href={resolve('/(app)/editor/specimen')}
+						label="Continue"
+						icon={ArrowRight}
+						iconPosition="append"
+					/>
+					<LinkButton
+						href={resolve('new/type')}
+						label="New project"
+						icon={Plus}
+					/>
+				{:else}
+					<LinkButton
+						href={resolve('new/type')}
+						label="Get Started"
+						icon={ArrowRight}
+						iconPosition="append"
+					/>
+				{/if}
 			</div>
 		</div>
 	</section>

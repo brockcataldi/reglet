@@ -49,6 +49,46 @@ export const validateBreakpoints = (
 	return errors;
 };
 
+/** The checks below report against a single breakpoint. */
+export const BREAKPOINT_ROW_ERRORS = [
+	'Every breakpoint needs a name.',
+	'Breakpoint names must be unique.',
+	'Breakpoint widths must be 0 or more.',
+	'Each breakpoint must be wider than the one before it.'
+];
+
+export type BreakpointRowErrors = { name?: string; width?: string };
+
+/**
+ * The problems with each breakpoint's name and width, in list order, so they
+ * can be shown on the field itself. Project-wide problems stay in
+ * `validateBreakpoints`.
+ */
+export const validateBreakpointRows = (
+	breakpoints: Omit<Breakpoint, 'id'>[]
+): BreakpointRowErrors[] => {
+	const names = breakpoints.map((bp) => bp.name.trim().toLowerCase());
+
+	return breakpoints.map((bp, index) => {
+		const errors: BreakpointRowErrors = {};
+		const previous = breakpoints[index - 1];
+
+		if (names[index] === '') {
+			errors.name = 'Needs a name.';
+		} else if (names.indexOf(names[index]) !== index) {
+			errors.name = 'Another breakpoint already has this name.';
+		}
+
+		if (!Number.isFinite(bp.width) || bp.width < 0) {
+			errors.width = 'Width must be 0 or more.';
+		} else if (previous && bp.width <= previous.width) {
+			errors.width = `Must be wider than ${previous.name.trim() || 'the one before'} (${previous.width}px).`;
+		}
+
+		return errors;
+	});
+};
+
 export const validateTagNames = (tags: { name: string }[]): string[] => {
 	const errors: string[] = [];
 	const names = tags.map((tag) => normalizeTagName(tag.name));

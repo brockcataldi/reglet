@@ -1,66 +1,83 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
+	import type { ResolvedPathname } from '$app/types';
 	import project from '#lib/stores/project.svelte.js';
+	import { CircleAlert } from '@lucide/svelte';
 
 	import Banner from '#lib/ui/display/banner.svelte';
 
 	const draft = project.draft;
 
-	const typeNames = {
-		standard: 'Breakpoints',
-		fluid: 'Fluid',
-		static: 'No breakpoints'
+	const typeWords = {
+		standard: 'responsive',
+		fluid: 'fluid',
+		static: 'single-size'
 	};
 
-	const tagNames = $derived(
-		draft.tags.map((tag) => tag.name.trim()).filter((name) => name !== '')
-	);
+	const plural = (count: number, word: string) =>
+		`${count} ${word}${count === 1 ? '' : 's'}`;
+
+	// fluid projects read as a range, the rest as a count
+	const breakpoints = $derived.by(() => {
+		const list = draft.breakpoints;
+
+		if (draft.type === 'fluid') {
+			return {
+				lead: 'from',
+				text: `${list[0]?.width ?? 0}px to ${list.at(-1)?.width ?? 0}px`
+			};
+		}
+
+		return { lead: 'with', text: plural(list.length, 'breakpoint') };
+	});
 </script>
 
 <svelte:head>
 	<title>Overview - Reglet</title>
 </svelte:head>
 
+{#snippet step(href: ResolvedPathname, text: string)}
+	<a
+		{href}
+		class="font-mono underline decoration-1 underline-offset-4
+		hover:bg-cobalt-500 hover:text-white hover:no-underline
+		focus-visible:bg-cobalt-500 focus-visible:text-white"
+	>
+		{text}
+	</a>
+{/snippet}
+
 <div class="w-full">
-	<dl class="grid grid-cols-[max-content_1fr] gap-x-8 gap-y-3 text-sm">
-		<dt class="text-neutral-600 uppercase">Project type</dt>
-		<dd>{typeNames[draft.type]}</dd>
-
-		{#if draft.type !== 'static'}
-			<dt class="text-neutral-600 uppercase">Breakpoints</dt>
-			<dd>
-				<ul>
-					{#each draft.breakpoints as breakpoint (breakpoint.id)}
-						<li>{breakpoint.name || '(unnamed)'}: {breakpoint.width}px</li>
-					{/each}
-				</ul>
-			</dd>
-		{/if}
-
-		<dt class="text-neutral-600 uppercase">Font size unit</dt>
-		<dd>{project.draft.fontSizeUnit}</dd>
-
-		<dt class="text-neutral-600 uppercase">Letter spacing unit</dt>
-		<dd>{project.draft.letterSpacingUnit}</dd>
-
-		<dt class="text-neutral-600 uppercase">Tags</dt>
-		<dd>
-			{draft.tags.length}
-			{draft.tags.length === 1 ? 'tag' : 'tags'}
-			{#if tagNames.length > 0}
-				<p class="text-neutral-600">{tagNames.join(', ')}</p>
-			{/if}
-		</dd>
-
-		<dt class="text-neutral-600 uppercase">Stylesheets</dt>
-		<dd>{project.fonts.stylesheets.length}</dd>
-	</dl>
+	<p
+		class="text-3xl leading-snug font-semibold tracking-tight text-balance"
+	>
+		A
+		{@render step(resolve('/new/type'), typeWords[draft.type])}
+		project{#if draft.type !== 'static'}{` ${breakpoints.lead}`}
+			{@render step(resolve('/new/breakpoints'), breakpoints.text)}{/if},
+		sized in
+		{@render step(resolve('/new/units'), draft.fontSizeUnit)}
+		with letter spacing in
+		{@render step(resolve('/new/units'), draft.letterSpacingUnit)}. It
+		starts with
+		{@render step(resolve('/new/tags'), plural(draft.tags.length, 'tag'))}
+		and
+		{@render step(
+			resolve('/new/stylesheets'),
+			plural(project.fonts.stylesheets.length, 'stylesheet')
+		)}.
+	</p>
 
 	{#each draft.errors as error (error)}
-		<Banner scheme="destructive" class="mt-4">{error}</Banner>
+		<p class="mt-2 flex items-center gap-2 text-sm text-red-800">
+			<CircleAlert class="size-4 shrink-0" />
+			{error}
+		</p>
 	{/each}
 
-	<Banner class="mt-4">
-		Creating replaces your current project. The project type can't be
-		changed afterwards.
-	</Banner>
+	{#if project.exists}
+		<Banner scheme="destructive" class="mt-6">
+			Creating replaces your current project.
+		</Banner>
+	{/if}
 </div>

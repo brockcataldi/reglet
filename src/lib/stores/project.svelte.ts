@@ -94,6 +94,11 @@ class Project {
 		});
 	}
 
+	/** Whether a project has been created; `create()` always adds a lane. */
+	get exists() {
+		return this.lanes.lanes.length > 0;
+	}
+
 	/** Fixed once the project is created; set through `draft` in /new. */
 	get type() {
 		return this.#type;

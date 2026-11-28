@@ -95,6 +95,11 @@
 
 		return steps[currentIndex + 1];
 	});
+
+	// creating over an existing project throws it away
+	const nextScheme = $derived(
+		nextStep?.onClick && project.exists ? 'destructive' : 'primary'
+	);
 </script>
 
 <main class="min-h-dvh w-full">
@@ -165,6 +170,7 @@
 						label={nextStep.nextOverride ?? nextStep.name}
 						icon={Check}
 						iconPosition="append"
+						scheme={nextScheme}
 						disabled
 						title="Fix the issues in the overview first"
 						class="cursor-not-allowed opacity-60"
@@ -175,6 +181,7 @@
 						label={nextStep.nextOverride ?? nextStep.name}
 						icon={nextStep.onClick ? Check : ArrowRight}
 						iconPosition="append"
+						scheme={nextScheme}
 						onclick={nextStep.onClick}
 					/>
 				{:else}
