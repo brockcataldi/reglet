@@ -100,6 +100,23 @@ class DraftRepository {
 		this.#tags = DraftRepository.templateTags(id);
 	}
 
+	/**
+	 * Adds a template's tags to the end of the list, skipping names that are
+	 * already there. Returns how many were added.
+	 */
+	appendTemplate(id: string) {
+		const existing = this.#tags.map((tag) =>
+			tag.name.trim().toLowerCase()
+		);
+		const added = DraftRepository.templateTags(id).filter(
+			(tag) => !existing.includes(tag.name.toLowerCase())
+		);
+
+		this.#tags.push(...added);
+
+		return added.length;
+	}
+
 	get breakpoints() {
 		return this.#breakpoints;
 	}

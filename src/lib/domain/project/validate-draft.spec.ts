@@ -1,6 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import { BREAKPOINT_DEFAULTS } from '#lib/constants.js';
-import { validateBreakpoints, validateTagNames } from './validate-draft';
+import {
+	validateBreakpointRows,
+	validateBreakpoints,
+	validateTagNames
+} from './validate-draft';
 
 describe('validateBreakpoints', () => {
 	it('accepts every default', () => {
@@ -75,5 +79,44 @@ describe('validateTagNames', () => {
 		expect(validateTagNames([{ name: '' }, { name: 'h1' }])).toStrictEqual(
 			['Every tag needs a name.']
 		);
+	});
+});
+
+describe('validateBreakpointRows', () => {
+	it('reports nothing for the defaults', () => {
+		expect(
+			validateBreakpointRows(BREAKPOINT_DEFAULTS.standard)
+		).toStrictEqual([{}, {}, {}]);
+	});
+
+	it('puts a missing name on that breakpoint only', () => {
+		expect(
+			validateBreakpointRows([
+				{ name: 'Root', width: 0 },
+				{ name: ' ', width: 768 }
+			])
+		).toStrictEqual([{}, { name: 'Needs a name.' }]);
+	});
+
+	it('flags the later of two matching names', () => {
+		expect(
+			validateBreakpointRows([
+				{ name: 'Root', width: 0 },
+				{ name: 'root', width: 768 }
+			])
+		).toStrictEqual([
+			{},
+			{ name: 'Another breakpoint already has this name.' }
+		]);
+	});
+
+	it('flags a width that is not wider than the one before', () => {
+		expect(
+			validateBreakpointRows([
+				{ name: 'Root', width: 0 },
+				{ name: 'Desktop', width: 1200 },
+				{ name: 'Tablet', width: 768 }
+			])[2]
+		).toStrictEqual({ width: 'Must be wider than Desktop (1200px).' });
 	});
 });
